@@ -1,14 +1,15 @@
 __author__ = 'gjimenez'
-import json
+import json, datetime
 
 
 class information():
+    d = datetime.datetime.now()
 
     def __init__(self):
         self.owner = 'Telefonica I+D'
         self.windowsize = 5
         self.version = 1.0
-        self.runningfrom = '14/11/2013'
+        self.runningfrom = self.d.strftime("%y/%m/%d %H:%M:%S")
         self.doc = 'http://wikis.hi.inet/boi/index.php/Dinge_API'
 
     def parse(self, d):

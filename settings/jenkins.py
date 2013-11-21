@@ -12,13 +12,14 @@ TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 # cobertura dir must be in the root of our project not django
 COBERTURA_DIR = join('target', 'site', 'cobertura')
 UNIT_TESTS_DIR = join('target', 'surefire-reports')
+
+# Create the Cobertura directory if it is not exist
 if not exists(COBERTURA_DIR):
     makedirs(COBERTURA_DIR)
 
+# Create the Unit Test directory if it is not exist
 if not exists(UNIT_TESTS_DIR):
     makedirs(UNIT_TESTS_DIR)
-
-SECRET_KEY = 'u\'7^i@z@ud^r&j)^b3r@)m=h^3i65vc#$v2b@bz6mftg#=sl114b\''
 
 NOSE_ARGS = ['-s',
              '-v',

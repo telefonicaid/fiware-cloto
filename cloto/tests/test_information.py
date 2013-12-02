@@ -9,7 +9,7 @@ class InformationTests(TestCase):
         self.body1 = "{\"windowsize\": 4}"
         self.expect1 = 4
         self.body2 = "{\"windowsize\": notValidWindowSize}"
-        self.info = information.information(None, "test", "test", "test", datetime.datetime.now(), "test")
+        self.info = information.information("test", "test", "test", datetime.datetime.now(), "test")
 
     def test_parseInfo(self):
         info = self.info.parse(self.body1)
@@ -23,3 +23,6 @@ class InformationTests(TestCase):
         info = information.information("tenantId")
         self.assertEqual(info, info)
         """
+    def test_get_vars(self):
+        result = self.info.getVars()
+        self.assertEqual(result, vars(self.info))

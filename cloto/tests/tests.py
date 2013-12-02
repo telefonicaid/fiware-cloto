@@ -6,6 +6,9 @@ import datetime
 import cloto.information as information
 from django.test.client import RequestFactory
 from mockito import *
+from cloto.manager import InfoManager
+from django.utils import timezone
+import cloto.models as Models
 
 from cloto.restCloto import GeneralView
 
@@ -14,8 +17,21 @@ class GeneralTests(TestCase):
     def setUp(self):
         # Every test needs access to the request factory.
         self.factory = RequestFactory()
+        info_manager = InfoManager.InfoManager()
+        serverInfoMock = mock()
+        tenantInfoMock = mock()
+        mockedQuery = Models.ServerInfo.objects.create(id=1, owner="Telefonica I+D", version=1.0, runningfrom=datetime.datetime.now(tz=timezone.get_default_timezone()), doc = "test")
+        tenantQuery = Models.TenantInfo.objects.create(tenantId="tenantId", windowsize = 5)
+        when(serverInfoMock).objects().thenReturn(serverInfoMock);
+        when(tenantInfoMock).objects().thenReturn(tenantInfoMock);
+        when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery);
+        when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery);
+
+        info_manager.setInformations(serverInfoMock, tenantInfoMock)
+
+
         myMock = mock()
-        mockedInfo = information.information(None, "test", "test", "test", datetime.datetime.now(), "test")
+        mockedInfo = information.information("test", "test", "test", datetime.datetime.now(), "test")
         validWindowSize = "4"
         validWindowSizeValue = 5
         invalidWindowSize = "notValidValue"

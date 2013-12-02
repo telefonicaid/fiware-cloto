@@ -3,7 +3,8 @@ from django import http
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
 import information
-from cloto.models import tenantInfo
+from cloto.manager import InfoManager
+from cloto.models import TenantInfo
 
 
 class RESTResource(object):
@@ -32,12 +33,13 @@ class GeneralView(RESTResource):
     """
     def GET(self, request, tenantId):
         try:
-            if self.info == None:
-                self.set_info(information.information(tenantId))
+
+            info = InfoManager.InfoManager().get_information(tenantId)
+            self.set_info(info)
             return JSONResponse(self.info.getVars())
         except Exception as err:
             print err.message
-            t = tenantInfo(tenantId=tenantId, windowsize=5)
+            t = TenantInfo(tenantId=tenantId, windowsize=5)
             t.save()
             self.set_info(information.information(tenantId))
             return JSONResponse(self.getVars())
@@ -46,21 +48,21 @@ class GeneralView(RESTResource):
     def PUT(self, request, tenantId):
         try:
             # here we should call to MongoDB in order to get the information
-            if self.info == None:
-                self.set_info(information.information(tenantId))
 
+            info = InfoManager.InfoManager().get_information(tenantId)
+            self.set_info(info)
             info2 = self.info.parse(request.body)
             if info2 != None:
                 # here we must update MongoDB's windowsize with data received.
-                self.info.updateWindowSize(tenantId, info2.windowsize)
+                InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
                 return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
             else:
                 return HttpResponseBadRequest("Bad Request. windowsize could not be parsed")
         except Exception as err:
-            t = tenantInfo(tenantId=tenantId, windowsize=5)
+            t = TenantInfo(tenantId=tenantId, windowsize=5)
             t.save()
             self.set_info(information.information(tenantId))
-            self.info.updateWindowSize(tenantId, info2.windowsize)
+            InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
             return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
 
     def POST(self, request, tenantId):

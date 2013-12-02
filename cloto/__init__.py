@@ -1,6 +1,6 @@
 import sqlite3
 import datetime
-from models import serverInfo
+from models import ServerInfo
 from django.utils import timezone
 
 
@@ -17,12 +17,12 @@ try:
              (id int, owner text, version real, runningfrom datetime, doc text)''')
     c.execute('''CREATE TABLE cloto_tenantinfo
              (id int, tenantId text, windowsize int, serverInfo_id int)''')
-    s = serverInfo(id=1, owner=owner, version=version, runningfrom=runningfrom, doc=doc)
+    s = ServerInfo(id=1, owner=owner, version=version, runningfrom=runningfrom, doc=doc)
     s.save()
     print ("data was inserted")
 except Exception as err:
     print("Tables already exists: %s" % err)
-    myS = serverInfo.objects.get(owner__contains=owner)
+    myS = ServerInfo.objects.get(owner__contains=owner)
     myS.runningfrom = runningfrom
     myS.save()
 

@@ -3,8 +3,9 @@ from django import http
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
 import information
-from cloto.manager import InfoManager
+from cloto.manager import InfoManager, RuleManager
 from cloto.models import TenantInfo
+from django.core import serializers
 
 
 class RESTResource(object):
@@ -42,7 +43,7 @@ class GeneralView(RESTResource):
             t = TenantInfo(tenantId=tenantId, windowsize=5)
             t.save()
             self.set_info(information.information(tenantId))
-            return JSONResponse(self.getVars())
+            return JSONResponse(self.info.getVars())
             # return HttpResponseServerError(err.message)
 
     def PUT(self, request, tenantId):
@@ -65,10 +66,47 @@ class GeneralView(RESTResource):
             InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
             return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
 
-    def POST(self, request, tenantId):
-        h = HttpResponse("Create rule is not implemented yet")
+
+class GeneralRulesViewRule(RESTResource):
+    """
+    General Operations PATH( /v1.0/{tenantID}/rules/{ruleId} ).
+    """
+
+    def GET(self, request, tenantId, ruleId):
+        print "hhhhhh"
+        try:
+            rule = RuleManager.RuleManager().get_rule(ruleId)
+            return JSONResponse(rule.getVars())
+        except Exception as err:
+            return HttpResponseServerError(err.message)
+
+    def PUT(self, request, tenantId, ruleId):
+        h = HttpResponse("Should update a general rule")
         h.status_code = 501
         return h
+
+    def DELETE(self, request, tenantId, ruleId):
+        h = HttpResponse("Should delete a general rule")
+        h.status_code = 501
+        return h
+
+
+class GeneralRulesView(RESTResource):
+    """
+    General Operations PATH( /v1.0/{tenantID}/rules/ ).
+    """
+
+    def GET(self, request, tenantId):
+        try:
+            rules = RuleManager.RuleManager().get_all_rules(tenantId)
+            return HttpResponse(json.dumps(vars(rules), cls=DateEncoder))
+        except Exception as err:
+            return HttpResponseServerError(err.message)
+
+    def POST(self, request, tenantId):
+        rule = RuleManager.RuleManager().create_general_rule(tenantId, request.body)
+
+        return JSONResponse(rule.getVars())
 
 
 class ServersGeneralView(RESTResource):
@@ -133,3 +171,13 @@ class JSONResponse(http.HttpResponse):
             content=json.dumps(data, sort_keys=True),
             mimetype=mime,
         )
+
+import datetime
+from json import JSONEncoder
+
+
+class DateEncoder(JSONEncoder):
+    def default(self, obj):
+        if isinstance(obj, datetime.date):
+            return obj.isoformat()
+        return JSONEncoder.default(self, obj)

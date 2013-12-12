@@ -17,6 +17,8 @@ try:
              (id int, owner text, version real, runningfrom datetime, doc text)''')
     c.execute('''CREATE TABLE cloto_tenantinfo
              (id int, tenantId text, windowsize int, serverInfo_id int)''')
+    c.execute('''CREATE TABLE cloto_rule
+             (ruleId text, tenantId text, condition text, action text, createdAt datetime)''')
     s = ServerInfo(id=1, owner=owner, version=version, runningfrom=runningfrom, doc=doc)
     s.save()
     print ("data was inserted")

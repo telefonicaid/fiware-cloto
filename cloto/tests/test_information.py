@@ -19,10 +19,6 @@ class InformationTests(TestCase):
         info = self.info.parse(self.body2)
         self.assertEqual(info, None)
 
-    """def test_real_init(self):
-        info = information.information("tenantId")
-        self.assertEqual(info, info)
-        """
     def test_get_vars(self):
         result = self.info.getVars()
         self.assertEqual(result, vars(self.info))

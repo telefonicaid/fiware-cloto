@@ -1,6 +1,7 @@
 __author__ = 'gjp'
 import json
 
+
 class information():
 
     def __init__(self, owner=None, windowsize=None, version=None, runningfrom=None, doc=None):

@@ -23,7 +23,7 @@ class Rule(models.Model):
     createdAt = models.DateTimeField()
 
 
-class RuleModel(models.Model):
+class RuleModel():
     ruleId = None
     tenantId = None
     condition = None

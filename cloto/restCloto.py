@@ -37,13 +37,13 @@ class GeneralView(RESTResource):
 
             info = InfoManager.InfoManager().get_information(tenantId)
             self.set_info(info)
-            return JSONResponse(self.info.getVars())
+            return HttpResponse(json.dumps(self.info.getVars(), indent=4))
         except Exception as err:
             print err.message
             t = TenantInfo(tenantId=tenantId, windowsize=5)
             t.save()
             self.set_info(information.information(tenantId))
-            return JSONResponse(self.info.getVars())
+            return HttpResponse(json.dumps(self.info.getVars(), indent=4))
             # return HttpResponseServerError(err.message)
 
     def PUT(self, request, tenantId):
@@ -55,16 +55,19 @@ class GeneralView(RESTResource):
             info2 = self.info.parse(request.body)
             if info2 != None:
                 # here we must update MongoDB's windowsize with data received.
-                InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
-                return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
+                t = InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
+                return HttpResponse(json.dumps(vars(list(t.items)), indent=4))
+                # return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
             else:
                 return HttpResponseBadRequest("Bad Request. windowsize could not be parsed")
         except Exception as err:
             t = TenantInfo(tenantId=tenantId, windowsize=5)
             t.save()
             self.set_info(information.information(tenantId))
-            InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
-            return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
+            t = InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
+            return HttpResponse(json.dumps({"windowsize": info2.windowsize}, indent=4))
+            # return HttpResponse(json.dumps(vars(info2)))
+            # return HttpResponse("OK. windowsize updated to %s." % info2.windowsize)
 
 
 class GeneralRulesViewRule(RESTResource):
@@ -73,22 +76,27 @@ class GeneralRulesViewRule(RESTResource):
     """
 
     def GET(self, request, tenantId, ruleId):
-        print "hhhhhh"
         try:
             rule = RuleManager.RuleManager().get_rule(ruleId)
-            return JSONResponse(rule.getVars())
+            return HttpResponse(json.dumps(rule.getVars(), indent=4))
+            #return JSONResponse(rule.getVars())
         except Exception as err:
             return HttpResponseServerError(err.message)
 
     def PUT(self, request, tenantId, ruleId):
+        #rule = RuleManager.RuleManager().update_Rule(ruleId, request.body)
+        #return HttpResponse(json.dumps(rule.getVars(), indent=4))
+
         h = HttpResponse("Should update a general rule")
         h.status_code = 501
         return h
 
     def DELETE(self, request, tenantId, ruleId):
-        h = HttpResponse("Should delete a general rule")
-        h.status_code = 501
-        return h
+        try:
+            RuleManager.RuleManager().delete_rule(ruleId)
+            return HttpResponse()
+        except Exception as err:
+            return HttpResponseServerError(err.message)
 
 
 class GeneralRulesView(RESTResource):
@@ -99,14 +107,14 @@ class GeneralRulesView(RESTResource):
     def GET(self, request, tenantId):
         try:
             rules = RuleManager.RuleManager().get_all_rules(tenantId)
-            return HttpResponse(json.dumps(vars(rules), cls=DateEncoder))
+            return HttpResponse(json.dumps(vars(rules), cls=DateEncoder, indent=4))
         except Exception as err:
             return HttpResponseServerError(err.message)
 
     def POST(self, request, tenantId):
         rule = RuleManager.RuleManager().create_general_rule(tenantId, request.body)
 
-        return JSONResponse(rule.getVars())
+        return HttpResponse(json.dumps(rule.getVars(), indent=4))
 
 
 class ServersGeneralView(RESTResource):
@@ -144,9 +152,8 @@ class ServerRulesView(RESTResource):
         return h
 
     def POST(self, request, tenantId, serverId):
-        h = HttpResponse("Should create a new elasticity rule associated to server %s" % serverId)
-        h.status_code = 501
-        return h
+        ruleId = RuleManager.RuleManager().create_specific_rule(tenantId, serverId, request.body)
+        return HttpResponse(json.dumps({"serverId": serverId, "ruleId": str(ruleId)}, indent=4))
 
     def PUT(self, request, tenantId, serverId, ruleId):
         h = HttpResponse("Should update the rule condition of server %s" % serverId)

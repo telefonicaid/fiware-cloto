@@ -37,6 +37,7 @@ class InfoManager():
         t = self.tenantInfo.objects.get(tenantId__exact=tenantId)
         t.windowsize = newSize
         t.save()
+        return t
 
     def setInformations(self, sInfo, tInfo):
         """Sets server information and tenant information to the InfoManager."""

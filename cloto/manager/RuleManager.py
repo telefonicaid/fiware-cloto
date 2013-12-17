@@ -2,7 +2,7 @@ __author__ = 'gjp'
 import datetime
 import json
 import uuid
-from cloto.models import Rule, RuleModel, ListRuleModel
+from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule
 from django.utils import timezone
 
 
@@ -19,13 +19,20 @@ class RuleManager():
         r_query = Rule.objects.get(ruleId__exact=ruleId)
         rule = RuleModel()
         rule.ruleId = r_query.__getattribute__("ruleId")
+        rule.name = r_query.__getattribute__("name")
         rule.condition = r_query.__getattribute__("condition")
         rule.action = r_query.__getattribute__("action")
         return rule
 
+    def delete_rule(self, ruleId):
+        """Returns information about a rule."""
+        r_query = Rule.objects.get(ruleId__exact=ruleId)
+        r_query.delete()
+        return True
+
     def get_all_rules(self, tenantId):
         """Returns all rules of a tenant."""
-        dict = list(Rule.objects.filter(tenantId=tenantId).values('ruleId', 'condition', 'action'))
+        dict = list(Rule.objects.filter(tenantId=tenantId).values('ruleId', 'name', 'condition', 'action'))
 
         mylist = ListRuleModel()
         mylist.tenantId = tenantId
@@ -37,9 +44,11 @@ class RuleManager():
         """Creates new general rule """
         condition = self.getContition(rule)
         action = self.getAction(rule)
+        name = self.getName(rule)
         createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
         ruleId = uuid.uuid1()
-        rule = Rule(ruleId=ruleId, tenantId=tenantId, condition=condition, action=action, createdAt=createdAt)
+        rule = Rule(ruleId=ruleId, tenantId=tenantId,
+                    name=name, condition=condition, action=action, createdAt=createdAt)
         rule.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
@@ -54,3 +63,28 @@ class RuleManager():
         """Splits action from a rule."""
         action = json.loads(rule)['action']
         return action
+
+    def getName(self, rule):
+        """Splits the name from a rule."""
+        name = json.loads(rule)['name']
+        return name
+
+    def create_specific_rule(self, tenantId, serverId, rule):
+        """Creates new specific rule for a server."""
+        try:
+            entity = Entity.objects.get(entity_Id__exact=serverId)
+        except Entity.DoesNotExist as err:
+            entity = Entity(entity_Id=serverId, tenantId=tenantId)
+            entity.save()
+
+        condition = self.getContition(rule)
+        action = self.getAction(rule)
+        name = self.getName(rule)
+        createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
+        ruleId = uuid.uuid1()
+        rule = SpecificRule(specificRule_Id=ruleId,
+                            tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
+        rule.save()
+        entity.rules.add(rule)
+        rule.save()
+        return ruleId

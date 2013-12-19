@@ -1,8 +1,10 @@
-__author__ = 'Geon'
+__author__ = 'gjp'
 from django.db import models
 
 
 class ServerInfo(models.Model):
+    """This class models information about Cloto Server.
+    """
     id = models.IntegerField(primary_key=True, max_length=1)
     owner = models.CharField(max_length=30)
     version = models.FloatField()
@@ -11,6 +13,8 @@ class ServerInfo(models.Model):
 
 
 class SpecificRule(models.Model):
+    """This class models information about specific rules for Virtual Machines deployed.
+    """
     specificRule_Id = models.CharField(primary_key=True, max_length=30)
     tenantId = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
@@ -20,17 +24,23 @@ class SpecificRule(models.Model):
 
 
 class Entity(models.Model):
+    """This class models information about Virtual Machines deployed.
+    """
     entity_Id = models.CharField(primary_key=True, max_length=30)
     tenantId = models.CharField(max_length=30)
-    rules = models.ManyToManyField(SpecificRule, verbose_name="list of rules")
+    specificrules = models.ManyToManyField(SpecificRule, verbose_name="list of rules")
 
 
 class TenantInfo(models.Model):
+    """This class models information about tenants and their windowsize.
+    """
     tenantId = models.CharField(primary_key=True, max_length=30)
     windowsize = models.IntegerField()
 
 
 class Rule(models.Model):
+    """This class models information about general rules.
+    """
     ruleId = models.CharField(primary_key=True, max_length=30)
     tenantId = models.CharField(max_length=30)
     name = models.CharField(max_length=30)
@@ -40,6 +50,8 @@ class Rule(models.Model):
 
 
 class RuleModel():
+    """This class contains information about general rules in order to serialize it and work with.
+    """
     ruleId = None
     tenantId = None
     name = None
@@ -52,6 +64,8 @@ class RuleModel():
 
 
 class ListRuleModel():
+    """This class contains information about lists of general rules in order to serialize it and work with.
+    """
     tenantId = None
     rules = None
 

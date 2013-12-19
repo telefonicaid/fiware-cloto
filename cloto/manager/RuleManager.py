@@ -15,7 +15,7 @@ class RuleManager():
         return RuleModel
 
     def get_rule(self, ruleId):
-        """Returns information about a rule."""
+        """Returns information about a general rule."""
         r_query = Rule.objects.get(ruleId__exact=ruleId)
         rule = RuleModel()
         rule.ruleId = r_query.__getattribute__("ruleId")
@@ -25,13 +25,13 @@ class RuleManager():
         return rule
 
     def delete_rule(self, ruleId):
-        """Returns information about a rule."""
+        """Returns information about a general rule."""
         r_query = Rule.objects.get(ruleId__exact=ruleId)
         r_query.delete()
         return True
 
     def get_all_rules(self, tenantId):
-        """Returns all rules of a tenant."""
+        """Returns all general rules of a tenant."""
         dict = list(Rule.objects.filter(tenantId=tenantId).values('ruleId', 'name', 'condition', 'action'))
 
         mylist = ListRuleModel()
@@ -85,6 +85,6 @@ class RuleManager():
         rule = SpecificRule(specificRule_Id=ruleId,
                             tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
         rule.save()
-        entity.rules.add(rule)
+        entity.specificrules.add(rule)
         rule.save()
         return ruleId

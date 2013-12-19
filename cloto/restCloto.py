@@ -172,6 +172,8 @@ class ServerRulesView(RESTResource):
 
 
 class JSONResponse(http.HttpResponse):
+    """This class serializes data into a json HttpResponse.
+    """
     def __init__(self, data):
         mime = "application/json"
         super(JSONResponse, self).__init__(
@@ -184,6 +186,8 @@ from json import JSONEncoder
 
 
 class DateEncoder(JSONEncoder):
+    """This class helps to serialize datetime attributes in order to return it as json response.
+    """
     def default(self, obj):
         if isinstance(obj, datetime.date):
             return obj.isoformat()

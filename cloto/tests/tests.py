@@ -20,16 +20,16 @@ class GeneralTests(TestCase):
         info_manager = InfoManager.InfoManager()
         serverInfoMock = mock()
         tenantInfoMock = mock()
-        mockedQuery = Models.ServerInfo.objects.create(id=1, owner="Telefonica I+D", version=1.0, runningfrom=datetime.datetime.now(tz=timezone.get_default_timezone()), doc = "test")
-        tenantQuery = Models.TenantInfo.objects.create(tenantId="tenantId", windowsize = 5)
+        mockedQuery = Models.ServerInfo.objects.create(
+            id=1, owner="Telefonica I+D", version=1.0, runningfrom=datetime.datetime.now(
+                tz=timezone.get_default_timezone()), doc="test")
+        tenantQuery = Models.TenantInfo.objects.create(tenantId="tenantId", windowsize=5)
         when(serverInfoMock).objects().thenReturn(serverInfoMock);
         when(tenantInfoMock).objects().thenReturn(tenantInfoMock);
         when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery);
         when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery);
 
         info_manager.setInformations(serverInfoMock, tenantInfoMock)
-
-
         myMock = mock()
         mockedInfo = information.information("test", "test", "test", datetime.datetime.now(), "test")
         validWindowSize = "4"
@@ -52,6 +52,39 @@ class GeneralTests(TestCase):
         # Test my_view() as if it were deployed at /customer/details
         response = self.general.GET(request, "tenantId")
         self.assertEqual(response.status_code, 200)
+
+
+class WindowSizeTests(TestCase):
+    def setUp(self):
+        # Every test needs access to the request factory.
+        self.factory = RequestFactory()
+        info_manager = InfoManager.InfoManager()
+        serverInfoMock = mock()
+        tenantInfoMock = mock()
+        mockedQuery = Models.ServerInfo.objects.create(
+            id=1, owner="Telefonica I+D", version=1.0, runningfrom=datetime.datetime.now(
+                tz=timezone.get_default_timezone()), doc="test")
+        tenantQuery = Models.TenantInfo.objects.create(tenantId="tenantId", windowsize=5)
+        when(serverInfoMock).objects().thenReturn(serverInfoMock);
+        when(tenantInfoMock).objects().thenReturn(tenantInfoMock);
+        when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery);
+        when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery);
+
+        info_manager.setInformations(serverInfoMock, tenantInfoMock)
+        myMock = mock()
+        mockedInfo = information.information("test", "test", "test", datetime.datetime.now(), "test")
+        validWindowSize = "4"
+        validWindowSizeValue = 5
+        invalidWindowSize = "notValidValue"
+        # when(myMock).startingParameters("tenantId").thenReturn(mockedInfo)
+        # when(myMock).getVars(myMock).thenReturn(vars(mockedInfo))
+        when(myMock).updateWindowSize("tenantId", validWindowSizeValue).thenReturn(mockedInfo)
+        when(myMock).updateWindowSize("tenantId", invalidWindowSize).thenReturn(None)
+
+        when(myMock).parse("{\"windowsize\": %s}" % validWindowSize).thenReturn(mockedInfo)
+        when(myMock).parse("{\"windowsize\": %s}" % invalidWindowSize).thenReturn(None)
+        self.general = GeneralView()
+        self.general.set_info(myMock)
 
     def test_update_window(self):
         # Create an instance of a GET request.

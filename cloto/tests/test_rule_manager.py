@@ -6,7 +6,7 @@ from cloto.manager import RuleManager
 
 class RuleManagerTests(TestCase):
     def setUp(self):
-        self.rule = "{\"condition\": \"test Condition\",\"action\": \"test Action\"}"
+        self.rule = "{\"name\": \"test Name\", \"condition\": \"test Condition\",\"action\": \"test Action\"}"
         self.tenantId = "tenantId"
 
     def test_get_rule_info(self):

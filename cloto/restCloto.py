@@ -3,9 +3,12 @@ from django import http
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
 import information
-from cloto.manager import InfoManager, RuleManager
+from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
-from django.core import serializers
+from keystoneclient.exceptions import AuthorizationFailure, Unauthorized
+from keystoneclient.v2_0 import client
+import datetime
+from json import JSONEncoder
 
 
 class RESTResource(object):
@@ -19,7 +22,17 @@ class RESTResource(object):
     def __call__(self, request, *args, **kwargs):
         callback = getattr(self, request.method, None)
         if callback:
-            return callback(request, *args, **kwargs)
+            try:
+                a = AuthorizationManager.AuthorizationManager()
+                a.myClient = client
+                adm_token = a.generate_adminToken("admin", "openstack", "http://130.206.80.61:35357/v2.0")
+                a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
+                             kwargs.get("tenantId"), "http://130.206.80.61:35357/v2.0")
+                return callback(request, *args, **kwargs)
+            except AuthorizationFailure as auf:
+                return HttpResponse("The request you have made requires authentication", status=401)
+            except Unauthorized as unauth:
+                return HttpResponse("You have to provide a valid token", status=401)
         else:
             allowed_methods = [m for m in self.methods if hasattr(self, m)]
             return http.HttpResponseNotAllowed(allowed_methods)
@@ -169,20 +182,6 @@ class ServerRulesView(RESTResource):
         h = HttpResponse("Should return the specified rule of server %s" % serverId)
         h.status_code = 501
         return h
-
-
-class JSONResponse(http.HttpResponse):
-    """This class serializes data into a json HttpResponse.
-    """
-    def __init__(self, data):
-        mime = "application/json"
-        super(JSONResponse, self).__init__(
-            content=json.dumps(data, sort_keys=True),
-            mimetype=mime,
-        )
-
-import datetime
-from json import JSONEncoder
 
 
 class DateEncoder(JSONEncoder):

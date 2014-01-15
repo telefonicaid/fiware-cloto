@@ -20,7 +20,7 @@ try:
     c.execute('''CREATE TABLE cloto_entity
              (entity_Id text, tenantId text)''')
     c.execute('''CREATE TABLE cloto_serverinfo
-             (id int, owner text, version real, runningfrom datetime, doc text)''')
+             (id int, owner text, version real, runningfrom datetime, doc text, auth text)''')
     c.execute('''CREATE TABLE cloto_tenantinfo
              (id int, tenantId text, windowsize int, serverInfo_id int)''')
     c.execute('''CREATE TABLE cloto_rule

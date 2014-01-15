@@ -25,7 +25,7 @@ class RuleManager():
         return rule
 
     def delete_rule(self, ruleId):
-        """Returns information about a general rule."""
+        """Deletes a general rule."""
         r_query = Rule.objects.get(ruleId__exact=ruleId)
         r_query.delete()
         return True

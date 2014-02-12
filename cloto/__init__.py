@@ -13,6 +13,10 @@ doc = 'http://wikis.hi.inet/boi/index.php/Dinge_API'
 
 # Creating initial Tables and initial data
 try:
+    c.execute('''CREATE TABLE cloto_subscription
+             (subscription_Id text, ruleId text, serverId text, url text)''')
+    c.execute('''CREATE TABLE cloto_entity_subscription
+             (subscription_Id text, entity_Id text)''')
     c.execute('''CREATE TABLE cloto_entity_specificrules
              (specificRule_Id text, entity_Id text)''')
     c.execute('''CREATE TABLE cloto_specificrule

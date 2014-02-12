@@ -1,5 +1,5 @@
 __author__ = 'gjp'
-from keystoneclient.exceptions import AuthorizationFailure, Unauthorized
+from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, InternalServerError
 
 
 class AuthorizationManager():
@@ -22,12 +22,14 @@ class AuthorizationManager():
         print("Starting Authentication of token %s " % token)
         admin_client = self.myClient.Client(token=admin_token, endpoint=url)
         try:
-            auth_result = admin_client.tokens.authenticate(token=token)
+            auth_result = admin_client.tokens.authenticate(token=token, tenant_id=tenant_id)
             print("1. %s" % auth_result)
             print("2. %s" % admin_client.auth_token)
             if auth_result:
                 print('The token is valid')
         except Unauthorized as unauth:
             raise unauth
+        except InternalServerError as internalError:
+            raise AuthorizationFailure("Token could not have enough permissions to access tenant: %s" % tenant_id)
         except Exception as ex:
             raise ex

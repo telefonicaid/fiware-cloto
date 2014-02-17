@@ -23,12 +23,22 @@ class SpecificRule(models.Model):
     createdAt = models.DateTimeField()
 
 
+class Subscription(models.Model):
+    """This class models the server subscription to a rule .
+    """
+    subscription_Id = models.CharField(primary_key=True, max_length=30)
+    url = models.CharField(max_length=140)
+    ruleId = models.CharField(max_length=30)
+    serverId = models.CharField(max_length=30)
+
+
 class Entity(models.Model):
     """This class models information about Virtual Machines deployed.
     """
     entity_Id = models.CharField(primary_key=True, max_length=30)
     tenantId = models.CharField(max_length=30)
     specificrules = models.ManyToManyField(SpecificRule, verbose_name="list of rules")
+    subscription = models.ManyToManyField(Subscription, verbose_name="list of subscription")
 
 
 class TenantInfo(models.Model):
@@ -49,7 +59,18 @@ class Rule(models.Model):
     createdAt = models.DateTimeField()
 
 
+class SubscriptionModel():
+
+    """This class contains information about subscriptions in order to serialize it and work with.
+    """
+    subscriptionId = None
+    ruleId = None
+    serverId = None
+    url = None
+
+
 class RuleModel():
+
     """This class contains information about general rules in order to serialize it and work with.
     """
     ruleId = None
@@ -68,6 +89,9 @@ class ListRuleModel():
     """
     tenantId = None
     rules = None
+    serverId = None
+    servers = None
+    subscription = None
 
     def getVars(self):
         return vars(self)

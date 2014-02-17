@@ -19,6 +19,3 @@ RULE_CONDITION = u'condition'
 RULE_ACTION = u'action'
 RULE_ID = u'ruleId'
 RULE_URL = u'url'
-
-
-

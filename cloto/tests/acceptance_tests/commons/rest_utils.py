@@ -5,7 +5,7 @@ from json import JSONEncoder
 import requests
 
 from commons.configuration import REST_PORT, REST_IP, HEADERS
-from commons.constants import RULE_ACTION, RULE_CONDITION, RULE_NAME, RULE_ID, RULE_URL
+from commons.constants import RULE_ACTION, RULE_CONDITION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE
 
 
 SERVER = 'http://{}:{}/v1.0'.format(REST_IP, REST_PORT)
@@ -17,6 +17,7 @@ ELASTICITY_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules/{rul
 CREATE_SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription'
 SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription/{subscription_id}'
 
+
 class RestUtils(object):
 
     def __init__(self):
@@ -25,7 +26,6 @@ class RestUtils(object):
         print "Initialized API REST Utils"
 
         self.encoder = JSONEncoder()
-
 
     def _call_api(self, pattern, method, body=None, headers=HEADERS, payload=None, **kwargs):
 
@@ -40,6 +40,7 @@ class RestUtils(object):
 
         except Exception, e:
             print "Request {} to {} crashed: {}".format(method, url, str(e))
+            return None
 
         return r
 
@@ -49,7 +50,7 @@ class RestUtils(object):
 
     def update_window_size(self, tenant_id, window_size=None, headers=HEADERS):
 
-        json_body = {'windowsize': int(window_size)}
+        json_body = {TENANT_WSIZE: int(window_size)}
 
         return self._call_api(pattern=TENANT_PATTERN, method='put', headers=headers, body=json_body,
                               tenant_id=tenant_id)
@@ -131,11 +132,3 @@ class RestUtils(object):
 
         return self._call_api(pattern=SUBSCRIPTION_PATTERN, method='get', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, subscription_id=subscription_id)
-
-
-    def assert_error_code_error(self, response, expected_error_code=None, expected_fault_element=None,
-                                expected_message_error=None):
-
-        assert expected_fault_element in response.keys()
-        assert response[expected_fault_element]['code'] == expected_error_code
-        assert response[expected_fault_element]['message'] == expected_message_error

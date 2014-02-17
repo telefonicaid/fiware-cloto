@@ -3,7 +3,6 @@ __author__ = 'artanis'
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER
 
 
-
 def create_header(content_type=DEFAULT_CONTENT_TYPE_HEADER, token=None):
 
     header = {CONTENT_TYPE_HEADER: '', AUTHENTICATION_HEADER: ''}
@@ -28,5 +27,3 @@ def assert_error_code_error(response, expected_error_code=None, expected_fault_e
         assert expected_fault_element in response.keys()
         assert response[expected_fault_element]['code'] == expected_error_code
         assert response[expected_fault_element]['message'] == expected_message_error
-
-

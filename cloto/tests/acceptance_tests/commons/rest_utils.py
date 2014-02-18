@@ -76,7 +76,7 @@ class RestUtils(object):
         :returns: REST API response from Policy Manager
         """
 
-        json_body = {TENANT_WSIZE: int(window_size)}
+        json_body = {TENANT_WSIZE: window_size}
 
         return self._call_api(pattern=TENANT_PATTERN, method='put', headers=headers, body=json_body,
                               tenant_id=tenant_id)

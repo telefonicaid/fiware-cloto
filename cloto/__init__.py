@@ -2,24 +2,22 @@ import sqlite3
 import datetime
 from models import ServerInfo
 from django.utils import timezone
+from configuration import OWNER, API_INFO_URL, VERSION
 
 
 conn = sqlite3.connect('cloto.db')
 c = conn.cursor()
-owner = 'Telefonica I+D'
-version = 1.0
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
-doc = 'http://wikis.hi.inet/boi/index.php/Dinge_API'
 
 # Creating initial data
 
 try:
-    s = ServerInfo(id=1, owner=owner, version=version, runningfrom=runningfrom, doc=doc)
+    s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
     s.save()
     print ("data was inserted")
 except Exception as err:
     print("Tables already exists: %s" % err)
-    myS = ServerInfo.objects.get(owner__contains=owner)
+    myS = ServerInfo.objects.get(owner__contains=OWNER)
     myS.runningfrom = runningfrom
     myS.save()
 

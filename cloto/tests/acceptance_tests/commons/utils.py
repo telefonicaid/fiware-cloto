@@ -2,6 +2,7 @@ __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
+from nose.tools import assert_in, assert_equals
 
 
 def create_header(content_type=DEFAULT_CONTENT_TYPE_HEADER, token=None):
@@ -35,6 +36,11 @@ def assert_error_code_error(response, expected_error_code=None, expected_fault_e
     :param expected_fault_element: Expected Fault element in the JSON response
     :param expected_error_code: Expected Error code in the JSON response
     """
-    assert expected_fault_element in response.keys(), FAULT_ELEMENT_ERROR.format(expected_fault_element, response)
-    assert response[expected_fault_element]['code'] == expected_error_code, \
-        ERROR_CODE_ERROR.format(expected_error_code, response[expected_fault_element]['code'])
+
+    assert_equals(expected_error_code, str(response.status_code),
+                  ERROR_CODE_ERROR.format(expected_error_code, str(response.status_code)))
+    response_body = response.json()
+    assert_in(expected_fault_element, response_body.keys(),
+              FAULT_ELEMENT_ERROR.format(expected_fault_element, response_body))
+    assert_equals(str(response_body[expected_fault_element]['code']), expected_error_code,
+                  ERROR_CODE_ERROR.format(expected_error_code, response_body[expected_fault_element]['code']))

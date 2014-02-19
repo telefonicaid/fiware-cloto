@@ -1,8 +1,12 @@
 __author__ = 'artanis'
 
-from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER
+from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
+    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
 from nose.tools import assert_in, assert_equals
+import string, random
+
+list_deletions = [None, u'null']
 
 
 def create_header(content_type=DEFAULT_CONTENT_TYPE_HEADER, token=None):
@@ -15,7 +19,6 @@ def create_header(content_type=DEFAULT_CONTENT_TYPE_HEADER, token=None):
 
     header = {CONTENT_TYPE_HEADER: '', AUTHENTICATION_HEADER: ''}
 
-    list_deletions = [None, u'null']
     if content_type in list_deletions:
         del header[CONTENT_TYPE_HEADER]
     else:
@@ -44,3 +47,42 @@ def assert_error_code_error(response, expected_error_code=None, expected_fault_e
               FAULT_ELEMENT_ERROR.format(expected_fault_element, response_body))
     assert_equals(str(response_body[expected_fault_element]['code']), expected_error_code,
                   ERROR_CODE_ERROR.format(expected_error_code, response_body[expected_fault_element]['code']))
+
+
+def create_rule_parameters(name=None, condition=None, action=None):
+
+    """Method to create the rule body
+    :param name: The name of the rule to be created
+    :param condition: the condition to compare the server context
+    :param action: the action to take over the server
+    """
+
+    if name == 'long_name':
+        name = LONG_NAME
+    elif name == 'None':
+        name = None
+    elif name == 'random':
+        name = id_generator()
+
+    if condition == 'default':
+        condition = RULE_CONDITION_DEFAULT
+    elif condition == 'None':
+        condition = None
+
+    if action == 'default':
+        action = RULE_ACTION_DEFAULT
+    elif action == 'None':
+        action = None
+
+    return name, condition, action
+
+
+def id_generator(size=10, chars=string.ascii_letters + string.digits):
+
+    """Method to create random ids
+    :param size: define the string size
+    :param chars: the characters to be use to create the string
+    return ''.join(random.choice(chars) for x in range(size))
+    """
+
+    return ''.join(random.choice(chars) for x in range(size))

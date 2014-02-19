@@ -1,6 +1,6 @@
 __author__ = 'gjp'
 from django import http
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
@@ -84,6 +84,9 @@ class GeneralView(RESTResource):
             info2 = self.info.parse(request.body)
             t = InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
             return HttpResponse(json.dumps({"windowsize": info2.windowsize}, indent=4))
+        except ValidationError as ex:
+                return HttpResponse(json.dumps({"badRequest": {"code": 400, "message":
+                    ex.messages[0]}}, indent=4), status=400)
 
 
 class GeneralRulesViewRule(RESTResource):

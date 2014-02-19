@@ -33,7 +33,7 @@ def when_i_create_a_rule_with_group1_group2_and_group3(step, rule_name, rule_con
                                                                                             rule_action)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
-                                      condition=world.rule_condition, action=world.rule_action)
+                                      condition=world.rule_condition, action=world.rule_action, headers=world.headers)
 
 
 @step(u'Then the rule is saved in Policy Manager')

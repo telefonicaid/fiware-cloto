@@ -33,4 +33,17 @@ Feature: Create Elasticity Rule
     #| qatestserver| random    | default   | default | 400         | badRequest    |
     | qatestserver| long_name | default   | default | 400         | badRequest    |
 
+  Scenario Outline: Create a rule with incorrect token
 
+    Given a created "<server_id>" inside tenant
+    And incorrect "<token>"
+    When I create a rule with "<name>", "<condition>" and "<action>"
+    Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+    Examples:
+
+      | Error_code  | FaultElement  | token     | server_id   | name    | condition | action  |
+      | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | default   | default |
+      | 401         | unauthorized  | old_token | qatestserver| random  | default   | default |
+      | 401         | unauthorized  |           | qatestserver| random  | default   | default |
+      | 401         | unauthorized  | null      | qatestserver| random  | default   | default |

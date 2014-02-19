@@ -85,7 +85,12 @@ def set_incorrect_token(step, token):
 @step(u'I update the "([^"]*)"')
 def update_window_size(step, window_size):
 
-    world.window_size = window_size
+    try:
+        world.window_size = int(window_size)
+    except ValueError:
+        print 'Window Size can not be converted to integer'
+        world.window_size = window_size
+
     world.req = api_utils.update_window_size(tenant_id=world.tenant_id, window_size=world.window_size,
                                              headers=world.headers)
 
@@ -93,7 +98,7 @@ def update_window_size(step, window_size):
 @step(u'the "([^"]*)" is update in Policy Manager')
 def assert_window_size(step, window_size):
 
-    assert world.req.ok, world.req.status_code
+    assert world.req.ok, str(world.req.status_code) + world.req.content
     response = world.req.json()
     assert str(response[TENANT_WSIZE]) == window_size
     world.req = api_utils.retrieve_information(tenant_id=world.tenant_id, headers=world.headers)

@@ -14,7 +14,7 @@ Feature: Policy Manager update window size
         |   windowsize  |
         |   1           |
         |   2           |
-        |   5           |
+        |   10          |
 
     Scenario Outline: Incorrect update window size requests
 
@@ -32,7 +32,8 @@ Feature: Policy Manager update window size
         |   3,0         |   400         |   badRequest      |
         |   1'0         |   400         |   badRequest      |
         |   1E          |   400         |   badRequest      |
-        |   MAX+1       |   400         |   badRequest      |
+        |   11          |   400         |   badRequest      |
+        |   '1'         |   400         |   badRequest      |
 
 
     Scenario: Update window size from not existent tenant information

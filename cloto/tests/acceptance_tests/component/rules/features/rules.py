@@ -44,3 +44,16 @@ def then_the_rule_is_saved_in_policy_manager(step):
     assert_equals(response[SERVER_ID], world.server_id, INCORRECT_SERVER_ID.format(world.server_id,
                                                                                    response[SERVER_ID]))
     assert_in(RULE_ID, response.keys(), INVALID_JSON.format(response))
+
+
+@step(u'I obtain an "([^"]*)" and the "([^"]*)"')
+def assert_error_response(step, error_code, fault_element):
+
+    Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
+                                  expected_fault_element=fault_element)
+
+@step(u'incorrect "([^"]*)"')
+def set_incorrect_token(step, token):
+
+    #Set and incorrect header to obtain unauthorized error
+    world.headers = Utils.create_header(token=token)

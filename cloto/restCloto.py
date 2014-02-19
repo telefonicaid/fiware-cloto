@@ -36,12 +36,16 @@ class RESTResource(object):
             except Unauthorized as unauth:
                 return HttpResponse(json.dumps(
                     {"unauthorized": {"code": 401, "message": unauth.message}}, indent=4), status=401)
-            except Exception as excep:
+            except ValueError as excep:
+                return HttpResponse(json.dumps({"unauthorized": {"code": 401,
+                                                                 "message": excep.message}}, indent=4), status=401)
+            except KeyError as excep:
                 if excep.message == "HTTP_X_AUTH_TOKEN":
                     return HttpResponse(json.dumps({"unauthorized": {"code": 401, "message":
                         "This server could not verify that you are authorized to access the document you requested."
                         " Either you supplied the wrong credentials (e.g., bad password), or your browser does not "
                         "understand how to supply the credentials required."}}, indent=4), status=401)
+
         else:
             allowed_methods = [m for m in self.methods if hasattr(self, m)]
             return http.HttpResponseNotAllowed(allowed_methods)
@@ -107,15 +111,8 @@ class GeneralRulesViewRule(RESTResource):
                         err.message}}, indent=4))
 
     def PUT(self, request, tenantId, ruleId):
-        #rule = RuleManager.RuleManager().update_Rule(ruleId, request.body)
-        #return HttpResponse(json.dumps(rule.getVars(), indent=4))
-
-        return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
-                        "Should update a general rule"}}, indent=4))
-
-        #h = HttpResponse("Should update a general rule")
-        #h.status_code = 501
-        #return h
+        rule = RuleManager.RuleManager().update_rule(ruleId, request.body)
+        return HttpResponse(json.dumps(rule.getVars(), indent=4))
 
     def DELETE(self, request, tenantId, ruleId):
         try:
@@ -190,19 +187,15 @@ class ServerRulesView(RESTResource):
     """
     def POST(self, request, tenantId, serverId):
         try:
-            ruleId = RuleManager.RuleManager().create_specific_rule(tenantId, serverId, request.body)
-            return HttpResponse(json.dumps({"serverId": serverId, "ruleId": str(ruleId)}, indent=4))
+            rule = RuleManager.RuleManager().create_specific_rule(tenantId, serverId, request.body)
+            return HttpResponse(json.dumps({"serverId": serverId, "ruleId": rule.ruleId}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         err.message}}, indent=4))
 
     def PUT(self, request, tenantId, serverId, ruleId):
-        return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
-                        "Should update the rule condition of server %s" % serverId}}, indent=4))
-
-        #h = HttpResponse()
-        #h.status_code = 501
-        #return h
+        rule = RuleManager.RuleManager().update_specific_rule(ruleId, request.body)
+        return HttpResponse(json.dumps(rule.getVars(), indent=4))
 
     def DELETE(self, request, tenantId, serverId, ruleId):
         try:

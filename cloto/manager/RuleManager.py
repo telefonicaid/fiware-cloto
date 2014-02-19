@@ -54,6 +54,20 @@ class RuleManager():
         ruleResult.ruleId = str(ruleId)
         return ruleResult
 
+    def update_rule(self, ruleId, rule):
+        """Updates a general rule """
+        rule_db = Rule.objects.get(ruleId__exact=ruleId)
+        condition = self.getContition(rule)
+        action = self.getAction(rule)
+        name = self.getName(rule)
+        rule_db.action = action
+        rule_db.name = name
+        rule_db.condition = condition
+        rule_db.save()
+        ruleResult = RuleModel()
+        ruleResult.ruleId = str(ruleId)
+        return ruleResult
+
     def getContition(self, rule):
         """Splits contitions from a rule."""
         condition = json.loads(rule)['condition']
@@ -87,6 +101,20 @@ class RuleManager():
         rule.save()
         entity.specificrules.add(rule)
         rule.save()
+        ruleResult = RuleModel()
+        ruleResult.ruleId = str(ruleId)
+        return ruleResult
+
+    def update_specific_rule(self, ruleId, rule):
+        """Updates a general rule """
+        rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
+        condition = self.getContition(rule)
+        action = self.getAction(rule)
+        name = self.getName(rule)
+        rule_db.action = action
+        rule_db.name = name
+        rule_db.condition = condition
+        rule_db.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
         return ruleResult

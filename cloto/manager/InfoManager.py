@@ -1,6 +1,8 @@
 __author__ = 'gjp'
 import cloto.information as information
 from cloto.models import TenantInfo, ServerInfo
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from cloto.configuration import MAX_WINDOW_SIZE
 
 
 class InfoManager():
@@ -34,6 +36,7 @@ class InfoManager():
 
     def updateWindowSize(self, tenantId, newSize):
         """Updates windowsize of a specified tenant."""
+        self.checkSize(newSize)
         t = self.tenantInfo.objects.get(tenantId__exact=tenantId)
         t.windowsize = newSize
         t.save()
@@ -43,3 +46,7 @@ class InfoManager():
         """Sets server information and tenant information to the InfoManager."""
         self.tenantInfo = tInfo
         self.serverInfo = sInfo
+
+    def checkSize(self, newSize):
+            if newSize <= 0 or newSize > MAX_WINDOW_SIZE:
+                raise ValidationError("New size is not an integer between 1 and %d" % MAX_WINDOW_SIZE)

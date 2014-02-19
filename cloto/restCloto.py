@@ -1,15 +1,15 @@
 __author__ = 'gjp'
 from django import http
-from django.core.exceptions import ObjectDoesNotExist
+from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
-import information
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
-from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, BadRequest
+from keystoneclient.exceptions import AuthorizationFailure, Unauthorized
 from keystoneclient.v2_0 import client
 import datetime
 from json import JSONEncoder
+from configuration import OPENSTACK_URL, ADM_USER, ADM_PASS
 
 
 class RESTResource(object):
@@ -26,19 +26,16 @@ class RESTResource(object):
             try:
                 a = AuthorizationManager.AuthorizationManager()
                 a.myClient = client
-                adm_token = a.generate_adminToken("admin", "openstack", "http://130.206.80.61:35357/v2.0")
+                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, OPENSTACK_URL)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
-                             kwargs.get("tenantId"), "http://130.206.80.61:35357/v2.0")
+                             kwargs.get("tenantId"), OPENSTACK_URL)
                 return callback(request, *args, **kwargs)
             except AuthorizationFailure as auf:
                 return HttpResponse(json.dumps(
                     {"unauthorized": {"code": 401, "message": auf.message}}, indent=4), status=401)
-                #return HttpResponse("The request you have made requires authentication or Token could not have enough "
-                #                   "permissions to access tenant: %s: " % kwargs.get("tenantId"), status=401)
             except Unauthorized as unauth:
                 return HttpResponse(json.dumps(
                     {"unauthorized": {"code": 401, "message": unauth.message}}, indent=4), status=401)
-                #return HttpResponse("You have to provide a valid token: %s" % unauth.message, status=401)
             except Exception as excep:
                 if excep.message == "HTTP_X_AUTH_TOKEN":
                     return HttpResponse(json.dumps({"unauthorized": {"code": 401, "message":
@@ -87,6 +84,9 @@ class GeneralView(RESTResource):
             info2 = self.info.parse(request.body)
             t = InfoManager.InfoManager().updateWindowSize(tenantId, info2.windowsize)
             return HttpResponse(json.dumps({"windowsize": info2.windowsize}, indent=4))
+        except ValidationError as ex:
+                return HttpResponse(json.dumps({"badRequest": {"code": 400, "message":
+                    ex.messages[0]}}, indent=4), status=400)
 
 
 class GeneralRulesViewRule(RESTResource):

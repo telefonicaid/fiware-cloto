@@ -157,28 +157,6 @@ class RuleManager():
         r_query.delete()
         return True
 
-    def create_specific_rule(self, tenantId, serverId, rule):
-        """Creates new specific rule for a server."""
-        try:
-            entity = Entity.objects.get(entity_Id__exact=serverId)
-        except Entity.DoesNotExist as err:
-            entity = Entity(entity_Id=serverId, tenantId=tenantId)
-            entity.save()
-
-        condition = self.getContition(rule)
-        action = self.getAction(rule)
-        name = self.getName(rule)
-        createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
-        ruleId = uuid.uuid1()
-        rule = SpecificRule(specificRule_Id=ruleId,
-                            tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
-        rule.save()
-        entity.specificrules.add(rule)
-        rule.save()
-        ruleResult = RuleModel()
-        ruleResult.ruleId = str(ruleId)
-        return ruleResult
-
     def get_all_entities(self, tenantId):
         """Returns all servers with their information."""
         servers = Entity.objects.filter(tenantId__exact=tenantId)\
@@ -210,7 +188,7 @@ class RuleManager():
         entity.save()
         return subscription_Id
 
-    def unsubscribe_to_rule(self, tenantId, serverId, subscriptionId):
+    def unsubscribe_to_rule(self, subscriptionId):
         """Unsuscribe a server from a rule """
         r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId)
         r_query.delete()

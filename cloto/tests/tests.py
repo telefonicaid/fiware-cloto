@@ -101,3 +101,11 @@ class WindowSizeTests(TestCase):
         # Test my_view() as if it were deployed at /customer/details
         response = self.general.PUT(request, "tenantId")
         self.assertEqual(response.status_code, 400)
+
+    def test_not_update_window2(self):
+        # Create an instance of a GET request.
+        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": -1}", "application/json")
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = self.general.PUT(request, "tenantId")
+        self.assertEqual(response.status_code, 400)

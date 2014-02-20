@@ -47,3 +47,15 @@ Feature: Create Elasticity Rule
       | 401         | unauthorized  | old_token | qatestserver| random  | default   | default |
       | 401         | unauthorized  |           | qatestserver| random  | default   | default |
       | 401         | unauthorized  | null      | qatestserver| random  | default   | default |
+
+  Scenario: Create a rule created before
+
+    Given a created "<server_id>" inside tenant
+    When I create a rule with "<name>", "<condition>" and "<action>"
+    When I create a rule with "<name>", "<condition>" and "<action>"
+    Then the rule is saved in Policy Manager
+
+    Examples:
+
+    | server_id   | name    | condition | action  |
+    | qatestserver| testrule  | default   | default |

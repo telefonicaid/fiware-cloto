@@ -49,6 +49,7 @@ def then_the_rule_is_saved_in_policy_manager(step):
 @step(u'I obtain an "([^"]*)" and the "([^"]*)"')
 def assert_error_response(step, error_code, fault_element):
 
+    print world.req.content
     Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
                                   expected_fault_element=fault_element)
 

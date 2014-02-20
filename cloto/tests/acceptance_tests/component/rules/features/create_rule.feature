@@ -24,14 +24,14 @@ Feature: Create Elasticity Rule
     Examples:
 
     | server_id   | name      | condition | action  | Error_code  | FaultElement  |
-    #| qatestserver| None      | default   | default | 400         | badRequest    |
-    #| qatestserver| random    | None      | default | 400         | badRequest    |
-    #| qatestserver| random    | default   | None    | 400         | badRequest    |
-    #| qatestserver| random    |           | default | 400         | badRequest    |
-    #| qatestserver|           | default   | default | 400         | badRequest    |
-    #| qatestserver| random    | default   |         | 400         | badRequest    |
-    #| qatestserver| random    | default   | default | 400         | badRequest    |
-    #| qatestserver| long_name | default   | default | 400         | badRequest    |
+    | qatestserver| None      | default   | default | 400         | badRequest    |
+    | qatestserver| random    | None      | default | 400         | badRequest    |
+    | qatestserver| random    | default   | None    | 400         | badRequest    |
+    | qatestserver| random    |           | default | 400         | badRequest    |
+    | qatestserver|           | default   | default | 400         | badRequest    |
+    | qatestserver| random    | default   |         | 400         | badRequest    |
+    | qatestserver| long_name | default   | default | 400         | badRequest    |
+    | qatestserver| qa        | default   | default | 400         | badRequest    |
 
   Scenario Outline: Create a rule with incorrect token
 

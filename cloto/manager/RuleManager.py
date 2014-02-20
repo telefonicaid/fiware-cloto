@@ -230,9 +230,10 @@ class RuleManager():
         return subscription
 
     def checkRule(self, name, condition, action):
+
         if name.__len__() > 30 or name.__len__() < 3:
-            raise ValueError("You must provide a name with lenght between 3 and 30 characters")
-        if condition.__len__() > 1024:
-            raise ValueError("You must provide conditions with max of 1024 characters")
-        if action.__len__() > 1024:
-            raise ValueError("You must provide actions with max of 1024 characters")
+            raise ValueError("You must provide a name with length between 3 and 30 characters")
+        if condition.__len__() > 1024 or condition.__len__() < 1:
+            raise ValueError("You must provide conditions with length between 1 and 1024 characters")
+        if action.__len__() > 1024 or action.__len__() < 1:
+            raise ValueError("You must provide actions with length between 1 and 1024 characters")

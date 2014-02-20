@@ -1,10 +1,11 @@
 __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
-    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME
+    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
 from nose.tools import assert_in, assert_equals
-import string, random
+import string
+import random
 
 list_deletions = [None, u'null']
 
@@ -86,3 +87,21 @@ def id_generator(size=10, chars=string.ascii_letters + string.digits):
     """
 
     return ''.join(random.choice(chars) for x in range(size))
+
+
+def assert_json_format(request):
+
+    try:
+        response = request.json()
+    except ValueError:
+        assert False, "JSON Cannot be decode. Response format not correspond with JSON format"
+
+    return response
+
+def assert_rule_information(response, rule_id, name, condition, action):
+
+    assert_equals(response[RULE_NAME], name)
+    assert_equals(response[RULE_CONDITION], condition)
+    assert_equals(response[RULE_ACTION], action)
+    assert_equals(response[RULE_ID], rule_id)
+

@@ -32,15 +32,16 @@ class RESTResource(object):
                 return callback(request, *args, **kwargs)
             except AuthorizationFailure as auf:
                 return HttpResponse(json.dumps(
-                    {"unauthorized": {"code": 401, "message": auf.message}}, indent=4), status=401)
+                    {"unauthorized": {"code": 401, "message": str(auf)}}, indent=4), status=401)
             except Unauthorized as unauth:
                 return HttpResponse(json.dumps(
-                    {"unauthorized": {"code": 401, "message": unauth.message}}, indent=4), status=401)
+                    {"unauthorized": {"code": 401, "message": str(unauth)}}, indent=4), status=401)
             except ValueError as excep:
                 return HttpResponse(json.dumps({"unauthorized": {"code": 401,
-                                                                 "message": excep.message}}, indent=4), status=401)
+                                                                 "message": str(excep)}}, indent=4), status=401)
             except KeyError as excep:
-                if excep.message == "HTTP_X_AUTH_TOKEN":
+                f = str(excep)
+                if f.__contains__("HTTP_X_AUTH_TOKEN"):
                     return HttpResponse(json.dumps({"unauthorized": {"code": 401, "message":
                         "This server could not verify that you are authorized to access the document you requested."
                         " Either you supplied the wrong credentials (e.g., bad password), or your browser does not "
@@ -63,7 +64,7 @@ class GeneralView(RESTResource):
             info = InfoManager.InfoManager().get_information(tenantId)
             return HttpResponse(json.dumps(info.getVars(), indent=4))
         except ObjectDoesNotExist as err:
-            print err.message
+            print str(err)
             t = TenantInfo(tenantId=tenantId, windowsize=5)
             t.save()
             info = InfoManager.InfoManager().get_information(tenantId)
@@ -101,18 +102,17 @@ class GeneralRulesViewRule(RESTResource):
     def GET(self, request, tenantId, ruleId):
         try:
             rule = RuleManager.RuleManager().get_rule(ruleId)
-            return HttpResponse(json.dumps(rule.getVars(), indent=4))
-            #return JSONResponse(rule.getVars())
+            return HttpResponse(json.dumps(vars(rule), indent=4))
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 400, "message":
                         "Rule %s does not exists" % ruleId}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def PUT(self, request, tenantId, ruleId):
         rule = RuleManager.RuleManager().update_rule(ruleId, request.body)
-        return HttpResponse(json.dumps(rule.getVars(), indent=4))
+        return HttpResponse(json.dumps(vars(rule), indent=4))
 
     def DELETE(self, request, tenantId, ruleId):
         try:
@@ -120,7 +120,7 @@ class GeneralRulesViewRule(RESTResource):
             return HttpResponse()
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
 
 class GeneralRulesView(RESTResource):
@@ -134,15 +134,15 @@ class GeneralRulesView(RESTResource):
             return HttpResponse(json.dumps(vars(rules), cls=DateEncoder, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def POST(self, request, tenantId):
         try:
             rule = RuleManager.RuleManager().create_general_rule(tenantId, request.body)
-            return HttpResponse(json.dumps(rule.getVars(), indent=4))
+            return HttpResponse(json.dumps(vars(rule), indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
 
 class ServersGeneralView(RESTResource):
@@ -150,15 +150,13 @@ class ServersGeneralView(RESTResource):
     Servers general view PATH( /v1.0/{tenantID}/servers/ ).
     """
     def GET(self, request, tenantId):
+        #Should return a list of servers with their rules
         try:
             entities = RuleManager.RuleManager().get_all_entities(tenantId)
             return HttpResponse(json.dumps(vars(entities), cls=DateEncoder, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
-        #h = HttpResponse("Should return a list of servers with their rules")
-        #h.status_code = 501
-        #return h
+                        str(err)}}, indent=4))
 
 
 class ServerView(RESTResource):
@@ -171,14 +169,12 @@ class ServerView(RESTResource):
             return HttpResponse(json.dumps(vars(rules), cls=DateEncoder, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def PUT(self, request, tenantId, serverId):
+        # Should update the context of server
         return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
-        #h = HttpResponse("Should update the context of server %s" % serverId)
-        #h.status_code = 501
-        #return h
 
 
 class ServerRulesView(RESTResource):
@@ -191,11 +187,11 @@ class ServerRulesView(RESTResource):
             return HttpResponse(json.dumps({"serverId": serverId, "ruleId": rule.ruleId}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def PUT(self, request, tenantId, serverId, ruleId):
         rule = RuleManager.RuleManager().update_specific_rule(ruleId, request.body)
-        return HttpResponse(json.dumps(rule.getVars(), indent=4))
+        return HttpResponse(json.dumps(vars(rule), indent=4))
 
     def DELETE(self, request, tenantId, serverId, ruleId):
         try:
@@ -203,24 +199,22 @@ class ServerRulesView(RESTResource):
             return HttpResponse()
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
-                        err.message}}, indent=4), status=404)
-            #return HttpResponse("Rule %s does not exists" % ruleId, status=404)
+                        str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def GET(self, request, tenantId, serverId, ruleId):
-        #h = HttpResponse("Should return the specified rule of server %s" % serverId)
-        #h.status_code = 501
-        #return h
+        # Should return the specified rule of server
         try:
             rule = RuleManager.RuleManager().get_specific_rule(ruleId)
             return HttpResponse(json.dumps(vars(rule), cls=DateEncoder, indent=4))
         except ObjectDoesNotExist as err:
-            return HttpResponse("Rule %s does not exists" % ruleId, status=404)
+            return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
+                        str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                str(err)}}, indent=4))
 
 
 class ServerSubscriptionView(RESTResource):
@@ -233,7 +227,7 @@ class ServerSubscriptionView(RESTResource):
             return HttpResponse(json.dumps({"serverId": serverId, "subscriptionId": str(subscriptionId)}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def DELETE(self, request, tenantId, serverId, subscriptionId):
         try:
@@ -241,26 +235,22 @@ class ServerSubscriptionView(RESTResource):
             return HttpResponse()
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
-                        err.message}}, indent=4), status=404)
-            #return HttpResponse("Subscription %s does not exists" % subscriptionId, status=404)
+                str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                        str(err)}}, indent=4))
 
     def GET(self, request, tenantId, serverId, subscriptionId):
-        #h = HttpResponse("Should return the specified rule of server %s" % serverId)
-        #h.status_code = 501
-        #return h
+        # Should return the specified rule of server
         try:
             rule = RuleManager.RuleManager().get_subscription(tenantId, serverId, subscriptionId)
             return HttpResponse(json.dumps(vars(rule), cls=DateEncoder, indent=4))
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
-                        err.message}}, indent=4), status=404)
-            #return HttpResponse("Subscription %s does not exists" % subscriptionId, status=404)
+                str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
-                        err.message}}, indent=4))
+                str(err)}}, indent=4))
 
 
 class DateEncoder(JSONEncoder):

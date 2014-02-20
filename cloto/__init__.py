@@ -8,7 +8,6 @@ from configuration import OWNER, API_INFO_URL, VERSION
 conn = sqlite3.connect('cloto.db')
 c = conn.cursor()
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
-
 # Creating initial data
 
 try:
@@ -17,9 +16,6 @@ try:
     print ("data was inserted")
 except Exception as err:
     print("Tables already exists: %s" % err)
-    myS = ServerInfo.objects.get(owner__contains=OWNER)
-    myS.runningfrom = runningfrom
-    myS.save()
 
 # Save (commit) the changes
 conn.commit()

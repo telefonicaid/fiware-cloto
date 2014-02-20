@@ -42,9 +42,15 @@ class RuleManager():
 
     def create_general_rule(self, tenantId, rule):
         """Creates new general rule """
-        condition = self.getContition(rule)
-        action = self.getAction(rule)
-        name = self.getName(rule)
+        try:
+            condition = self.getContition(rule)
+            action = self.getAction(rule)
+            name = self.getName(rule)
+        except Exception as err:
+            raise ValueError(str(err) + " is missing")
+
+        self.checkRule(name, condition, action)
+
         createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
         ruleId = uuid.uuid1()
         rule = Rule(ruleId=ruleId, tenantId=tenantId,
@@ -57,9 +63,16 @@ class RuleManager():
     def update_rule(self, ruleId, rule):
         """Updates a general rule """
         rule_db = Rule.objects.get(ruleId__exact=ruleId)
-        condition = self.getContition(rule)
-        action = self.getAction(rule)
-        name = self.getName(rule)
+
+        try:
+            condition = self.getContition(rule)
+            action = self.getAction(rule)
+            name = self.getName(rule)
+        except Exception as err:
+            raise ValueError(str(err) + " is missing")
+
+        self.checkRule(name, condition, action)
+
         rule_db.action = action
         rule_db.name = name
         rule_db.condition = condition
@@ -90,10 +103,15 @@ class RuleManager():
         except Entity.DoesNotExist as err:
             entity = Entity(entity_Id=serverId, tenantId=tenantId)
             entity.save()
+        try:
+            condition = self.getContition(rule)
+            action = self.getAction(rule)
+            name = self.getName(rule)
+        except Exception as err:
+            raise ValueError(str(err) + " is missing")
 
-        condition = self.getContition(rule)
-        action = self.getAction(rule)
-        name = self.getName(rule)
+        self.checkRule(name, condition, action)
+
         createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
         ruleId = uuid.uuid1()
         rule = SpecificRule(specificRule_Id=ruleId,
@@ -108,9 +126,16 @@ class RuleManager():
     def update_specific_rule(self, ruleId, rule):
         """Updates a general rule """
         rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
-        condition = self.getContition(rule)
-        action = self.getAction(rule)
-        name = self.getName(rule)
+
+        try:
+            condition = self.getContition(rule)
+            action = self.getAction(rule)
+            name = self.getName(rule)
+        except Exception as err:
+            raise ValueError(str(err) + " is missing")
+
+        self.checkRule(name, condition, action)
+
         rule_db.action = action
         rule_db.name = name
         rule_db.condition = condition
@@ -157,28 +182,6 @@ class RuleManager():
         r_query.delete()
         return True
 
-    def create_specific_rule(self, tenantId, serverId, rule):
-        """Creates new specific rule for a server."""
-        try:
-            entity = Entity.objects.get(entity_Id__exact=serverId)
-        except Entity.DoesNotExist as err:
-            entity = Entity(entity_Id=serverId, tenantId=tenantId)
-            entity.save()
-
-        condition = self.getContition(rule)
-        action = self.getAction(rule)
-        name = self.getName(rule)
-        createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
-        ruleId = uuid.uuid1()
-        rule = SpecificRule(specificRule_Id=ruleId,
-                            tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
-        rule.save()
-        entity.specificrules.add(rule)
-        rule.save()
-        ruleResult = RuleModel()
-        ruleResult.ruleId = str(ruleId)
-        return ruleResult
-
     def get_all_entities(self, tenantId):
         """Returns all servers with their information."""
         servers = Entity.objects.filter(tenantId__exact=tenantId)\
@@ -210,7 +213,7 @@ class RuleManager():
         entity.save()
         return subscription_Id
 
-    def unsubscribe_to_rule(self, tenantId, serverId, subscriptionId):
+    def unsubscribe_to_rule(self, subscriptionId):
         """Unsuscribe a server from a rule """
         r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId)
         r_query.delete()
@@ -225,3 +228,11 @@ class RuleManager():
         subscription.url = r_query.__getattribute__("url")
         subscription.subscriptionId = r_query.__getattribute__("subscription_Id")
         return subscription
+
+    def checkRule(self, name, condition, action):
+        if name.__len__() > 30 or name.__len__() < 3:
+            raise ValueError("You must provide a name with lenght between 3 and 30 characters")
+        if condition.__len__() > 1024:
+            raise ValueError("You must provide conditions with max of 1024 characters")
+        if action.__len__() > 1024:
+            raise ValueError("You must provide actions with max of 1024 characters")

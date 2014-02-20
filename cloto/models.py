@@ -80,9 +80,6 @@ class RuleModel():
     action = None
     createdAt = None
 
-    def getVars(self):
-        return vars(self)
-
 
 class ListRuleModel():
     """This class contains information about lists of general rules in order to serialize it and work with.
@@ -93,5 +90,3 @@ class ListRuleModel():
     servers = None
     subscription = None
 
-    def getVars(self):
-        return vars(self)

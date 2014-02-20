@@ -98,3 +98,8 @@ def then_i_obtain_the_rule_data(step):
     response = Utils.assert_json_format(world.req)
 
 
+@step(u'I retrieve "([^"]*)"')
+def when_i_retrieve_group1(step, rule_id):
+
+    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
+                                        headers=world.headers)

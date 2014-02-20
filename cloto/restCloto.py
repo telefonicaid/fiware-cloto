@@ -111,8 +111,15 @@ class GeneralRulesViewRule(RESTResource):
                         str(err)}}, indent=4))
 
     def PUT(self, request, tenantId, ruleId):
-        rule = RuleManager.RuleManager().update_rule(ruleId, request.body)
-        return HttpResponse(json.dumps(vars(rule), indent=4))
+        try:
+            rule = RuleManager.RuleManager().update_rule(ruleId, request.body)
+            return HttpResponse(json.dumps(vars(rule), indent=4))
+        except ValueError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except Exception as err:
+            return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
+                        str(err)}}, indent=4))
 
     def DELETE(self, request, tenantId, ruleId):
         try:
@@ -140,6 +147,9 @@ class GeneralRulesView(RESTResource):
         try:
             rule = RuleManager.RuleManager().create_general_rule(tenantId, request.body)
             return HttpResponse(json.dumps(vars(rule), indent=4))
+        except ValueError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
@@ -185,13 +195,23 @@ class ServerRulesView(RESTResource):
         try:
             rule = RuleManager.RuleManager().create_specific_rule(tenantId, serverId, request.body)
             return HttpResponse(json.dumps({"serverId": serverId, "ruleId": rule.ruleId}, indent=4))
+        except ValueError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
 
     def PUT(self, request, tenantId, serverId, ruleId):
-        rule = RuleManager.RuleManager().update_specific_rule(ruleId, request.body)
-        return HttpResponse(json.dumps(vars(rule), indent=4))
+        try:
+            rule = RuleManager.RuleManager().update_specific_rule(ruleId, request.body)
+            return HttpResponse(json.dumps(vars(rule), indent=4))
+        except ValueError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except Exception as err:
+            return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
+                        str(err)}}, indent=4))
 
     def DELETE(self, request, tenantId, serverId, ruleId):
         try:

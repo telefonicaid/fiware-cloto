@@ -57,3 +57,10 @@ def set_incorrect_token(step, token):
 
     #Set and incorrect header to obtain unauthorized error
     world.headers = Utils.create_header(token=token)
+
+
+@step(u'Given a non created "([^"]*)" and "([^"]*)"')
+def given_a_non_created_group1_and_group2(step, tenant_id, server_id):
+
+    world.tenant_id = tenant_id
+    world.server_id = server_id

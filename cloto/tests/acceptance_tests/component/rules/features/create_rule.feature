@@ -31,7 +31,7 @@ Feature: Create Elasticity Rule
     #| qatestserver|           | default   | default | 400         | badRequest    |
     #| qatestserver| random    | default   |         | 400         | badRequest    |
     #| qatestserver| random    | default   | default | 400         | badRequest    |
-    | qatestserver| long_name | default   | default | 400         | badRequest    |
+    #| qatestserver| long_name | default   | default | 400         | badRequest    |
 
   Scenario Outline: Create a rule with incorrect token
 
@@ -57,5 +57,17 @@ Feature: Create Elasticity Rule
 
     Examples:
 
-    | server_id   | name    | condition | action  |
+    | server_id   | name      | condition | action  |
     | qatestserver| testrule  | default   | default |
+
+  Scenario Outline: Create a rule in not existent tenant_id and / or server_id
+
+    Given a non created "<tenant_id>" and "<server_id>"
+    When I create a rule with "<name>", "<condition>" and "<action>"
+    Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+    Examples:
+
+    | server_id   | name    | condition | action  | Error_code  | FaultElement  | tenant_id |
+    | qatestserver| random  | default   | default | 401         | unauthorized  | qatest    |
+    | prueba      | random  | default   | default | 401         | unauthorized  | qatest    |

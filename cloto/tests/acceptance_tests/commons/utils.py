@@ -98,10 +98,10 @@ def assert_json_format(request):
 
     return response
 
+
 def assert_rule_information(response, rule_id, name, condition, action):
 
     assert_equals(response[RULE_NAME], name)
     assert_equals(response[RULE_CONDITION], condition)
     assert_equals(response[RULE_ACTION], action)
     assert_equals(response[RULE_ID], rule_id)
-

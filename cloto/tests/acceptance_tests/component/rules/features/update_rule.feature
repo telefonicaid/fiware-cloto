@@ -6,7 +6,7 @@ Feature: Create Elasticity Rule
   Scenario Outline: Update a rule with all parameters
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>"
+    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
     Then the rule is updated in Policy Manager
 
     Examples:
@@ -16,11 +16,12 @@ Feature: Create Elasticity Rule
     | qatestserver| name2   | condition2| action2 | another_name2 | condition2        | action2         |
     | qatestserver| name3   | condition3| action3 | name3         | another_condition3| action3         |
     | qatestserver| name4   | condition4| action4 | name4         | condition4        | another_action4 |
+    | qatestserver| name5   | condition5| action5 | name5         | condition5        | action5         |
 
   Scenario Outline: Update a rule with some parameters
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>"
+    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
     Then the rule is updated in Policy Manager
 
     Examples:
@@ -39,7 +40,7 @@ Feature: Create Elasticity Rule
   Scenario Outline: Update a rule with invalid parameters
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>"
+    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
@@ -56,7 +57,7 @@ Feature: Create Elasticity Rule
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
     And incorrect "<token>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>"
+    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
@@ -79,3 +80,15 @@ Feature: Create Elasticity Rule
     | server_id   | name      | condition | action  | another_rule_id | Error_code  | FaultElement  |
     | qatestserver| random    | default   | default | testing         | 404         | itemNotFound  |
     | qatestserver| alertCPU  | default   | default | qa              | 404         | itemNotFound  |
+
+  Scenario Outline: Update a existent rule in other server
+
+    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+    When I update the rule with "<name>", "<condition>" and "<action>" in "<another_server_id>"
+    Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+    Examples:
+
+    | server_id   | name      | condition | action  | another_server_id | Error_code  | FaultElement  |
+    | qatestserver| random    | default   | default | testingserver     | 404         | itemNotFound  |
+    | qatestserver| alertCPU  | default   | default | qaserver          | 404         | itemNotFound  |

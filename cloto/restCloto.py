@@ -186,7 +186,6 @@ class ServerView(RESTResource):
         return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
 
-
 class ServerRulesView(RESTResource):
     """
     Servers view PATH( /v1.0/{tenantID}/servers/{serverId}/rules/ ).
@@ -202,6 +201,11 @@ class ServerRulesView(RESTResource):
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
 
+
+class ServerRuleView(RESTResource):
+    """
+    Servers view PATH( /v1.0/{tenantID}/servers/{serverId}/rules/{ruleId} ).
+    """
     def PUT(self, request, tenantId, serverId, ruleId):
         try:
             rule = RuleManager.RuleManager().update_specific_rule(ruleId, request.body)

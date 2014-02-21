@@ -3,7 +3,7 @@ Feature: Delete Elasticity Rule
   I want to delete a specific elasticity rule
   In order to manage my rules
 
-  Scenario Outline: Retrieve a created rule
+  Scenario Outline: Delete a created rule
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
     When I delete the rule in "<server_id>"
@@ -15,7 +15,7 @@ Feature: Delete Elasticity Rule
     | qatestserver| random    | default   | default |
     | qaserver    | alertCPU  | default   | default |
 
-  Scenario Outline: Retrieve a non existent rule
+  Scenario Outline: Delete a non existent rule
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
     When I delete "<another_rule_id>"
@@ -27,7 +27,7 @@ Feature: Delete Elasticity Rule
     | qatestserver| random    | default   | default | testing         | 404         | itemNotFound  |
     | qatestserver| alertCPU  | default   | default | qa              | 404         | itemNotFound  |
 
-  Scenario Outline: Retrieve a existent rule in other server
+  Scenario Outline: Delete a existent rule in other server
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
     When I delete the rule in "<another_server_id>"
@@ -40,7 +40,7 @@ Feature: Delete Elasticity Rule
     | qatestserver| alertCPU  | default   | default | qaserver          | 404         | itemNotFound  |
 
 
-  Scenario Outline: Retrieve a rule with incorrect token
+  Scenario Outline: Delete a rule with incorrect token
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
     And incorrect "<token>"

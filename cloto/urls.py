@@ -5,14 +5,14 @@ from restCloto import ServerRulesView, GeneralView, \
 
 
 urlpatterns = patterns('',
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/$', ServersGeneralView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/$', ServerView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules/$', ServerRulesView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules/(?P<ruleId>[-\w]+)/$', ServerRulesView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/$', GeneralView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/rules/$', GeneralRulesView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/rules/(?P<ruleId>[-\w]+)/$', GeneralRulesViewRule()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/$', ServerSubscriptionView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/(?P<subscriptionId>[-\w]+)/$',
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers', ServersGeneralView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)', ServerView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules', ServerRulesView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules/(?P<ruleId>[-\w]+)', ServerRulesView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)', GeneralView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/rules', GeneralRulesView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/rules/(?P<ruleId>[-\w]+)', GeneralRulesViewRule()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription', ServerSubscriptionView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/(?P<subscriptionId>[-\w]+)',
         ServerSubscriptionView())
 )

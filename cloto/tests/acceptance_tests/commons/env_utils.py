@@ -41,5 +41,3 @@ class Environment_utils(object):
         #better option is the second.
 
         pass
-
-

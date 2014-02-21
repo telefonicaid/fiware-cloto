@@ -41,8 +41,9 @@ def retrieve_tenant_information(step):
 def check_tenant_information(step):
 
     assert world.req.ok, 'Invalid HTTP status code. Status Code obtained is: {}'.format(world.req.status_code)
-    response = world.req.json()
-    print response
+
+    response = Utils.assert_json_format(world.req)
+
     for expected_result in step.hashes:
 
         assert response[TENANT_DOC] == expected_result[TENANT_DOC], 'Expected {} is: {} \n Obtained {} is: ' \
@@ -99,9 +100,12 @@ def update_window_size(step, window_size):
 def assert_window_size(step, window_size):
 
     assert world.req.ok, str(world.req.status_code) + world.req.content
-    response = world.req.json()
+
+    response = Utils.assert_json_format(world.req)
+
     assert str(response[TENANT_WSIZE]) == window_size
     world.req = api_utils.retrieve_information(tenant_id=world.tenant_id, headers=world.headers)
-    response = world.req.json()
-    print response
+
+    response = Utils.assert_json_format(world.req)
+
     assert str(response[TENANT_WSIZE]) == window_size

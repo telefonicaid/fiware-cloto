@@ -2,11 +2,11 @@ __author__ = 'artanis'
 
 # -*- coding: utf-8 -*-
 from lettuce import step, world, before
-from nose.tools import assert_equals, assert_in
+from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RULE_ID, SERVER_ID
 from commons.configuration import HEADERS, TENANT_ID
-from commons.errors import ERROR_CODE_ERROR, INVALID_JSON, INCORRECT_SERVER_ID
+from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID
 import commons.utils as Utils
 
 api_utils = RestUtils()
@@ -39,7 +39,7 @@ def when_i_create_a_rule_with_group1_group2_and_group3(step, rule_name, rule_con
 @step(u'Then the rule is saved in Policy Manager')
 def then_the_rule_is_saved_in_policy_manager(step):
 
-    assert world.req.ok, 'Invalid HTTP status code. Status Code obtained is: {}'.format(world.req.status_code)
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = world.req.json()
     assert_equals(response[SERVER_ID], world.server_id, INCORRECT_SERVER_ID.format(world.server_id,
                                                                                    response[SERVER_ID]))
@@ -49,9 +49,9 @@ def then_the_rule_is_saved_in_policy_manager(step):
 @step(u'I obtain an "([^"]*)" and the "([^"]*)"')
 def assert_error_response(step, error_code, fault_element):
 
-    print world.req.content
     Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
                                   expected_fault_element=fault_element)
+
 
 @step(u'incorrect "([^"]*)"')
 def set_incorrect_token(step, token):
@@ -60,8 +60,49 @@ def set_incorrect_token(step, token):
     world.headers = Utils.create_header(token=token)
 
 
-@step(u'Given a non created "([^"]*)" and "([^"]*)"')
+@step(u'a non created "([^"]*)" and "([^"]*)"')
 def given_a_non_created_group1_and_group2(step, tenant_id, server_id):
 
     world.tenant_id = tenant_id
     world.server_id = server_id
+
+
+@step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
+def given_the_created_rule_with_group1_group2_and_group3_in_the_group4(step, name, condition, action, server_id):
+
+    #Save all the expected results in global variables to compare after with obtained results.
+    world.tenant_id = TENANT_ID
+    world.server_id = server_id
+    world.name = name
+    world.condition = condition
+    world.action = action
+
+    #Create the rule in Policy Manager
+    req = api_utils.create_rule(world.tenant_id, world.server_id, world.name, world.condition, world.action)
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+
+    #Save the Rule ID to obtain the Rule information after
+    world.rule_id = req.json()[RULE_ID]
+
+
+@step(u'I retrieve the rule in "([^"]*)"')
+def when_i_retrieve_the_rule(step, server_id):
+
+    world.server_id = server_id
+    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
+                                        headers=world.headers)
+
+
+@step(u'I obtain the Rule data')
+def then_i_obtain_the_rule_data(step):
+
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    response = Utils.assert_json_format(world.req)
+    Utils.assert_rule_information(response, world.rule_id, world.name, world.condition, world.action)
+
+
+@step(u'I retrieve "([^"]*)"')
+def when_i_retrieve_group1(step, rule_id):
+
+    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
+                                        headers=world.headers)

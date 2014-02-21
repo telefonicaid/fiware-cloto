@@ -6,7 +6,7 @@ from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RULE_ID, SERVER_ID
 from commons.configuration import HEADERS, TENANT_ID
-from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID
+from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 import commons.utils as Utils
 
 api_utils = RestUtils()
@@ -106,3 +106,25 @@ def when_i_retrieve_group1(step, rule_id):
 
     world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
                                         headers=world.headers)
+
+@step(u'When I delete the rule in "([^"]*)"')
+def when_i_delete_the_rule_in_group1(step, server_id):
+
+    world.req = api_utils.delete_rule(tenant_id=world.tenant_id, server_id=server_id, rule_id=world.rule_id,
+                                      headers=world.headers)
+
+
+@step(u'Then the rule is deleted')
+def then_the_rule_is_deleted(step):
+
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
+                                  headers=world.headers)
+    assert_equals(req.status_code, 404, ERROR_CODE_ERROR.format(req.status_code, 404))
+
+
+@step(u'When I delete "([^"]*)"')
+def when_i_delete_group1(step, rule_id):
+
+    world.req = api_utils.delete_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
+                                      headers=world.headers)

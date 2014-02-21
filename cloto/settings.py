@@ -2,6 +2,7 @@
 CSRF_FAILURE_VIEW = 'cloto.views.fail'
 DEBUG = True
 TEMPLATE_DEBUG = DEBUG
+APPEND_SLASH = False
 
 ADMINS = (
     # ('Fernando Lopez', 'fla@tid.es'),

@@ -22,18 +22,18 @@ Feature: Create Elasticity Rule
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
     When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
-    Then the rule is updated in Policy Manager
+    Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-    | server_id   | name    | condition | action  | another_name  | another_condition | another_action  |
-    | qatestserver| name1   | condition1| action1 | another_name1 | None              | None            |
-    | qatestserver| name2   | condition2| action2 | None          | another_condition2| None            |
-    | qatestserver| name3   | condition3| action3 | None          | None              | another_action3 |
-    | qatestserver| name4   | condition4| action4 | None          | None              | None            |
-    | qatestserver| name5   | condition5| action5 | name5         | None              | None            |
-    | qatestserver| name6   | condition6| action6 | None          | condition6        | None            |
-    | qatestserver| name7   | condition7| action7 | None          | None              | action7         |
+    | server_id   | name    | condition | action  | another_name  | another_condition | another_action  | Error_code  | FaultElement  |
+    | qatestserver| name1   | condition1| action1 | another_name1 | None              | None            | 400         | badRequest    |
+    | qatestserver| name2   | condition2| action2 | None          | another_condition2| None            | 400         | badRequest    |
+    | qatestserver| name3   | condition3| action3 | None          | None              | another_action3 | 400         | badRequest    |
+    | qatestserver| name4   | condition4| action4 | None          | None              | None            | 400         | badRequest    |
+    | qatestserver| name5   | condition5| action5 | name5         | None              | None            | 400         | badRequest    |
+    | qatestserver| name6   | condition6| action6 | None          | condition6        | None            | 400         | badRequest    |
+    | qatestserver| name7   | condition7| action7 | None          | None              | action7         | 400         | badRequest    |
 
 
 

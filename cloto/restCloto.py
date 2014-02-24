@@ -1,11 +1,12 @@
 __author__ = 'gjp'
 from django import http
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
-from keystoneclient.exceptions import AuthorizationFailure, Unauthorized
+from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Conflict
 from keystoneclient.v2_0 import client
 import datetime
 from json import JSONEncoder
@@ -112,11 +113,14 @@ class GeneralRulesViewRule(RESTResource):
 
     def PUT(self, request, tenantId, ruleId):
         try:
-            rule = RuleManager.RuleManager().update_rule(ruleId, request.body)
+            rule = RuleManager.RuleManager().update_rule(tenantId, ruleId, request.body)
             return HttpResponse(json.dumps(vars(rule), indent=4))
         except ValueError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
+        except ObjectDoesNotExist as err:
+            return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
+                        str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
@@ -208,11 +212,14 @@ class ServerRuleView(RESTResource):
     """
     def PUT(self, request, tenantId, serverId, ruleId):
         try:
-            rule = RuleManager.RuleManager().update_specific_rule(ruleId, request.body)
+            rule = RuleManager.RuleManager().update_specific_rule(tenantId, serverId, ruleId, request.body)
             return HttpResponse(json.dumps(vars(rule), indent=4))
         except ValueError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
+        except ObjectDoesNotExist as err:
+            return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
+                        str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
@@ -249,13 +256,16 @@ class ServerSubscriptionView(RESTResource):
         try:
             subscriptionId = RuleManager.RuleManager().subscribe_to_rule(tenantId, serverId, request.body)
             return HttpResponse(json.dumps({"serverId": serverId, "subscriptionId": str(subscriptionId)}, indent=4))
+        except Conflict as err:
+            return HttpResponse(json.dumps({"conflict": {"code": 409, "message":
+                        err.message}}, indent=4), status=409)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
 
     def DELETE(self, request, tenantId, serverId, subscriptionId):
         try:
-            RuleManager.RuleManager().unsubscribe_to_rule(tenantId, serverId, subscriptionId)
+            RuleManager.RuleManager().unsubscribe_to_rule(serverId, subscriptionId)
             return HttpResponse()
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":

@@ -17,16 +17,14 @@ urlpatterns = patterns('',
     url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules/(?P<ruleId>[-\w]+)/$', ServerRuleView()),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules/(?P<ruleId>[-\w]+)', ServerRuleView()),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/rules', ServerRulesView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)', ServerView()),
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers', ServersGeneralView()),
-
-
-    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/$', ServerSubscriptionView()),
+        url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/$', ServerSubscriptionView()),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/(?P<subscriptionId>[-\w]+)/$',
         ServerSubscriptionView()),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription/(?P<subscriptionId>[-\w]+)',
         ServerSubscriptionView()),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)/subscription', ServerSubscriptionView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers/(?P<serverId>[-\w]+)', ServerView()),
+    url(r'^v1.0/(?P<tenantId>[-\w]+)/servers', ServersGeneralView()),
 
     url(r'^v1.0/(?P<tenantId>[-\w]+)', GeneralView())
 )

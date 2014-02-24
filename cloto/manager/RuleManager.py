@@ -66,6 +66,9 @@ class RuleManager():
         rule_db.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
+        ruleResult.name = name
+        ruleResult.condition = condition
+        ruleResult.action = action
         return ruleResult
 
     def getContition(self, rule):
@@ -117,6 +120,9 @@ class RuleManager():
         rule_db.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
+        ruleResult.name = name
+        ruleResult.condition = condition
+        ruleResult.action = action
         return ruleResult
 
     def get_specific_rule(self, ruleId):

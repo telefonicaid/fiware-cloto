@@ -75,3 +75,16 @@ Scenario Outline: Create subscription with incorrect token
     | 401         | unauthorized  | old_token | qatestserver| random  | default   | default | another_name2   |
     | 401         | unauthorized  |           | qatestserver| random  | default   | default | another_name3   |
     | 401         | unauthorized  | null      | qatestserver| random  | default   | default | another_name4   |
+
+
+Scenario Outline: Create a subscription created before
+
+  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  When I create a new subscription in "<server_id>" with "<url_to_notify>"
+  And I create the same subscription
+  Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+  Examples:
+
+  | Error_code  | FaultElement  | server_id   | name    | condition | action  | url_to_notify   |
+  | 409         | conflict      | qatestserver| random  | default   | default | http://localhost|

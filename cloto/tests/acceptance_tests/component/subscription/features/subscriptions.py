@@ -52,6 +52,12 @@ def when_i_create_a_new_subscription_with_group1(step, server_id, url_to_notify)
                                               rule_id=world.rule_id, url=world.url_to_notify, headers=world.headers)
 
 
+@step(u'And I create the same subscription')
+def and_i_create_the_same_subscription(step):
+
+    world.req = api_utils.create_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
+                                              rule_id=world.rule_id, url=world.url_to_notify, headers=world.headers)
+
 @step(u'Then the subscription is created')
 def then_the_subscription_is_created(step):
 

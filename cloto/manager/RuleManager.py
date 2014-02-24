@@ -186,7 +186,7 @@ class RuleManager():
 
         return mylist
 
-    def delete_specific_rule(self, serverId, ruleId):
+    def delete_specific_rule(self, tenantId, serverId, ruleId):
         """Deletes a specific rule."""
         r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)

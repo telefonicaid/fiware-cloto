@@ -226,7 +226,7 @@ class ServerRuleView(RESTResource):
 
     def DELETE(self, request, tenantId, serverId, ruleId):
         try:
-            RuleManager.RuleManager().delete_specific_rule(serverId, ruleId)
+            RuleManager.RuleManager().delete_specific_rule(tenantId, serverId, ruleId)
             return HttpResponse()
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
@@ -238,7 +238,7 @@ class ServerRuleView(RESTResource):
     def GET(self, request, tenantId, serverId, ruleId):
         # Should return the specified rule of server
         try:
-            rule = RuleManager.RuleManager().get_specific_rule(ruleId)
+            rule = RuleManager.RuleManager().get_specific_rule(tenantId, serverId, ruleId)
             return HttpResponse(json.dumps(vars(rule), cls=DateEncoder, indent=4))
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":

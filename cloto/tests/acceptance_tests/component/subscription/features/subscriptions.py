@@ -5,7 +5,7 @@ from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RULE_ID, SERVER_ID, SUBSCRIPTION_ID, RANDOM, DEFAULT, RULE_URL_DEFAULT, \
-    ITEM_NOT_FOUND_ERROR
+    ITEM_NOT_FOUND_ERROR, RULE_URL
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 import commons.utils as Utils
@@ -136,3 +136,34 @@ def when_i_delete_a_not_existent_subscription_in_group1(step, server_id):
     world.server_id = server_id
     world.req = api_utils.delete_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
                                               subscription_id=Utils.id_generator(10), headers=world.headers)
+
+
+@step(u'When I retrieve the subscription in "([^"]*)"')
+def when_i_retrieve_the_subscription_in_group1(step, server_id):
+
+    if server_id == 'random':
+        world.server_id = Utils.id_generator(10)
+    else:
+        world.server_id = server_id
+
+    world.req = api_utils.retrieve_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
+                                                subscription_id=world.subscription_id, headers=world.headers)
+
+
+@step(u'Then I get all subscription information')
+def then_i_get_all_subscription_information(step):
+
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    response = Utils.assert_json_format(world.req)
+    assert_equals(response[RULE_URL], RULE_URL_DEFAULT)
+    assert_equals(response[SERVER_ID], world.server_id)
+    assert_equals(response[SUBSCRIPTION_ID], world.subscription_id)
+    assert_equals(response[RULE_ID], world.rule_id)
+
+
+@step(u'When I retrieve a not existent subscription in "([^"]*)"')
+def when_i_retrieve_a_not_existent_subscription_in_group1(step, server_id):
+
+    world.server_id = server_id
+    world.req = api_utils.retrieve_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
+                                                subscription_id=Utils.id_generator(10), headers=world.headers)

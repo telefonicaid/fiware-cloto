@@ -1,24 +1,24 @@
-Feature: Delete subscription
+Feature: Retrieve subscription
   As a user
-  I want delete rule subscriptions
+  I want get rule subscriptions from server
   In order to manage my server subscriptions
 
 
   Scenario Outline: Delete a subscription
 
     Given a subscription created in "<server_id>"
-    When I delete a subscription in "<server_id>"
-    Then the subscription is deleted
+    When I retrieve the subscription in "<server_id>"
+    Then I get all subscription information
 
     Examples:
 
     | server_id     |
     | qatestserver  |
 
-  Scenario Outline: Delete subscription in another server or non existent server
+  Scenario Outline: retrieve subscription in another server or non existent server
 
     Given a subscription created in "<server_id>"
-    When I delete a subscription in "<another_server_id>"
+    When I retrieve the subscription in "<another_server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
@@ -28,10 +28,10 @@ Feature: Delete subscription
     | qatestserver  | random            | 404         | itemNotFound  |
 
 
-  Scenario Outline: Delete a non existent subscription
+  Scenario Outline: Retrieve a non existent subscription
 
     Given a subscription created in "<server_id>"
-    When I delete a not existent subscription in "<server_id>"
+    When I retrieve a not existent subscription in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
@@ -45,7 +45,7 @@ Feature: Delete subscription
 
     Given a subscription created in "<server_id>"
     And incorrect "<token>"
-    When I delete a subscription in "<server_id>"
+    When I retrieve the subscription in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:

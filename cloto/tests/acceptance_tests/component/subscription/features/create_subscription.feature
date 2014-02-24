@@ -11,7 +11,7 @@ Scenario Outline: Create a new subscription
 
   Examples:
   | server_id   | name    | condition | action  | url_to_notify                       |
-  | qatestserver| random  | default   | default | http://localhost:8080/notify        |
+  | qatestserver| random  | default   | default | http://127.0.0.1:8000/v1.0/0comsdsd |
   | qatestserver| random  | default   | default | http://localhost:8080/notify?hello  |
   | qatestserver| random  | default   | default | http://localhost                    |
   | qatestserver| random  | default   | default | http://localhost/notify%20space/    |
@@ -47,9 +47,9 @@ Scenario Outline: Create subscription from a non existant rule_id
   Examples:
 
   | server_id   | rule_id    | url_to_notify                  | Error_code  | FaultElement  |
-  | qatestserver| rule_test  | http://localhost:8080/notify   | 400         | badRequest    |
+  | qatestserver| rule_test  | http://localhost:8080/notify   | 404         | itemNotFound  |
 
-Scenario Outline: Create subscription from a non existant server_id
+Scenario Outline: Create subscription from a non existant server_id or incorrect server_id
   Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
   When I create a new subscription in "<another_server_id>" with "<url_to_notify>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
@@ -57,8 +57,8 @@ Scenario Outline: Create subscription from a non existant server_id
   Examples:
 
   | server_id   | name    | condition | action  | url_to_notify     | Error_code  | FaultElement  | another_server_id |
+  | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | random            |
   | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | qa                |
-  | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | qatestserver1     |
 
 
 Scenario Outline: Update a rule with incorrect token

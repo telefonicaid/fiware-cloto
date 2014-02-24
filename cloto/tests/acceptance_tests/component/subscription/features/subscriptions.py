@@ -41,8 +41,12 @@ def given_the_created_rule_with_group1_group2_and_group3_in_the_group4(step, rul
 @step(u'When I create a new subscription in "([^"]*)" with "([^"]*)"')
 def when_i_create_a_new_subscription_with_group1(step, server_id, url_to_notify):
 
-    world.server_id = server_id
     world.url_to_notify = url_to_notify
+    if server_id == 'random':
+        world.server_id = Utils.id_generator(10)
+    else:
+        world.server_id = server_id
+
     world.req = api_utils.create_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
                                               rule_id=world.rule_id, url=world.url_to_notify, headers=world.headers)
 

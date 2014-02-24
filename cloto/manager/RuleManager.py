@@ -234,14 +234,13 @@ class RuleManager():
 
     def unsubscribe_to_rule(self, serverId, subscriptionId):
         """Unsuscribe a server from a rule """
-        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId,
-                                           serverId__exact=serverId)
+        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId)
         r_query.delete()
         return True
 
     def get_subscription(self, tenantId, serverId, subscriptionId):
         """Returns information about a subscription."""
-        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId)
+        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId )
         subscription = SubscriptionModel()
         subscription.ruleId = r_query.__getattribute__("ruleId")
         subscription.serverId = r_query.__getattribute__("serverId")

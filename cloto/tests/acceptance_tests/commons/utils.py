@@ -93,7 +93,7 @@ def assert_json_format(request):
 
     """"Method to assert the JSON format
     :param request: Object with the response
-    :return respose if is JSON compliance
+    :return response if is JSON compliance
     """
 
     try:
@@ -108,7 +108,7 @@ def assert_rule_information(response, rule_id, name, condition, action):
 
     """Method to verify the rule body parameters
     :param response: Response body received from server
-    :param rule_id: The expected rule identificacion number
+    :param rule_id: The expected rule identification number
     :param name: The expected rule name
     :param condition: The expected rule condition
     :param action: The expected rule action

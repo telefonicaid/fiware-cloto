@@ -190,6 +190,7 @@ class ServerView(RESTResource):
         return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
 
+
 class ServerRulesView(RESTResource):
     """
     Servers view PATH( /v1.0/{tenantID}/servers/{serverId}/rules/ ).
@@ -259,6 +260,9 @@ class ServerSubscriptionView(RESTResource):
         except Conflict as err:
             return HttpResponse(json.dumps({"conflict": {"code": 409, "message":
                         err.message}}, indent=4), status=409)
+        except ValidationError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        err.messages[0]}}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))

@@ -129,3 +129,33 @@ def when_i_delete_group1(step, rule_id):
 
     world.req = api_utils.delete_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
                                       headers=world.headers)
+
+
+@step(u'When I update the rule with "([^"]*)", "([^"]*)" and "([^"]*)" in "([^"]*)"')
+def when_i_update_the_rule_with_group1_group2_and_group3_in_group4(step, updated_name, updated_condition,
+                                                                   updated_action, server_id):
+
+    world.server_id = server_id
+
+    world.up_name, world.up_condition, world.up_action = Utils.create_rule_parameters(updated_name, updated_condition,
+                                                                                      updated_action)
+
+    world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.up_name,
+                                      condition=world.up_condition, action=world.up_action, rule_id=world.rule_id,
+                                      headers=world.headers)
+
+@step(u'Then the rule is updated in Policy Manager')
+def then_the_rule_is_updated_in_policy_manager(step):
+
+    assert world.req.ok, world.req.content
+    response = Utils.assert_json_format(world.req)
+    Utils.assert_rule_information(response=response, rule_id=world.rule_id, name=world.up_name,
+                                  condition=world.up_condition, action=world.up_action)
+
+
+@step(u'When I update "([^"]*)"')
+def when_i_update_group1(step, another_rule):
+
+    world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
+                                      condition=world.rule_condition, action=world.rule_action, rule_id=another_rule,
+                                      headers=world.headers)

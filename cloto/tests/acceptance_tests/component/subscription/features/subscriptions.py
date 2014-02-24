@@ -46,6 +46,7 @@ def when_i_create_a_new_subscription_with_group1(step, server_id, url_to_notify)
     world.req = api_utils.create_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
                                               rule_id=world.rule_id, url=world.url_to_notify)
 
+
 @step(u'Then the subscription is created')
 def then_the_subscription_is_created(step):
 
@@ -55,10 +56,11 @@ def then_the_subscription_is_created(step):
     assert_in(SUBSCRIPTION_ID, response.keys())
 
 
-@step(u'Then I obtain an "([^"]*)" and the "([^"]*)"')
-def then_i_obtain_an_group1_and_the_group2(step, group1, group2):
+@step(u'I obtain an "([^"]*)" and the "([^"]*)"')
+def assert_error_response(step, error_code, fault_element):
 
-    print world.req.status_code
+    Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
+                                  expected_fault_element=fault_element)
 
 
 @step(u'Given the rule "([^"]*)"')

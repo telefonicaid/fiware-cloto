@@ -44,7 +44,7 @@ def when_i_create_a_new_subscription_with_group1(step, server_id, url_to_notify)
     world.server_id = server_id
     world.url_to_notify = url_to_notify
     world.req = api_utils.create_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
-                                              rule_id=world.rule_id, url=world.url_to_notify)
+                                              rule_id=world.rule_id, url=world.url_to_notify, headers=world.headers)
 
 
 @step(u'Then the subscription is created')
@@ -68,3 +68,10 @@ def given_the_rule_group1(step, rule_id):
 
     world.tenant_id = TENANT_ID
     world.rule_id = rule_id
+
+
+@step(u'incorrect "([^"]*)"')
+def set_incorrect_token(step, token):
+
+    #Set and incorrect header to obtain unauthorized error
+    world.headers = Utils.create_header(token=token)

@@ -59,3 +59,19 @@ Scenario Outline: Create subscription from a non existant server_id
   | server_id   | name    | condition | action  | url_to_notify     | Error_code  | FaultElement  | another_server_id |
   | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | qa                |
   | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | qatestserver1     |
+
+
+Scenario Outline: Update a rule with incorrect token
+
+  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  And incorrect "<token>"
+  When I create a new subscription in "<server_id>" with "<url_to_notify>"
+  Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+    Examples:
+
+    | Error_code  | FaultElement  | token     | server_id   | name    | condition | action  | url_to_notify   |
+    | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | default   | default | http://localhost|
+    | 401         | unauthorized  | old_token | qatestserver| random  | default   | default | another_name2   |
+    | 401         | unauthorized  |           | qatestserver| random  | default   | default | another_name3   |
+    | 401         | unauthorized  | null      | qatestserver| random  | default   | default | another_name4   |

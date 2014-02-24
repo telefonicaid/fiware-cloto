@@ -4,6 +4,8 @@ import json
 import uuid
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
 from django.utils import timezone
+from django.core.validators import URLValidator
+from keystoneclient.exceptions import Conflict
 
 
 class RuleManager():
@@ -60,9 +62,9 @@ class RuleManager():
         ruleResult.ruleId = str(ruleId)
         return ruleResult
 
-    def update_rule(self, ruleId, rule):
+    def update_rule(self, tenantId, ruleId, rule):
         """Updates a general rule """
-        rule_db = Rule.objects.get(ruleId__exact=ruleId)
+        rule_db = Rule.objects.get(ruleId__exact=ruleId, tenantId__exact=tenantId)
 
         try:
             condition = self.getContition(rule)
@@ -126,9 +128,10 @@ class RuleManager():
         ruleResult.ruleId = str(ruleId)
         return ruleResult
 
-    def update_specific_rule(self, ruleId, rule):
+    def update_specific_rule(self, tenantId, serverId, ruleId, rule):
         """Updates a general rule """
-        rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
+        rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
+                                           tenantId__exact=tenantId, entity__exact=serverId)
 
         try:
             condition = self.getContition(rule)
@@ -150,9 +153,10 @@ class RuleManager():
         ruleResult.action = action
         return ruleResult
 
-    def get_specific_rule(self, ruleId):
+    def get_specific_rule(self, tenantId, serverId, ruleId):
         """Returns information about a specific rule."""
-        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
+        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
+                                           tenantId__exact=tenantId, entity__exact=serverId)
         rule = RuleModel()
         rule.ruleId = r_query.__getattribute__("specificRule_Id")
         rule.name = r_query.__getattribute__("name")
@@ -182,9 +186,10 @@ class RuleManager():
 
         return mylist
 
-    def delete_specific_rule(self, serverId, ruleId):
+    def delete_specific_rule(self, tenantId, serverId, ruleId):
         """Deletes a specific rule."""
-        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
+        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
+                                           tenantId__exact=tenantId, entity__exact=serverId)
         r_query.delete()
         return True
 
@@ -212,6 +217,14 @@ class RuleManager():
 
         ruleId = json.loads(subscription)['ruleId']
         url = json.loads(subscription)['url']
+
+        #Verify that there is no more subscriptions to the rule for that server
+        it = entity.subscription.iterator()
+        for sub in it:
+            if sub.ruleId == ruleId:
+                raise Conflict("Subscription already exists")
+
+        self.verify_url(url)
         subscription_Id = uuid.uuid1()
         subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId)
         subscr.save()
@@ -219,9 +232,10 @@ class RuleManager():
         entity.save()
         return subscription_Id
 
-    def unsubscribe_to_rule(self, subscriptionId):
+    def unsubscribe_to_rule(self, serverId, subscriptionId):
         """Unsuscribe a server from a rule """
-        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId)
+        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId,
+                                           serverId__exact=serverId)
         r_query.delete()
         return True
 
@@ -243,3 +257,7 @@ class RuleManager():
             raise ValueError("You must provide conditions with length between 1 and 1024 characters")
         if action.__len__() > 1024 or action.__len__() < 1:
             raise ValueError("You must provide actions with length between 1 and 1024 characters")
+
+    def verify_url(self, url):
+            validator = URLValidator()
+            validator(url)

@@ -153,9 +153,10 @@ class RuleManager():
         ruleResult.action = action
         return ruleResult
 
-    def get_specific_rule(self, ruleId):
+    def get_specific_rule(self, tenantId, serverId, ruleId):
         """Returns information about a specific rule."""
-        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
+        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
+                                           tenantId__exact=tenantId, entity__exact=serverId)
         rule = RuleModel()
         rule.ruleId = r_query.__getattribute__("specificRule_Id")
         rule.name = r_query.__getattribute__("name")
@@ -185,9 +186,10 @@ class RuleManager():
 
         return mylist
 
-    def delete_specific_rule(self, serverId, ruleId):
+    def delete_specific_rule(self, tenantId, serverId, ruleId):
         """Deletes a specific rule."""
-        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId)
+        r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
+                                           tenantId__exact=tenantId, entity__exact=serverId)
         r_query.delete()
         return True
 

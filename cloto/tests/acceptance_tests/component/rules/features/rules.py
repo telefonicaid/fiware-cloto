@@ -67,6 +67,14 @@ def given_a_non_created_group1_and_group2(step, tenant_id, server_id):
     world.server_id = server_id
 
 
+@step(u'I retrieve the rule in "([^"]*)"')
+def when_i_retrieve_the_rule(step, server_id):
+
+    world.server_id = server_id
+    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
+                                        headers=world.headers)
+
+
 @step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
 def given_the_created_rule_with_group1_group2_and_group3_in_the_group4(step, rule_name, rule_condition, rule_action,
                                                                        server_id):
@@ -84,14 +92,6 @@ def given_the_created_rule_with_group1_group2_and_group3_in_the_group4(step, rul
 
     #Save the Rule ID to obtain the Rule information after
     world.rule_id = req.json()[RULE_ID]
-
-
-@step(u'I retrieve the rule in "([^"]*)"')
-def when_i_retrieve_the_rule(step, server_id):
-
-    world.server_id = server_id
-    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
-                                        headers=world.headers)
 
 
 @step(u'I obtain the Rule data')

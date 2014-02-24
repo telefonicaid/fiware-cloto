@@ -216,7 +216,7 @@ class RuleManager():
             entity.save()
 
         ruleId = json.loads(subscription)['ruleId']
-        SpecificRule.objects.get(specificRule_Id__exact= ruleId)
+        SpecificRule.objects.get(specificRule_Id__exact= ruleId, entity__exact=serverId )
         url = json.loads(subscription)['url']
 
         #Verify that there is no more subscriptions to the rule for that server

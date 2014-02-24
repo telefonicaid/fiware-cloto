@@ -57,11 +57,11 @@ Scenario Outline: Create subscription from a non existant server_id or incorrect
   Examples:
 
   | server_id   | name    | condition | action  | url_to_notify     | Error_code  | FaultElement  | another_server_id |
-  | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | random            |
-  | qatestserver| random  | default   | default | http://localhost  | 400         | badRequest    | qa                |
+  | qatestserver| random  | default   | default | http://localhost  | 404         | itemNotFound  | random            |
+  | qatestserver| random  | default   | default | http://localhost  | 404         | itemNotFound  | qa                |
 
 
-Scenario Outline: Update a rule with incorrect token
+Scenario Outline: Create subscription with incorrect token
 
   Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
   And incorrect "<token>"

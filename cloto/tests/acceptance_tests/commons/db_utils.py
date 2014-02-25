@@ -2,6 +2,7 @@ __author__ = 'artanis'
 import sqlite3
 from configuration import DB_PATH
 from constants import DB_RULE_AND_SUBSCRIPTION
+import os
 
 
 class DBUtils(object):
@@ -11,7 +12,10 @@ class DBUtils(object):
 
     def __init__(self):
 
+        assert os.path.exists(DB_PATH)
+        print os.path.abspath(DB_PATH)
         try:
+            print DB_PATH
             self.connection = sqlite3.connect(DB_PATH)
             self.cursor = self.connection.cursor()
 
@@ -43,3 +47,7 @@ class DBUtils(object):
 
         for table in DB_RULE_AND_SUBSCRIPTION:
             self.cursor.execute("DELETE FROM {}".format(table))
+
+    def close_connection(self):
+
+        self.connection.close()

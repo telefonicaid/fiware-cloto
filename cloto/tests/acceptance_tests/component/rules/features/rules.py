@@ -4,12 +4,14 @@ __author__ = 'artanis'
 from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RULE_ID, SERVER_ID
+from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
+from commons.db_utils import DBUtils
 import commons.utils as Utils
 
 api_utils = RestUtils()
+db_utils = DBUtils()
 
 
 @before.each_scenario
@@ -17,6 +19,13 @@ def setup(scenario):
 
     #Set default headers with correct token before every scenario
     world.headers = HEADERS
+    db_utils.delete_rule_and_subscription_tables()
+    tables = db_utils.get_all_tables()
+    for table in tables:
+        data = db_utils.select_all_elements_table(table)
+        print table
+        print data
+    db_utils.close_connection()
 
 
 @step(u'a created "([^"]*)" inside tenant')
@@ -87,6 +96,7 @@ def created_rule(step, rule_name, rule_condition, rule_action, server_id):
     req = api_utils.create_rule(world.tenant_id, world.server_id, world.rule_name, world.rule_condition,
                                 world.rule_action)
 
+    print req.content
     assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
 
     #Save the Rule ID to obtain the Rule information after
@@ -159,3 +169,21 @@ def update_non_existent_rule(step, another_rule):
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
                                       condition=world.rule_condition, action=world.rule_action, rule_id=another_rule,
                                       headers=world.headers)
+
+
+@step(u'I get the rules list from "([^"]*)"')
+def when_i_get_the_rules_list_from_group1(step, server_id):
+
+    world.server_id = server_id
+    world.req = api_utils.retrieve_rules(tenant_id=world.tenant_id, server_id=world.server_id, headers=world.headers)
+
+
+@step(u'Then I obtain all the rules of the server')
+def then_i_obtain_all_the_rules_of_the_server(step):
+
+    rule_body = Utils.create_rule_body(world.rule_action, world.rule_id, world.rule_condition, world.rule_name)
+    response = Utils.assert_json_format(world.req)
+    assert_equals(response[SERVER_ID], world.server_id)
+    assert_equals(response[TENANT_KEY], world.tenant_id)
+    assert_in(rule_body, response['rules'])
+

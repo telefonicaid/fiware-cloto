@@ -1,7 +1,7 @@
 __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
-    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID
+    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
 from nose.tools import assert_in, assert_equals
 import string
@@ -118,3 +118,12 @@ def assert_rule_information(response, rule_id, name, condition, action):
     assert_equals(response[RULE_CONDITION], condition)
     assert_equals(response[RULE_ACTION], action)
     assert_equals(response[RULE_ID], rule_id)
+
+
+def create_rule_body(action, rule_id, condition, name):
+    return{
+        RULE_ACTION : action,
+        RULE_SPECIFIC_ID : rule_id,
+        RULE_CONDITION : condition,
+        RULE_NAME : name
+    }

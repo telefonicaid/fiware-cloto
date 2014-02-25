@@ -257,6 +257,9 @@ class ServerSubscriptionView(RESTResource):
         try:
             subscriptionId = RuleManager.RuleManager().subscribe_to_rule(tenantId, serverId, request.body)
             return HttpResponse(json.dumps({"serverId": serverId, "subscriptionId": str(subscriptionId)}, indent=4))
+        except ObjectDoesNotExist as err:
+            return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
+                        str(err)}}, indent=4), status=404)
         except Conflict as err:
             return HttpResponse(json.dumps({"conflict": {"code": 409, "message":
                         err.message}}, indent=4), status=409)

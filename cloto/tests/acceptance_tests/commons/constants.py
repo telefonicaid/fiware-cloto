@@ -33,3 +33,12 @@ RANDOM = u'random'
 DEFAULT = u'default'
 
 ITEM_NOT_FOUND_ERROR = u'itemNotFound'
+
+#DB_TABLES
+
+DB_SPECIFIC_RULES = u'cloto_specificrule'
+DB_SUBSCRIPTION = u'cloto_subscription'
+DB_ENTITY_SPECIFIC_RULES = u'cloto_entity_specificrules'
+DB_ENTITY_SUBSCRIPTION = u'cloto_entity_subscription'
+DB_CLOTO_ENTITY = u'cloto_entity'
+DB_RULE_AND_SUBSCRIPTION = (DB_SPECIFIC_RULES, DB_SUBSCRIPTION, DB_ENTITY_SUBSCRIPTION, DB_ENTITY_SPECIFIC_RULES)

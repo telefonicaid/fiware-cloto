@@ -6,7 +6,7 @@ from commons.configuration import REST_PATH, REST_PORT
 from commons.constants import LITTLE_SLEEP
 
 
-class Environment_utils(object):
+class EnvironmentUtils(object):
 
     def __init__(self):
 

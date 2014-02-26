@@ -28,6 +28,7 @@ RULE_ACTION_DEFAULT = u'assert (alertCPU ?x))(python-call env-call-rest-api)'
 RULE_URL_DEFAULT = u'http://localhost:8080/notify'
 LONG_NAME = u'This is a long name to test the maximum length of elasticity rule'
 RULES = u'rules'
+SERVERS = u'servers'
 
 SUBSCRIPTION_ID = u'subscriptionId'
 

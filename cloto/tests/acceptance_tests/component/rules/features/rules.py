@@ -4,7 +4,7 @@ __author__ = 'artanis'
 from lettuce import step, world, before, after
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT
+from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 from commons.db_utils import DBUtils
@@ -224,7 +224,39 @@ def then_i_obtain_zero_rules(step):
 
 @step(u'Given a created "([^"]*)" without rules')
 def given_a_created_group1_without_rules(step, server_id):
-    print step
+
     world.server_id = server_id
     created_rule(step, rule_name=RANDOM, rule_action=DEFAULT, rule_condition=DEFAULT, server_id=world.server_id)
     delete_rule(step, server_id=world.server_id)
+
+
+@step(u'Given a tenant without servers')
+def given_a_tenant_without_servers(step):
+    world.tenant_id = TENANT_ID
+
+
+@step(u'When I retrieve the server list')
+def when_i_retrieve_the_server_list(step):
+    world.req = api_utils.retrieve_server_list(tenant_id=world.tenant_id, headers=world.headers)
+
+
+@step(u'Then I obtain zero results')
+def then_i_obtain_zero_results(step):
+
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    response = Utils.assert_json_format(world.req)
+    assert_equals(response[SERVERS], [])
+
+
+@step(u'Given a "([^"]*)" of servers in a tenant wit rules created')
+def given_a_group1_of_servers_in_a_tenant(step, number_servers):
+
+    world.number_servers = int(number_servers)
+    for x in range(number_servers):
+        server_id = Utils.id_generator(size=6)
+        rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
+        req = api_utils.create_rule(TENANT_ID, server_id, rule_name, rule_condition, rule_action)
+        assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+        rule_id = req.json()[RULE_ID]
+        world.rules.append(Utils.create_rule_body(action=rule_action, rule_id=rule_id, condition=rule_condition,
+                                                  name=rule_name))

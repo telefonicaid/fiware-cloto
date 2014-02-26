@@ -23,4 +23,13 @@ RULE_ID = u'ruleId'
 RULE_URL = u'url'
 RULE_CONDITION_DEFAULT = u'?serv <- (server (server-id ?x) (cpu ?y&:(< ?y 30)) (mem ?z) (hdd ?t))'
 RULE_ACTION_DEFAULT = u'assert (alertCPU ?x))(python-call env-call-rest-api)'
+RULE_URL_DEFAULT = u'http://localhost:8080/notify'
 LONG_NAME = u'This is a long name to test the maximum length of elasticity rule'
+
+SUBSCRIPTION_ID = u'subscriptionId'
+
+
+RANDOM = u'random'
+DEFAULT = u'default'
+
+ITEM_NOT_FOUND_ERROR = u'itemNotFound'

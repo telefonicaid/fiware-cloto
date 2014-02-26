@@ -27,7 +27,7 @@ def set_tenant_and_server_id(step, server_id):
 
 
 @step(u'I create a rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
-def when_i_create_a_rule_with_group1_group2_and_group3(step, rule_name, rule_condition, rule_action):
+def create_rule_with_all_parameters(step, rule_name, rule_condition, rule_action):
 
     world.rule_name, world.rule_condition, world.rule_action = Utils.create_rule_parameters(rule_name, rule_condition,
                                                                                             rule_action)
@@ -36,8 +36,8 @@ def when_i_create_a_rule_with_group1_group2_and_group3(step, rule_name, rule_con
                                       condition=world.rule_condition, action=world.rule_action, headers=world.headers)
 
 
-@step(u'Then the rule is saved in Policy Manager')
-def then_the_rule_is_saved_in_policy_manager(step):
+@step(u'the rule is saved in Policy Manager')
+def assert_rule_saved(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = world.req.json()
@@ -61,15 +61,22 @@ def set_incorrect_token(step, token):
 
 
 @step(u'a non created "([^"]*)" and "([^"]*)"')
-def given_a_non_created_group1_and_group2(step, tenant_id, server_id):
+def set_non_existent_tenant_and_server(step, tenant_id, server_id):
 
     world.tenant_id = tenant_id
     world.server_id = server_id
 
 
+@step(u'I retrieve the rule in "([^"]*)"')
+def retrieve_rule(step, server_id):
+
+    world.server_id = server_id
+    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
+                                        headers=world.headers)
+
+
 @step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
-def given_the_created_rule_with_group1_group2_and_group3_in_the_group4(step, rule_name, rule_condition, rule_action,
-                                                                       server_id):
+def created_rule(step, rule_name, rule_condition, rule_action, server_id):
 
     #Save all the expected results in global variables to compare after with obtained results.
     world.tenant_id = TENANT_ID
@@ -86,16 +93,8 @@ def given_the_created_rule_with_group1_group2_and_group3_in_the_group4(step, rul
     world.rule_id = req.json()[RULE_ID]
 
 
-@step(u'I retrieve the rule in "([^"]*)"')
-def when_i_retrieve_the_rule(step, server_id):
-
-    world.server_id = server_id
-    world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
-                                        headers=world.headers)
-
-
 @step(u'I obtain the Rule data')
-def then_i_obtain_the_rule_data(step):
+def assert_rule_information(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = Utils.assert_json_format(world.req)
@@ -103,20 +102,21 @@ def then_i_obtain_the_rule_data(step):
 
 
 @step(u'I retrieve "([^"]*)"')
-def when_i_retrieve_group1(step, rule_id):
+def retrieve_specific_rule(step, rule_id):
 
     world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
                                         headers=world.headers)
 
-@step(u'When I delete the rule in "([^"]*)"')
-def when_i_delete_the_rule_in_group1(step, server_id):
+
+@step(u'I delete the rule in "([^"]*)"')
+def delete_rule(step, server_id):
 
     world.req = api_utils.delete_rule(tenant_id=world.tenant_id, server_id=server_id, rule_id=world.rule_id,
                                       headers=world.headers)
 
 
-@step(u'Then the rule is deleted')
-def then_the_rule_is_deleted(step):
+@step(u'the rule is deleted')
+def assert_rule_is_deleted(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
@@ -125,15 +125,14 @@ def then_the_rule_is_deleted(step):
 
 
 @step(u'When I delete "([^"]*)"')
-def when_i_delete_group1(step, rule_id):
+def delete_specific_rule(step, rule_id):
 
     world.req = api_utils.delete_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=rule_id,
                                       headers=world.headers)
 
 
-@step(u'When I update the rule with "([^"]*)", "([^"]*)" and "([^"]*)" in "([^"]*)"')
-def when_i_update_the_rule_with_group1_group2_and_group3_in_group4(step, updated_name, updated_condition,
-                                                                   updated_action, server_id):
+@step(u'I update the rule with "([^"]*)", "([^"]*)" and "([^"]*)" in "([^"]*)"')
+def update_rule(step, updated_name, updated_condition, updated_action, server_id):
 
     world.server_id = server_id
 
@@ -144,8 +143,9 @@ def when_i_update_the_rule_with_group1_group2_and_group3_in_group4(step, updated
                                       condition=world.up_condition, action=world.up_action, rule_id=world.rule_id,
                                       headers=world.headers)
 
-@step(u'Then the rule is updated in Policy Manager')
-def then_the_rule_is_updated_in_policy_manager(step):
+
+@step(u'the rule is updated in Policy Manager')
+def assert_rule_is_updated(step):
 
     assert world.req.ok, world.req.content
     response = Utils.assert_json_format(world.req)
@@ -153,8 +153,8 @@ def then_the_rule_is_updated_in_policy_manager(step):
                                   condition=world.up_condition, action=world.up_action)
 
 
-@step(u'When I update "([^"]*)"')
-def when_i_update_group1(step, another_rule):
+@step(u'I update "([^"]*)"')
+def update_non_existent_rule(step, another_rule):
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
                                       condition=world.rule_condition, action=world.rule_action, rule_id=another_rule,

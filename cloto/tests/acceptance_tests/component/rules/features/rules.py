@@ -9,6 +9,7 @@ from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 from commons.db_utils import DBUtils
 import commons.utils as Utils
+import random
 
 api_utils = RestUtils()
 db_utils = DBUtils()
@@ -248,15 +249,42 @@ def then_i_obtain_zero_results(step):
     assert_equals(response[SERVERS], [])
 
 
-@step(u'Given a "([^"]*)" of servers in a tenant wit rules created')
+@step(u'Given a "([^"]*)" of servers in a tenant with rules created')
 def given_a_group1_of_servers_in_a_tenant(step, number_servers):
 
+    world.tenant_id = TENANT_ID
     world.number_servers = int(number_servers)
-    for x in range(number_servers):
+    world.servers_body = []
+
+    for x in range(world.number_servers):
+        world.rules = []
         server_id = Utils.id_generator(size=6)
-        rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
-        req = api_utils.create_rule(TENANT_ID, server_id, rule_name, rule_condition, rule_action)
-        assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
-        rule_id = req.json()[RULE_ID]
-        world.rules.append(Utils.create_rule_body(action=rule_action, rule_id=rule_id, condition=rule_condition,
-                                                  name=rule_name))
+        number_rules = random.randint(1, 5)
+
+        for rule in range(number_rules):
+            rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
+            req = api_utils.create_rule(TENANT_ID, server_id, rule_name, rule_condition, rule_action)
+            assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+            rule_id = req.json()[RULE_ID]
+            world.rules.append(Utils.create_rule_body(action=None, rule_id=rule_id, condition=None,
+                                                      name=rule_name))
+
+        server_dict = {SERVER_ID: server_id,
+                       RULES: world.rules}
+        world.servers_body.append(server_dict)
+
+
+@step(u'Then I obtain the server list')
+def then_i_obtain_the_server_list(step):
+
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    response = Utils.assert_json_format(world.req)
+    print world.servers_body
+    assert False, 'This step must be implemented'
+
+
+@step(u'Then I obtain a server list without rules')
+def then_i_obtain_a_server_list_without_rules(step):
+
+    print world.req.content
+    assert False, 'This step must be implemented'

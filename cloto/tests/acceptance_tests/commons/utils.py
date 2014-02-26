@@ -120,10 +120,21 @@ def assert_rule_information(response, rule_id, name, condition, action):
     assert_equals(response[RULE_ID], rule_id)
 
 
-def create_rule_body(action, rule_id, condition, name):
-    return{
-        RULE_ACTION: action,
-        RULE_SPECIFIC_ID: rule_id,
-        RULE_CONDITION: condition,
-        RULE_NAME: name
-    }
+def create_rule_body(action=None, rule_id=None, condition=None, name=None):
+
+    rule_body = {RULE_ACTION: action,
+                 RULE_SPECIFIC_ID: rule_id,
+                 RULE_CONDITION: condition,
+                 RULE_NAME: name
+                 }
+
+    if action is None:
+        del rule_body[RULE_ACTION]
+    if rule_id is None:
+        del rule_body[RULE_ID]
+    if condition is None:
+        del rule_body[RULE_CONDITION]
+    if name is None:
+        del rule_body[RULE_NAME]
+
+    return rule_body

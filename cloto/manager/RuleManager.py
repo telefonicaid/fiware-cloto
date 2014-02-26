@@ -132,7 +132,6 @@ class RuleManager():
         """Updates a general rule """
         rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
-
         try:
             condition = self.getContition(rule)
             action = self.getAction(rule)
@@ -196,7 +195,7 @@ class RuleManager():
     def get_all_entities(self, tenantId):
         """Returns all servers with their information."""
         servers = Entity.objects.filter(tenantId__exact=tenantId)\
-            .values('subscription', 'tenantId', 'entity_Id').iterator()
+            .values('tenantId', 'entity_Id').iterator()
 
         dictEntities = list()
         for entity in servers:

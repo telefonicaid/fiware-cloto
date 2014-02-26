@@ -1,10 +1,10 @@
 __author__ = 'artanis'
 
 # -*- coding: utf-8 -*-
-from lettuce import step, world, before
+from lettuce import step, world, before, after
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY
+from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 from commons.db_utils import DBUtils
@@ -18,13 +18,15 @@ db_utils = DBUtils()
 def setup(scenario):
 
     #Set default headers with correct token before every scenario
+
     world.headers = HEADERS
     db_utils.delete_rule_and_subscription_tables()
-    tables = db_utils.get_all_tables()
-    for table in tables:
-        data = db_utils.select_all_elements_table(table)
-        print table
-        print data
+    world.rules = []
+
+
+@after.all
+def tear_down(scenario):
+
     db_utils.close_connection()
 
 
@@ -86,7 +88,6 @@ def retrieve_rule(step, server_id):
 
 @step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
 def created_rule(step, rule_name, rule_condition, rule_action, server_id):
-
     #Save all the expected results in global variables to compare after with obtained results.
     world.tenant_id = TENANT_ID
     world.server_id = server_id
@@ -181,9 +182,49 @@ def when_i_get_the_rules_list_from_group1(step, server_id):
 @step(u'Then I obtain all the rules of the server')
 def then_i_obtain_all_the_rules_of_the_server(step):
 
-    rule_body = Utils.create_rule_body(world.rule_action, world.rule_id, world.rule_condition, world.rule_name)
     response = Utils.assert_json_format(world.req)
+
     assert_equals(response[SERVER_ID], world.server_id)
     assert_equals(response[TENANT_KEY], world.tenant_id)
-    assert_in(rule_body, response['rules'])
+    assert_equals(len(response[RULES]), world.number_rules)
 
+    for rule in world.rules:
+        assert_in(rule, response[RULES])
+    world.rules = []
+    db_utils.delete_rule_and_subscription_tables()
+
+
+
+@step(u'Given "([^"]*)" of rules created in "([^"]*)"')
+def given_group1_of_rules_created_in_group2(step, number_rules, server_id):
+
+    world.server_id = server_id
+    world.tenant_id = TENANT_ID
+    world.number_rules = int(number_rules)
+    for x in range(world.number_rules):
+        rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
+        req = api_utils.create_rule(world.tenant_id, world.server_id, rule_name, rule_condition,
+                                    rule_action)
+        assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+        rule_id = req.json()[RULE_ID]
+        world.rules.append(Utils.create_rule_body(action=rule_action, rule_id=rule_id, condition=rule_condition,
+                                                  name=rule_name))
+
+
+@step(u'Then I obtain zero rules')
+def then_i_obtain_zero_rules(step):
+
+    response = Utils.assert_json_format(world.req)
+    print response
+
+    assert_equals(response[SERVER_ID], world.server_id)
+    assert_equals(response[TENANT_KEY], world.tenant_id)
+    assert_equals(len(response[RULES]), 0)
+
+
+@step(u'Given a created "([^"]*)" without rules')
+def given_a_created_group1_without_rules(step, server_id):
+    print step
+    world.server_id = server_id
+    created_rule(step, rule_name=RANDOM, rule_action=DEFAULT, rule_condition=DEFAULT, server_id=world.server_id)
+    delete_rule(step, server_id=world.server_id)

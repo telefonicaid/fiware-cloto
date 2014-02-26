@@ -122,8 +122,8 @@ def assert_rule_information(response, rule_id, name, condition, action):
 
 def create_rule_body(action, rule_id, condition, name):
     return{
-        RULE_ACTION : action,
-        RULE_SPECIFIC_ID : rule_id,
-        RULE_CONDITION : condition,
-        RULE_NAME : name
+        RULE_ACTION: action,
+        RULE_SPECIFIC_ID: rule_id,
+        RULE_CONDITION: condition,
+        RULE_NAME: name
     }

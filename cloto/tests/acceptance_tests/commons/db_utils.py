@@ -47,6 +47,7 @@ class DBUtils(object):
 
         for table in DB_RULE_AND_SUBSCRIPTION:
             self.cursor.execute("DELETE FROM {}".format(table))
+            self.connection.commit()
 
     def close_connection(self):
 

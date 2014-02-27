@@ -181,12 +181,20 @@ class ServerView(RESTResource):
         try:
             rules = RuleManager.RuleManager().get_all_specific_rules(tenantId, serverId)
             return HttpResponse(json.dumps(vars(rules), cls=DateEncoder, indent=4))
+        except ObjectDoesNotExist as err:
+            return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
+                        str(err)}}, indent=4), status=404)
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
 
     def PUT(self, request, tenantId, serverId):
         # Should update the context of server
+        #myFactManager = FactManager.FactManager()
+        #nfacts = myFactManager.insertFact(tenantId, serverId, request.body)
+        return HttpResponse(json.dumps({"OK": {"code": 200, "message":
+                        "Should update the context of server %s" % serverId}}, indent=4))
+
         return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
 

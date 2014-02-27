@@ -37,7 +37,6 @@ def set_tenant_and_server_id(step, server_id):
     world.tenant_id = TENANT_ID
     world.server_id = server_id
 
-
 @step(u'I create a rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
 def create_rule_with_all_parameters(step, rule_name, rule_condition, rule_action):
 
@@ -229,6 +228,10 @@ def given_a_created_group1_without_rules(step, server_id):
     world.server_id = server_id
     created_rule(step, rule_name=RANDOM, rule_action=DEFAULT, rule_condition=DEFAULT, server_id=world.server_id)
     delete_rule(step, server_id=world.server_id)
+    world.servers_body = [{SERVER_ID: world.server_id,
+                           RULES: []}]
+
+
 
 
 @step(u'Given a tenant without servers')
@@ -279,12 +282,5 @@ def then_i_obtain_the_server_list(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = Utils.assert_json_format(world.req)
-    print world.servers_body
-    assert False, 'This step must be implemented'
-
-
-@step(u'Then I obtain a server list without rules')
-def then_i_obtain_a_server_list_without_rules(step):
-
-    print world.req.content
-    assert False, 'This step must be implemented'
+    assert_equals(response[SERVERS], world.servers_body)
+    db_utils.delete_rule_and_subscription_tables()

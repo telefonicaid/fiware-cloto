@@ -26,7 +26,7 @@ Feature: Get the list of all servers
 
     Given a created "<server_id>" without rules
     When I retrieve the server list
-    Then I obtain a server list without rules
+    Then I obtain the server list without rules
 
     Examples:
 

@@ -35,7 +35,7 @@ class Subscription(models.Model):
 class Entity(models.Model):
     """This class models information about Virtual Machines deployed.
     """
-    entity_Id = models.CharField(primary_key=True, max_length=30)
+    serverId = models.CharField(primary_key=True, max_length=30)
     tenantId = models.CharField(max_length=30)
     specificrules = models.ManyToManyField(SpecificRule, verbose_name="list of rules")
     subscription = models.ManyToManyField(Subscription, verbose_name="list of subscription")

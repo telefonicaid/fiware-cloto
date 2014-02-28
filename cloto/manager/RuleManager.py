@@ -104,9 +104,9 @@ class RuleManager():
     def create_specific_rule(self, tenantId, serverId, rule):
         """Creates new specific rule for a server."""
         try:
-            entity = Entity.objects.get(entity_Id__exact=serverId)
+            entity = Entity.objects.get(serverId__exact=serverId)
         except Entity.DoesNotExist as err:
-            entity = Entity(entity_Id=serverId, tenantId=tenantId)
+            entity = Entity(serverId=serverId, tenantId=tenantId)
             entity.save()
         try:
             condition = self.getContition(rule)
@@ -132,7 +132,6 @@ class RuleManager():
         """Updates a general rule """
         rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
-
         try:
             condition = self.getContition(rule)
             action = self.getAction(rule)
@@ -166,7 +165,7 @@ class RuleManager():
 
     def get_all_specific_rules(self, tenantId, serverId):
         """Returns all specific rules of a server."""
-        entity = Entity.objects.get(entity_Id=serverId)
+        entity = Entity.objects.get(serverId=serverId)
 
         mylist = entity.specificrules.values('specificRule_Id', 'name', 'condition', 'action').iterator()
 
@@ -195,12 +194,19 @@ class RuleManager():
 
     def get_all_entities(self, tenantId):
         """Returns all servers with their information."""
-        servers = Entity.objects.filter(tenantId__exact=tenantId)\
-            .values('subscription', 'tenantId', 'entity_Id').iterator()
-
+        servers = Entity.objects.filter(tenantId__exact=tenantId).values('serverId').iterator()
         dictEntities = list()
         for entity in servers:
-            dictEntities.append(entity)
+            s = entity['serverId']
+            rules = self.get_all_specific_rules(tenantId, s)
+            for rule in rules.rules:
+                del rule['action']
+                del rule['condition']
+
+            final= ListRuleModel()
+            final.rules= rules.rules
+            final.serverId= rules.serverId
+            dictEntities.append(vars(final))
 
         mylist = ListRuleModel()
         mylist.servers = dictEntities
@@ -210,9 +216,9 @@ class RuleManager():
     def subscribe_to_rule(self, tenantId, serverId, subscription):
         """Creates a server subscription to a rule """
         try:
-            entity = Entity.objects.get(entity_Id__exact=serverId)
+            entity = Entity.objects.get(serverId__exact=serverId)
         except Entity.DoesNotExist as err:
-            entity = Entity(entity_Id=serverId, tenantId=tenantId)
+            entity = Entity(serverId=serverId, tenantId=tenantId)
             entity.save()
 
         ruleId = json.loads(subscription)['ruleId']

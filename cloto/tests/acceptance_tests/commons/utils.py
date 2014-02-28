@@ -2,7 +2,11 @@ __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
     RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
-from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST
+from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
+from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
+    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT
+from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
+    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
 from nose.tools import assert_in, assert_equals
 import string
@@ -141,13 +145,40 @@ def create_rule_body(action=None, rule_id=None, condition=None, name=None):
     return rule_body
 
 
-def context_attributes(cpu_value=None, memory_value=None, disk_value=None, network_value=None):
+def context_element(cpu_value=None, memory_value=None, disk_value=None, network_value=None, server_id=None):
 
-    context_attributes_body = {}
+    context_attributes_body = []
     attribute_values = [cpu_value, memory_value, disk_value, network_value]
     for name, value in zip(ATTRIBUTES_LIST, attribute_values):
 
         if value is not None:
-            context_attributes_body[name] = value
+            context_attributes_body.append({ATTRIBUTES_NAME: name, ATTRIBUTES_TYPE: ATTRIBUTE_PROBE,
+                                            ATTRIBUTES_VALUE: value})
 
-    return context_attributes_body
+    context_element_body = {CONTEXT_TYPE: CONTEXT_SERVER,
+                            CONTEXT_IS_PATTERN: CONTEXT_IS_PATTERN_VALUE,
+                            CONTEXT_SERVER_ID: server_id,
+                            ATTRIBUTES: context_attributes_body}
+    return context_element_body
+
+
+def context_status_code(status_code=None, details='message', reason=CONTEXT_STATUS_CODE_OK):
+
+    status_code_body = {CONTEXT_STATUS_CODE_CODE: status_code,
+                        CONTEXT_STATUS_CODE_REASON: reason,
+                        CONTEXT_STATUS_CODE_DETAILS: details}
+
+    return status_code_body
+
+
+def context_response(context_element, status_code):
+
+    return {CONTEXT_ELEMENT: context_element,
+            CONTEXT_STATUS_CODE: status_code}
+
+
+def context_server(context_responses, originator=None, subscription_id=None):
+
+    return {SUBSCRIPTION_ID: subscription_id,
+            ORIGINATOR: originator,
+            CONTEXT_RESPONSES: context_responses}

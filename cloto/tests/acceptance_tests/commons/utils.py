@@ -2,6 +2,7 @@ __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
     RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
+from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
 from nose.tools import assert_in, assert_equals
 import string
@@ -138,3 +139,15 @@ def create_rule_body(action=None, rule_id=None, condition=None, name=None):
         del rule_body[RULE_NAME]
 
     return rule_body
+
+
+def context_attributes(cpu_value=None, memory_value=None, disk_value=None, network_value=None):
+
+    context_attributes_body = {}
+    attribute_values = [cpu_value, memory_value, disk_value, network_value]
+    for name, value in zip(ATTRIBUTES_LIST, attribute_values):
+
+        if value is not None:
+            context_attributes_body[name] = value
+
+    return context_attributes_body

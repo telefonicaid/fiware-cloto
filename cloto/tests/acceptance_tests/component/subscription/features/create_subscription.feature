@@ -41,8 +41,8 @@ Scenario Outline: Create subscription with incorrect url
 Scenario Outline: Create subscription from a non existant rule_id
 
   Given the rule "<rule_id>"
-  When   When I create a new subscription in "<server_id>" with "<url_to_notify>"
-  Then Then I obtain an "<Error_code>" and the "<FaultElement>"
+  When I create a new subscription in "<server_id>" with "<url_to_notify>"
+  Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
 

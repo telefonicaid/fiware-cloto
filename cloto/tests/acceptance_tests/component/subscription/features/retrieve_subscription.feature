@@ -4,7 +4,7 @@ Feature: Retrieve subscription
   In order to manage my server subscriptions
 
 
-  Scenario Outline: Delete a subscription
+  Scenario Outline: Retrieve a subscription
 
     Given a subscription created in "<server_id>"
     When I retrieve the subscription in "<server_id>"
@@ -41,7 +41,7 @@ Feature: Retrieve subscription
     | qatestserver  | 404         | itemNotFound  |
 
 
-  Scenario Outline: Delete a subscription with incorrect token
+  Scenario Outline: Retrieve a subscription with incorrect token
 
     Given a subscription created in "<server_id>"
     And incorrect "<token>"

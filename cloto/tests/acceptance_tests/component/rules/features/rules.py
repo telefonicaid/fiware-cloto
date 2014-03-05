@@ -1,35 +1,24 @@
 __author__ = 'artanis'
 
 # -*- coding: utf-8 -*-
-from lettuce import step, world, before, after
+from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
-from commons.db_utils import DBUtils
 import commons.utils as Utils
 import random
 
 api_utils = RestUtils()
-db_utils = DBUtils()
-
 
 @before.each_scenario
 def setup(scenario):
 
-    #Set default headers with correct token before every scenario
 
     world.headers = HEADERS
-    #db_utils.delete_rule_and_subscription_tables()
     Utils.delete_all_rules_from_tenant()
     world.rules = []
-
-
-@after.all
-def tear_down(scenario):
-
-    db_utils.close_connection()
 
 
 @step(u'a created "([^"]*)" inside tenant')
@@ -192,7 +181,7 @@ def then_i_obtain_all_the_rules_of_the_server(step):
     for rule in world.rules:
         assert_in(rule, response[RULES])
     world.rules = []
-    db_utils.delete_rule_and_subscription_tables()
+    Utils.delete_all_rules_from_tenant()
 
 
 

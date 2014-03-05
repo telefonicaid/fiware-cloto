@@ -4,10 +4,12 @@ from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTEN
     RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
 from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
 from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
-    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT
+    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES,SERVER_ID
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
     CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
+from configuration import TENANT_ID
+from rest_utils import RestUtils
 from nose.tools import assert_in, assert_equals
 import string
 import random
@@ -182,3 +184,15 @@ def context_server(context_responses, originator=None, subscription_id=None):
     return {SUBSCRIPTION_ID: subscription_id,
             ORIGINATOR: originator,
             CONTEXT_RESPONSES: context_responses}
+
+
+def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
+
+    api_utils = RestUtils()
+    req = api_utils.retrieve_server_list(tenant_id=tenant_id)
+    response = req.json()
+    print response
+    for server in response[SERVERS]:
+        server_id = server[SERVER_ID]
+        for rule_server in server[RULES]:
+            api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])

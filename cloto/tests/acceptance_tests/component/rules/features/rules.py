@@ -21,7 +21,8 @@ def setup(scenario):
     #Set default headers with correct token before every scenario
 
     world.headers = HEADERS
-    db_utils.delete_rule_and_subscription_tables()
+    #db_utils.delete_rule_and_subscription_tables()
+    Utils.delete_all_rules_from_tenant()
     world.rules = []
 
 
@@ -236,6 +237,7 @@ def given_a_created_group1_without_rules(step, server_id):
 
 @step(u'Given a tenant without servers')
 def given_a_tenant_without_servers(step):
+
     world.tenant_id = TENANT_ID
 
 
@@ -282,5 +284,8 @@ def then_i_obtain_the_server_list(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = Utils.assert_json_format(world.req)
-    assert_equals(response[SERVERS], world.servers_body)
-    db_utils.delete_rule_and_subscription_tables()
+    print world.servers_body
+    print response[SERVERS][len(response[SERVERS])-1]
+    for results in world.servers_body:
+        assert_in(results, response[SERVERS])
+    Utils.delete_all_rules_from_tenant()

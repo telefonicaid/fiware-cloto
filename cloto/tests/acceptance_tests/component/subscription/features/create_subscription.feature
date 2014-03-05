@@ -13,8 +13,8 @@ Scenario Outline: Create a new subscription
   | server_id   | name    | condition | action  | url_to_notify                       |
   | qatestserver| random  | default   | default | http://127.0.0.1:8000/v1.0/0comsdsd |
   | qatestserver| random  | default   | default | http://localhost:8080/notify?hello  |
-  | qatestserver| random  | default   | default | http://localhost                    |
-  | qatestserver| random  | default   | default | http://localhost/notify%20space/    |
+  | testserver  | random  | default   | default | http://localhost                    |
+  | qaserver    | random  | default   | default | http://localhost/notify%20space/    |
 
 
 

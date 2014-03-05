@@ -2,7 +2,14 @@ __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
     RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
+from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
+from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
+    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES,SERVER_ID
+from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
+    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
+from configuration import TENANT_ID
+from rest_utils import RestUtils
 from nose.tools import assert_in, assert_equals
 import string
 import random
@@ -138,3 +145,54 @@ def create_rule_body(action=None, rule_id=None, condition=None, name=None):
         del rule_body[RULE_NAME]
 
     return rule_body
+
+
+def context_element(cpu_value=None, memory_value=None, disk_value=None, network_value=None, server_id=None):
+
+    context_attributes_body = []
+    attribute_values = [cpu_value, memory_value, disk_value, network_value]
+    for name, value in zip(ATTRIBUTES_LIST, attribute_values):
+
+        if value is not None:
+            context_attributes_body.append({ATTRIBUTES_NAME: name, ATTRIBUTES_TYPE: ATTRIBUTE_PROBE,
+                                            ATTRIBUTES_VALUE: value})
+
+    context_element_body = {CONTEXT_TYPE: CONTEXT_SERVER,
+                            CONTEXT_IS_PATTERN: CONTEXT_IS_PATTERN_VALUE,
+                            CONTEXT_SERVER_ID: server_id,
+                            ATTRIBUTES: context_attributes_body}
+    return context_element_body
+
+
+def context_status_code(status_code=None, details='message', reason=CONTEXT_STATUS_CODE_OK):
+
+    status_code_body = {CONTEXT_STATUS_CODE_CODE: status_code,
+                        CONTEXT_STATUS_CODE_REASON: reason,
+                        CONTEXT_STATUS_CODE_DETAILS: details}
+
+    return status_code_body
+
+
+def context_response(context_element, status_code):
+
+    return {CONTEXT_ELEMENT: context_element,
+            CONTEXT_STATUS_CODE: status_code}
+
+
+def context_server(context_responses, originator=None, subscription_id=None):
+
+    return {SUBSCRIPTION_ID: subscription_id,
+            ORIGINATOR: originator,
+            CONTEXT_RESPONSES: context_responses}
+
+
+def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
+
+    api_utils = RestUtils()
+    req = api_utils.retrieve_server_list(tenant_id=tenant_id)
+    response = req.json()
+    print response
+    for server in response[SERVERS]:
+        server_id = server[SERVER_ID]
+        for rule_server in server[RULES]:
+            api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])

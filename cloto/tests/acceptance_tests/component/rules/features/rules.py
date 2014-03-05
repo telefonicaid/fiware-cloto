@@ -1,34 +1,24 @@
 __author__ = 'artanis'
 
 # -*- coding: utf-8 -*-
-from lettuce import step, world, before, after
+from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
-from commons.db_utils import DBUtils
 import commons.utils as Utils
 import random
 
 api_utils = RestUtils()
-db_utils = DBUtils()
-
 
 @before.each_scenario
 def setup(scenario):
 
-    #Set default headers with correct token before every scenario
 
     world.headers = HEADERS
-    db_utils.delete_rule_and_subscription_tables()
+    Utils.delete_all_rules_from_tenant()
     world.rules = []
-
-
-@after.all
-def tear_down(scenario):
-
-    db_utils.close_connection()
 
 
 @step(u'a created "([^"]*)" inside tenant')
@@ -191,7 +181,7 @@ def then_i_obtain_all_the_rules_of_the_server(step):
     for rule in world.rules:
         assert_in(rule, response[RULES])
     world.rules = []
-    db_utils.delete_rule_and_subscription_tables()
+    Utils.delete_all_rules_from_tenant()
 
 
 
@@ -236,6 +226,7 @@ def given_a_created_group1_without_rules(step, server_id):
 
 @step(u'Given a tenant without servers')
 def given_a_tenant_without_servers(step):
+
     world.tenant_id = TENANT_ID
 
 
@@ -282,5 +273,8 @@ def then_i_obtain_the_server_list(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = Utils.assert_json_format(world.req)
-    assert_equals(response[SERVERS], world.servers_body)
-    db_utils.delete_rule_and_subscription_tables()
+    print world.servers_body
+    print response[SERVERS][len(response[SERVERS])-1]
+    for results in world.servers_body:
+        assert_in(results, response[SERVERS])
+    Utils.delete_all_rules_from_tenant()

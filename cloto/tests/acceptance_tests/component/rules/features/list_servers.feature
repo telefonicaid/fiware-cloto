@@ -3,10 +3,6 @@ Feature: Get the list of all servers
   I want to obtain a server list
   In order to manage all the servers
 
-  Scenario: Retrieve a servers list from one tenant without servers
-    Given a tenant without servers
-    When I retrieve the server list
-    Then I obtain zero results
 
   Scenario Outline: retrieve a server list with several servers in tenant with rules
 

@@ -190,6 +190,10 @@ class RuleManager():
         r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
         r_query.delete()
+
+        #Deleting subscriptions to that rule
+        subscriptions = Subscription.objects.filter(ruleId__exact=ruleId)
+        subscriptions.delete()
         return True
 
     def get_all_entities(self, tenantId):

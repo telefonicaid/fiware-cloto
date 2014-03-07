@@ -5,16 +5,24 @@ from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS
-from commons.configuration import HEADERS, TENANT_ID
+from commons.configuration import HEADERS
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
+import commons.authentication as Auth
 import commons.utils as Utils
 import random
 
 api_utils = RestUtils()
 
-@before.each_scenario
-def setup(scenario):
 
+@before.each_feature
+def setup_feature(feature):
+
+    token_id, world.tenant_id = Auth.get_token()
+    HEADERS['X-Auth-Token'] = token_id
+
+
+@before.each_scenario
+def setup_scenario(scenario):
 
     world.headers = HEADERS
     Utils.delete_all_rules_from_tenant()
@@ -24,7 +32,6 @@ def setup(scenario):
 @step(u'a created "([^"]*)" inside tenant')
 def set_tenant_and_server_id(step, server_id):
 
-    world.tenant_id = TENANT_ID
     world.server_id = server_id
 
 @step(u'I create a rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
@@ -79,7 +86,6 @@ def retrieve_rule(step, server_id):
 @step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
 def created_rule(step, rule_name, rule_condition, rule_action, server_id):
     #Save all the expected results in global variables to compare after with obtained results.
-    world.tenant_id = TENANT_ID
     world.server_id = server_id
     world.rule_name, world.rule_condition, world.rule_action = Utils.create_rule_parameters(rule_name, rule_condition,
                                                                                             rule_action)
@@ -189,7 +195,6 @@ def then_i_obtain_all_the_rules_of_the_server(step):
 def given_group1_of_rules_created_in_group2(step, number_rules, server_id):
 
     world.server_id = server_id
-    world.tenant_id = TENANT_ID
     world.number_rules = int(number_rules)
     for x in range(world.number_rules):
         rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
@@ -227,8 +232,7 @@ def given_a_created_group1_without_rules(step, server_id):
 @step(u'Given a tenant without servers')
 def given_a_tenant_without_servers(step):
 
-    world.tenant_id = TENANT_ID
-
+    pass
 
 @step(u'When I retrieve the server list')
 def when_i_retrieve_the_server_list(step):
@@ -246,7 +250,6 @@ def then_i_obtain_zero_results(step):
 @step(u'Given a "([^"]*)" of servers in a tenant with rules created')
 def given_a_group1_of_servers_in_a_tenant(step, number_servers):
 
-    world.tenant_id = TENANT_ID
     world.number_servers = int(number_servers)
     world.servers_body = []
 
@@ -257,7 +260,7 @@ def given_a_group1_of_servers_in_a_tenant(step, number_servers):
 
         for rule in range(number_rules):
             rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
-            req = api_utils.create_rule(TENANT_ID, server_id, rule_name, rule_condition, rule_action)
+            req = api_utils.create_rule(world.tenant_id, server_id, rule_name, rule_condition, rule_action)
             assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
             rule_id = req.json()[RULE_ID]
             world.rules.append(Utils.create_rule_body(action=None, rule_id=rule_id, condition=None,

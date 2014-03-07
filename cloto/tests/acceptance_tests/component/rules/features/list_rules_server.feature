@@ -2,6 +2,7 @@ Feature: As a user
   I want list all the rules of specific server
   In order to manage the rules of a server
 
+  @basic
   Scenario Outline: List server with only one rule
 
     Given "<number>" of rules created in "<server_id>"
@@ -48,7 +49,7 @@ Feature: As a user
     | server_id | Error_code  | FaultElement  |
     | random    | 404         | itemNotFound  |
 
-
+  @security
   Scenario Outline: List rules with incorrect token
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"

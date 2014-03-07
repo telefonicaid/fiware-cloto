@@ -9,14 +9,21 @@ from commons.constants import RULE_ID, SERVER_ID, SUBSCRIPTION_ID, RANDOM, DEFAU
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK
 import commons.utils as Utils
+import commons.authentication as Auth
 
 api_utils = RestUtils()
 
 
-@before.each_scenario
-def setup(scenario):
+@before.each_feature
+def setup_feature(feature):
 
-    #Set default headers with correct token before every scenario
+    token_id, world.tenant_id = Auth.get_token()
+    HEADERS['X-Auth-Token'] = token_id
+
+
+@before.each_scenario
+def setup_scenario(scenario):
+
     world.headers = HEADERS
 
 

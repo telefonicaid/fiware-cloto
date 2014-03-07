@@ -2,7 +2,7 @@ Feature: As a user
   I want subscribe servers to subscriptions
   In order to activate rules in the servers subscribed
 
-
+@basic
 Scenario Outline: Create a new subscription
 
   Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
@@ -60,7 +60,7 @@ Scenario Outline: Create subscription from a non existant server_id or incorrect
   | qatestserver| random  | default   | default | http://localhost  | 404         | itemNotFound  | random            |
   | qatestserver| random  | default   | default | http://localhost  | 404         | itemNotFound  | qa                |
 
-
+@security
 Scenario Outline: Create subscription with incorrect token
 
   Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"

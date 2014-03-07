@@ -3,7 +3,7 @@ Feature: Retrieve subscription
   I want get rule subscriptions from server
   In order to manage my server subscriptions
 
-
+  @basic
   Scenario Outline: Retrieve a subscription
 
     Given a subscription created in "<server_id>"
@@ -40,7 +40,7 @@ Feature: Retrieve subscription
     | qatestserver  | 404         | itemNotFound  |
     | qatestserver  | 404         | itemNotFound  |
 
-
+  @security
   Scenario Outline: Retrieve a subscription with incorrect token
 
     Given a subscription created in "<server_id>"

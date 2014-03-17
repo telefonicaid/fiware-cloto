@@ -11,11 +11,12 @@ from commons.constants import RULE_ACTION, RULE_CONDITION, RULE_NAME, RULE_ID, R
 SERVER = 'http://{}:{}/v1.0'.format(REST_IP, REST_PORT)
 TENANT_PATTERN = '{url_root}/{tenant_id}/'
 LIST_SERVERS_PATTERN = '{url_root}/{tenant_id}/servers'
-LIST_RULES_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}'
+SERVER_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}'
 CREATE_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules'
 ELASTICITY_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules/{rule_id}'
 CREATE_SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription'
 SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription/{subscription_id}'
+
 
 
 class RestUtils(object):
@@ -99,15 +100,14 @@ class RestUtils(object):
         :param headers: HTTP header request (dict)
         :returns: REST API response from Policy Manager
         """
-        return self._call_api(pattern=LIST_RULES_PATTERN, method='get', headers=headers, tenant_id=tenant_id,
+        return self._call_api(pattern=SERVER_PATTERN, method='get', headers=headers, tenant_id=tenant_id,
                               server_id=server_id)
 
-    def update_server_context(self):
+    def update_server_context(self, tenant_id, server_id, body=None, headers=HEADERS):
 
-        #TODO: verify all the JSON parameters. At the moment subscription_id, type, isPattern, server_id (id),
-        #TODO: attributes (including name, type and value) and status_code
+        return self._call_api(pattern=SERVER_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
+                              server_id=server_id, body=body)
 
-        pass
 
     def create_rule(self, tenant_id=None, server_id=None, rule_name=None, condition=None, action=None, headers=HEADERS):
         """Create a new elasticity rule in specific server.

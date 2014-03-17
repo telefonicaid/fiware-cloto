@@ -4,13 +4,13 @@ from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTEN
     RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
 from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
 from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
-    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES,SERVER_ID
+    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, DEFAULT, RANDOM, RULE_URL_DEFAULT
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
     CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
-from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR
-from configuration import TENANT_ID
+from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
+from configuration import TENANT_ID, HEADERS
 from rest_utils import RestUtils
-from nose.tools import assert_in, assert_equals
+from nose.tools import assert_in, assert_equals, assert_true
 import string
 import random
 
@@ -186,6 +186,17 @@ def context_server(context_responses, originator=None, subscription_id=None):
             CONTEXT_RESPONSES: context_responses}
 
 
+def build_one_context_server(cpu_value=None, memory_value=None, disk_value=None, network_value=None, server_id=None,
+                             subscription_id=None):
+
+    context_element_body = context_element(cpu_value, memory_value, disk_value, network_value, server_id)
+    context_status_code_body = context_status_code(status_code='200')
+    context_response_body = []
+    context_response_body.append(context_response(context_element_body, context_status_code_body))
+    context_server_body = context_server(context_response_body, None, subscription_id)
+    return context_server_body
+
+
 def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
 
     api_utils = RestUtils()
@@ -196,3 +207,61 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
         server_id = server[SERVER_ID]
         for rule_server in server[RULES]:
             api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
+
+
+def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_name=None, rule_condition=None, rule_action=None,
+                headers=HEADERS, ):
+
+    #Prepare rule parameters
+    r_name, r_condition, r_action = create_rule_parameters(rule_name, rule_condition, rule_action)
+
+    #Create the rule in Policy Manager
+    req = api_utils.create_rule(tenant_id, server_id, r_name, r_condition, r_action, headers)
+
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    req.ok
+
+    rule_id = req.json()[RULE_ID]
+    return rule_id
+
+
+def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TENANT_ID, rule_name=None, rule_condition=None,
+                        rule_action=None):
+
+    rule_id = create_rule(api_utils, tenant_id, server_id, rule_name, rule_condition, rule_action, headers)
+
+    req = api_utils.create_subscription(tenant_id=tenant_id, server_id=server_id,
+                                        rule_id=rule_id, url=RULE_URL_DEFAULT, headers=headers)
+
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    print req.content
+    subscription_id = req.json()[SUBSCRIPTION_ID]
+    return subscription_id
+
+
+def update_context_constant_parameter(parameter, value, context_body):
+
+    if parameter == 'isPattern':
+        context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][CONTEXT_IS_PATTERN] = value
+    elif parameter == 'server_type':
+        context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][CONTEXT_TYPE] = value
+    elif parameter == 'name':
+        context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_NAME] = value
+    elif parameter == 'at_type':
+        context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_TYPE] = value
+
+    return context_body
+
+
+def delete_context_constant_parameter(parameter, context_body):
+
+    if parameter == 'isPattern':
+        del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][CONTEXT_IS_PATTERN])
+    elif parameter == 'server_type':
+        del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][CONTEXT_TYPE])
+    elif parameter == 'name':
+        del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_NAME])
+    elif parameter == 'at_type':
+        del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_TYPE])
+
+    return context_body

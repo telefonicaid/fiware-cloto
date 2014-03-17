@@ -5,7 +5,7 @@ __author__ = 'gjp'
 
 OPENSTACK_URL = u'http://130.206.80.61:35357/v2.0'
 ADM_USER = u'admin'
-ADM_PASS = u'openstack'
+ADM_PASS = u'2 b @bl3 2 3nt3r'
 
 # POLICY MANAGER CONFIGURATION
 DEFAULT_WINDOW_SIZE = 5

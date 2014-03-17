@@ -5,10 +5,18 @@ from lettuce import step, world, before
 from commons.rest_utils import RestUtils
 from commons.constants import TENANT_DOC, TENANT_OWNER, TENANT_VERSION, TENANT_WSIZE
 from commons.configuration import HEADERS, TENANT_ID
-from commons.errors import ERROR_CODE_ERROR
 import commons.utils as Utils
 
+import commons.authentication as Auth
+
 api_utils = RestUtils()
+
+
+@before.each_feature
+def setup_feature(feature):
+
+    token_id, world.tenant_id = Auth.get_token()
+    HEADERS['X-Auth-Token'] = token_id
 
 
 @before.each_scenario

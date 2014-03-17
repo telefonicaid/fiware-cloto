@@ -46,7 +46,7 @@ Feature: Policy Manager update window size
         |   tenant_id   |   Error_code  |    FaultElement    |  windowsize  |
         |   toni        |   401         |    unauthorized    |  3           |
 
-    @authentication
+    @security
     Scenario Outline: Update window size with incorrect token authentication
 
         Given a created tenant

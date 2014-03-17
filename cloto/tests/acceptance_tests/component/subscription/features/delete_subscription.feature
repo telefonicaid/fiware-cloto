@@ -3,7 +3,7 @@ Feature: Delete subscription
   I want delete rule subscriptions
   In order to manage my server subscriptions
 
-
+  @basic
   Scenario Outline: Delete a subscription
 
     Given a subscription created in "<server_id>"
@@ -40,7 +40,7 @@ Feature: Delete subscription
     | qatestserver  | 404         | itemNotFound  |
     | qatestserver  | 404         | itemNotFound  |
 
-
+  @security
   Scenario Outline: Delete a subscription with incorrect token
 
     Given a subscription created in "<server_id>"

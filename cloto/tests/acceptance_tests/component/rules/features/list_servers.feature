@@ -3,7 +3,7 @@ Feature: Get the list of all servers
   I want to obtain a server list
   In order to manage all the servers
 
-
+  @basic
   Scenario Outline: retrieve a server list with several servers in tenant with rules
 
     Given a "<server_number>" of servers in a tenant with rules created
@@ -16,7 +16,7 @@ Feature: Get the list of all servers
     | 1             |
     | 2             |
     | 5             |
-    | 20            |
+    | 10            |
 
   Scenario Outline: retrieve a server list with one server without rules
 
@@ -29,6 +29,7 @@ Feature: Get the list of all servers
     | server_id       |
     | qatestserver    |
 
+  @security
   Scenario Outline: Retrieve a server list with incorrect credentials
 
     Given a "<server_number>" of servers in a tenant with rules created

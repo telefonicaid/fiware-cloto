@@ -3,6 +3,7 @@ Feature: Retrieve Elasticity Rule
   I want to get a specific elasticity rule
   In order to manage my rules
 
+  @basic
   Scenario Outline: Retrieve a created rule
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
@@ -39,7 +40,7 @@ Feature: Retrieve Elasticity Rule
     | qatestserver| random    | default   | default | testingserver     | 404         | itemNotFound  |
     | qatestserver| alertCPU  | default   | default | qaserver          | 404         | itemNotFound  |
 
-
+  @security
   Scenario Outline: Retrieve a rule with incorrect token
 
     Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"

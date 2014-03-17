@@ -24,7 +24,7 @@ Feature: Policy Manager information
       | tenant_id | Error_code| FaultElement  |
       | toni      | 401       | unauthorized  |
 
-    @authentication
+    @security
     Scenario Outline: Get tenant information with incorrect token authentication
 
       Given a created tenant

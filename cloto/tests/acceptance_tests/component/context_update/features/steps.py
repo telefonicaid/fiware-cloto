@@ -11,7 +11,6 @@ from commons.configuration import HEADERS
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 import commons.authentication as Auth
 import commons.utils as Utils
-import random
 
 api_utils = RestUtils()
 
@@ -62,16 +61,14 @@ def send_context_values(step, server_id, cpu, memory, disk, network):
 @step(u'Then the context is updated')
 def then_the_context_is_updated(step):
 
-    #assert world.req.ok
-    pass
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
 
 
 @step(u'Then I obtain an "([^"]*)" and the "([^"]*)"')
 def then_i_obtain_an_group1_and_the_group2(step, error_code, fault_element):
 
-    #Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
-    #                              expected_fault_element=fault_element)
-    pass
+    Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
+                                  expected_fault_element=fault_element)
 
 
 @step(u'And another "([^"]*)" that not exist')

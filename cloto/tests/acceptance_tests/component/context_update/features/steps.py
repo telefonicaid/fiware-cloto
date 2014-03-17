@@ -3,12 +3,11 @@ __author__ = 'arobres'
 
 # -*- coding: utf-8 -*-
 from lettuce import step, world, before
-from nose.tools import assert_equals, assert_in, assert_true
+from nose.tools import assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS, \
-    SUBSCRIPTION_ID, RULE_URL_DEFAULT
+from commons.constants import RANDOM, DEFAULT
 from commons.configuration import HEADERS
-from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
+from commons.errors import HTTP_CODE_NOT_OK
 import commons.authentication as Auth
 import commons.utils as Utils
 
@@ -26,6 +25,7 @@ def setup_feature(feature):
 def setup_scenario(scenario):
 
     world.headers = HEADERS
+
 
 @step(u'Given a "([^"]*)" with one rule subscribed')
 def given_a_group1_with_one_rule_subscribed(step, server_id):
@@ -50,12 +50,6 @@ def send_context_values(step, server_id, cpu, memory, disk, network):
 
     world.req = api_utils.update_server_context(tenant_id=world.tenant_id, headers=world.headers, server_id=server_id,
                                                 body=body)
-
-    print '---------------------------------------------------------------------------'
-    print world.req.status_code
-    print world.req.text
-
-    print '---------------------------------------------------------------------------'
 
 
 @step(u'Then the context is updated')
@@ -99,6 +93,7 @@ def when_context_updated_is_receiver_to_group1_with_missing_constant_group2(step
 
     world.req = api_utils.update_server_context(tenant_id=world.tenant_id, headers=world.headers, server_id=server_id,
                                                 body=body)
+
 
 @step(u'incorrect "([^"]*)"')
 def set_incorrect_token(step, token):

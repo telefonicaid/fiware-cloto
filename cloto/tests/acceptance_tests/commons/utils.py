@@ -251,7 +251,6 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
     api_utils = RestUtils()
     req = api_utils.retrieve_server_list(tenant_id=tenant_id)
     response = req.json()
-    print response
     for server in response[SERVERS]:
         server_id = server[SERVER_ID]
         for rule_server in server[RULES]:
@@ -302,7 +301,6 @@ def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TE
                                         rule_id=rule_id, url=RULE_URL_DEFAULT, headers=headers)
 
     assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
-    print req.content
     subscription_id = req.json()[SUBSCRIPTION_ID]
     return subscription_id
 

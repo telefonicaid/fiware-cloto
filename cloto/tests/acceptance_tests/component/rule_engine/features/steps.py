@@ -28,7 +28,7 @@ def setup_scenario(scenario):
     world.headers = HEADERS
 
 
-@step(u'Given the window size is "([^"]*)"')
+@step(u'the window size is "([^"]*)"')
 def given_the_window_size_is_group1_in_group2(step, window_size):
 
     try:
@@ -41,7 +41,7 @@ def given_the_window_size_is_group1_in_group2(step, window_size):
                                              headers=world.headers)
 
 
-@step(u'And the following rule subscribed in "([^"]*)"')
+@step(u'the following rule subscribed in "([^"]*)"')
 def and_the_following_rule_subscribed_in_group1(step, server_id):
 
     for examples in step.hashes:
@@ -55,7 +55,7 @@ def and_the_following_rule_subscribed_in_group1(step, server_id):
                                                           rule_action=r_condition, rule_condition=r_action)
 
 
-@step(u'When context update is received to "([^"]*)" with values "([^"]*)", "([^"]*)", "([^"]*)" and "([^"]*)"')
+@step(u'context update is received to "([^"]*)" with values "([^"]*)", "([^"]*)", "([^"]*)" and "([^"]*)"')
 def send_context_values(step, server_id, cpu, memory, disk, network):
 
     body = Utils.build_one_context_server(server_id=server_id, cpu_value=cpu, memory_value=memory, disk_value=disk,
@@ -65,13 +65,13 @@ def send_context_values(step, server_id, cpu, memory, disk, network):
                                                 body=body)
 
 
-@step(u'Then the fact is introduced in the Rule Engine')
+@step(u'the fact is introduced in the Rule Engine')
 def then_the_fact_is_introduced_in_the_rule_engine(step):
     #TODO assertion in Rabbit or Firing the RULE
     pass
 
 
-@step(u'And "([^"]*)" of contexts in "([^"]*)"')
+@step(u'"([^"]*)" of contexts in "([^"]*)"')
 def number_contexts_exists(step, number_contexts, server_id):
 
     at_value = random.random()
@@ -83,7 +83,19 @@ def number_contexts_exists(step, number_contexts, server_id):
                                                     body=body)
 
 
-@step(u'Then the fact is not introduced in the Rule Engine')
+@step(u'the fact is not introduced in the Rule Engine')
 def then_the_fact_is_not_introduced_in_the_rule_engine(step):
     #TODO assertion in Rabbit or Not Firing the RULE
+    pass
+
+
+@step(u'Then The rule is fired')
+def then_the_rule_is_fired(step):
+    #TODO assertion using the HTTP mock to verify the HTTP REST request is sent
+    pass
+
+
+@step(u'Then The rule is not fired')
+def then_the_rule_is_not_fired(step):
+    #TODO assertion using the HTTP mock to verify the HTTP REST request is not sent
     pass

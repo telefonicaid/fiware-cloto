@@ -12,7 +12,7 @@ class RuleManagerTests(TestCase):
         self.tenantId = "tenantId"
         self.serverId = "serverId"
         self.newServerId = "ServerIdThatNoExists"
-        entity = Entity(entity_Id=self.serverId, tenantId=self.tenantId)
+        entity = Entity(serverId=self.serverId, tenantId=self.tenantId)
         entity.save()
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
 
@@ -34,14 +34,13 @@ class RuleManagerTests(TestCase):
         response = RuleManager.RuleManager().delete_rule(rule.ruleId)
         self.assertEqual(response, True)
 
-
     def test_create_rule_and_update(self):
         """Tests if method creates a general rule."""
         rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
 
-        updated = RuleManager.RuleManager().update_rule(rule.ruleId, self.rule)
+        updated = RuleManager.RuleManager().update_rule(self.tenantId, rule.ruleId, self.rule)
         self.assertIsInstance(updated, RuleModel)
         self.assertIsNotNone(updated.ruleId)
 
@@ -56,11 +55,11 @@ class RuleManagerTests(TestCase):
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
 
-        rule2 = RuleManager.RuleManager().get_specific_rule(rule.ruleId)
+        rule2 = RuleManager.RuleManager().get_specific_rule(self.tenantId, self.serverId, rule.ruleId)
         self.assertIsInstance(rule2, RuleModel)
         self.assertIsNotNone(rule2.ruleId)
 
-        response = RuleManager.RuleManager().delete_specific_rule(self.serverId, rule.ruleId)
+        response = RuleManager.RuleManager().delete_specific_rule(self.tenantId, self.serverId, rule.ruleId)
         self.assertEqual(response, True)
 
     def test_create_specific_rule_for_new_server_and_updating(self):
@@ -69,10 +68,10 @@ class RuleManagerTests(TestCase):
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
 
-        update = RuleManager.RuleManager().update_specific_rule(rule.ruleId, self.ruleUpdated)
+        update = RuleManager.RuleManager().update_specific_rule(
+            self.tenantId, self.newServerId, rule.ruleId, self.ruleUpdated)
         self.assertIsInstance(update, RuleModel)
         self.assertIsNotNone(update.ruleId)
-
 
     def test_get_all_specific_rules(self):
         """Tests if method list all general rules of a server."""
@@ -84,16 +83,15 @@ class RuleManagerTests(TestCase):
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
-        url = "http://URL:PORT/testService"
-        subscription = "{\"url\": \"http://URL:PORT/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
 
-        subscriptionId = RuleManager.RuleManager().subscribe_to_rule(self.tenantId, self.serverId, subscription)
+        subscriptionId = RuleManager.RuleManager().subscribe_to_rule(self.tenantId, self.newServerId, subscription)
         self.assertIsInstance(subscriptionId, uuid.UUID)
 
-        subscrp = RuleManager.RuleManager().get_subscription(self.tenantId, self.serverId, subscriptionId)
+        subscrp = RuleManager.RuleManager().get_subscription(self.tenantId, self.newServerId, subscriptionId)
         self.assertIsInstance(subscrp, SubscriptionModel)
         self.assertEqual(url, subscrp.url)
 
-        result = RuleManager.RuleManager().unsubscribe_to_rule(subscriptionId)
+        result = RuleManager.RuleManager().unsubscribe_to_rule(self.newServerId, subscriptionId)
         self.assertIs(result, True)
-

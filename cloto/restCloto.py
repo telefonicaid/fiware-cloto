@@ -190,8 +190,9 @@ class ServerView(RESTResource):
 
     def PUT(self, request, tenantId, serverId):
         # Should update the context of server
-        #myFactManager = FactManager.FactManager()
-        #nfacts = myFactManager.insertFact(tenantId, serverId, request.body)
+
+        myFactManager = FactManager.FactManager()
+        #nfacts = myFactManager.insertFact(tenantId, serverId, request.body, arbiter)
         return HttpResponse(json.dumps({"OK": {"code": 200, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
 

@@ -3,7 +3,7 @@ import sys
 import pika
 import sqlite3 as lite
 import logging
-from configuration import LOGGING_PATH
+from configuration import LOGGING_PATH, RABBITMQ_URL
 logger = logging.getLogger('environments')
 logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler(LOGGING_PATH + '/%s.log' % sys.argv[1])
@@ -19,7 +19,7 @@ def main():
             tenantId = sys.argv[1]
 
             connection = pika.BlockingConnection(pika.ConnectionParameters(
-                    host='localhost'))
+                    host=RABBITMQ_URL))
             channel = connection.channel()
 
             channel.exchange_declare(exchange="update_" + tenantId,

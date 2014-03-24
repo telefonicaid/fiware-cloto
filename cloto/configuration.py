@@ -14,3 +14,4 @@ API_INFO_URL = u'http://wikis.hi.inet/boi/index.php/Dinge_API'
 VERSION = 1.0
 MAX_WINDOW_SIZE = 10
 LOGGING_PATH = u'/var/log/fiware-cloto'
+RABBITMQ_URL = u'localhost'

@@ -2,7 +2,7 @@ import sqlite3
 import datetime
 from models import ServerInfo
 from django.utils import timezone
-from configuration import OWNER, API_INFO_URL, VERSION
+from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH
 from circus import get_arbiter
 from circus.process import Process
 import time
@@ -27,5 +27,5 @@ conn.commit()
 # Just be sure any changes have been committed or they will be lost.
 conn.close()
 
-arbiter = get_arbiter([{"cmd": "python cloto/environmentManager.py", "numprocesses": 1}], background=True)
+arbiter = get_arbiter([{"cmd": "python "+ ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 arbiter.start()

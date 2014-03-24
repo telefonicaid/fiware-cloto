@@ -1,5 +1,5 @@
 __author__ = 'Geon'
-from configuration import LOGGING_PATH
+from configuration import LOGGING_PATH, ENVIRONMENTS_PATH
 import logging
 import signal
 import time
@@ -32,7 +32,7 @@ def main():
                     if tenant not in tenants:
                         tenants.append(tenant)
                         id = tenant[0]
-                        process = Process('Top', 'python cloto/environment.py %s' % id)
+                        process = Process('Top', 'python ' + ENVIRONMENTS_PATH + ' %s' % id)
                         logger.info("Starting new environment for %s - pid: " % id)
                         processes.append(process)
 

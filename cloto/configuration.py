@@ -15,3 +15,6 @@ VERSION = 1.0
 MAX_WINDOW_SIZE = 10
 LOGGING_PATH = u'/var/log/fiware-cloto'
 RABBITMQ_URL = u'localhost'
+
+ENVIRONMENTS_MANAGER_PATH = u'cloto/environmentManager.py'
+ENVIRONMENTS_PATH = u'cloto/environment.py'

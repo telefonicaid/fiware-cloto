@@ -27,7 +27,5 @@ conn.commit()
 # Just be sure any changes have been committed or they will be lost.
 conn.close()
 
-arbiter = \
-    get_arbiter([{"cmd": "python /Users/Geon/pdihub/fiware-cloto/cloto/environmentManager.py",
-                  "numprocesses": 1}], background=True)
+arbiter = get_arbiter([{"cmd": "python cloto/environmentManager.py", "numprocesses": 1}], background=True)
 arbiter.start()

@@ -56,6 +56,7 @@ def then_the_context_is_updated(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
 
+
 @step(u'Then I obtain an "([^"]*)" and the "([^"]*)"')
 def then_i_obtain_an_group1_and_the_group2(step, error_code, fault_element):
 

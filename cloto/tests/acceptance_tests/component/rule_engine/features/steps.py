@@ -2,17 +2,24 @@ __author__ = 'arobres'
 
 
 # -*- coding: utf-8 -*-
-from lettuce import step, world, before
+from lettuce import step, world, before, after
 from nose.tools import assert_true
 from commons.rest_utils import RestUtils
 from commons.constants import RANDOM, DEFAULT
 from commons.configuration import HEADERS
 from commons.errors import HTTP_CODE_NOT_OK
+from commons.env_utils import EnvironmentUtils
 import commons.authentication as Auth
 import commons.utils as Utils
 import random
 
 api_utils = RestUtils()
+env_utils = EnvironmentUtils()
+
+
+@before.all
+def setup_all():
+    env_utils.start_mock()
 
 
 @before.each_feature
@@ -99,3 +106,8 @@ def then_the_rule_is_fired(step):
 def then_the_rule_is_not_fired(step):
     #TODO assertion using the HTTP mock to verify the HTTP REST request is not sent
     pass
+
+
+@after.all
+def setup_all():
+    env_utils.stop_mock()

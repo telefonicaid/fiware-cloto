@@ -66,6 +66,5 @@ Feature: As Scalability Manager
     | (((cpu ?y&:(< ?y 0.01))&((network ?t&:(< ?t 0.01))) or (((hd ?s&:(< ?s 0.01))&((network ?t&:(< ?t 0.01))) | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
 
 
-    Scenario: Several actions are fired
-
-
+  Scenario: Several actions fired
+  Scenario: Timeout configured between rule fired

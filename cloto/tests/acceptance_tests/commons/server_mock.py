@@ -2,6 +2,7 @@ __author__ = 'arobres'
 
 
 from bottle import run, Bottle, request, response
+from configuration import MOCK_IP, MOCK_PORT
 from collections import deque
 import ujson
 
@@ -67,4 +68,4 @@ def get_stats():
     return statistics
 
 
-run(app, host='0.0.0.0', port=8080, reloader=True)
+run(app, host=MOCK_IP, port=MOCK_PORT, reloader=True)

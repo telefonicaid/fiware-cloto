@@ -9,3 +9,6 @@ TENANT_ID = '6571e3422ad84f7d828ce2f30373b3d4'
 CONTENT_TYPE = 'application/json'
 HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
 DB_PATH = '../../../../cloto.db'
+MOCK_IP = u'0.0.0.0'
+MOCK_PORT = 8080
+MOCK_PATH = 'commons/server_mock.py'

@@ -1,7 +1,7 @@
 __author__ = 'arobres'
 
 
-from bottle import route, run, template, Bottle, request, response, auth_basic
+from bottle import run, Bottle, request, response
 from collections import deque
 import ujson
 

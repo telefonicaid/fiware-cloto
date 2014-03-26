@@ -1,2 +1,5 @@
 git+https://visitor:visitor@pdihub.hi.inet/TDAF/tdaf-lettuce-tools.git@develop#egg=tdaf_lettuce_tools
+bottle==0.11.6
+ujson==1.33
+
 

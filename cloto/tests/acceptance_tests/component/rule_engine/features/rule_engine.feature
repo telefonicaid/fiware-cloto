@@ -3,18 +3,18 @@ Feature: As Scalability Manager
   In order to offer scalability options
 
   @basic
-  Scenario Outline: Action fired when fact arrives and rule is satisfied
+  Scenario Outline: Action fired when fact arrives and rule is satisfied using different actions
     Given the following rule subscribed in "<server_id>"
     | name  | condition                                              | action       |
     | rule1 | ?serv <- (server (server-id ?x) (cpu ?y&:(> ?y 0.10))' | <action_type>|
     When context update is received to "<server_id>" with values "<cpu>", "<memory>", "<disk>" and "<network>"
-    Then The rule is fired
+    Then The rule is fired with the "<action>"
 
     Examples:
-    | action_type                                     | server_id | cpu   | memory  | disk  | network |
-    | assert (alertCPU ?x))(python-call scale_up)     | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | assert (alertCPU ?x))(python-call scale_up)     | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | assert (alertCPU ?x))(python-call notify_user)  | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
+    | action_type                                     | server_id | cpu   | memory  | disk  | network | action      |
+    | assert (alertCPU ?x))(python-call notify_user)  | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify      |
+    | assert (alertCPU ?x))(python-call scale_up)     | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | scale_up    |
+    | assert (alertCPU ?x))(python-call scale_down)   | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | scale_down  |
 
 
   @basic
@@ -34,17 +34,19 @@ Feature: As Scalability Manager
 
   Scenario Outline: Actions behaviour with only one attribute in conditions
     Given the following rule subscribed in "<server_id>"
-    | name  | condition                                                    | action                                     |
-    | rule1 | ?serv <- (server (server-id ?x) (<attribute> ?y&:(> ?y 0.90))| assert (alertCPU ?x))(python-call scale_up)|
+    | name  | condition                                                    | action                                   |
+    | rule1 | ?serv <- (server (server-id ?x) (<attribute> ?y&:(> ?y 0.90))| assert (alertCPU ?x))(python-call notify)|
     When context update is received to "<server_id>" with values "<cpu>", "<memory>", "<disk>" and "<network>"
-    Then The rule is fired
+    Then The rule is fired with the "<action>"
 
-    Examples:
-    | attribute | server_id | cpu   | memory  | disk  | network |
-    | cpu       | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | memory    | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | hdd       | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | network   | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
+  Examples:
+    | attribute | server_id | cpu   | memory  | disk  | network | action  |
+    | cpu       | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | memory    | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | hdd       | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | network   | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+
+
 
 
   Scenario Outline: Actions behaviour with several attributes in conditions including operants
@@ -52,22 +54,21 @@ Feature: As Scalability Manager
     | name  | condition                                       | action                                     |
     | rule1 | u'?serv <- (server (server-id ?x) <attributes>) | assert (alertCPU ?x))(python-call notify)  |
     When context update is received to "<server_id>" with values "<cpu>", "<memory>", "<disk>" and "<network>"
-    Then The rule is fired
+    Then The rule is fired with the "<action>"
     Examples:
 
-    | attributes                                                                                                | server_id | cpu   | memory  | disk  | network |
-    | (cpu ?y&:(< ?y 0.01))&(mem ?y&:(< ?z 0.01)                                                                | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | (cpu ?y&:(< ?y 0.01))&(mem ?z&:(< ?z 0.01)&(hd ?s&:(< ?s 0.01)                                            | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | (cpu ?y&:(< ?y 0.01))&(mem ?z&:(< ?z 0.01)&(hd ?s&:(< ?s 0.01)&(network ?t&:(< ?t 0.01)                   | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | (cpu ?y&:(< ?y 0.01))or(mem ?y&:(< ?z 0.01)                                                               | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | (cpu ?y&:(< ?y 0.01))or(mem ?z&:(< ?z 0.01)or(hd ?s&:(< ?s 0.01)                                          | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | ((cpu ?y&:(< ?y 0.01))or(mem ?z&:(< ?z 0.01)or(hd ?s&:(< ?s 0.01)or(network ?t&:(< ?t 0.01)               | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | (((cpu ?y&:(< ?y 0.01))or((network ?t&:(< ?t 0.01))) & (((hd ?s&:(< ?s 0.01))or((network ?t&:(< ?t 0.01)))| qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-    | (((cpu ?y&:(< ?y 0.01))&((network ?t&:(< ?t 0.01))) or (((hd ?s&:(< ?s 0.01))&((network ?t&:(< ?t 0.01))) | qatest    | 0.75  | 0.8     | 0.1   | 0.15    |
-
+    | attributes                                                                                                | server_id | cpu   | memory  | disk  | network | action  |
+    | (cpu ?y&:(< ?y 0.01))&(mem ?y&:(< ?z 0.01)                                                                | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | (cpu ?y&:(< ?y 0.01))&(mem ?z&:(< ?z 0.01)&(hd ?s&:(< ?s 0.01)                                            | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | (cpu ?y&:(< ?y 0.01))&(mem ?z&:(< ?z 0.01)&(hd ?s&:(< ?s 0.01)&(network ?t&:(< ?t 0.01)                   | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | (cpu ?y&:(< ?y 0.01))or(mem ?y&:(< ?z 0.01)                                                               | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | (cpu ?y&:(< ?y 0.01))or(mem ?z&:(< ?z 0.01)or(hd ?s&:(< ?s 0.01)                                          | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | ((cpu ?y&:(< ?y 0.01))or(mem ?z&:(< ?z 0.01)or(hd ?s&:(< ?s 0.01)or(network ?t&:(< ?t 0.01)               | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | (((cpu ?y&:(< ?y 0.01))or((network ?t&:(< ?t 0.01))) & (((hd ?s&:(< ?s 0.01))or((network ?t&:(< ?t 0.01)))| qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
+    | (((cpu ?y&:(< ?y 0.01))&((network ?t&:(< ?t 0.01))) or (((hd ?s&:(< ?s 0.01))&((network ?t&:(< ?t 0.01))) | qatest    | 0.75  | 0.8     | 0.1   | 0.15    | notify  |
 
   Scenario: Several actions fired
   Scenario: Timeout configured between rule fired
+  Scenario: Errors from SDC when scale up and down
+  Scenario: Scale down with only one server
 
-
-    DE02200411440602959900

@@ -3,11 +3,10 @@ __author__ = 'arobres'
 
 # -*- coding: utf-8 -*-
 from lettuce import step, world, before, after
-from nose.tools import assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RANDOM, DEFAULT
+from commons.constants import MOCK_NUM_NOTIFICATIONS, MOCK_NUM_SCALE_UP, MOCK_NUM_SCALE_DOWN
 from commons.configuration import HEADERS
-from commons.errors import HTTP_CODE_NOT_OK
+import commons.mock_utils as mock_utils
 from commons.env_utils import EnvironmentUtils
 import commons.authentication as Auth
 import commons.utils as Utils
@@ -51,6 +50,10 @@ def given_the_window_size_is_group1_in_group2(step, window_size):
 @step(u'the following rule subscribed in "([^"]*)"')
 def and_the_following_rule_subscribed_in_group1(step, server_id):
 
+    world.count = 0
+    mock_utils.reset_responses()
+    mock_utils.reset_statistics()
+
     for examples in step.hashes:
 
         r_name = examples['name']
@@ -74,8 +77,10 @@ def send_context_values(step, server_id, cpu, memory, disk, network):
 
 @step(u'the fact is introduced in the Rule Engine')
 def then_the_fact_is_introduced_in_the_rule_engine(step):
-    #TODO assertion in Rabbit or Firing the RULE
-    pass
+
+    response = mock_utils.get_statistics()
+    assert int(response[MOCK_NUM_NOTIFICATIONS]) == 1
+
 
 
 @step(u'"([^"]*)" of contexts in "([^"]*)"')
@@ -90,22 +95,25 @@ def number_contexts_exists(step, number_contexts, server_id):
                                                     body=body)
 
 
+@step(u'Then The rule is not fired')
 @step(u'the fact is not introduced in the Rule Engine')
 def then_the_fact_is_not_introduced_in_the_rule_engine(step):
-    #TODO assertion in Rabbit or Not Firing the RULE
-    pass
+    response = mock_utils.get_statistics()
+    for keys in response.keys():
+        assert response[keys] == 0
 
 
-@step(u'Then The rule is fired')
-def then_the_rule_is_fired(step):
-    #TODO assertion using the HTTP mock to verify the HTTP REST request is sent
-    pass
 
+@step(u'Then The rule is fired with the "([^"]*)"')
+def then_the_rule_is_fired(step, action):
 
-@step(u'Then The rule is not fired')
-def then_the_rule_is_not_fired(step):
-    #TODO assertion using the HTTP mock to verify the HTTP REST request is not sent
-    pass
+    response = mock_utils.get_statistics()
+    if action == 'notify':
+        assert int(response[MOCK_NUM_NOTIFICATIONS]) == 1
+    elif action == 'scale_up':
+        assert int(response[MOCK_NUM_SCALE_UP]) == 1
+    elif action == 'scale_down':
+        assert int(response[MOCK_NUM_SCALE_DOWN]) == 1
 
 
 @after.all

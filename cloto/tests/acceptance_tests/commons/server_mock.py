@@ -4,14 +4,14 @@ __author__ = 'arobres'
 from bottle import run, Bottle, request, response
 from configuration import MOCK_IP, MOCK_PORT
 from constants import MOCK_NOTIFICATION, MOCK_RESET_ERRORS, MOCK_RESET_STATS, MOCK_RESPONSE_SAVE, MOCK_SCALE_DOWN, \
-    MOCK_SCALE_UP, MOCK_STATS
+    MOCK_SCALE_UP, MOCK_STATS, MOCK_NUM_NOTIFICATIONS, MOCK_NUM_SCALE_DOWN, MOCK_NUM_SCALE_UP
 from collections import deque
 import ujson
 
 app = Bottle()
-statistics = {'num_scale_up': 0,
-              'num_scale_down': 0,
-              'num_notifications': 0}
+statistics = {MOCK_NUM_SCALE_UP: 0,
+              MOCK_NUM_SCALE_DOWN: 0,
+              MOCK_NUM_NOTIFICATIONS: 0}
 
 responses_error = deque()
 

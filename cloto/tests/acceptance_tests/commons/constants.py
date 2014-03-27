@@ -75,6 +75,17 @@ CONTEXT_STATUS_CODE_REASON = u'reasonPhrase'
 CONTEXT_STATUS_CODE_DETAILS = u'details'
 CONTEXT_STATUS_CODE = u'statusCode'
 
+#MOCK PATHS
+
+MOCK_RESPONSE_SAVE = '/save_response/'
+MOCK_RESET_ERRORS = '/reset_errors/'
+MOCK_SCALE_UP = '/scale_up/'
+MOCK_SCALE_DOWN = '/scale_down/'
+MOCK_NOTIFICATION = '/notification/'
+MOCK_RESET_STATS = '/reset_stats/'
+MOCK_STATS = '/stats/'
+
+
 u'?serv <- (server (server-id ?x) (cpu ?y&:(< ?y 0.01))&(mem ?y&:(< ?z 0.01))'
 u'?serv <- (server (server-id ?x) (cpu ?x) (mem ?z) (hdd ?t) (net ?z)'
 u'?serv <- (server (server-id ?x) (cpu ?x) (mem ?z) (hdd ?t) (net ?z)'

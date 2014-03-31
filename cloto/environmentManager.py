@@ -50,7 +50,7 @@ if __name__ == '__main__':
     logger.setLevel(logging.DEBUG)
     fh = logging.FileHandler(LOGGING_PATH + '/environmentManager.log')
     fh.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+    formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
     fh.setFormatter(formatter)
     logger.addHandler(fh)
     main()

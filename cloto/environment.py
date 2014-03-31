@@ -7,11 +7,12 @@ import clips
 import json
 import requests
 from configuration import LOGGING_PATH, RABBITMQ_URL, CLIPS_PATH
+
 logger = logging.getLogger('environments')
 logger.setLevel(logging.DEBUG)
 fh = logging.FileHandler(LOGGING_PATH + '/%s.log' % sys.argv[1])
 fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
+formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
 fh.setFormatter(formatter)
 logger.addHandler(fh)
 
@@ -58,7 +59,8 @@ def main():
         return url
 
     def NotifyEmail(email, serverId, description, url):
-        print("[+] Test %s" % email)
+        """Sends a notification to given url showing that service must send an email to an address.
+        """
         #headers ={'X-Auth-Token':'test'}
         data = json.dumps({'action': 'notifyEmail', 'email': '%s', 'description': '%s'} % (email, description))
         r = requests.get(url)
@@ -69,6 +71,8 @@ def main():
                         % (email, serverId, url, r.status_code))
 
     def NotifyScaleUp(serverId, url):
+        """Sends a notification to given url showing that service must scale up a server.
+        """
         #headers ={'X-Auth-Token':'test'}
         data = json.dumps({'action': 'scaleUp', 'serverId': '%s'} % serverId)
         r = requests.get(url)
@@ -80,6 +84,8 @@ def main():
                          % (url, serverId, r.status_code))
 
     def NotifyScaleDown(serverId, url):
+        """Sends a notification to given url showing that service must scale down a server.
+        """
         #headers ={'X-Auth-Token':'test'}
         data = json.dumps({'action': 'scaleDown', 'serverId': '%s'} % serverId)
         r = requests.get(url)
@@ -107,6 +113,8 @@ def main():
                 eid, funcname, seq_args))
 
     def get_rules_from_db(tenantId):
+        """Gets all subscripted rules for a specified tenant and adds them to CLIPS environment to be checked.
+        """
         import sqlite3 as db
         conn = db.connect("cloto.db")
         conn.row_factory = db.Row
@@ -118,7 +126,6 @@ def main():
         while True:
             r = cur.fetchone()
             if not r:
-                print("not r")
                 conn.close()
                 break
             else:

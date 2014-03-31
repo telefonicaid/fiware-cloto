@@ -6,11 +6,14 @@ from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, S
 from django.utils import timezone
 from django.core.validators import URLValidator
 from keystoneclient.exceptions import Conflict
+import cloto.OrionClient as OrionClient
 
 
 class RuleManager():
     """This class provides methods to manage rules.
     """
+    #ContextBrokerClient
+    orionClient = OrionClient.OrionClient()
 
     def get_rule_model(self):
         """Returns model of Rule."""
@@ -121,6 +124,11 @@ class RuleManager():
         ruleId = uuid.uuid1()
         rule = SpecificRule(specificRule_Id=ruleId,
                             tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
+        """try:
+            rule = SpecificRule.objects.get(serverId__exact=serverId, )
+            raise ValueError("rule name already exists")
+        except Entity.DoesNotExist as err:
+            entity = Entity(serverId=serverId, tenantId=tenantId)"""
         rule.save()
         entity.specificrules.add(rule)
         rule.save()
@@ -219,6 +227,7 @@ class RuleManager():
 
     def subscribe_to_rule(self, tenantId, serverId, subscription):
         """Creates a server subscription to a rule """
+        context_broker_subscription = False
         try:
             entity = Entity.objects.get(serverId__exact=serverId)
         except Entity.DoesNotExist as err:
@@ -232,21 +241,32 @@ class RuleManager():
         #Verify that there is no more subscriptions to the rule for that server
         it = entity.subscription.iterator()
         for sub in it:
+            if sub.serverId == serverId:
+                context_broker_subscription = True
             if sub.ruleId == ruleId:
                 raise Conflict("Subscription already exists")
 
         self.verify_url(url)
+        if not context_broker_subscription:
+            cbSubscriptionId = self.orionClient.contextBrokerSubscription(tenantId, serverId)
         subscription_Id = uuid.uuid1()
-        subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId)
+        subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId,
+                              cbSubscriptionId=cbSubscriptionId)
         subscr.save()
         entity.subscription.add(subscr)
         entity.save()
+
         return subscription_Id
 
     def unsubscribe_to_rule(self, serverId, subscriptionId):
         """Unsuscribe a server from a rule """
+
         r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId)
-        r_query.delete()
+        if Subscription.objects.filter(serverId__exact=serverId).count() == 1:
+            self.orionClient.contextBrokerUnSubscription(r_query.cbSubscriptionId, r_query.serverId)
+            r_query.delete()
+        else:
+            r_query.delete()
         return True
 
     def get_subscription(self, tenantId, serverId, subscriptionId):

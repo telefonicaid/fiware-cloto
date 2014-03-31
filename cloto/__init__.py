@@ -28,4 +28,4 @@ conn.commit()
 conn.close()
 
 arbiter = get_arbiter([{"cmd": "python "+ ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
-arbiter.start()
+#arbiter.start()

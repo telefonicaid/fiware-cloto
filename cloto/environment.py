@@ -2,20 +2,12 @@ __author__ = 'Geon'
 import sys
 import pika
 import sqlite3 as db
-import logging
 import clips
 import json
 import requests
-from configuration import LOGGING_PATH, RABBITMQ_URL, CLIPS_PATH
-
-logger = logging.getLogger('environments')
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler(LOGGING_PATH + '/%s.log' % sys.argv[1])
-fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
-fh.setFormatter(formatter)
-logger.addHandler(fh)
-
+from configuration import RABBITMQ_URL, CLIPS_PATH
+from constants import SERVERID
+from utils.log import logger
 
 def main():
     tenantId = sys.argv[1]
@@ -46,8 +38,8 @@ def main():
         conn.row_factory = db.Row
         cur = conn.cursor()
         SQL = "SELECT url from cloto_subscription S join cloto_specificrule R on S.ruleId=R.specificRule_Id " \
-              "WHERE name='%s' AND S.serverId='%s';" \
-              % (ruleName, serverId)
+              "WHERE name='%s' AND S.%s='%s';" \
+              % (ruleName, SERVERID, serverId)
         cur.execute(SQL)
         while True:
             r = cur.fetchone()
@@ -70,30 +62,17 @@ def main():
             logger.info("[+] ERROR Sending mail to %sabout server %s.--- %s Response: %d"
                         % (email, serverId, url, r.status_code))
 
-    def NotifyScaleUp(serverId, url):
-        """Sends a notification to given url showing that service must scale up a server.
+    def NotifyScale(serverId, url, action):
+        """Sends a notification to given url showing that service must scale up or scale down a server.
         """
         #headers ={'X-Auth-Token':'test'}
-        data = json.dumps({'action': 'scaleUp', 'serverId': '%s'} % serverId)
+        data = json.dumps({'action': action, '%s': '%s'} % (SERVERID, serverId))
         r = requests.get(url)
         if r.status_code == 200:
-            logger.info("[+] ScaleUp message sent to %s about server %s.--- Response: %d"
+            logger.info(action + " message sent to %s about server %s.--- Response: %d"
                         % (url, serverId, r.status_code))
         else:
-            logger.error("[+] ScaleUp message sent to %s about server %s.--- Response: %d"
-                         % (url, serverId, r.status_code))
-
-    def NotifyScaleDown(serverId, url):
-        """Sends a notification to given url showing that service must scale down a server.
-        """
-        #headers ={'X-Auth-Token':'test'}
-        data = json.dumps({'action': 'scaleDown', 'serverId': '%s'} % serverId)
-        r = requests.get(url)
-        if r.status_code == 200:
-            logger.info("[+] ScaleDown message sent to %s about server %s.--- Response: %d"
-                        % (url, serverId, r.status_code))
-        else:
-            logger.error("[+] ScaleDown message sent to %s about server %s.--- Response: %d"
+            logger.error(action + " message sent to %s about server %s.--- Response: %d"
                          % (url, serverId, r.status_code))
 
     def AddSpecificFunction(e, func, funcname=None):
@@ -120,8 +99,8 @@ def main():
         conn.row_factory = db.Row
         cur = conn.cursor()
         SQL = "SELECT * FROM cloto_specificrule WHERE specificRule_Id IN " \
-              "(SELECT ruleId FROM cloto_subscription WHERE serverId IN " \
-              "(SELECT serverId FROM cloto_entity WHERE tenantId='%s'))" % tenantId
+              "(SELECT ruleId FROM cloto_subscription WHERE %s IN " \
+              "(SELECT %s FROM cloto_entity WHERE tenantId='%s'))" % (SERVERID, SERVERID, tenantId)
         cur.execute(SQL)
         while True:
             r = cur.fetchone()
@@ -137,8 +116,7 @@ def main():
     e1 = clips.Environment()
     PrepareEnvironment(e1)
     clips.RegisterPythonFunction(NotifyEmail, "notify-email")
-    clips.RegisterPythonFunction(NotifyScaleUp, "notify-scale-up")
-    clips.RegisterPythonFunction(NotifyScaleDown, "notify-scale-down")
+    clips.RegisterPythonFunction(NotifyScale, "notify-scale")
     clips.RegisterPythonFunction(GetNotificationUrl, "get-notification-url")
     e1.Load("%s/model.clp" % CLIPS_PATH)
 
@@ -158,16 +136,16 @@ def main():
             channel.queue_bind(exchange="update_" + tenantId,
                                queue=queue_name)
 
-            logger.info(' [*] Environment started. Waiting for Facts')
+            logger.info('Environment started. Waiting for Facts')
 
             def callback(ch, method, properties, body):
                 decoded = json.loads(body)
                 template = e1.FindTemplate("serverFact")
                 server_fact = e1.Fact(template)
-                server_fact.Slots['server-id'] = decoded['serverId']
+                server_fact.Slots['server-id'] = decoded[SERVERID]
                 server_fact.Slots['cpu'] = int(decoded['cpu'])
                 server_fact.Assert()
-                logger.info(" [x] received fact: %s" % body)
+                logger.info("received fact: %s" % body)
                 get_rules_from_db(tenantId)
                 e1.Run()
 

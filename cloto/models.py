@@ -89,4 +89,3 @@ class ListRuleModel():
     serverId = None
     servers = None
     subscription = None
-

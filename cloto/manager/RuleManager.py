@@ -207,9 +207,9 @@ class RuleManager():
                 del rule['action']
                 del rule['condition']
 
-            final= ListRuleModel()
-            final.rules= rules.rules
-            final.serverId= rules.serverId
+            final = ListRuleModel()
+            final.rules = rules.rules
+            final.serverId = rules.serverId
             dictEntities.append(vars(final))
 
         mylist = ListRuleModel()
@@ -226,7 +226,7 @@ class RuleManager():
             entity.save()
 
         ruleId = json.loads(subscription)['ruleId']
-        SpecificRule.objects.get(specificRule_Id__exact= ruleId, entity__exact=serverId )
+        SpecificRule.objects.get(specificRule_Id__exact=ruleId, entity__exact=serverId)
         url = json.loads(subscription)['url']
 
         #Verify that there is no more subscriptions to the rule for that server
@@ -251,7 +251,7 @@ class RuleManager():
 
     def get_subscription(self, tenantId, serverId, subscriptionId):
         """Returns information about a subscription."""
-        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId )
+        r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId)
         subscription = SubscriptionModel()
         subscription.ruleId = r_query.__getattribute__("ruleId")
         subscription.serverId = r_query.__getattribute__("serverId")

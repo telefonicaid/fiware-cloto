@@ -1,11 +1,13 @@
 __author__ = 'Geon'
-from configuration import ENVIRONMENTS_PATH
-from utils.log import logger
 import signal
 import time
 import sys
-from circus.process import Process
 import sqlite3 as lite
+
+from circus.process import Process
+
+from configuration import ENVIRONMENTS_PATH
+from log import logger
 
 
 def main():

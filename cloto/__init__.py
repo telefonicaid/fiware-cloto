@@ -1,11 +1,13 @@
 import sqlite3
 import datetime
-from models import ServerInfo
+
 from django.utils import timezone
-from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH
 from circus import get_arbiter
+
+from models import ServerInfo
+from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH
 from configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, LOGGING_PATH
-from utils.log import logger
+from cloto.log import logger
 
 
 conn = sqlite3.connect('cloto.db')

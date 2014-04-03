@@ -1,5 +1,5 @@
 __author__ = 'gjp'
-from cloto.configuration import LOGGING_PATH
+from configuration import LOGGING_PATH
 import logging
 logger = logging.getLogger('RuleEngine')
 logger.setLevel(logging.DEBUG)

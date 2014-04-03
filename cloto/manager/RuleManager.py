@@ -7,7 +7,7 @@ from django.utils import timezone
 from django.core.validators import URLValidator
 from keystoneclient.exceptions import Conflict
 import cloto.OrionClient as OrionClient
-
+from cloto.log import logger
 
 class RuleManager():
     """This class provides methods to manage rules.
@@ -233,11 +233,9 @@ class RuleManager():
         except Entity.DoesNotExist as err:
             entity = Entity(serverId=serverId, tenantId=tenantId)
             entity.save()
-
         ruleId = json.loads(subscription)['ruleId']
         SpecificRule.objects.get(specificRule_Id__exact=ruleId, entity__exact=serverId)
         url = json.loads(subscription)['url']
-
         #Verify that there is no more subscriptions to the rule for that server
         it = entity.subscription.iterator()
         for sub in it:
@@ -249,6 +247,7 @@ class RuleManager():
         self.verify_url(url)
         if not context_broker_subscription:
             cbSubscriptionId = self.orionClient.contextBrokerSubscription(tenantId, serverId)
+            logger.info("This is the cbSubscriptionId %s" % cbSubscriptionId)
         subscription_Id = uuid.uuid1()
         subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId,
                               cbSubscriptionId=cbSubscriptionId)

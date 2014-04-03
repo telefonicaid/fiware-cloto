@@ -1,13 +1,16 @@
 __author__ = 'Geon'
 import sys
-import pika
 import sqlite3 as db
-import clips
 import json
+
+import pika
+import clips
 import requests
+
 from configuration import RABBITMQ_URL, CLIPS_PATH
 from constants import SERVERID
-from utils.log import logger
+from log import logger
+LOGGER_COMPONENT = 'ENVIRONMENT'
 
 def main():
     tenantId = sys.argv[1]
@@ -155,10 +158,10 @@ def main():
 
             channel.start_consuming()
         except db.Error, e:
-            logger.error("Error %s:" % e.args[0])
+            logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, e.args[0])
         except Exception as ex:
             if ex.message:
-                logger.error("Error: %s" % ex.message)
+                logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, ex.message)
         finally:
             connection.close()
 

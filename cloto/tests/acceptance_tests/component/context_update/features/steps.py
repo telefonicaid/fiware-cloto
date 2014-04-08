@@ -54,6 +54,7 @@ def send_context_values(step, server_id, cpu, memory, disk, network):
 @step(u'Then the context is updated')
 def then_the_context_is_updated(step):
 
+    print world.req.content
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
 
 

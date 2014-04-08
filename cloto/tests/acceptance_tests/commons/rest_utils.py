@@ -4,11 +4,13 @@ from json import JSONEncoder
 
 import requests
 
-from commons.configuration import REST_PORT, REST_IP, HEADERS
+from commons.configuration import POLICY_MANAGER_PORT, POLICY_MANAGER_IP, HEADERS, FACTS_IP, FACTS_PORT
 from commons.constants import RULE_ACTION, RULE_CONDITION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE
 
 
-SERVER = 'http://{}:{}/v1.0'.format(REST_IP, REST_PORT)
+POLICY_MANAGER_SERVER = 'http://{}:{}/v1.0'.format(POLICY_MANAGER_IP, POLICY_MANAGER_PORT)
+FACTS_SERVER = 'http://{}:{}/v1.0'.format(FACTS_IP, FACTS_PORT)
+UPDATE_CONTEXT_PATTERN = FACTS_SERVER + '/{tenant_id}/servers/{server_id}'
 TENANT_PATTERN = '{url_root}/{tenant_id}/'
 LIST_SERVERS_PATTERN = '{url_root}/{tenant_id}/servers'
 SERVER_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}'
@@ -25,7 +27,7 @@ class RestUtils(object):
         """Initialization method
         """
 
-        self.api_url = SERVER
+        self.api_url = POLICY_MANAGER_SERVER
         print "Initialized API REST Utils"
 
         self.encoder = JSONEncoder()
@@ -105,7 +107,7 @@ class RestUtils(object):
 
     def update_server_context(self, tenant_id, server_id, body=None, headers=HEADERS):
 
-        return self._call_api(pattern=SERVER_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
+        return self._call_api(pattern=UPDATE_CONTEXT_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=body)
 
 

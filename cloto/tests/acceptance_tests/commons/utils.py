@@ -171,7 +171,11 @@ def context_element(cpu_value=None, memory_value=None, disk_value=None, network_
     attribute_values = [cpu_value, memory_value, disk_value, network_value]
     for name, value in zip(ATTRIBUTES_LIST, attribute_values):
 
-        if value is not None:
+        if value is None:
+            pass
+        elif value == 'None':
+            pass
+        else:
             context_attributes_body.append({ATTRIBUTES_NAME: name, ATTRIBUTES_TYPE: ATTRIBUTE_PROBE,
                                             ATTRIBUTES_VALUE: value})
 

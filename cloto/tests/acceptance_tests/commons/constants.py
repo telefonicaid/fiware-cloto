@@ -89,8 +89,3 @@ MOCK_NUM_NOTIFICATIONS = 'num_notifications'
 MOCK_NUM_SCALE_UP = 'num_scale_up'
 MOCK_NUM_SCALE_DOWN = 'num_scale_down'
 
-u'?serv <- (server (server-id ?x) (cpu ?y&:(< ?y 0.01))&(mem ?y&:(< ?z 0.01))'
-u'?serv <- (server (server-id ?x) (cpu ?x) (mem ?z) (hdd ?t) (net ?z)'
-u'?serv <- (server (server-id ?x) (cpu ?x) (mem ?z) (hdd ?t) (net ?z)'
-u'?serv <- (server (server-id ?x) (cpu ?x) (mem ?z) (hdd ?t) (net ?z)'
-u'assert (alertCPU ?x))(python-call notify-user)'

@@ -8,8 +8,6 @@ FACTS_IP = 'localhost'
 FACTS_PORT = 5000
 RABBIT_IP = 'localhost'
 
-
-
 AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
 TENANT_ID = '6571e3422ad84f7d828ce2f30373b3d4'
 CONTENT_TYPE = 'application/json'

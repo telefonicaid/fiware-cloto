@@ -34,7 +34,6 @@ SUBSCRIPTION_ID = u'subscriptionId'
 ORIGINATOR = u'originator'
 CONTEXT_RESPONSES = u'contextResponses'
 
-
 RANDOM = u'random'
 DEFAULT = u'default'
 

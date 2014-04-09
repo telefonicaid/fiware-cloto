@@ -9,6 +9,7 @@ from keystoneclient.exceptions import Conflict
 import cloto.OrionClient as OrionClient
 from cloto.log import logger
 
+
 class RuleManager():
     """This class provides methods to manage rules.
     """
@@ -120,10 +121,14 @@ class RuleManager():
 
         self.checkRule(name, condition, action)
 
+        #Its necesary modify action to get subscriptionId
+        modifiedAction = self.pimp_rule_action(action, name, serverId)
+        modifiedCondition = self.pimp_rule_condition(condition, name, serverId)
+
         createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
         ruleId = uuid.uuid1()
         rule = SpecificRule(specificRule_Id=ruleId,
-                            tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
+                            tenantId=tenantId, name=name, condition=modifiedCondition, action=modifiedAction, createdAt=createdAt)
         """try:
             rule = SpecificRule.objects.get(serverId__exact=serverId, )
             raise ValueError("rule name already exists")
@@ -137,7 +142,7 @@ class RuleManager():
         return ruleResult
 
     def update_specific_rule(self, tenantId, serverId, ruleId, rule):
-        """Updates a general rule """
+        """Updates a specific rule """
         rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
         try:
@@ -290,3 +295,45 @@ class RuleManager():
     def verify_url(self, url):
             validator = URLValidator()
             validator(url)
+
+    def pimp_rule_action(self, action, ruleName, serverId):
+        """This method builds a CLIPS rule from data received as json.
+        It is necesary to Rule Engine add this String to be able to get the notification url of each Rule subscribed
+        """
+        try:
+            logger.debug("Action: " + str(action))
+            myaction = action['actionName']
+
+            action_string = "(python-call "+ myaction + " \"" + serverId + "\" ?url"
+            if myaction == "notify-email":
+                email = action['email']
+                description = action['description']
+                action_string += " \"" + description + "\"" " " + email
+            if myaction == "notify-scale":
+                operation = action['operation']
+                action_string += " \"" + operation + "\""
+            action_string += ")"
+            string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
+                                             + "\" \"" + serverId + "\"))"
+            return string_to_get_url_subscription + action_string
+        except Exception as e:
+            raise e
+
+    def pimp_rule_condition(self, condition, ruleName, serverId):
+        """This method builds a CLIPS condition from data received as json.
+        """
+        try:
+            logger.debug("Condition: " + str(condition))
+            operands = {"less": "<", "greater": ">", "less equal": "<=", "greater equal": ">="}
+            condition_string = "(ServerFact \"" + serverId + "\""
+
+            ##Adding CPU condition
+            parameters = ["cpu", "mem"]
+            for k in parameters:
+                operand = operands[condition[k]["operation"]]
+                condition_string += " ?" + k + "&:(" + operand + " ?" + k + " " \
+                                    + str(condition[k]["value"]) + ")"
+            condition_string += ")"
+            return condition_string
+        except Exception as e:
+            raise e

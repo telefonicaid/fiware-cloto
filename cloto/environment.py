@@ -41,8 +41,8 @@ def main():
         conn.row_factory = db.Row
         cur = conn.cursor()
         SQL = "SELECT url from cloto_subscription S join cloto_specificrule R on S.ruleId=R.specificRule_Id " \
-              "WHERE name='%s' AND S.%s='%s';" \
-              % (ruleName, SERVERID, serverId)
+              "WHERE name='%s' AND S.serverId='%s';" \
+              % (ruleName, serverId)
         cur.execute(SQL)
         while True:
             r = cur.fetchone()
@@ -53,30 +53,39 @@ def main():
                 url = r['url']
         return url
 
-    def NotifyEmail(email, serverId, description, url):
+    def NotifyEmail(serverId, url, description, email):
         """Sends a notification to given url showing that service must send an email to an address.
         """
+
         #headers ={'X-Auth-Token':'test'}
-        data = json.dumps({'action': 'notifyEmail', 'email': '%s', 'description': '%s'} % (email, description))
-        r = requests.get(url)
+        data = '{"action": "notifyEmail", "serverId": "' + serverId\
+               + ', "email": "' + email + '", "description": "' + description + '"}'
+        logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
+
+        """r = requests.get(url)
         if r.status_code == 200:
-            logger.info("[+] mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
+            print(1)
+            logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
         else:
-            logger.info("[+] ERROR Sending mail to %sabout server %s.--- %s Response: %d"
+            print(2)
+            logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
                         % (email, serverId, url, r.status_code))
+        """
 
     def NotifyScale(serverId, url, action):
         """Sends a notification to given url showing that service must scale up or scale down a server.
         """
         #headers ={'X-Auth-Token':'test'}
-        data = json.dumps({'action': action, '%s': '%s'} % (SERVERID, serverId))
-        r = requests.get(url)
+        data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
+        logger.info(action + " message sent to %s : %s"
+                        % (url, data))
+        """r = requests.get(url)
         if r.status_code == 200:
             logger.info(action + " message sent to %s about server %s.--- Response: %d"
                         % (url, serverId, r.status_code))
         else:
             logger.error(action + " message sent to %s about server %s.--- Response: %d"
-                         % (url, serverId, r.status_code))
+                         % (url, serverId, r.status_code))"""
 
     def AddSpecificFunction(e, func, funcname=None):
         try:
@@ -115,55 +124,66 @@ def main():
                 rule_cond = r['condition']
                 rule_action = r['action']
                 e1.BuildRule(rule_name, rule_cond, rule_action)
-
+    clips.Reset()
     e1 = clips.Environment()
     PrepareEnvironment(e1)
     clips.RegisterPythonFunction(NotifyEmail, "notify-email")
     clips.RegisterPythonFunction(NotifyScale, "notify-scale")
     clips.RegisterPythonFunction(GetNotificationUrl, "get-notification-url")
+    e1.Assert("(initial-fact)")
     e1.Load("%s/model.clp" % CLIPS_PATH)
 
-    while (True):
-        try:
+    try:
 
-            connection = pika.BlockingConnection(pika.ConnectionParameters(
-                    host=RABBITMQ_URL))
-            channel = connection.channel()
+        connection = pika.BlockingConnection(pika.ConnectionParameters(
+                host=RABBITMQ_URL))
+        channel = connection.channel()
 
-            channel.exchange_declare(exchange="update_" + tenantId,
-                                     type='fanout')
+        channel.exchange_declare(exchange="update_" + tenantId,
+                                 type='fanout')
 
-            result = channel.queue_declare(exclusive=True)
-            queue_name = result.method.queue
+        result = channel.queue_declare(exclusive=True)
+        queue_name = result.method.queue
 
-            channel.queue_bind(exchange="update_" + tenantId,
-                               queue=queue_name)
+        channel.queue_bind(exchange="update_" + tenantId,
+                           queue=queue_name)
 
-            logger.info('Environment started. Waiting for Facts')
+        logger.info('Environment started. Waiting for Facts')
 
-            def callback(ch, method, properties, body):
-                decoded = json.loads(body)
-                template = e1.FindTemplate("serverFact")
-                server_fact = e1.Fact(template)
-                server_fact.Slots['server-id'] = decoded[SERVERID]
-                server_fact.Slots['cpu'] = int(decoded['cpu'])
-                server_fact.Assert()
+        def callback(ch, method, properties, body):
+            decoded = json.loads(body)
+            logger.info(decoded)
+            try :
+                f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
+                               + " " + str(decoded['mem'])+ ")")
                 logger.info("received fact: %s" % body)
                 get_rules_from_db(tenantId)
+                e1.PrintFacts()
+                e1.PrintRules()
                 e1.Run()
+                f1.Retract()
+            except clips.ClipsError:
+                logger.error(clips.ErrorStream.Read())
+            except Exception as ex:
+                logger.warn("FACT: already exists")
 
-            channel.basic_consume(callback,
-                                  queue=queue_name,
-                                  no_ack=True)
+            e1.PrintFacts()
+            e1.PrintRules()
 
-            channel.start_consuming()
-        except db.Error, e:
-            logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, e.args[0])
-        except Exception as ex:
-            if ex.message:
-                logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, ex.message)
-        finally:
-            connection.close()
+        channel.basic_consume(callback,
+                              queue=queue_name,
+                              no_ack=True)
+
+        channel.start_consuming()
+    except db.Error, e:
+        logger.error("END of checking1")
+        logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, e.args[0])
+    except Exception as ex:
+        logger.error("END of checking2 %s" % ex.args[0])
+        if ex.message:
+            logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, ex.message)
+    finally:
+        connection.close()
 
 if __name__ == '__main__':
     main()

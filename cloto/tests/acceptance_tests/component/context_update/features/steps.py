@@ -31,7 +31,6 @@ def setup_scenario(scenario):
 def given_a_group1_with_one_rule_subscribed(step, server_id):
 
     world.server_id = server_id
-    world.headers = HEADERS
 
     world.subscription_id = Utils.create_subscription(api_utils, server_id=server_id, headers=HEADERS, rule_name=RANDOM,
                                                       tenant_id=world.tenant_id, rule_action=DEFAULT,
@@ -55,6 +54,7 @@ def send_context_values(step, server_id, cpu, memory, disk, network):
 @step(u'Then the context is updated')
 def then_the_context_is_updated(step):
 
+    print world.req.content
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
 
 

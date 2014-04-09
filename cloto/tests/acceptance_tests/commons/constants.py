@@ -34,7 +34,6 @@ SUBSCRIPTION_ID = u'subscriptionId'
 ORIGINATOR = u'originator'
 CONTEXT_RESPONSES = u'contextResponses'
 
-
 RANDOM = u'random'
 DEFAULT = u'default'
 
@@ -52,10 +51,10 @@ DB_RULE_AND_SUBSCRIPTION = (DB_SPECIFIC_RULES, DB_SUBSCRIPTION, DB_ENTITY_SUBSCR
 
 ATTRIBUTES_NAME = u'name'
 ATTRIBUTES_TYPE = u'type'
-ATTRIBUTES_VALUE = u'value'
+ATTRIBUTES_VALUE = u'contextValue'
 ATTRIBUTE_PROBE = u'Probe'
-ATTRIBUTE_CPU = u'CPU'
-ATTRIBUTE_MEMORY = u'Memory'
+ATTRIBUTE_CPU = u'cpuLoadPct'
+ATTRIBUTE_MEMORY = u'usedMemPct'
 ATTRIBUTE_DISK = u'Disk'
 ATTRIBUTE_NETWORK = u'Network'
 ATTRIBUTES = u'attributes'
@@ -74,3 +73,18 @@ CONTEXT_STATUS_CODE_OK = u'Ok'
 CONTEXT_STATUS_CODE_REASON = u'reasonPhrase'
 CONTEXT_STATUS_CODE_DETAILS = u'details'
 CONTEXT_STATUS_CODE = u'statusCode'
+
+#MOCK PATHS
+
+MOCK_RESPONSE_SAVE = '/save_response/'
+MOCK_RESET_ERRORS = '/reset_errors/'
+MOCK_SCALE_UP = '/scale_up/'
+MOCK_SCALE_DOWN = '/scale_down/'
+MOCK_NOTIFICATION = '/notification/'
+MOCK_RESET_STATS = '/reset_stats/'
+MOCK_STATS = '/stats/'
+
+MOCK_NUM_NOTIFICATIONS = 'num_notifications'
+MOCK_NUM_SCALE_UP = 'num_scale_up'
+MOCK_NUM_SCALE_DOWN = 'num_scale_down'
+

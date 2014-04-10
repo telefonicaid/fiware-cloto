@@ -110,8 +110,9 @@ class RestUtils(object):
         return self._call_api(pattern=UPDATE_CONTEXT_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=body)
 
+    def create_rule(self, tenant_id=None, server_id=None, rule_name=None, cpu=None, mem=None,
+                        action=None, headers=HEADERS, body=None):
 
-    def create_rule(self, tenant_id=None, server_id=None, rule_name=None, condition=None, action=None, headers=HEADERS):
         """Create a new elasticity rule in specific server.
         :param tenant_id: Is the id of the tenant to obtain the information
         :param server_id: Is the id of the server to obtain the information
@@ -121,23 +122,6 @@ class RestUtils(object):
         :param headers: HTTP header request (dict)
         :returns: REST API response from Policy Manager
         """
-
-        api_body = {}
-        if rule_name is not None:
-            api_body[RULE_NAME] = rule_name
-
-        if condition is not None:
-            api_body[RULE_CONDITION] = condition
-
-        if action is not None:
-            api_body[RULE_ACTION] = action
-
-        return self._call_api(pattern=CREATE_RULE_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
-                              server_id=server_id, body=api_body)
-
-
-    def new_create_rule(self, tenant_id=None, server_id=None, rule_name=None, cpu=None, mem=None,
-                     action=None, headers=HEADERS, body=None):
 
         if body is None:
             api_body = {}

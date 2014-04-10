@@ -4,7 +4,7 @@ __author__ = 'artanis'
 from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS
+from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS, RULE_NAME
 from commons.configuration import HEADERS
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 import commons.authentication as Auth
@@ -109,7 +109,7 @@ def assert_rule_information(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     response = Utils.assert_json_format(world.req)
-    Utils.assert_rule_information(response, world.rule_id, world.rule_name, world.rule_condition, world.rule_action)
+    Utils.assert_rule_information(response, world.rule_id, world.rule_body[RULE_NAME])
 
 
 @step(u'I retrieve "([^"]*)"')
@@ -343,3 +343,19 @@ def and_the_group1_replaced_to_none(step, key, to_replace):
         world.rule_body = Utils.replace_values_from_dict(dict_replace=world.rule_body, key=key)
     else:
         world.rule_body = Utils.replace_values_from_dict(dict_replace=world.rule_body, key=key, replace_to=to_replace)
+
+
+@step(u'Given a created rule in the in the "([^"]*)"')
+def given_a_created_rule(step, server_id):
+
+    world.server_id = server_id
+    world.rule_body = Rule_Utils.create_random_scalability_rule()
+
+    #Create the rule in Policy Manager
+    req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=world.rule_body)
+
+    print req.content
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+
+    #Save the Rule ID to obtain the Rule information after
+    world.rule_id = req.json()[RULE_ID]

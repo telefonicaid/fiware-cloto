@@ -112,7 +112,7 @@ def assert_json_format(request):
     return response
 
 
-def assert_rule_information(response, rule_id, name, condition, action):
+def assert_rule_information(response, rule_id, name):
 
     """Method to verify the rule body parameters
     :param response: Response body received from server
@@ -121,10 +121,8 @@ def assert_rule_information(response, rule_id, name, condition, action):
     :param condition: The expected rule condition
     :param action: The expected rule action
     """
-
+    print response
     assert_equals(response[RULE_NAME], name)
-    assert_equals(response[RULE_CONDITION], condition)
-    assert_equals(response[RULE_ACTION], action)
     assert_equals(response[RULE_ID], rule_id)
 
 

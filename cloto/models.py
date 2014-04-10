@@ -30,6 +30,7 @@ class Subscription(models.Model):
     url = models.CharField(max_length=140)
     ruleId = models.CharField(max_length=30)
     serverId = models.CharField(max_length=30)
+    cbSubscriptionId = models.CharField(max_length=30)
 
 
 class Entity(models.Model):

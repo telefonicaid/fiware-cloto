@@ -4,6 +4,7 @@ from django.core.exceptions import ObjectDoesNotExist, ValidationError
 
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
+import OrionClient
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
 from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Conflict
@@ -190,8 +191,6 @@ class ServerView(RESTResource):
 
     def PUT(self, request, tenantId, serverId):
         # Should update the context of server
-
-        myFactManager = FactManager.FactManager()
         #nfacts = myFactManager.insertFact(tenantId, serverId, request.body, arbiter)
         return HttpResponse(json.dumps({"OK": {"code": 200, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
@@ -264,7 +263,9 @@ class ServerSubscriptionView(RESTResource):
     """
     def POST(self, request, tenantId, serverId):
         try:
-            subscriptionId = RuleManager.RuleManager().subscribe_to_rule(tenantId, serverId, request.body)
+            ruleManager = RuleManager.RuleManager()
+            ruleManager.orionClient = OrionClient.OrionClient()
+            subscriptionId = ruleManager.subscribe_to_rule(tenantId, serverId, request.body)
             return HttpResponse(json.dumps({"serverId": serverId, "subscriptionId": str(subscriptionId)}, indent=4))
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
@@ -281,7 +282,9 @@ class ServerSubscriptionView(RESTResource):
 
     def DELETE(self, request, tenantId, serverId, subscriptionId):
         try:
-            RuleManager.RuleManager().unsubscribe_to_rule(serverId, subscriptionId)
+            ruleManager = RuleManager.RuleManager()
+            ruleManager.orionClient = OrionClient.OrionClient()
+            ruleManager.unsubscribe_to_rule(serverId, subscriptionId)
             return HttpResponse()
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
@@ -293,7 +296,9 @@ class ServerSubscriptionView(RESTResource):
     def GET(self, request, tenantId, serverId, subscriptionId):
         # Should return the specified rule of server
         try:
-            rule = RuleManager.RuleManager().get_subscription(tenantId, serverId, subscriptionId)
+            ruleManager = RuleManager.RuleManager()
+            ruleManager.orionClient = OrionClient.OrionClient()
+            rule = ruleManager.get_subscription(tenantId, serverId, subscriptionId)
             return HttpResponse(json.dumps(vars(rule), cls=DateEncoder, indent=4))
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":

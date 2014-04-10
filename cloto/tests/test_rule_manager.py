@@ -2,7 +2,11 @@ __author__ = 'gjp'
 from django.test import TestCase
 from cloto.models import *
 from cloto.manager import RuleManager
+from mockito import *
+from requests import Response
+from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL
 import uuid
+import json
 
 
 class RuleManagerTests(TestCase):
@@ -14,6 +18,41 @@ class RuleManagerTests(TestCase):
         self.newServerId = "ServerIdThatNoExists"
         entity = Entity(serverId=self.serverId, tenantId=self.tenantId)
         entity.save()
+
+        self.ruleManager = RuleManager.RuleManager()
+        self.mockedClient = mock()
+        response = Response()
+        response.status_code = 200
+        expected_cbSubscriptionId = "51c04a21d714fb3b37d7d5a7"
+        response._content = "{\"subscribeResponse\": {" \
+                            "\"duration\": \"P1M\"," \
+                            "\"subscriptionId\": \"%s\"" \
+                            "}" \
+                            "}" % expected_cbSubscriptionId
+        headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
+        #data to subscription
+        data = json.dumps("{\"entities\": ["
+                          "{\"type\": \"Server\","
+                          "\"isPattern\": \"false\","
+                          "\"id\": \"%s\""
+                          "}],"
+                          "\"attributes\": ["
+                            "\"cpu\","
+                            "\"mem\"],"
+                            "\"reference\": \"%s\","
+                            "\"duration\": \"P1M\","
+                            "\"notifyConditions\": ["
+                            "{\"type\": \"ONTIMEINTERVAL\","
+                            "\"condValues\": [\"PT5S\"]}]}" % (self.newServerId,
+                                    NOTIFICATION_URL + "/" + self.tenantId + "servers/" + self.newServerId))
+        #data2 for unsubscription
+        data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % expected_cbSubscriptionId)
+        when(self.mockedClient).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
+            .thenReturn(response);
+        when(self.mockedClient).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
+            .thenReturn(response);
+        self.ruleManager.orionClient.client = self.mockedClient
+
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
 
     def test_get_rule_info(self):
@@ -86,12 +125,12 @@ class RuleManagerTests(TestCase):
         url = "http://127.0.0.1:8000/testService"
         subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
 
-        subscriptionId = RuleManager.RuleManager().subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        subscriptionId = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
         self.assertIsInstance(subscriptionId, uuid.UUID)
 
         subscrp = RuleManager.RuleManager().get_subscription(self.tenantId, self.newServerId, subscriptionId)
         self.assertIsInstance(subscrp, SubscriptionModel)
         self.assertEqual(url, subscrp.url)
 
-        result = RuleManager.RuleManager().unsubscribe_to_rule(self.newServerId, subscriptionId)
+        result = self.ruleManager.unsubscribe_to_rule(self.newServerId, subscriptionId)
         self.assertIs(result, True)

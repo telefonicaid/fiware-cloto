@@ -135,6 +135,34 @@ class RestUtils(object):
         return self._call_api(pattern=CREATE_RULE_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=api_body)
 
+
+    def new_create_rule(self, tenant_id=None, server_id=None, rule_name=None, cpu=None, mem=None,
+                     action=None, headers=HEADERS, body=None):
+
+        if body is None:
+            api_body = {}
+            condition = {}
+            if rule_name is not None:
+                api_body[RULE_NAME] = rule_name
+
+            if cpu is not None:
+                condition['cpu'] = cpu
+
+            if mem is not None:
+                condition['mem'] = mem
+
+            if len(condition) > 0:
+                api_body['condition'] = condition
+
+            if action is not None:
+                api_body[RULE_ACTION] = action
+
+        else:
+            api_body = body
+
+        return self._call_api(pattern=CREATE_RULE_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
+                              server_id=server_id, body=api_body)
+
     def update_rule(self, tenant_id=None, server_id=None, rule_name=None, condition=None, action=None, rule_id=None,
                     headers=HEADERS):
         """Update a elasticity rule in specific server.

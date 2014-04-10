@@ -9,6 +9,7 @@ from commons.configuration import HEADERS
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 import commons.authentication as Auth
 import commons.utils as Utils
+import commons.rule_utils as Rule_Utils
 import random
 
 api_utils = RestUtils()
@@ -33,6 +34,9 @@ def setup_scenario(scenario):
 def set_tenant_and_server_id(step, server_id):
 
     world.server_id = server_id
+    world.cpu = None
+    world.mem = None
+
 
 @step(u'I create a rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
 def create_rule_with_all_parameters(step, rule_name, rule_condition, rule_action):
@@ -190,7 +194,6 @@ def then_i_obtain_all_the_rules_of_the_server(step):
     Utils.delete_all_rules_from_tenant()
 
 
-
 @step(u'Given "([^"]*)" of rules created in "([^"]*)"')
 def given_group1_of_rules_created_in_group2(step, number_rules, server_id):
 
@@ -227,12 +230,11 @@ def given_a_created_group1_without_rules(step, server_id):
                            RULES: []}]
 
 
-
-
 @step(u'Given a tenant without servers')
 def given_a_tenant_without_servers(step):
 
     pass
+
 
 @step(u'When I retrieve the server list')
 def when_i_retrieve_the_server_list(step):
@@ -281,3 +283,63 @@ def then_i_obtain_the_server_list(step):
     for results in world.servers_body:
         assert_in(results, response[SERVERS])
     Utils.delete_all_rules_from_tenant()
+
+
+@step(u'And parameter "([^"]*)" with "([^"]*)" and "([^"]*)"')
+def and_parameter_group1_with_group2_and_group3(step, parameter_name, parameter_value, parameter_operant):
+
+    if parameter_name == 'cpu':
+        world.cpu = Utils.new_create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
+        print world.cpu
+    elif parameter_name == 'mem':
+        world.mem = Utils.new_create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
+        print world.mem
+
+
+@step(u'When I create a scale rule with "([^"]*)" and "([^"]*)"')
+def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
+
+    if rule_name == 'random':
+        rule_name = Utils.id_generator()
+
+    action = Utils.new_create_rule_action_dict(action_name='notify-scale', operation=action)
+
+    world.req = api_utils.new_create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
+                                          cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
+
+
+@step(u'When I create a notify rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
+def when_i_create_a_notify_rule_with_group1_group2_and_group3(step, rule_name, body, email):
+
+    action = Utils.new_create_rule_action_dict(action_name='notify-email', body=body, email=email)
+
+    world.req = api_utils.new_create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
+                                          cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
+
+
+@step(u'And some rule prepared with all data')
+def and_some_rule_prepared_with_all_data(step):
+
+    world.rule_body = Rule_Utils.create_random_rule()
+
+
+@step(u'And the "([^"]*)" deleted')
+def and_the_group1_deleted(step, key):
+
+    world.rule_body = Utils.delete_keys_from_dict(dict_del=world.rule_body, key=key)
+
+
+@step(u'When I create an incorrect rule')
+def when_i_create_an_incorrect_rule(step):
+
+    world.req = api_utils.new_create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=world.rule_body,
+                                          headers=world.headers)
+
+
+@step(u'And the "([^"]*)" replaced to "([^"]*)"')
+def and_the_group1_replaced_to_none(step, key, to_replace):
+
+    if to_replace == 'None':
+        world.rule_body = Utils.replace_values_from_dict(dict_replace=world.rule_body, key=key)
+    else:
+        world.rule_body = Utils.replace_values_from_dict(dict_replace=world.rule_body, key=key, replace_to=to_replace)

@@ -88,3 +88,5 @@ MOCK_NUM_NOTIFICATIONS = 'num_notifications'
 MOCK_NUM_SCALE_UP = 'num_scale_up'
 MOCK_NUM_SCALE_DOWN = 'num_scale_down'
 
+RULE_ACTION_NAME_LIST = ['notify-scale', 'notify-email']
+RULE_ACTION_NAME = 'actionName'

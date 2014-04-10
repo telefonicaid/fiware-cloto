@@ -7,6 +7,7 @@ from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERV
     CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
     CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
+from constants import RULE_ACTION_NAME_LIST, RULE_ACTION_NAME
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
 from configuration import TENANT_ID, HEADERS
 from rest_utils import RestUtils
@@ -347,3 +348,59 @@ def delete_context_constant_parameter(parameter, context_body):
         del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_TYPE])
 
     return context_body
+
+
+def new_create_rule_action_dict(action_name=None, operation=None, body=None, email=None):
+
+    action = {}
+
+    if action_name is not None:
+        action[RULE_ACTION_NAME] = action_name
+
+    if operation is not None:
+        action['operation'] = operation
+
+    if body is not None:
+        action['description'] = body
+
+    if email is not None:
+        action['email'] = email
+
+    return action
+
+
+def new_create_rule_parameter_dict(value=None, operand=None):
+
+    tmp_dict = {}
+
+    if value is not None:
+        tmp_dict['value'] = value
+
+    if operand is not None:
+        tmp_dict['operation'] = operand
+
+    return tmp_dict
+
+
+def delete_keys_from_dict(dict_del, key):
+
+    if key in dict_del.keys():
+
+        del dict_del[key]
+    for v in dict_del.values():
+        if isinstance(v, dict):
+            delete_keys_from_dict(v, key)
+
+    return dict_del
+
+
+def replace_values_from_dict(dict_replace, key, replace_to=None):
+
+    if key in dict_replace.keys():
+
+        dict_replace[key] = replace_to
+    for v in dict_replace.values():
+        if isinstance(v, dict):
+            replace_values_from_dict(v, key)
+
+    return dict_replace

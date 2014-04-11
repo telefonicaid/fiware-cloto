@@ -112,18 +112,23 @@ def assert_json_format(request):
     return response
 
 
-def assert_rule_information(response, rule_id, name):
+def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=None, mem=None, body=None):
 
     """Method to verify the rule body parameters
     :param response: Response body received from server
     :param rule_id: The expected rule identification number
     :param name: The expected rule name
-    :param condition: The expected rule condition
-    :param action: The expected rule action
     """
-    print response
-    assert_equals(response[RULE_NAME], name)
-    assert_equals(response[RULE_ID], rule_id)
+    if body is None:
+        assert_equals(response[RULE_NAME], name)
+        assert_equals(response[RULE_ID], rule_id)
+        assert_equals(response['action'], action)
+        assert_equals(response['condition']['cpu'], cpu)
+        assert_equals(response['condition']['mem'], mem)
+    else:
+        assert_equals(response[RULE_NAME], body[RULE_NAME])
+        assert_equals(response[RULE_ID], rule_id)
+
 
 
 def create_rule_body(action=None, rule_id=None, condition=None, name=None):
@@ -257,7 +262,9 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
     for server in response[SERVERS]:
         server_id = server[SERVER_ID]
         for rule_server in server[RULES]:
-            api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
+            req = api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
+            assert req.ok
+
 
 
 def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_name=None, rule_condition=None, rule_action=None,

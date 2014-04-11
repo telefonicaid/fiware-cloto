@@ -166,6 +166,7 @@ Scenario Outline: Create a new specific rule for scale with incorrect parameters
   | qatest    | random  | 10        | less        | 5         | less equal    | SCALEUP   | 400         | badRequest    |
   | qatest    | random  | 10        | less        | 5         | less equal    | scaleUp_  | 400         | badRequest    |
   | qatest    | random  | 10        | less        | 5         | less equal    | SCALEUP?  | 400         | badRequest    |
+  | qatest    | qa      | 10        | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
 
 Scenario Outline: Create a new specific rule for notify with incorrect parameters
 

@@ -91,3 +91,5 @@ MOCK_NUM_SCALE_DOWN = 'num_scale_down'
 RULE_ACTION_NAME_LIST = ['notify-scale', 'notify-email']
 RULE_ACTION_SCALE_LIST = ['scaleUp', 'scaleDown']
 RULE_ACTION_NAME = 'actionName'
+
+operands = ["greater", "less", "greater equal", "less equal"]

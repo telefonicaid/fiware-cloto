@@ -59,9 +59,9 @@ Feature: As a user
 
     Examples:
 
-      | Error_code  | FaultElement  | token     | server_id   | name    | condition | action  |
-      | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | default   | default |
-      | 401         | unauthorized  | old_token | qatestserver| random  | default   | default |
-      | 401         | unauthorized  |           | qatestserver| random  | default   | default |
-      | 401         | unauthorized  | null      | qatestserver| random  | default   | default |
+      | Error_code  | FaultElement  | token     | server_id   |
+      | 401         | unauthorized  | 1a2b3c    | qatestserver|
+      | 401         | unauthorized  | old_token | qatestserver|
+      | 401         | unauthorized  |           | qatestserver|
+      | 401         | unauthorized  | null      | qatestserver|
 

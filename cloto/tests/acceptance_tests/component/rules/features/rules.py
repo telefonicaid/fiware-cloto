@@ -51,7 +51,7 @@ def create_rule_with_all_parameters(step, rule_name, rule_condition, rule_action
 @step(u'the rule is saved in Policy Manager')
 def assert_rule_saved(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = world.req.json()
     assert_equals(response[SERVER_ID], world.server_id, INCORRECT_SERVER_ID.format(world.server_id,
                                                                                    response[SERVER_ID]))
@@ -97,7 +97,7 @@ def created_rule(step, rule_name, rule_condition, rule_action, server_id):
     req = api_utils.create_rule(world.tenant_id, world.server_id, world.rule_name, world.rule_condition,
                                 world.rule_action)
 
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
 
     #Save the Rule ID to obtain the Rule information after
     world.rule_id = req.json()[RULE_ID]
@@ -106,7 +106,7 @@ def created_rule(step, rule_name, rule_condition, rule_action, server_id):
 @step(u'I obtain the Rule data')
 def assert_rule_information(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = Utils.assert_json_format(world.req)
     Utils.assert_rule_information(response=response, rule_id=world.rule_id, body=world.rule_body)
 
@@ -128,7 +128,7 @@ def delete_rule(step, server_id):
 @step(u'the rule is deleted')
 def assert_rule_is_deleted(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
                                   headers=world.headers)
     assert_equals(req.status_code, 404, ERROR_CODE_ERROR.format(req.status_code, 404))
@@ -166,7 +166,7 @@ def assert_rule_is_updated(step):
 @step(u'I update "([^"]*)"')
 def update_non_existent_rule(step, another_rule):
 
-    body = Rule_Utils.create_random_notify_rule()
+    body = Rule_Utils.create_notify_specific_rule()
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=body,
                                       rule_id=another_rule, headers=world.headers)
 
@@ -199,9 +199,9 @@ def given_group1_of_rules_created_in_group2(step, number_rules, server_id):
     world.server_id = server_id
     world.number_rules = int(number_rules)
     for x in range(world.number_rules):
-        rule_body = Rule_Utils.create_random_notify_rule()
+        rule_body = Rule_Utils.create_notify_specific_rule()
         req = api_utils.create_rule(world.tenant_id, world.server_id, body=rule_body)
-        assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+        assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
         rule_id = req.json()[RULE_ID]
         world.rules.append(rule_body)
 
@@ -240,7 +240,7 @@ def when_i_retrieve_the_server_list(step):
 @step(u'Then I obtain zero results')
 def then_i_obtain_zero_results(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = Utils.assert_json_format(world.req)
     assert_equals(response[SERVERS], [])
 
@@ -257,9 +257,9 @@ def given_a_group1_of_servers_in_a_tenant(step, number_servers):
         number_rules = random.randint(1, 5)
 
         for rule in range(number_rules):
-            rule_body = Rule_Utils.create_random_scalability_rule()
+            rule_body = Rule_Utils.create_scale_specific_rule()
             req = api_utils.create_rule(world.tenant_id, server_id, body=rule_body)
-            assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+            assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
             rule_id = req.json()[RULE_ID]
             world.rules.append(Utils.create_rule_body(action=None, rule_id=rule_id, condition=None,
                                                       name=rule_body['name']))
@@ -272,7 +272,7 @@ def given_a_group1_of_servers_in_a_tenant(step, number_servers):
 @step(u'Then I obtain the server list')
 def then_i_obtain_the_server_list(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = Utils.assert_json_format(world.req)
     for results in world.servers_body:
         assert_in(results, response[SERVERS])
@@ -313,7 +313,7 @@ def when_i_create_a_notify_rule_with_group1_group2_and_group3(step, rule_name, b
 @step(u'And some rule prepared with all data')
 def and_some_rule_prepared_with_all_data(step):
 
-    world.rule_body = Rule_Utils.create_random_scalability_rule()
+    world.rule_body = Rule_Utils.create_scale_specific_rule()
 
 
 @step(u'And the "([^"]*)" deleted')
@@ -342,12 +342,12 @@ def and_the_group1_replaced_to_none(step, key, to_replace):
 def created_rule(step, server_id):
 
     world.server_id = server_id
-    world.rule_body = Rule_Utils.create_random_scalability_rule()
+    world.rule_body = Rule_Utils.create_scale_specific_rule()
 
     #Create the rule in Policy Manager
     req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=world.rule_body)
 
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
 
     #Save the Rule ID to obtain the Rule information after
     world.rule_id = req.json()[RULE_ID]

@@ -2,50 +2,10 @@ __author__ = 'arobres'
 
 import utils as Utils
 import random
-from constants import RULE_ACTION_SCALE_LIST
+from constants import RULE_ACTION_SCALE_LIST, DEFAULT_BODY
 
-
-def create_random_scalability_rule():
-    rule = {
-            "action": {
-                "actionName": "notify-scale",
-                "operation": random.choice(RULE_ACTION_SCALE_LIST)
-            },
-            "name": Utils.id_generator(),
-            "condition": {
-                "mem": {
-                    "operand": "less equal",
-                    "value": "1"
-            },
-                "cpu": {
-                    "operand": "less",
-                    "value": "1"
-                    }
-                }
-            }
-    return rule
-
-
-def create_random_notify_rule():
-    rule = {"action": {"actionName": "notify-email",
-                       "body": "Be careful, the mem is too low!!!!",
-                       "email": "aaa@aaa.es"
-                       },
-            "name": Utils.id_generator(),
-            "condition": {
-                "mem": {
-                    "operand": "less equal",
-                    "value": "1"
-                },
-                "cpu": {
-                    "operand": "less",
-                    "value": "1"
-                }
-            }
-            }
-    return rule
-
-def create_scale_specific_rule(operation, name, mem_value, mem_operand, cpu_value, cpu_operand):
+def create_scale_specific_rule(operation=random.choice(RULE_ACTION_SCALE_LIST), name=Utils.id_generator(), mem_value='1',
+                               mem_operand='less equal', cpu_value='0', cpu_operand='less'):
 
     if name == 'random':
         name = Utils.id_generator()
@@ -69,7 +29,9 @@ def create_scale_specific_rule(operation, name, mem_value, mem_operand, cpu_valu
             }
     return rule
 
-def create_notify_specific_rule(body, email, name, mem_value, mem_operand, cpu_value, cpu_operand):
+
+def create_notify_specific_rule(body=DEFAULT_BODY, email="aaa@aaa.es", name=Utils.id_generator(), mem_value='1',
+                                mem_operand='less equal', cpu_value='0', cpu_operand='less'):
 
     if name == 'random':
         name = Utils.id_generator()

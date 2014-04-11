@@ -93,3 +93,4 @@ RULE_ACTION_SCALE_LIST = ['scaleUp', 'scaleDown']
 RULE_ACTION_NAME = 'actionName'
 
 operands = ["greater", "less", "greater equal", "less equal"]
+DEFAULT_BODY = "Be careful, the mem is too low!!!!"

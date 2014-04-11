@@ -1,24 +1,24 @@
 import sqlite3
 import datetime
-from models import ServerInfo
+
 from django.utils import timezone
-from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH
 from circus import get_arbiter
-from circus.process import Process
-import time
+
+from models import ServerInfo
+from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH
+from configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, LOGGING_PATH
+from cloto.log import logger
 
 
 conn = sqlite3.connect('cloto.db')
 c = conn.cursor()
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data
-
 try:
     s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
     s.save()
-    print ("data was inserted")
 except Exception as err:
-    print("Tables already exists: %s" % err)
+    logger.warn("DataBase already exists: %s" % err)
 
 # Save (commit) the changes.
 conn.commit()
@@ -28,4 +28,5 @@ conn.commit()
 conn.close()
 
 arbiter = get_arbiter([{"cmd": "python "+ ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
-arbiter.start()
+#arbiter.start()
+logger.info("SERVER STARTED")

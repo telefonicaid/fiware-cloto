@@ -20,6 +20,8 @@ class SpecificRule(models.Model):
     name = models.CharField(max_length=30)
     condition = models.CharField(max_length=30000)
     action = models.CharField(max_length=30000)
+    clips_condition = models.CharField(max_length=30000)
+    clips_action = models.CharField(max_length=30000)
     createdAt = models.DateTimeField()
 
 
@@ -30,6 +32,7 @@ class Subscription(models.Model):
     url = models.CharField(max_length=140)
     ruleId = models.CharField(max_length=30)
     serverId = models.CharField(max_length=30)
+    cbSubscriptionId = models.CharField(max_length=30)
 
 
 class Entity(models.Model):

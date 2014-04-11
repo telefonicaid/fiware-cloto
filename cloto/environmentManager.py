@@ -1,11 +1,13 @@
 __author__ = 'Geon'
-from configuration import LOGGING_PATH, ENVIRONMENTS_PATH
-import logging
 import signal
 import time
 import sys
-from circus.process import Process
 import sqlite3 as lite
+
+from circus.process import Process
+
+from configuration import ENVIRONMENTS_PATH
+from log import logger
 
 
 def main():
@@ -46,11 +48,4 @@ def main():
             time.sleep(5)
 
 if __name__ == '__main__':
-    logger = logging.getLogger('environmentManager')
-    logger.setLevel(logging.DEBUG)
-    fh = logging.FileHandler(LOGGING_PATH + '/environmentManager.log')
-    fh.setLevel(logging.DEBUG)
-    formatter = logging.Formatter('%(asctime)s %(levelname)s: %(message)s')
-    fh.setFormatter(formatter)
-    logger.addHandler(fh)
     main()

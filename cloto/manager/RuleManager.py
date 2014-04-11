@@ -6,11 +6,15 @@ from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, S
 from django.utils import timezone
 from django.core.validators import URLValidator
 from keystoneclient.exceptions import Conflict
+import cloto.OrionClient as OrionClient
+from cloto.log import logger
 
 
 class RuleManager():
     """This class provides methods to manage rules.
     """
+    #ContextBrokerClient
+    orionClient = OrionClient.OrionClient()
 
     def get_rule_model(self):
         """Returns model of Rule."""
@@ -117,10 +121,20 @@ class RuleManager():
 
         self.checkRule(name, condition, action)
 
+        #Its necesary modify action to get subscriptionId
+        modifiedAction = self.pimp_rule_action(action, name, serverId)
+        modifiedCondition = self.pimp_rule_condition(condition, name, serverId)
+
         createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
         ruleId = uuid.uuid1()
         rule = SpecificRule(specificRule_Id=ruleId,
-                            tenantId=tenantId, name=name, condition=condition, action=action, createdAt=createdAt)
+                tenantId=tenantId, name=name, condition=condition, action=action,
+                clips_condition=modifiedCondition, clips_action=modifiedAction, createdAt=createdAt)
+        """try:
+            rule = SpecificRule.objects.get(serverId__exact=serverId, )
+            raise ValueError("rule name already exists")
+        except Entity.DoesNotExist as err:
+            entity = Entity(serverId=serverId, tenantId=tenantId)"""
         rule.save()
         entity.specificrules.add(rule)
         rule.save()
@@ -129,7 +143,7 @@ class RuleManager():
         return ruleResult
 
     def update_specific_rule(self, tenantId, serverId, ruleId, rule):
-        """Updates a general rule """
+        """Updates a specific rule """
         rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
         try:
@@ -144,6 +158,10 @@ class RuleManager():
         rule_db.action = action
         rule_db.name = name
         rule_db.condition = condition
+        modifiedAction = self.pimp_rule_action(action, name, serverId)
+        modifiedCondition = self.pimp_rule_condition(condition, name, serverId)
+        rule_db.clips_action = modifiedAction
+        rule_db.clips_condition = modifiedCondition
         rule_db.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
@@ -219,34 +237,48 @@ class RuleManager():
 
     def subscribe_to_rule(self, tenantId, serverId, subscription):
         """Creates a server subscription to a rule """
+        context_broker_subscription = False
         try:
             entity = Entity.objects.get(serverId__exact=serverId)
         except Entity.DoesNotExist as err:
             entity = Entity(serverId=serverId, tenantId=tenantId)
             entity.save()
-
         ruleId = json.loads(subscription)['ruleId']
         SpecificRule.objects.get(specificRule_Id__exact=ruleId, entity__exact=serverId)
         url = json.loads(subscription)['url']
-
         #Verify that there is no more subscriptions to the rule for that server
         it = entity.subscription.iterator()
         for sub in it:
+            if sub.serverId == serverId:
+                context_broker_subscription = sub.cbSubscriptionId
             if sub.ruleId == ruleId:
                 raise Conflict("Subscription already exists")
 
         self.verify_url(url)
+        if not context_broker_subscription:
+            cbSubscriptionId = self.orionClient.contextBrokerSubscription(tenantId, serverId)
+            logger.info("This is the cbSubscriptionId %s" % cbSubscriptionId)
+        else:
+            cbSubscriptionId = context_broker_subscription
+            logger.info("There is a previous subscription to the CB, the cbSubscriptionId %s" % cbSubscriptionId)
         subscription_Id = uuid.uuid1()
-        subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId)
+        subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId,
+                              cbSubscriptionId=cbSubscriptionId)
         subscr.save()
         entity.subscription.add(subscr)
         entity.save()
+
         return subscription_Id
 
     def unsubscribe_to_rule(self, serverId, subscriptionId):
         """Unsuscribe a server from a rule """
+
         r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId)
-        r_query.delete()
+        if Subscription.objects.filter(serverId__exact=serverId).count() == 1:
+            self.orionClient.contextBrokerUnSubscription(r_query.cbSubscriptionId, r_query.serverId)
+            r_query.delete()
+        else:
+            r_query.delete()
         return True
 
     def get_subscription(self, tenantId, serverId, subscriptionId):
@@ -269,5 +301,68 @@ class RuleManager():
             raise ValueError("You must provide actions with length between 1 and 1024 characters")
 
     def verify_url(self, url):
-            validator = URLValidator()
-            validator(url)
+        validator = URLValidator()
+        validator(url)
+
+    def verify_values(self, name, value, type):
+        operands = ["greater", "less", "greater equal", "less equal"]
+        try:
+            if not value:
+                raise ValueError
+            if type == str:
+                if "operand" in name and (value not in operands):
+                    raise ValueError
+            else:
+                if type == float:
+                    myfloat = float(value)
+        except ValueError:
+            raise ValueError("You must provide a valid value and operand for %s" % name)
+
+    def pimp_rule_action(self, action, ruleName, serverId):
+        """This method builds a CLIPS rule from data received as json.
+        It is necesary to Rule Engine add this String to be able to get the notification url of each Rule subscribed
+        """
+        try:
+            logger.debug("Action: " + str(action))
+            actionName = action['actionName']
+            self.verify_values('actionName', actionName, str)
+            action_string = "(python-call " + actionName + " \"" + serverId + "\" ?url"
+            if actionName == "notify-email":
+                email = action['email']
+                body = action['body']
+                self.verify_values("email", email, str)
+                self.verify_values("body", body, str)
+                action_string += " \"" + body + "\"" " " + email
+            if actionName == "notify-scale":
+                operation = action['operation']
+                self.verify_values("operation", operation, str)
+                action_string += " \"" + operation + "\""
+            action_string += ")"
+            string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
+                                             + "\" \"" + serverId + "\"))"
+            return string_to_get_url_subscription + action_string
+        except Exception as e:
+            raise e
+
+    def pimp_rule_condition(self, condition, ruleName, serverId):
+        """This method builds a CLIPS condition from data received as json.
+        """
+        try:
+            logger.debug("Condition: " + str(condition))
+            operands = {"less": "<", "greater": ">", "less equal": "<=", "greater equal": ">="}
+            condition_string = "(ServerFact \"" + serverId + "\""
+
+            ##Adding CPU condition
+            parameters = ["cpu", "mem"]
+            for k in parameters:
+                self.verify_values("cpu operand", condition[k]["operand"], str)
+                self.verify_values("cpu value", condition[k]["value"], float)
+                operand = operands[condition[k]["operand"]]
+                condition_string += " ?" + k + "&:(" + operand + " ?" + k + " " \
+                                    + str(condition[k]["value"]) + ")"
+            condition_string += ")"
+            return condition_string
+        except ValueError as error:
+            raise error
+        except Exception as e:
+            raise e

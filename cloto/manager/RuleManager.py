@@ -128,7 +128,8 @@ class RuleManager():
         createdAt = datetime.datetime.now(tz=timezone.get_default_timezone())
         ruleId = uuid.uuid1()
         rule = SpecificRule(specificRule_Id=ruleId,
-                            tenantId=tenantId, name=name, condition=modifiedCondition, action=modifiedAction, createdAt=createdAt)
+                tenantId=tenantId, name=name, condition=condition, action=action,
+                clips_condition=modifiedCondition, clips_action=modifiedAction, createdAt=createdAt)
         """try:
             rule = SpecificRule.objects.get(serverId__exact=serverId, )
             raise ValueError("rule name already exists")
@@ -157,6 +158,10 @@ class RuleManager():
         rule_db.action = action
         rule_db.name = name
         rule_db.condition = condition
+        modifiedAction = self.pimp_rule_action(action, name, serverId)
+        modifiedCondition = self.pimp_rule_condition(condition, name, serverId)
+        rule_db.clips_action = modifiedAction
+        rule_db.clips_condition = modifiedCondition
         rule_db.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
@@ -245,7 +250,7 @@ class RuleManager():
         it = entity.subscription.iterator()
         for sub in it:
             if sub.serverId == serverId:
-                context_broker_subscription = True
+                context_broker_subscription = sub.cbSubscriptionId
             if sub.ruleId == ruleId:
                 raise Conflict("Subscription already exists")
 
@@ -253,6 +258,9 @@ class RuleManager():
         if not context_broker_subscription:
             cbSubscriptionId = self.orionClient.contextBrokerSubscription(tenantId, serverId)
             logger.info("This is the cbSubscriptionId %s" % cbSubscriptionId)
+        else:
+            cbSubscriptionId = context_broker_subscription
+            logger.info("There is a previous subscription to the CB, the cbSubscriptionId %s" % cbSubscriptionId)
         subscription_Id = uuid.uuid1()
         subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId,
                               cbSubscriptionId=cbSubscriptionId)
@@ -293,8 +301,22 @@ class RuleManager():
             raise ValueError("You must provide actions with length between 1 and 1024 characters")
 
     def verify_url(self, url):
-            validator = URLValidator()
-            validator(url)
+        validator = URLValidator()
+        validator(url)
+
+    def verify_values(self, name, value, type):
+        operands = ["greater", "less", "greater equal", "less equal"]
+        try:
+            if not value:
+                raise ValueError
+            if type == str:
+                if "operand" in name and (value not in operands):
+                    raise ValueError
+            else:
+                if type == float:
+                    myfloat = float(value)
+        except ValueError:
+            raise ValueError("You must provide a valid value and operand for %s" % name)
 
     def pimp_rule_action(self, action, ruleName, serverId):
         """This method builds a CLIPS rule from data received as json.
@@ -302,15 +324,18 @@ class RuleManager():
         """
         try:
             logger.debug("Action: " + str(action))
-            myaction = action['actionName']
-
-            action_string = "(python-call "+ myaction + " \"" + serverId + "\" ?url"
-            if myaction == "notify-email":
+            actionName = action['actionName']
+            self.verify_values('actionName', actionName, str)
+            action_string = "(python-call " + actionName + " \"" + serverId + "\" ?url"
+            if actionName == "notify-email":
                 email = action['email']
-                description = action['description']
-                action_string += " \"" + description + "\"" " " + email
-            if myaction == "notify-scale":
+                body = action['body']
+                self.verify_values("email", email, str)
+                self.verify_values("body", body, str)
+                action_string += " \"" + body + "\"" " " + email
+            if actionName == "notify-scale":
                 operation = action['operation']
+                self.verify_values("operation", operation, str)
                 action_string += " \"" + operation + "\""
             action_string += ")"
             string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
@@ -330,10 +355,14 @@ class RuleManager():
             ##Adding CPU condition
             parameters = ["cpu", "mem"]
             for k in parameters:
-                operand = operands[condition[k]["operation"]]
+                self.verify_values("cpu operand", condition[k]["operand"], str)
+                self.verify_values("cpu value", condition[k]["value"], float)
+                operand = operands[condition[k]["operand"]]
                 condition_string += " ?" + k + "&:(" + operand + " ?" + k + " " \
                                     + str(condition[k]["value"]) + ")"
             condition_string += ")"
             return condition_string
+        except ValueError as error:
+            raise error
         except Exception as e:
             raise e

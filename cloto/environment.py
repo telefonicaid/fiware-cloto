@@ -12,6 +12,7 @@ from constants import SERVERID
 from log import logger
 LOGGER_COMPONENT = 'ENVIRONMENT'
 
+
 def main():
     tenantId = sys.argv[1]
 
@@ -153,9 +154,9 @@ def main():
         def callback(ch, method, properties, body):
             decoded = json.loads(body)
             logger.info(decoded)
-            try :
+            try:
                 f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
-                               + " " + str(decoded['mem'])+ ")")
+                               + " " + str(decoded['mem']) + ")")
                 logger.info("received fact: %s" % body)
                 get_rules_from_db(tenantId)
                 e1.PrintFacts()

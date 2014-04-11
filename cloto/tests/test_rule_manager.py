@@ -4,15 +4,21 @@ from cloto.models import *
 from cloto.manager import RuleManager
 from mockito import *
 from requests import Response
-from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL
+from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
 import uuid
 import json
 
 
 class RuleManagerTests(TestCase):
     def setUp(self):
-        self.rule = "{\"name\": \"test Name\", \"condition\": \"test Condition\",\"action\": \"test Action\"}"
-        self.ruleUpdated = "{\"name\": \"test Name2\", \"condition\": \"test Condition\",\"action\": \"test Action\"}"
+        self.rule = '{\"name\": \"test Name\", \"condition\": ' \
+                    '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleUpdated = '{\"name\": \"test Name2\", \"condition\": ' \
+                    '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
         self.tenantId = "tenantId"
         self.serverId = "serverId"
         self.newServerId = "ServerIdThatNoExists"
@@ -31,20 +37,19 @@ class RuleManagerTests(TestCase):
                             "}" % expected_cbSubscriptionId
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         #data to subscription
-        data = json.dumps("{\"entities\": ["
-                          "{\"type\": \"Server\","
-                          "\"isPattern\": \"false\","
-                          "\"id\": \"%s\""
-                          "}],"
-                          "\"attributes\": ["
-                            "\"cpu\","
-                            "\"mem\"],"
-                            "\"reference\": \"%s\","
-                            "\"duration\": \"P1M\","
-                            "\"notifyConditions\": ["
-                            "{\"type\": \"ONTIMEINTERVAL\","
-                            "\"condValues\": [\"PT5S\"]}]}" % (self.newServerId,
-                                    NOTIFICATION_URL + "/" + self.tenantId + "servers/" + self.newServerId))
+        data = '{"entities": [' \
+               '{"type": "Server",'\
+               '"isPattern": "false",' \
+                          '"id": "' + self.newServerId + '"' \
+                          '}],' \
+                '"attributes": [' \
+                            '"cpu",' \
+                            '"mem"],' \
+                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + self.newServerId + '",' \
+                            '"duration": "P1M",' \
+                            '"notifyConditions": [' \
+                            '{"type": "' + NOTIFICATION_TYPE + '",' \
+                            '"condValues": ["' + NOTIFICATION_TIME + '"]}]}'
         #data2 for unsubscription
         data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % expected_cbSubscriptionId)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\

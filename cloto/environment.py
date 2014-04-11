@@ -58,14 +58,13 @@ def main():
         """Sends a notification to given url showing that service must send an email to an address.
         """
 
-        #headers ={'X-Auth-Token':'test'}
+        headers = {'Content-Type': 'application/json'}
         data = '{"action": "notifyEmail", "serverId": "' + serverId\
                + ', "email": "' + email + '", "description": "' + description + '"}'
         logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
 
-        """r = requests.get(url)
+        """r = requests.post(url, data=data, headers=headers)
         if r.status_code == 200:
-            print(1)
             logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
         else:
             print(2)
@@ -76,11 +75,11 @@ def main():
     def NotifyScale(serverId, url, action):
         """Sends a notification to given url showing that service must scale up or scale down a server.
         """
-        #headers ={'X-Auth-Token':'test'}
+        headers = {'Content-Type': 'application/json'}
         data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
         logger.info(action + " message sent to %s : %s"
                         % (url, data))
-        """r = requests.get(url)
+        """r = requests.post(url, data=data, headers=headers)
         if r.status_code == 200:
             logger.info(action + " message sent to %s about server %s.--- Response: %d"
                         % (url, serverId, r.status_code))
@@ -140,21 +139,23 @@ def main():
                 host=RABBITMQ_URL))
         channel = connection.channel()
 
-        channel.exchange_declare(exchange="update_" + tenantId,
-                                 type='fanout')
+        channel.exchange_declare(exchange="facts",
+                                 exchange_type='direct')
 
         result = channel.queue_declare(exclusive=True)
         queue_name = result.method.queue
 
-        channel.queue_bind(exchange="update_" + tenantId,
-                           queue=queue_name)
+        channel.queue_bind(exchange="facts",
+                           queue=queue_name,
+                           routing_key=tenantId)
 
         logger.info('Environment started. Waiting for Facts')
 
         def callback(ch, method, properties, body):
-            decoded = json.loads(body)
-            logger.info(decoded)
             try:
+                decoded = json.loads(body)
+                logger.info(decoded)
+
                 f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
                                + " " + str(decoded['mem']) + ")")
                 logger.info("received fact: %s" % body)
@@ -163,6 +164,8 @@ def main():
                 e1.PrintRules()
                 e1.Run()
                 f1.Retract()
+            except ValueError:
+                logger.error("receiving an invalid body: " + body)
             except clips.ClipsError:
                 logger.error(clips.ErrorStream.Read())
             except Exception as ex:
@@ -177,10 +180,8 @@ def main():
 
         channel.start_consuming()
     except db.Error, e:
-        logger.error("END of checking1")
         logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, e.args[0])
     except Exception as ex:
-        logger.error("END of checking2 %s" % ex.args[0])
         if ex.message:
             logger.error("%s %s Error %s:" % LOGGER_COMPONENT, tenantId, ex.message)
     finally:

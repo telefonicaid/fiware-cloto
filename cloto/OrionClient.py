@@ -17,8 +17,8 @@ class OrionClient():
         headers = {constants.CONTENT_HEADER: constants.JSON_TYPE, constants.ACCEPT_HEADER: constants.JSON_TYPE}
 
         data = '{"entities": [' \
-               '{"type": "Server",'' \
-               ''"isPattern": "false",' \
+               '{"type": "Server",'\
+               '"isPattern": "false",' \
                           '"id": "' + serverId + '"' \
                           '}],' \
                 '"attributes": [' \

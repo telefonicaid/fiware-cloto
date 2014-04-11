@@ -129,6 +129,7 @@ def delete_rule(step, server_id):
 @step(u'the rule is deleted')
 def assert_rule_is_deleted(step):
 
+    print "CONTENT: ".format(world.req.content)
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
     req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
                                   headers=world.headers)

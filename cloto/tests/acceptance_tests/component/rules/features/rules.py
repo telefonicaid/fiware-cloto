@@ -189,8 +189,8 @@ def then_i_obtain_all_the_rules_of_the_server(step):
     assert_equals(response[TENANT_KEY], world.tenant_id)
     assert_equals(len(response[RULES]), world.number_rules)
 
-    for rule in world.rules:
-        assert_in(rule, response[RULES])
+    for rule, u_response in zip(world.rules, response[RULES]):
+        assert_in(rule['name'], u_response['name'])
     world.rules = []
     Utils.delete_all_rules_from_tenant()
 
@@ -201,13 +201,12 @@ def given_group1_of_rules_created_in_group2(step, number_rules, server_id):
     world.server_id = server_id
     world.number_rules = int(number_rules)
     for x in range(world.number_rules):
-        rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
-        req = api_utils.create_rule(world.tenant_id, world.server_id, rule_name, rule_condition,
-                                    rule_action)
+        rule_body = Rule_Utils.create_random_notify_rule()
+        req = api_utils.create_rule(world.tenant_id, world.server_id, body=rule_body)
+        print "CONTENT: {}".format(req.json())
         assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
         rule_id = req.json()[RULE_ID]
-        world.rules.append(Utils.create_rule_body(action=rule_action, rule_id=rule_id, condition=rule_condition,
-                                                  name=rule_name))
+        world.rules.append(rule_body)
 
 
 @step(u'Then I obtain zero rules')
@@ -225,7 +224,7 @@ def then_i_obtain_zero_rules(step):
 def given_a_created_group1_without_rules(step, server_id):
 
     world.server_id = server_id
-    created_rule(step, rule_name=RANDOM, rule_action=DEFAULT, rule_condition=DEFAULT, server_id=world.server_id)
+    created_rule(step, server_id=world.server_id)
     delete_rule(step, server_id=world.server_id)
     world.servers_body = [{SERVER_ID: world.server_id,
                            RULES: []}]
@@ -262,12 +261,12 @@ def given_a_group1_of_servers_in_a_tenant(step, number_servers):
         number_rules = random.randint(1, 5)
 
         for rule in range(number_rules):
-            rule_name, rule_condition, rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
-            req = api_utils.create_rule(world.tenant_id, server_id, rule_name, rule_condition, rule_action)
+            rule_body = Rule_Utils.create_random_scalability_rule()
+            req = api_utils.create_rule(world.tenant_id, server_id, body=rule_body)
             assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
             rule_id = req.json()[RULE_ID]
             world.rules.append(Utils.create_rule_body(action=None, rule_id=rule_id, condition=None,
-                                                      name=rule_name))
+                                                      name=rule_body['name']))
 
         server_dict = {SERVER_ID: server_id,
                        RULES: world.rules}
@@ -305,8 +304,8 @@ def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
 
     action = Utils.new_create_rule_action_dict(action_name='notify-scale', operation=action)
 
-    world.req = api_utils.new_create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
-                                          cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
+    world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
+                                      cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
 
 
 @step(u'When I create a notify rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
@@ -314,8 +313,8 @@ def when_i_create_a_notify_rule_with_group1_group2_and_group3(step, rule_name, b
 
     action = Utils.new_create_rule_action_dict(action_name='notify-email', body=body, email=email)
 
-    world.req = api_utils.new_create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
-                                          cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
+    world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
+                                      cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
 
 
 @step(u'And some rule prepared with all data')
@@ -347,7 +346,7 @@ def and_the_group1_replaced_to_none(step, key, to_replace):
 
 
 @step(u'Given a created rule in the in the "([^"]*)"')
-def given_a_created_rule(step, server_id):
+def created_rule(step, server_id):
 
     world.server_id = server_id
     world.rule_body = Rule_Utils.create_random_scalability_rule()

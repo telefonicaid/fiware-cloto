@@ -359,7 +359,7 @@ def new_create_rule_action_dict(action_name=None, operation=None, body=None, ema
         action['operation'] = operation
 
     if body is not None:
-        action['description'] = body
+        action['body'] = body
 
     if email is not None:
         action['email'] = email
@@ -375,7 +375,7 @@ def new_create_rule_parameter_dict(value=None, operand=None):
         tmp_dict['value'] = value
 
     if operand is not None:
-        tmp_dict['operation'] = operand
+        tmp_dict['operand'] = operand
 
     return tmp_dict
 

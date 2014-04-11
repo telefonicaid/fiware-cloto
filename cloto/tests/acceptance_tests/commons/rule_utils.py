@@ -14,11 +14,11 @@ def create_random_scalability_rule():
             "name": Utils.id_generator(),
             "condition": {
                 "mem": {
-                    "operation": "less equal",
+                    "operand": "less equal",
                     "value": "1"
             },
                 "cpu": {
-                    "operation": "less",
+                    "operand": "less",
                     "value": "1"
                     }
                 }
@@ -27,18 +27,18 @@ def create_random_scalability_rule():
 
 
 def create_random_notify_rule():
-    rule = {"action": {"actionName": "notify-scale",
-                       "description": "Be careful, the mem is too low!!!!",
+    rule = {"action": {"actionName": "notify-email",
+                       "body": "Be careful, the mem is too low!!!!",
                        "email": "aaa@aaa.es"
                        },
             "name": Utils.id_generator(),
             "condition": {
                 "mem": {
-                    "operation": "less equal",
+                    "operand": "less equal",
                     "value": "1"
                 },
                 "cpu": {
-                    "operation": "less",
+                    "operand": "less",
                     "value": "1"
                 }
             }

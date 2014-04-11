@@ -52,7 +52,7 @@ Feature: As a user
   @security
   Scenario Outline: List rules with incorrect token
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+    Given a created rule in the in the "<server_id>"
     And incorrect "<token>"
     When I get the rules list from "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"

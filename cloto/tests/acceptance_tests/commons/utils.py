@@ -130,7 +130,6 @@ def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=
         assert_equals(response[RULE_ID], rule_id)
 
 
-
 def create_rule_body(action=None, rule_id=None, condition=None, name=None):
 
     """Method to build the Rule JSON including rule_is
@@ -206,14 +205,14 @@ def context_status_code(status_code=None, details='message', reason=CONTEXT_STAT
     return status_code_body
 
 
-def context_response(context_element, status_code):
+def context_response(context_el, status_code):
 
-    """Method to build the JSON wiht the context element and the status code
-    :param context_element: JSON including the context element attributes
+    """Method to build the JSON with the context element and the status code
+    :param context_el: JSON including the context element attributes
     :param status_code: status code received from context manager
     """
 
-    return {CONTEXT_ELEMENT: context_element,
+    return {CONTEXT_ELEMENT: context_el,
             CONTEXT_STATUS_CODE: status_code}
 
 
@@ -264,7 +263,6 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
         for rule_server in server[RULES]:
             req = api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
             assert req.ok
-
 
 
 def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_name=None, rule_condition=None, rule_action=None,
@@ -357,6 +355,15 @@ def delete_context_constant_parameter(parameter, context_body):
 
 def create_rule_action_dict(action_name=None, operation=None, body=None, email=None):
 
+    """
+    Method to create a rule action dict for scale or notify requests
+    :param action_name: Name of the action to be executed when the rule is activated
+    :param operation: Name of operation in the scale actions
+    :param body: Message to be sent to notify the rule is activated
+    :param body: email address to notify the rule is activated
+    : returns Action body (dict)
+    """
+
     action = {}
 
     if action_name is not None:
@@ -376,6 +383,12 @@ def create_rule_action_dict(action_name=None, operation=None, body=None, email=N
 
 def create_rule_parameter_dict(value=None, operand=None):
 
+    """
+    Method to create the parameter body for Create or Update rule dinamically
+    :param value: Value of the parameter
+    :param operand: Operand of the parameter
+    :returns parameter body (dict)
+    """
     tmp_dict = {}
 
     if value is not None:
@@ -389,6 +402,13 @@ def create_rule_parameter_dict(value=None, operand=None):
 
 def delete_keys_from_dict(dict_del, key):
 
+    """
+    Method to delete keys from python dict
+    :param dict_del: Python dictionary with all keys
+    :param key: key to be deleted in the Python dictionary
+    :returns a new Python dictionary without the rules deleted
+    """
+
     if key in dict_del.keys():
 
         del dict_del[key]
@@ -400,6 +420,14 @@ def delete_keys_from_dict(dict_del, key):
 
 
 def replace_values_from_dict(dict_replace, key, replace_to=None):
+
+    """
+    Method to replace values from python dict
+    :param dict_replace: Python dictionary
+    :param key: key to be replaced in the Python dictionary
+    :param replace_to: The new value of the keys replaced
+    :returns a new Python dictionary without the rules replaced
+    """
 
     if key in dict_replace.keys():
 

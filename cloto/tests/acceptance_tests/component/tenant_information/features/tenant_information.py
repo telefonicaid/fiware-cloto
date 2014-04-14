@@ -3,7 +3,7 @@ __author__ = 'artanis'
 # -*- coding: utf-8 -*-
 from lettuce import step, world, before
 from commons.rest_utils import RestUtils
-from commons.constants import TENANT_DOC, TENANT_OWNER, TENANT_VERSION, TENANT_WSIZE
+from commons.constants import TENANT_DOC, TENANT_OWNER, TENANT_VERSION, TENANT_WSIZE, TENANT_DEFAULT_DOC
 from commons.configuration import HEADERS, TENANT_ID
 import commons.utils as Utils
 
@@ -54,9 +54,9 @@ def check_tenant_information(step):
 
     for expected_result in step.hashes:
 
-        assert response[TENANT_DOC] == expected_result[TENANT_DOC], 'Expected {} is: {} \n Obtained {} is: ' \
-                                                                    '{}'.format(TENANT_DOC, expected_result[TENANT_DOC],
-                                                                                TENANT_DOC, response[TENANT_DOC])
+        assert response[TENANT_DOC] == TENANT_DEFAULT_DOC, 'Expected {} is: {} \n Obtained {} is: ' \
+                                                           '{}'.format(TENANT_DOC, TENANT_DEFAULT_DOC,
+                                                           TENANT_DOC, response[TENANT_DOC])
 
         assert response[TENANT_OWNER] == expected_result[TENANT_OWNER], 'Expected {} is: {} \n Obtained {} is: ' \
                                                                         '{}'.format(TENANT_OWNER,

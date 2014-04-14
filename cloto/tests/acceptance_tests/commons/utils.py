@@ -7,7 +7,7 @@ from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERV
     CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
     CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
-from constants import RULE_ACTION_NAME_LIST, RULE_ACTION_NAME
+from constants import RULE_ACTION_NAME
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
 from configuration import TENANT_ID, HEADERS
 from rest_utils import RestUtils
@@ -44,7 +44,7 @@ def create_header(content_type=DEFAULT_CONTENT_TYPE_HEADER, token=None):
 def assert_error_code_error(response, expected_error_code=None, expected_fault_element=None):
 
     """Method to assert response errors from Policy Manger
-    :param response: Response obtained from the API REST request to the Policy Manager
+    :param response: Response obtained from thelett API REST request to the Policy Manager
     :param expected_fault_element: Expected Fault element in the JSON response
     :param expected_error_code: Expected Error code in the JSON response
     """

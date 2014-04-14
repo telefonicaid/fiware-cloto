@@ -10,6 +10,7 @@ TENANT_WSIZE = u'windowsize'
 TENANT_DOC = u'doc'
 TENANT_VERSION = u'version'
 TENANT_KEY = u'tenantId'
+TENANT_DEFAULT_DOC = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager'
 
 CONTENT_TYPE_HEADER = u'content-type'
 DEFAULT_CONTENT_TYPE_HEADER = u'application/json'

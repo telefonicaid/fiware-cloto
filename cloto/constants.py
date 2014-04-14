@@ -10,3 +10,7 @@ JSON_TYPE = u'application/json'
 
 #MODEL CONSTANTS
 SERVERID = u'serverId'
+
+# NOTIFICATION CONSTANS
+OPERATIONS = ["scaleUp", "scaleDown"]
+OPERANDS = ["greater", "less", "greater equal", "less equal"]

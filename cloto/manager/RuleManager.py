@@ -4,7 +4,7 @@ import json
 import uuid
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
 from django.utils import timezone
-from django.core.validators import URLValidator
+from django.core.validators import URLValidator, EmailValidator
 from keystoneclient.exceptions import Conflict
 import cloto.OrionClient as OrionClient
 from cloto.log import logger
@@ -304,17 +304,27 @@ class RuleManager():
         validator = URLValidator()
         validator(url)
 
+    def verify_email(self, email):
+        validator = URLValidator()
+        validator(email)
+
     def verify_values(self, name, value, type):
         operands = ["greater", "less", "greater equal", "less equal"]
+        operations = ["scaleUp", "scaleDown"]
         try:
             if not value:
                 raise ValueError
             if type == str:
+                if name == "operation" and value not in operations:
+                    raise ValueError
                 if "operand" in name and (value not in operands):
                     raise ValueError
+
             else:
                 if type == float:
                     myfloat = float(value)
+                if myfloat < 0 or myfloat > 100:
+                    raise ValueError
         except ValueError:
             raise ValueError("You must provide a valid value and operand for %s" % name)
 
@@ -330,7 +340,7 @@ class RuleManager():
             if actionName == "notify-email":
                 email = action['email']
                 body = action['body']
-                self.verify_values("email", email, str)
+                self.verify_email(email)
                 self.verify_values("body", body, str)
                 action_string += " \"" + body + "\"" " " + email
             if actionName == "notify-scale":
@@ -341,6 +351,8 @@ class RuleManager():
             string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
                                              + "\" \"" + serverId + "\"))"
             return string_to_get_url_subscription + action_string
+        except KeyError as error:
+            raise KeyError("%s is missing" % error.message)
         except Exception as e:
             raise e
 
@@ -364,5 +376,7 @@ class RuleManager():
             return condition_string
         except ValueError as error:
             raise error
+        except KeyError as error:
+            raise KeyError("%s is missing" % error.message)
         except Exception as e:
             raise e

@@ -226,6 +226,9 @@ class ServerRuleView(RESTResource):
         except ValueError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
+        except KeyError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
         except ObjectDoesNotExist as err:
             return HttpResponse(json.dumps({"itemNotFound": {"code": 404, "message":
                         str(err)}}, indent=4), status=404)

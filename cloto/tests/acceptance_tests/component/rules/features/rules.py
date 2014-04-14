@@ -283,10 +283,10 @@ def then_i_obtain_the_server_list(step):
 def and_parameter_group1_with_group2_and_group3(step, parameter_name, parameter_value, parameter_operant):
 
     if parameter_name == 'cpu':
-        world.cpu = Utils.new_create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
+        world.cpu = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
 
     elif parameter_name == 'mem':
-        world.mem = Utils.new_create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
+        world.mem = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
 
 
 @step(u'When I create a scale rule with "([^"]*)" and "([^"]*)"')
@@ -295,7 +295,7 @@ def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
     if rule_name == 'random':
         rule_name = Utils.id_generator()
 
-    action = Utils.new_create_rule_action_dict(action_name='notify-scale', operation=action)
+    action = Utils.create_rule_action_dict(action_name='notify-scale', operation=action)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
                                       cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
@@ -304,7 +304,7 @@ def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
 @step(u'When I create a notify rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
 def when_i_create_a_notify_rule_with_group1_group2_and_group3(step, rule_name, body, email):
 
-    action = Utils.new_create_rule_action_dict(action_name='notify-email', body=body, email=email)
+    action = Utils.create_rule_action_dict(action_name='notify-email', body=body, email=email)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
                                       cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
@@ -381,7 +381,7 @@ def when_i_update_the_rule_with_group1_and_group2(step, new_name, new_action, se
 
     world.server_id = server_id
 
-    world.rule_action = Utils.new_create_rule_action_dict(action_name='notify-scale', operation=new_action)
+    world.rule_action = Utils.create_rule_action_dict(action_name='notify-scale', operation=new_action)
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
                                       cpu=world.cpu, mem=world.mem, action=world.rule_action, headers=world.headers,
@@ -416,7 +416,7 @@ def when_i_update_the_notify_rule_with_group1_group2_and_group3(step, new_name, 
         world.rule_name = new_name
     world.server_id = server_id
 
-    world.rule_action = Utils.new_create_rule_action_dict(action_name='notify-email', body=new_body, email=new_mail)
+    world.rule_action = Utils.create_rule_action_dict(action_name='notify-email', body=new_body, email=new_mail)
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
                                       cpu=world.cpu, mem=world.mem, action=world.rule_action, headers=world.headers,

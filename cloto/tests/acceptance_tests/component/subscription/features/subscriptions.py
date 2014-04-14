@@ -9,6 +9,7 @@ from commons.constants import RULE_ID, SERVER_ID, SUBSCRIPTION_ID, RANDOM, DEFAU
 from commons.configuration import HEADERS, TENANT_ID
 from commons.errors import HTTP_CODE_NOT_OK
 import commons.utils as Utils
+import commons.rule_utils as Rule_Utils
 import commons.authentication as Auth
 
 api_utils = RestUtils()
@@ -27,19 +28,16 @@ def setup_scenario(scenario):
     world.headers = HEADERS
 
 
-@step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
-def created_rule(step, rule_name, rule_condition, rule_action, server_id):
+@step(u'Given a created rule in the in the "([^"]*)"')
+def created_rule(step, server_id):
 
-    #Save all the expected results in global variables to compare after with obtained results.
-    world.tenant_id = TENANT_ID
     world.server_id = server_id
-    world.rule_name, world.rule_condition, world.rule_action = Utils.create_rule_parameters(rule_name, rule_condition,
-                                                                                            rule_action)
-    #Create the rule in Policy Manager
-    req = api_utils.create_rule(world.tenant_id, world.server_id, world.rule_name, world.rule_condition,
-                                world.rule_action)
+    world.rule_body = Rule_Utils.create_scale_specific_rule()
 
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    #Create the rule in Policy Manager
+    req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=world.rule_body)
+
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
 
     #Save the Rule ID to obtain the Rule information after
     world.rule_id = req.json()[RULE_ID]
@@ -68,7 +66,7 @@ def create_subscription_created_before(step):
 @step(u'the subscription is created')
 def assert_subscription_created(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = Utils.assert_json_format(world.req)
     assert_equals(response[SERVER_ID], world.server_id)
     assert_in(SUBSCRIPTION_ID, response.keys())
@@ -102,13 +100,12 @@ def created_subscription(step, server_id):
     world.server_id = server_id
     world.headers = HEADERS
 
-    world.rule_name, world.rule_condition, world.rule_action = Utils.create_rule_parameters(RANDOM, DEFAULT, DEFAULT)
+    world.rule_body = Rule_Utils.create_scale_specific_rule()
 
     #Create the rule in Policy Manager
-    req = api_utils.create_rule(world.tenant_id, world.server_id, world.rule_name, world.rule_condition,
-                                world.rule_action)
+    req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=world.rule_body)
 
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
 
     #Save the Rule ID to obtain the Rule information after
     world.rule_id = req.json()[RULE_ID]
@@ -116,7 +113,7 @@ def created_subscription(step, server_id):
     req = api_utils.create_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
                                         rule_id=world.rule_id, url=RULE_URL_DEFAULT, headers=world.headers)
 
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
     print req.content
     world.subscription_id = req.json()[SUBSCRIPTION_ID]
 
@@ -136,7 +133,7 @@ def delete_subscription_in_server(step, server_id):
 @step(u'the subscription is deleted')
 def assert_subscription_is_deleted(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     req = api_utils.retrieve_subscription(tenant_id=world.tenant_id, server_id=world.server_id,
                                           subscription_id=world.subscription_id, headers=world.headers)
     Utils.assert_error_code_error(response=req, expected_error_code='404',
@@ -166,7 +163,7 @@ def retrieve_subscription(step, server_id):
 @step(u'I get all subscription information')
 def assert_subscription_information(step):
 
-    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code))
+    assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = Utils.assert_json_format(world.req)
     assert_equals(response[RULE_URL], RULE_URL_DEFAULT)
     assert_equals(response[SERVER_ID], world.server_id)

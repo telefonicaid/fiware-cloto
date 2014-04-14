@@ -355,7 +355,7 @@ def delete_context_constant_parameter(parameter, context_body):
     return context_body
 
 
-def new_create_rule_action_dict(action_name=None, operation=None, body=None, email=None):
+def create_rule_action_dict(action_name=None, operation=None, body=None, email=None):
 
     action = {}
 
@@ -374,7 +374,7 @@ def new_create_rule_action_dict(action_name=None, operation=None, body=None, ema
     return action
 
 
-def new_create_rule_parameter_dict(value=None, operand=None):
+def create_rule_parameter_dict(value=None, operand=None):
 
     tmp_dict = {}
 

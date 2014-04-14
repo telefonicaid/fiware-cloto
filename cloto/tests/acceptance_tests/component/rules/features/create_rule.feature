@@ -155,7 +155,7 @@ Scenario Outline: Create a new specific rule for scale with incorrect parameters
   | qatest    | random  | 10        | testing     | 5         | less equal    | scaleDown | 400         | badRequest    |
   | qatest    | random  | 10        | less less   | 5         | less equal    | scaleDown | 400         | badRequest    |
   | qatest    | random  | 10        | equal less  | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | scale_Down| 400         | badRequest    |
   | qatest    | random  | 10        | less        | 5         | less equal    | scale     | 400         | badRequest    |
   | qatest    | random  | 10        | less        | 5         | less equal    | testing   | 400         | badRequest    |
   | qatest    | random  | 10        | less        | 5         | less equal    | scale Down| 400         | badRequest    |

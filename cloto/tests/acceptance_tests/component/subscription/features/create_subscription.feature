@@ -5,7 +5,7 @@ Feature: As a user
 @basic
 Scenario Outline: Create a new subscription
 
-  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  Given a created rule in the in the "<server_id>"
   When I create a new subscription in "<server_id>" with "<url_to_notify>"
   Then the subscription is created
 
@@ -21,7 +21,7 @@ Scenario Outline: Create a new subscription
 
 Scenario Outline: Create subscription with incorrect url
 
-  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  Given a created rule in the in the "<server_id>"
   When I create a new subscription in "<server_id>" with "<url_to_notify>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
@@ -50,7 +50,7 @@ Scenario Outline: Create subscription from a non existant rule_id
   | qatestserver| rule_test  | http://localhost:8080/notify   | 404         | itemNotFound  |
 
 Scenario Outline: Create subscription from a non existant server_id or incorrect server_id
-  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  Given a created rule in the in the "<server_id>"
   When I create a new subscription in "<another_server_id>" with "<url_to_notify>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
@@ -63,7 +63,7 @@ Scenario Outline: Create subscription from a non existant server_id or incorrect
 @security
 Scenario Outline: Create subscription with incorrect token
 
-  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  Given a created rule in the in the "<server_id>"
   And incorrect "<token>"
   When I create a new subscription in "<server_id>" with "<url_to_notify>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
@@ -79,7 +79,7 @@ Scenario Outline: Create subscription with incorrect token
 
 Scenario Outline: Create a subscription created before
 
-  Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+  Given a created rule in the in the "<server_id>"
   When I create a new subscription in "<server_id>" with "<url_to_notify>"
   And I create the same subscription
   Then I obtain an "<Error_code>" and the "<FaultElement>"

@@ -38,16 +38,6 @@ def set_tenant_and_server_id(step, server_id):
     world.mem = None
 
 
-@step(u'I create a rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
-def create_rule_with_all_parameters(step, rule_name, rule_condition, rule_action):
-
-    world.rule_name, world.rule_condition, world.rule_action = Utils.create_rule_parameters(rule_name, rule_condition,
-                                                                                            rule_action)
-
-    world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
-                                      condition=world.rule_condition, action=world.rule_action, headers=world.headers)
-
-
 @step(u'the rule is saved in Policy Manager')
 def assert_rule_saved(step):
 
@@ -85,22 +75,6 @@ def retrieve_rule(step, server_id):
     world.server_id = server_id
     world.req = api_utils.retrieve_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_id=world.rule_id,
                                         headers=world.headers)
-
-
-@step(u'the created rule with "([^"]*)", "([^"]*)" and "([^"]*)" in the "([^"]*)"')
-def created_rule(step, rule_name, rule_condition, rule_action, server_id):
-    #Save all the expected results in global variables to compare after with obtained results.
-    world.server_id = server_id
-    world.rule_name, world.rule_condition, world.rule_action = Utils.create_rule_parameters(rule_name, rule_condition,
-                                                                                            rule_action)
-    #Create the rule in Policy Manager
-    req = api_utils.create_rule(world.tenant_id, world.server_id, world.rule_name, world.rule_condition,
-                                world.rule_action)
-
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
-
-    #Save the Rule ID to obtain the Rule information after
-    world.rule_id = req.json()[RULE_ID]
 
 
 @step(u'I obtain the Rule data')
@@ -280,13 +254,13 @@ def then_i_obtain_the_server_list(step):
 
 
 @step(u'And parameter "([^"]*)" with "([^"]*)" and "([^"]*)"')
-def and_parameter_group1_with_group2_and_group3(step, parameter_name, parameter_value, parameter_operant):
+def and_parameter_group1_with_group2_and_group3(step, parameter_name, parameter_value, parameter_operand):
 
     if parameter_name == 'cpu':
-        world.cpu = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
+        world.cpu = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
 
     elif parameter_name == 'mem':
-        world.mem = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operant)
+        world.mem = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
 
 
 @step(u'When I create a scale rule with "([^"]*)" and "([^"]*)"')

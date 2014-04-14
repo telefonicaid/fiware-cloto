@@ -1,12 +1,12 @@
 __author__ = 'artanis'
 
 from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
-    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
+    RULE_CONDITION, RULE_NAME, RULE_ID, RULE_SPECIFIC_ID, RULE_OPERATION, BODY, EMAIL, RULE_VALUE, RULE_OPERAND
 from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
 from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
     CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
-    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
+    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID, MEM, CPU
 from constants import RULE_ACTION_NAME
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
 from configuration import TENANT_ID, HEADERS
@@ -58,34 +58,6 @@ def assert_error_code_error(response, expected_error_code=None, expected_fault_e
                   ERROR_CODE_ERROR.format(expected_error_code, response_body[expected_fault_element]['code']))
 
 
-def create_rule_parameters(name=None, condition=None, action=None):
-
-    """Method to create the rule body
-    :param name: The name of the rule to be created
-    :param condition: the condition to compare the server context
-    :param action: the action to take over the server
-    """
-
-    if name == 'long_name':
-        name = LONG_NAME
-    elif name == 'None':
-        name = None
-    elif name == 'random':
-        name = id_generator()
-
-    if condition == 'default':
-        condition = RULE_CONDITION_DEFAULT
-    elif condition == 'None':
-        condition = None
-
-    if action == 'default':
-        action = RULE_ACTION_DEFAULT
-    elif action == 'None':
-        action = None
-
-    return name, condition, action
-
-
 def id_generator(size=10, chars=string.ascii_letters + string.digits):
 
     """Method to create random ids
@@ -122,9 +94,9 @@ def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=
     if body is None:
         assert_equals(response[RULE_NAME], name)
         assert_equals(response[RULE_ID], rule_id)
-        assert_equals(response['action'], action)
-        assert_equals(response['condition']['cpu'], cpu)
-        assert_equals(response['condition']['mem'], mem)
+        assert_equals(response[RULE_ACTION], action)
+        assert_equals(response[RULE_CONDITION][CPU], cpu)
+        assert_equals(response[RULE_CONDITION][MEM], mem)
     else:
         assert_equals(response[RULE_NAME], body[RULE_NAME])
         assert_equals(response[RULE_ID], rule_id)
@@ -265,8 +237,7 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
             assert req.ok
 
 
-def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_name=None, rule_condition=None, rule_action=None,
-                headers=HEADERS):
+def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_body=None, headers=HEADERS):
 
     """Method to subscribe a server to a specific rule not created.
     :param server_id: Server unique identifier
@@ -278,11 +249,8 @@ def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_name=None, 
     :returns subscription_id: Subscription unique identifier
     """
 
-    #Prepare rule parameters
-    r_name, r_condition, r_action = create_rule_parameters(rule_name, rule_condition, rule_action)
-
     #Create the rule in Policy Manager
-    req = api_utils.create_rule(tenant_id, server_id, r_name, r_condition, r_action, headers)
+    req = api_utils.create_rule(tenant_id=tenant_id, server_id=server_id, body=rule_body, headers=headers)
 
     assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
 
@@ -370,13 +338,13 @@ def create_rule_action_dict(action_name=None, operation=None, body=None, email=N
         action[RULE_ACTION_NAME] = action_name
 
     if operation is not None:
-        action['operation'] = operation
+        action[RULE_OPERATION] = operation
 
     if body is not None:
-        action['body'] = body
+        action[BODY] = body
 
     if email is not None:
-        action['email'] = email
+        action[EMAIL] = email
 
     return action
 
@@ -392,10 +360,10 @@ def create_rule_parameter_dict(value=None, operand=None):
     tmp_dict = {}
 
     if value is not None:
-        tmp_dict['value'] = value
+        tmp_dict[RULE_VALUE] = value
 
     if operand is not None:
-        tmp_dict['operand'] = operand
+        tmp_dict[RULE_OPERAND] = operand
 
     return tmp_dict
 

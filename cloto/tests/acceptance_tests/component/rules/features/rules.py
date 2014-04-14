@@ -4,7 +4,7 @@ __author__ = 'artanis'
 from lettuce import step, world, before
 from nose.tools import assert_equals, assert_in, assert_true
 from commons.rest_utils import RestUtils
-from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, RANDOM, DEFAULT, SERVERS, RULE_NAME
+from commons.constants import RULE_ID, SERVER_ID, TENANT_KEY, RULES, SERVERS, RANDOM
 from commons.configuration import HEADERS
 from commons.errors import HTTP_CODE_NOT_OK, INVALID_JSON, INCORRECT_SERVER_ID, ERROR_CODE_ERROR
 import commons.authentication as Auth
@@ -82,7 +82,7 @@ def assert_rule_information(step):
 
     assert_true(world.req.ok, HTTP_CODE_NOT_OK.format(world.req.status_code, world.req.content))
     response = Utils.assert_json_format(world.req)
-    Utils.assert_rule_information(response=response, rule_id=world.rule_id, body=world.rule_body)
+    Rule_Utils.assert_rule_information(response=response, rule_id=world.rule_id, body=world.rule_body)
 
 
 @step(u'I retrieve "([^"]*)"')
@@ -133,7 +133,7 @@ def assert_rule_is_updated(step):
 
     assert world.req.ok, world.req.content
     response = Utils.assert_json_format(world.req)
-    Utils.assert_rule_information(response=response, rule_id=world.rule_id, name=world.rule_name, cpu=world.cpu,
+    Rule_Utils.assert_rule_information(response=response, rule_id=world.rule_id, name=world.rule_name, cpu=world.cpu,
                                   mem=world.mem, action=world.rule_action)
 
 
@@ -235,8 +235,8 @@ def given_a_group1_of_servers_in_a_tenant(step, number_servers):
             req = api_utils.create_rule(world.tenant_id, server_id, body=rule_body)
             assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code, req.content))
             rule_id = req.json()[RULE_ID]
-            world.rules.append(Utils.create_rule_body(action=None, rule_id=rule_id, condition=None,
-                                                      name=rule_body['name']))
+            world.rules.append(Rule_Utils.create_rule_body(action=None, rule_id=rule_id, condition=None,
+                                                           name=rule_body['name']))
 
         server_dict = {SERVER_ID: server_id,
                        RULES: world.rules}
@@ -257,10 +257,10 @@ def then_i_obtain_the_server_list(step):
 def and_parameter_group1_with_group2_and_group3(step, parameter_name, parameter_value, parameter_operand):
 
     if parameter_name == 'cpu':
-        world.cpu = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
+        world.cpu = Rule_Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
 
     elif parameter_name == 'mem':
-        world.mem = Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
+        world.mem = Rule_Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
 
 
 @step(u'When I create a scale rule with "([^"]*)" and "([^"]*)"')
@@ -269,7 +269,7 @@ def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
     if rule_name == 'random':
         rule_name = Utils.id_generator()
 
-    action = Utils.create_rule_action_dict(action_name='notify-scale', operation=action)
+    action = Rule_Utils.create_rule_action_dict(action_name='notify-scale', operation=action)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
                                       cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
@@ -278,7 +278,7 @@ def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
 @step(u'When I create a notify rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
 def when_i_create_a_notify_rule_with_group1_group2_and_group3(step, rule_name, body, email):
 
-    action = Utils.create_rule_action_dict(action_name='notify-email', body=body, email=email)
+    action = Rule_Utils.create_rule_action_dict(action_name='notify-email', body=body, email=email)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
                                       cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
@@ -355,7 +355,7 @@ def when_i_update_the_rule_with_group1_and_group2(step, new_name, new_action, se
 
     world.server_id = server_id
 
-    world.rule_action = Utils.create_rule_action_dict(action_name='notify-scale', operation=new_action)
+    world.rule_action = Rule_Utils.create_rule_action_dict(action_name='notify-scale', operation=new_action)
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
                                       cpu=world.cpu, mem=world.mem, action=world.rule_action, headers=world.headers,
@@ -384,13 +384,13 @@ def given_the_created_notify_rule_in_the_in_the_group1_with_the_following_parame
 @step(u'When I update the notify rule with "([^"]*)", "([^"]*)" and "([^"]*)" in "([^"]*)"')
 def when_i_update_the_notify_rule_with_group1_group2_and_group3(step, new_name, new_body, new_mail, server_id):
 
-    if new_name == 'random':
+    if new_name == RANDOM:
         world.rule_name = Utils.id_generator()
     else:
         world.rule_name = new_name
     world.server_id = server_id
 
-    world.rule_action = Utils.create_rule_action_dict(action_name='notify-email', body=new_body, email=new_mail)
+    world.rule_action = Rule_Utils.create_rule_action_dict(action_name='notify-email', body=new_body, email=new_mail)
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
                                       cpu=world.cpu, mem=world.mem, action=world.rule_action, headers=world.headers,

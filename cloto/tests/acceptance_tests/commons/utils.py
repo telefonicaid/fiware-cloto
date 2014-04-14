@@ -1,19 +1,20 @@
 __author__ = 'artanis'
 
-from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
-    RULE_CONDITION, RULE_NAME, RULE_ID, RULE_SPECIFIC_ID, RULE_OPERATION, BODY, EMAIL, RULE_VALUE, RULE_OPERAND
+import string
+import random
+
+from nose.tools import assert_in, assert_equals, assert_true
+
+from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_SPECIFIC_ID
+
 from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
 from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
     CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
-    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID, MEM, CPU
-from constants import RULE_ACTION_NAME
+    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
 from configuration import TENANT_ID, HEADERS
 from rest_utils import RestUtils
-from nose.tools import assert_in, assert_equals, assert_true
-import string
-import random
 
 list_deletions = [None, u'null']
 
@@ -82,53 +83,6 @@ def assert_json_format(request):
         assert False, "JSON Cannot be decode. Response format not correspond with JSON format"
 
     return response
-
-
-def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=None, mem=None, body=None):
-
-    """Method to verify the rule body parameters
-    :param response: Response body received from server
-    :param rule_id: The expected rule identification number
-    :param name: The expected rule name
-    """
-    if body is None:
-        assert_equals(response[RULE_NAME], name)
-        assert_equals(response[RULE_ID], rule_id)
-        assert_equals(response[RULE_ACTION], action)
-        assert_equals(response[RULE_CONDITION][CPU], cpu)
-        assert_equals(response[RULE_CONDITION][MEM], mem)
-    else:
-        assert_equals(response[RULE_NAME], body[RULE_NAME])
-        assert_equals(response[RULE_ID], rule_id)
-
-
-def create_rule_body(action=None, rule_id=None, condition=None, name=None):
-
-    """Method to build the Rule JSON including rule_is
-
-    :param rule_id: The expected rule identification number
-    :param name: The expected rule name
-    :param condition: The expected rule condition
-    :param action: The expected rule action
-    :returns: rule JSON (dict)
-    """
-
-    rule_body = {RULE_ACTION: action,
-                 RULE_SPECIFIC_ID: rule_id,
-                 RULE_CONDITION: condition,
-                 RULE_NAME: name
-                 }
-
-    if action is None:
-        del rule_body[RULE_ACTION]
-    if rule_id is None:
-        del rule_body[RULE_ID]
-    if condition is None:
-        del rule_body[RULE_CONDITION]
-    if name is None:
-        del rule_body[RULE_NAME]
-
-    return rule_body
 
 
 def context_element(cpu_value=None, memory_value=None, disk_value=None, network_value=None, server_id=None):
@@ -237,27 +191,6 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
             assert req.ok
 
 
-def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_body=None, headers=HEADERS):
-
-    """Method to subscribe a server to a specific rule not created.
-    :param server_id: Server unique identifier
-    :param headers: HTTP headers for the requests including authentication
-    :param tenant_id: Tenant unique identifier
-    :param rule_name: Name of the rule to be created
-    :param rule_condition: Condition of the rule to be created
-    :param rule_action: Action of the rule to be created
-    :returns subscription_id: Subscription unique identifier
-    """
-
-    #Create the rule in Policy Manager
-    req = api_utils.create_rule(tenant_id=tenant_id, server_id=server_id, body=rule_body, headers=headers)
-
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
-
-    rule_id = req.json()[RULE_ID]
-    return rule_id
-
-
 def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TENANT_ID, rule_name=None,
                         rule_condition=None, rule_action=None):
 
@@ -270,8 +203,7 @@ def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TE
     :param rule_action: Action of the rule to be created
     :returns subscription_id: Subscription unique identifier
     """
-
-    rule_id = create_rule(api_utils, tenant_id, server_id, rule_name, rule_condition, rule_action, headers)
+    rule_id = RestUtils.create_rule(api_utils, tenant_id, server_id, rule_name, rule_condition, rule_action, headers)
 
     req = api_utils.create_subscription(tenant_id=tenant_id, server_id=server_id,
                                         rule_id=rule_id, url=RULE_URL_DEFAULT, headers=headers)
@@ -319,53 +251,6 @@ def delete_context_constant_parameter(parameter, context_body):
         del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_TYPE])
 
     return context_body
-
-
-def create_rule_action_dict(action_name=None, operation=None, body=None, email=None):
-
-    """
-    Method to create a rule action dict for scale or notify requests
-    :param action_name: Name of the action to be executed when the rule is activated
-    :param operation: Name of operation in the scale actions
-    :param body: Message to be sent to notify the rule is activated
-    :param body: email address to notify the rule is activated
-    : returns Action body (dict)
-    """
-
-    action = {}
-
-    if action_name is not None:
-        action[RULE_ACTION_NAME] = action_name
-
-    if operation is not None:
-        action[RULE_OPERATION] = operation
-
-    if body is not None:
-        action[BODY] = body
-
-    if email is not None:
-        action[EMAIL] = email
-
-    return action
-
-
-def create_rule_parameter_dict(value=None, operand=None):
-
-    """
-    Method to create the parameter body for Create or Update rule dinamically
-    :param value: Value of the parameter
-    :param operand: Operand of the parameter
-    :returns parameter body (dict)
-    """
-    tmp_dict = {}
-
-    if value is not None:
-        tmp_dict[RULE_VALUE] = value
-
-    if operand is not None:
-        tmp_dict[RULE_OPERAND] = operand
-
-    return tmp_dict
 
 
 def delete_keys_from_dict(dict_del, key):

@@ -1,9 +1,15 @@
+from commons.constants import RULE_ACTION_NAME, RULE_OPERATION, BODY, EMAIL
+
 __author__ = 'arobres'
 
+from nose.tools import assert_equals, assert_true
+from commons.configuration import TENANT_ID, HEADERS
+from commons.errors import HTTP_CODE_NOT_OK
 import utils as Utils
 import random
 from constants import RULE_ACTION_SCALE_LIST, DEFAULT_BODY, RANDOM, RULE_ACTION, RULE_ACTION_NAME, BODY, \
-    RULE_ACTION_NAME_LIST, MEM, CPU, EMAIL, RULE_NAME, RULE_CONDITION,RULE_OPERATION, RULE_OPERAND, RULE_VALUE
+    RULE_ACTION_NAME_LIST, MEM, CPU, EMAIL, RULE_NAME, RULE_CONDITION,RULE_OPERATION, RULE_OPERAND, RULE_VALUE, \
+    RULE_ID, RULE_SPECIFIC_ID
 
 
 def create_scale_specific_rule(operation=random.choice(RULE_ACTION_SCALE_LIST), name=Utils.id_generator(),
@@ -74,3 +80,115 @@ def create_notify_specific_rule(body=DEFAULT_BODY, email="aaa@aaa.es", name=Util
                 }
             }
     return rule
+
+
+def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=None, mem=None, body=None):
+
+    """Method to verify the rule body parameters
+    :param response: Response body received from server
+    :param rule_id: The expected rule identification number
+    :param name: The expected rule name
+    """
+    if body is None:
+        assert_equals(response[RULE_NAME], name)
+        assert_equals(response[RULE_ID], rule_id)
+        assert_equals(response[RULE_ACTION], action)
+        assert_equals(response[RULE_CONDITION][CPU], cpu)
+        assert_equals(response[RULE_CONDITION][MEM], mem)
+    else:
+        assert_equals(response[RULE_NAME], body[RULE_NAME])
+        assert_equals(response[RULE_ID], rule_id)
+
+
+def create_rule_body(action=None, rule_id=None, condition=None, name=None):
+
+    """Method to build the Rule JSON including rule_is
+
+    :param rule_id: The expected rule identification number
+    :param name: The expected rule name
+    :param condition: The expected rule condition
+    :param action: The expected rule action
+    :returns: rule JSON (dict)
+    """
+
+    rule_body = {RULE_ACTION: action,
+                 RULE_SPECIFIC_ID: rule_id,
+                 RULE_CONDITION: condition,
+                 RULE_NAME: name
+                 }
+
+    if action is None:
+        del rule_body[RULE_ACTION]
+    if rule_id is None:
+        del rule_body[RULE_ID]
+    if condition is None:
+        del rule_body[RULE_CONDITION]
+    if name is None:
+        del rule_body[RULE_NAME]
+
+    return rule_body
+
+
+def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_body=None, headers=HEADERS):
+
+    """Method to subscribe a server to a specific rule not created.
+    :param server_id: Server unique identifier
+    :param headers: HTTP headers for the requests including authentication
+    :param tenant_id: Tenant unique identifier
+    :returns subscription_id: Subscription unique identifier
+    """
+
+    #Create the rule in Policy Manager
+    req = api_utils.create_rule(tenant_id=tenant_id, server_id=server_id, body=rule_body, headers=headers)
+
+    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+
+    rule_id = req.json()[RULE_ID]
+    return rule_id
+
+
+def create_rule_parameter_dict(value=None, operand=None):
+
+    """
+    Method to create the parameter body for Create or Update rule dinamically
+    :param value: Value of the parameter
+    :param operand: Operand of the parameter
+    :returns parameter body (dict)
+    """
+    tmp_dict = {}
+
+    if value is not None:
+        tmp_dict[RULE_VALUE] = value
+
+    if operand is not None:
+        tmp_dict[RULE_OPERAND] = operand
+
+    return tmp_dict
+
+
+def create_rule_action_dict(action_name=None, operation=None, body=None, email=None):
+
+    """
+    Method to create a rule action dict for scale or notify requests
+    :param action_name: Name of the action to be executed when the rule is activated
+    :param operation: Name of operation in the scale actions
+    :param body: Message to be sent to notify the rule is activated
+    :param body: email address to notify the rule is activated
+    : returns Action body (dict)
+    """
+
+    action = {}
+
+    if action_name is not None:
+        action[RULE_ACTION_NAME] = action_name
+
+    if operation is not None:
+        action[RULE_OPERATION] = operation
+
+    if body is not None:
+        action[BODY] = body
+
+    if email is not None:
+        action[EMAIL] = email
+
+    return action

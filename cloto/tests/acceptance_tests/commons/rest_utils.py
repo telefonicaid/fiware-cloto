@@ -5,7 +5,7 @@ from json import JSONEncoder
 import requests
 
 from commons.configuration import POLICY_MANAGER_PORT, POLICY_MANAGER_IP, HEADERS, FACTS_IP, FACTS_PORT
-from commons.constants import RULE_ACTION, RULE_CONDITION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE
+from commons.constants import RULE_ACTION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE, CPU, MEM, RULE_CONDITION
 
 
 POLICY_MANAGER_SERVER = 'http://{}:{}/v1.0'.format(POLICY_MANAGER_IP, POLICY_MANAGER_PORT)
@@ -18,7 +18,6 @@ CREATE_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules'
 ELASTICITY_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules/{rule_id}'
 CREATE_SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription'
 SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription/{subscription_id}'
-
 
 
 class RestUtils(object):
@@ -117,7 +116,6 @@ class RestUtils(object):
         :param tenant_id: Is the id of the tenant to obtain the information
         :param server_id: Is the id of the server to obtain the information
         :param rule_name: Key whose value represents the name of the rule.
-        :param condition: Is the description of the scalability rule associated to this server
         :param action: Is the action to take over the server when the rules are activated.
         :param headers: HTTP header request (dict)
         :returns: REST API response from Policy Manager
@@ -130,13 +128,13 @@ class RestUtils(object):
                 api_body[RULE_NAME] = rule_name
 
             if cpu is not None:
-                condition['cpu'] = cpu
+                condition[CPU] = cpu
 
             if mem is not None:
-                condition['mem'] = mem
+                condition[MEM] = mem
 
             if len(condition) > 0:
-                api_body['condition'] = condition
+                api_body[RULE_CONDITION] = condition
 
             if action is not None:
                 api_body[RULE_ACTION] = action
@@ -167,13 +165,13 @@ class RestUtils(object):
                 api_body[RULE_NAME] = rule_name
 
             if cpu is not None:
-                condition['cpu'] = cpu
+                condition[CPU] = cpu
 
             if mem is not None:
-                condition['mem'] = mem
+                condition[MEM] = mem
 
             if len(condition) > 0:
-                api_body['condition'] = condition
+                api_body[RULE_CONDITION] = condition
 
             if action is not None:
                 api_body[RULE_ACTION] = action

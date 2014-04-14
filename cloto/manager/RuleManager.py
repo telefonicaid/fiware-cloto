@@ -5,7 +5,7 @@ import uuid
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
 from django.utils import timezone
-from django.core.validators import URLValidator, EmailValidator
+from django.core.validators import URLValidator, validate_email, ValidationError
 from keystoneclient.exceptions import Conflict
 import cloto.OrionClient as OrionClient
 from cloto.log import logger
@@ -306,8 +306,8 @@ class RuleManager():
         validator(url)
 
     def verify_email(self, email):
-        validator = EmailValidator()
-        validator(email)
+        validate_email(email)
+
 
     def verify_values(self, name, value, type):
         try:
@@ -349,6 +349,8 @@ class RuleManager():
             string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
                                              + "\" \"" + serverId + "\"))"
             return string_to_get_url_subscription + action_string
+        except ValidationError as error:
+            raise ValidationError
         except KeyError as error:
             raise KeyError("%s is missing" % error.message)
         except Exception as e:

@@ -28,7 +28,7 @@ def setup_scenario(scenario):
     world.headers = HEADERS
 
 
-@step(u'Given a created rule in the in the "([^"]*)"')
+@step(u'Given a created rule in the "([^"]*)"')
 def created_rule(step, server_id):
 
     world.server_id = server_id

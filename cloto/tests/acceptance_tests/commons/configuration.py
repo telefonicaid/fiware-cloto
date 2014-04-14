@@ -1,4 +1,4 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 
 
 REST_PATH = '../../../../manage.py'

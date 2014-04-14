@@ -1,5 +1,3 @@
-from commons.constants import RULE_ACTION_NAME, RULE_OPERATION, BODY, EMAIL
-
 __author__ = 'arobres'
 
 from nose.tools import assert_equals, assert_true

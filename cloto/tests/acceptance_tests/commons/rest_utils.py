@@ -1,4 +1,4 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 
 from json import JSONEncoder
 

@@ -1,4 +1,4 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 
 
 LITTLE_SLEEP = 1
@@ -33,7 +33,7 @@ RULE_URL_DEFAULT = u'http://localhost:8080/notify'
 RULE_ACTION_NAME_LIST = ['notify-scale', 'notify-email']
 RULE_ACTION_SCALE_LIST = ['scaleUp', 'scaleDown']
 RULE_ACTION_NAME = 'actionName'
-operands = ["greater", "less", "greater equal", "less equal"]
+OPERANDS = ["greater", "less", "greater equal", "less equal"]
 BODY = u'body'
 MEM = u'mem'
 CPU = u'cpu'
@@ -43,9 +43,6 @@ LONG_NAME = u'This is a long name to test the maximum length of elasticity rule'
 
 RULES = u'rules'
 SERVERS = u'servers'
-
-
-
 
 SUBSCRIPTION_ID = u'subscriptionId'
 ORIGINATOR = u'originator'

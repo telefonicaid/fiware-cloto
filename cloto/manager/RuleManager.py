@@ -2,6 +2,7 @@ __author__ = 'gjp'
 import datetime
 import json
 import uuid
+from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
 from django.utils import timezone
 from django.core.validators import URLValidator, EmailValidator
@@ -305,21 +306,18 @@ class RuleManager():
         validator(url)
 
     def verify_email(self, email):
-        validator = URLValidator()
+        validator = EmailValidator()
         validator(email)
 
     def verify_values(self, name, value, type):
-        operands = ["greater", "less", "greater equal", "less equal"]
-        operations = ["scaleUp", "scaleDown"]
         try:
             if not value:
                 raise ValueError
             if type == str:
-                if name == "operation" and value not in operations:
+                if name == "operation" and value not in OPERATIONS:
                     raise ValueError
-                if "operand" in name and (value not in operands):
+                if "operand" in name and (value not in OPERANDS):
                     raise ValueError
-
             else:
                 if type == float:
                     myfloat = float(value)

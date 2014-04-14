@@ -308,7 +308,6 @@ class RuleManager():
     def verify_email(self, email):
         validate_email(email)
 
-
     def verify_values(self, name, value, type):
         try:
             if not value:
@@ -350,7 +349,7 @@ class RuleManager():
                                              + "\" \"" + serverId + "\"))"
             return string_to_get_url_subscription + action_string
         except ValidationError as error:
-            raise ValidationError
+            raise error
         except KeyError as error:
             raise KeyError("%s is missing" % error.message)
         except Exception as e:

@@ -210,6 +210,18 @@ class ServerRulesView(RESTResource):
         except ValueError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
+        except ValidationError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except KeyError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except AttributeError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except TypeError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
@@ -226,7 +238,16 @@ class ServerRuleView(RESTResource):
         except ValueError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
+        except ValidationError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
         except KeyError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except AttributeError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except TypeError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
         except ObjectDoesNotExist as err:

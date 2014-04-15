@@ -5,7 +5,7 @@ import uuid
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
 from django.utils import timezone
-from django.core.validators import URLValidator, EmailValidator
+from django.core.validators import URLValidator, validate_email, ValidationError
 from keystoneclient.exceptions import Conflict
 import cloto.OrionClient as OrionClient
 from cloto.log import logger
@@ -293,21 +293,22 @@ class RuleManager():
         return subscription
 
     def checkRule(self, name, condition, action):
-
-        if name.__len__() > 30 or name.__len__() < 3:
-            raise ValueError("You must provide a name with length between 3 and 30 characters")
-        if condition.__len__() > 1024 or condition.__len__() < 1:
-            raise ValueError("You must provide conditions with length between 1 and 1024 characters")
-        if action.__len__() > 1024 or action.__len__() < 1:
-            raise ValueError("You must provide actions with length between 1 and 1024 characters")
+        try:
+            if name.__len__() > 30 or name.__len__() < 3:
+                raise ValueError("You must provide a name with length between 3 and 30 characters")
+            if condition.__len__() > 1024 or condition.__len__() < 1:
+                raise ValueError("You must provide conditions with length between 1 and 1024 characters")
+            if action.__len__() > 1024 or action.__len__() < 1:
+                raise ValueError("You must provide actions with length between 1 and 1024 characters")
+        except Exception:
+            raise AttributeError("An atribute of the rule is missing")
 
     def verify_url(self, url):
         validator = URLValidator()
         validator(url)
 
     def verify_email(self, email):
-        validator = EmailValidator()
-        validator(email)
+        validate_email(email)
 
     def verify_values(self, name, value, type):
         try:
@@ -349,6 +350,8 @@ class RuleManager():
             string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
                                              + "\" \"" + serverId + "\"))"
             return string_to_get_url_subscription + action_string
+        except ValidationError as error:
+            raise error
         except KeyError as error:
             raise KeyError("%s is missing" % error.message)
         except Exception as e:
@@ -376,5 +379,7 @@ class RuleManager():
             raise error
         except KeyError as error:
             raise KeyError("%s is missing" % error.message)
+        except TypeError:
+            raise TypeError("One parameter of the condition is missing")
         except Exception as e:
             raise e

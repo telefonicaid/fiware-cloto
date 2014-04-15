@@ -4,93 +4,221 @@ Feature: Create Elasticity Rule
   In order to manage automatically the servers
 
   @basic
-  Scenario Outline: Update a rule with all parameters
+  Scenario Outline: Update a scale rule with all parameters
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
+    Given the created scale rule in the in the "<server_id>" with the following parameters
+      | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | scaleUp   | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
     Then the rule is updated in Policy Manager
 
     Examples:
 
-    | server_id   | name    | condition | action  | another_name  | another_condition | another_action  |
-    | qatestserver| name1   | condition1| action1 | another_name1 | another_condition1| another_action1 |
-    | qatestserver| name2   | condition2| action2 | another_name2 | condition2        | action2         |
-    | qatestserver| name3   | condition3| action3 | name3         | another_condition3| action3         |
-    | qatestserver| name4   | condition4| action4 | name4         | condition4        | another_action4 |
-    | qatestserver| name5   | condition5| action5 | name5         | condition5        | action5         |
+    | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_action  |
+    | qatestserver| 0             | less            | 0             | less            | test        | scaleUp     |
+    | qatestserver| 1             | less            | 0             | less            | test        | scaleUp     |
+    | qatestserver| 0             | less equal      | 0             | less            | test        | scaleUp     |
+    | qatestserver| 0             | less            | 1             | less            | test        | scaleUp     |
+    | qatestserver| 0             | less            | 0             | less equal      | test        | scaleUp     |
+    | qatestserver| 0             | less            | 0             | less            | qaforever   | scaleUp     |
+    | qatestserver| 0             | less            | 0             | less            | test        | scaleDown   |
+    | qatestserver| 1             | less equal      | 0             | less            | test        | scaleUp     |
+    | qatestserver| 1             | less            | 1             | less equal      | test        | scaleUp     |
+    | qatestserver| 1             | less equal      | 1             | less equal      | !@#$%^&*()_ | scaleDown   |
 
-  Scenario Outline: Update a rule with some parameters
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
+  @basic
+  Scenario Outline: Update a notify rule with all parameters
+
+    Given the created notify rule in the in the "<server_id>" with the following parameters
+      | body    | email       | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | hello!  | aaa@aaa.es  | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the notify rule with "<new_name>", "<new_body>" and "<new_email>" in "<server_id>"
+    Then the rule is updated in Policy Manager
+
+    Examples:
+
+    | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_body    | new_email   |
+    | qatestserver| 0             | less            | 0             | less            | test        | Bye!        | aaa@aaa.es  |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      | qa@test.es  |
+    | qatestserver| 0             | less            | 0             | less            | test        | !@#$%^&*()_ | qa@test.es  |
+
+
+  @basic
+  Scenario Outline: Update a scale rule with some parameters with empty strings
+
+    Given the created scale rule in the in the "<server_id>" with the following parameters
+      | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | scaleUp   | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-    | server_id   | name    | condition | action  | another_name  | another_condition | another_action  | Error_code  | FaultElement  |
-    | qatestserver| name1   | condition1| action1 | another_name1 | None              | None            | 400         | badRequest    |
-    | qatestserver| name2   | condition2| action2 | None          | another_condition2| None            | 400         | badRequest    |
-    | qatestserver| name3   | condition3| action3 | None          | None              | another_action3 | 400         | badRequest    |
-    | qatestserver| name4   | condition4| action4 | None          | None              | None            | 400         | badRequest    |
-    | qatestserver| name5   | condition5| action5 | name5         | None              | None            | 400         | badRequest    |
-    | qatestserver| name6   | condition6| action6 | None          | condition6        | None            | 400         | badRequest    |
-    | qatestserver| name7   | condition7| action7 | None          | None              | action7         | 400         | badRequest    |
+    | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_action  | Error_code  | FaultElement  |
+    | qatestserver|               | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 1             |                 | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less equal      |               | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 1             |                 | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less equal      |             | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | qaforever   |             | 400         | badRequest    |
+    | qatestserver|               |                 | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver|               |                 |               |                 | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver|               |                 |               |                 |             |             | 400         | badRequest    |
 
 
+  Scenario Outline: Update a notify rule with some parameters with empty strings
 
-  Scenario Outline: Update a rule with invalid parameters
-
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
+    Given the created notify rule in the in the "<server_id>" with the following parameters
+      | body    | email       | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | hello!  | aaa@aaa.es  | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the notify rule with "<new_name>", "<new_body>" and "<new_email>" in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-    | server_id   | name  | condition | action  | Error_code  | FaultElement  | another_name  | another_condition | another_action  |
-    | qatestserver| name1 | default   | default | 400         | badRequest    |               | condition1        | action1         |
-    | qatestserver| name2 | default   | default | 400         | badRequest    | another_name2 |                   | action2         |
-    | qatestserver| name3 | default   | default | 400         | badRequest    | another_name3 | condition3        |                 |
-    | qatestserver| name4 | default   | default | 400         | badRequest    | long_name     | condition4        | action4         |
-    | qatestserver| name5 | default   | default | 400         | badRequest    | qa            | condition5        | action5         |
+    | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_body    | new_email   | Error_code  | FaultElement  |
+    | qatestserver| 0             | less            | 0             | less            | test        |             | aaa@aaa.es  | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      |             | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        |             |             | 400         | badRequest    |
+
+
+  @basic
+  Scenario Outline: Update a scale rule with incorrect parameters
+
+    Given the created scale rule in the in the "<server_id>" with the following parameters
+      | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | scaleUp   | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
+    Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+    Examples:
+
+    | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_action  | Error_code  | FaultElement  |
+    | qatestserver| -1            | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 101           | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 100.1         | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 5'5           | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 5,5           | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| testing       | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 1 0           | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 1F            | less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | -1            | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 101           | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 100.1         | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 5,5           | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 5'5           | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | qa            | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 1 0           | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 1F            | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | qa          | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | les s           | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | testing         | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less less       | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | lessequals      | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | equals less     | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | Less            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | LESS            | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | _less           | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less_           | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less?           | 0             | less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | les s           | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | testing         | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less less       | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | lessequals      | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | equals less     | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | Less            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | LESS            | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | _less           | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less_           | test        | scaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | scale       | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | scaleup     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | scale Up    | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | scale_Up    | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | scaleUp_    | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | scaleUp?    | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | testing     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | ScaleUp     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | SCALEUP     | 400         | badRequest    |
+
+  Scenario Outline: Update a notify rule with incorrect parameters
+
+    Given the created notify rule in the in the "<server_id>" with the following parameters
+      | body    | email       | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | hello!  | aaa@aaa.es  | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the notify rule with "<new_name>", "<new_body>" and "<new_email>" in "<server_id>"
+    Then I obtain an "<Error_code>" and the "<FaultElement>"
+
+    Examples:
+
+    | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_body    | new_email     | Error_code  | FaultElement  |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      | aaaaaa.es     | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      | aaaa@aaa      | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      | aaaa@aaa@a.es | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      | aaaa@         | 400         | badRequest    |
+    | qatestserver| 0             | less            | 0             | less            | test        | hello!      | @             | 400         | badRequest    |
+
 
 
   Scenario Outline: Update a non existent rule
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+    Given the created scale rule in the in the "<server_id>" with the following parameters
+      | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | scaleUp   | test    | 0         | less        | 0         | less        |
     When I update "<another_rule_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-    | server_id   | name      | condition | action  | another_rule_id | Error_code  | FaultElement  |
-    | qatestserver| random    | default   | default | testing         | 404         | itemNotFound  |
-    | qatestserver| alertCPU  | default   | default | qa              | 404         | itemNotFound  |
+    | server_id   | another_rule_id | Error_code  | FaultElement  |
+    | qatestserver| testing         | 404         | itemNotFound  |
+    | qatestserver| qa              | 404         | itemNotFound  |
 
   Scenario Outline: Update a existent rule in other server
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
-    When I update the rule with "<name>", "<condition>" and "<action>" in "<another_server_id>"
+    Given the created scale rule in the in the "<server_id>" with the following parameters
+      | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | scaleUp   | test    | 0         | less        | 0         | less        |
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the scalability rule with "<new_name>" and "<new_action>" in "<another_server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-    | server_id   | name      | condition | action  | another_server_id | Error_code  | FaultElement  |
-    | qatestserver| random    | default   | default | testingserver     | 404         | itemNotFound  |
-    | qatestserver| alertCPU  | default   | default | qaserver          | 404         | itemNotFound  |
+    | server_id   | another_server_id | Error_code  | FaultElement  | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_action  |
+    | qatestserver| testingserver     | 404         | itemNotFound  | 0             | less            | 0             | less            | test        | scaleUp     |
+    | qatestserver| qaserver          | 404         | itemNotFound  | 0             | less            | 0             | less            | test        | scaleUp     |
 
 
   @security
   Scenario Outline: Update a rule with incorrect token
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+    Given the created scale rule in the in the "<server_id>" with the following parameters
+      | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand |
+      | scaleUp   | test    | 0         | less        | 0         | less        |
     And incorrect "<token>"
-    When I update the rule with "<another_name>", "<another_condition>" and "<another_action>" in "<server_id>"
+    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
+    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
+    When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-    | Error_code  | FaultElement  | token     | server_id   | name    | condition | action  | another_name  | another_condition | another_action  |
-    | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | default   | default | another_name1 | another_condition1| another_action1 |
-    | 401         | unauthorized  | old_token | qatestserver| random  | default   | default | another_name2 | another_condition2| another_action2 |
-    | 401         | unauthorized  |           | qatestserver| random  | default   | default | another_name3 | another_condition3| another_action3 |
-    | 401         | unauthorized  | null      | qatestserver| random  | default   | default | another_name4 | another_condition4| another_action4 |
+    | Error_code  | FaultElement  | token     | server_id   | new_cpu_value | new_cpu_operand | new_mem_value | new_mem_operand | new_name    | new_action  |
+    | 401         | unauthorized  | 1a2b3c    | qatestserver| 0             | less            | 0             | less            | test        | scaleUp     |
+    | 401         | unauthorized  | old_token | qatestserver| 0             | less            | 0             | less            | test        | scaleUp     |
+    | 401         | unauthorized  |           | qatestserver| 0             | less            | 0             | less            | test        | scaleUp     |
+    | 401         | unauthorized  | null      | qatestserver| 0             | less            | 0             | less            | test        | scaleUp     |

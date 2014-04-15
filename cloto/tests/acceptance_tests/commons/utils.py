@@ -1,7 +1,12 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 
-from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_ACTION, \
-    RULE_CONDITION, RULE_NAME, RULE_CONDITION_DEFAULT, RULE_ACTION_DEFAULT, LONG_NAME, RULE_ID, RULE_SPECIFIC_ID
+import string
+import random
+
+from nose.tools import assert_in, assert_equals, assert_true
+
+from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTENT_TYPE_HEADER, RULE_SPECIFIC_ID
+
 from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
 from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
     CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT
@@ -10,9 +15,6 @@ from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CON
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
 from configuration import TENANT_ID, HEADERS
 from rest_utils import RestUtils
-from nose.tools import assert_in, assert_equals, assert_true
-import string
-import random
 
 list_deletions = [None, u'null']
 
@@ -43,7 +45,7 @@ def create_header(content_type=DEFAULT_CONTENT_TYPE_HEADER, token=None):
 def assert_error_code_error(response, expected_error_code=None, expected_fault_element=None):
 
     """Method to assert response errors from Policy Manger
-    :param response: Response obtained from the API REST request to the Policy Manager
+    :param response: Response obtained from thelett API REST request to the Policy Manager
     :param expected_fault_element: Expected Fault element in the JSON response
     :param expected_error_code: Expected Error code in the JSON response
     """
@@ -55,34 +57,6 @@ def assert_error_code_error(response, expected_error_code=None, expected_fault_e
               FAULT_ELEMENT_ERROR.format(expected_fault_element, response_body))
     assert_equals(str(response_body[expected_fault_element]['code']), expected_error_code,
                   ERROR_CODE_ERROR.format(expected_error_code, response_body[expected_fault_element]['code']))
-
-
-def create_rule_parameters(name=None, condition=None, action=None):
-
-    """Method to create the rule body
-    :param name: The name of the rule to be created
-    :param condition: the condition to compare the server context
-    :param action: the action to take over the server
-    """
-
-    if name == 'long_name':
-        name = LONG_NAME
-    elif name == 'None':
-        name = None
-    elif name == 'random':
-        name = id_generator()
-
-    if condition == 'default':
-        condition = RULE_CONDITION_DEFAULT
-    elif condition == 'None':
-        condition = None
-
-    if action == 'default':
-        action = RULE_ACTION_DEFAULT
-    elif action == 'None':
-        action = None
-
-    return name, condition, action
 
 
 def id_generator(size=10, chars=string.ascii_letters + string.digits):
@@ -109,51 +83,6 @@ def assert_json_format(request):
         assert False, "JSON Cannot be decode. Response format not correspond with JSON format"
 
     return response
-
-
-def assert_rule_information(response, rule_id, name, condition, action):
-
-    """Method to verify the rule body parameters
-    :param response: Response body received from server
-    :param rule_id: The expected rule identification number
-    :param name: The expected rule name
-    :param condition: The expected rule condition
-    :param action: The expected rule action
-    """
-
-    assert_equals(response[RULE_NAME], name)
-    assert_equals(response[RULE_CONDITION], condition)
-    assert_equals(response[RULE_ACTION], action)
-    assert_equals(response[RULE_ID], rule_id)
-
-
-def create_rule_body(action=None, rule_id=None, condition=None, name=None):
-
-    """Method to build the Rule JSON including rule_is
-
-    :param rule_id: The expected rule identification number
-    :param name: The expected rule name
-    :param condition: The expected rule condition
-    :param action: The expected rule action
-    :returns: rule JSON (dict)
-    """
-
-    rule_body = {RULE_ACTION: action,
-                 RULE_SPECIFIC_ID: rule_id,
-                 RULE_CONDITION: condition,
-                 RULE_NAME: name
-                 }
-
-    if action is None:
-        del rule_body[RULE_ACTION]
-    if rule_id is None:
-        del rule_body[RULE_ID]
-    if condition is None:
-        del rule_body[RULE_CONDITION]
-    if name is None:
-        del rule_body[RULE_NAME]
-
-    return rule_body
 
 
 def context_element(cpu_value=None, memory_value=None, disk_value=None, network_value=None, server_id=None):
@@ -202,14 +131,14 @@ def context_status_code(status_code=None, details='message', reason=CONTEXT_STAT
     return status_code_body
 
 
-def context_response(context_element, status_code):
+def context_response(context_el, status_code):
 
-    """Method to build the JSON wiht the context element and the status code
-    :param context_element: JSON including the context element attributes
+    """Method to build the JSON with the context element and the status code
+    :param context_el: JSON including the context element attributes
     :param status_code: status code received from context manager
     """
 
-    return {CONTEXT_ELEMENT: context_element,
+    return {CONTEXT_ELEMENT: context_el,
             CONTEXT_STATUS_CODE: status_code}
 
 
@@ -258,32 +187,8 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
     for server in response[SERVERS]:
         server_id = server[SERVER_ID]
         for rule_server in server[RULES]:
-            api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
-
-
-def create_rule(api_utils, tenant_id=TENANT_ID, server_id=None, rule_name=None, rule_condition=None, rule_action=None,
-                headers=HEADERS):
-
-    """Method to subscribe a server to a specific rule not created.
-    :param server_id: Server unique identifier
-    :param headers: HTTP headers for the requests including authentication
-    :param tenant_id: Tenant unique identifier
-    :param rule_name: Name of the rule to be created
-    :param rule_condition: Condition of the rule to be created
-    :param rule_action: Action of the rule to be created
-    :returns subscription_id: Subscription unique identifier
-    """
-
-    #Prepare rule parameters
-    r_name, r_condition, r_action = create_rule_parameters(rule_name, rule_condition, rule_action)
-
-    #Create the rule in Policy Manager
-    req = api_utils.create_rule(tenant_id, server_id, r_name, r_condition, r_action, headers)
-
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
-
-    rule_id = req.json()[RULE_ID]
-    return rule_id
+            req = api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
+            assert req.ok
 
 
 def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TENANT_ID, rule_name=None,
@@ -298,8 +203,7 @@ def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TE
     :param rule_action: Action of the rule to be created
     :returns subscription_id: Subscription unique identifier
     """
-
-    rule_id = create_rule(api_utils, tenant_id, server_id, rule_name, rule_condition, rule_action, headers)
+    rule_id = RestUtils.create_rule(api_utils, tenant_id, server_id, rule_name, rule_condition, rule_action, headers)
 
     req = api_utils.create_subscription(tenant_id=tenant_id, server_id=server_id,
                                         rule_id=rule_id, url=RULE_URL_DEFAULT, headers=headers)
@@ -347,3 +251,42 @@ def delete_context_constant_parameter(parameter, context_body):
         del(context_body[CONTEXT_RESPONSES][0][CONTEXT_ELEMENT][ATTRIBUTES][random.randint(0, 3)][ATTRIBUTES_TYPE])
 
     return context_body
+
+
+def delete_keys_from_dict(dict_del, key):
+
+    """
+    Method to delete keys from python dict
+    :param dict_del: Python dictionary with all keys
+    :param key: key to be deleted in the Python dictionary
+    :returns a new Python dictionary without the rules deleted
+    """
+
+    if key in dict_del.keys():
+
+        del dict_del[key]
+    for v in dict_del.values():
+        if isinstance(v, dict):
+            delete_keys_from_dict(v, key)
+
+    return dict_del
+
+
+def replace_values_from_dict(dict_replace, key, replace_to=None):
+
+    """
+    Method to replace values from python dict
+    :param dict_replace: Python dictionary
+    :param key: key to be replaced in the Python dictionary
+    :param replace_to: The new value of the keys replaced
+    :returns a new Python dictionary without the rules replaced
+    """
+
+    if key in dict_replace.keys():
+
+        dict_replace[key] = replace_to
+    for v in dict_replace.values():
+        if isinstance(v, dict):
+            replace_values_from_dict(v, key)
+
+    return dict_replace

@@ -52,16 +52,16 @@ Feature: As a user
   @security
   Scenario Outline: List rules with incorrect token
 
-    Given the created rule with "<name>", "<condition>" and "<action>" in the "<server_id>"
+    Given a created rule in the in the "<server_id>"
     And incorrect "<token>"
     When I get the rules list from "<server_id>"
     Then I obtain an "<Error_code>" and the "<FaultElement>"
 
     Examples:
 
-      | Error_code  | FaultElement  | token     | server_id   | name    | condition | action  |
-      | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | default   | default |
-      | 401         | unauthorized  | old_token | qatestserver| random  | default   | default |
-      | 401         | unauthorized  |           | qatestserver| random  | default   | default |
-      | 401         | unauthorized  | null      | qatestserver| random  | default   | default |
+      | Error_code  | FaultElement  | token     | server_id   |
+      | 401         | unauthorized  | 1a2b3c    | qatestserver|
+      | 401         | unauthorized  | old_token | qatestserver|
+      | 401         | unauthorized  |           | qatestserver|
+      | 401         | unauthorized  | null      | qatestserver|
 

@@ -1,11 +1,11 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 
 from json import JSONEncoder
 
 import requests
 
 from commons.configuration import POLICY_MANAGER_PORT, POLICY_MANAGER_IP, HEADERS, FACTS_IP, FACTS_PORT
-from commons.constants import RULE_ACTION, RULE_CONDITION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE
+from commons.constants import RULE_ACTION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE, CPU, MEM, RULE_CONDITION
 
 
 POLICY_MANAGER_SERVER = 'http://{}:{}/v1.0'.format(POLICY_MANAGER_IP, POLICY_MANAGER_PORT)
@@ -18,7 +18,6 @@ CREATE_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules'
 ELASTICITY_RULE_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/rules/{rule_id}'
 CREATE_SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription'
 SUBSCRIPTION_PATTERN = '{url_root}/{tenant_id}/servers/{server_id}/subscription/{subscription_id}'
-
 
 
 class RestUtils(object):
@@ -110,33 +109,44 @@ class RestUtils(object):
         return self._call_api(pattern=UPDATE_CONTEXT_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=body)
 
+    def create_rule(self, tenant_id=None, server_id=None, rule_name=None, cpu=None, mem=None,
+                        action=None, headers=HEADERS, body=None):
 
-    def create_rule(self, tenant_id=None, server_id=None, rule_name=None, condition=None, action=None, headers=HEADERS):
         """Create a new elasticity rule in specific server.
         :param tenant_id: Is the id of the tenant to obtain the information
         :param server_id: Is the id of the server to obtain the information
         :param rule_name: Key whose value represents the name of the rule.
-        :param condition: Is the description of the scalability rule associated to this server
         :param action: Is the action to take over the server when the rules are activated.
         :param headers: HTTP header request (dict)
         :returns: REST API response from Policy Manager
         """
 
-        api_body = {}
-        if rule_name is not None:
-            api_body[RULE_NAME] = rule_name
+        if body is None:
+            api_body = {}
+            condition = {}
+            if rule_name is not None:
+                api_body[RULE_NAME] = rule_name
 
-        if condition is not None:
-            api_body[RULE_CONDITION] = condition
+            if cpu is not None:
+                condition[CPU] = cpu
 
-        if action is not None:
-            api_body[RULE_ACTION] = action
+            if mem is not None:
+                condition[MEM] = mem
+
+            if len(condition) > 0:
+                api_body[RULE_CONDITION] = condition
+
+            if action is not None:
+                api_body[RULE_ACTION] = action
+
+        else:
+            api_body = body
 
         return self._call_api(pattern=CREATE_RULE_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=api_body)
 
-    def update_rule(self, tenant_id=None, server_id=None, rule_name=None, condition=None, action=None, rule_id=None,
-                    headers=HEADERS):
+    def update_rule(self, tenant_id=None, server_id=None, rule_name=None, action=None, rule_id=None, cpu=None, mem=None,
+                    body=None, headers=HEADERS):
         """Update a elasticity rule in specific server.
         :param tenant_id: Is the id of the tenant.
         :param server_id: Is the id of the server.
@@ -147,15 +157,27 @@ class RestUtils(object):
         :param headers: HTTP header request (dict)
         :returns: REST API response from Policy Manager
         """
-        api_body = {}
-        if rule_name is not None:
-            api_body[RULE_NAME] = rule_name
 
-        if condition is not None:
-            api_body[RULE_CONDITION] = condition
+        if body is None:
+            api_body = {}
+            condition = {}
+            if rule_name is not None:
+                api_body[RULE_NAME] = rule_name
 
-        if action is not None:
-            api_body[RULE_ACTION] = action
+            if cpu is not None:
+                condition[CPU] = cpu
+
+            if mem is not None:
+                condition[MEM] = mem
+
+            if len(condition) > 0:
+                api_body[RULE_CONDITION] = condition
+
+            if action is not None:
+                api_body[RULE_ACTION] = action
+
+        else:
+            api_body = body
 
         return self._call_api(pattern=ELASTICITY_RULE_PATTERN, method='put', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, rule_id=rule_id, body=api_body)

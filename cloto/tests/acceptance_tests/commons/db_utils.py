@@ -1,4 +1,4 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 import sqlite3
 from configuration import DB_PATH
 from constants import DB_RULE_AND_SUBSCRIPTION

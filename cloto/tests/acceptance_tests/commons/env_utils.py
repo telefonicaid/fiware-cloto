@@ -1,4 +1,4 @@
-__author__ = 'artanis'
+__author__ = 'arobres'
 
 from subprocess import Popen, PIPE
 from time import sleep

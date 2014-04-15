@@ -379,5 +379,7 @@ class RuleManager():
             raise error
         except KeyError as error:
             raise KeyError("%s is missing" % error.message)
+        except TypeError:
+            raise TypeError("One parameter of the condition is missing")
         except Exception as e:
             raise e

@@ -219,6 +219,9 @@ class ServerRulesView(RESTResource):
         except AttributeError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
+        except TypeError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
         except Exception as err:
             return HttpResponseServerError(json.dumps({"serverFault": {"code": 500, "message":
                         str(err)}}, indent=4))
@@ -242,6 +245,9 @@ class ServerRuleView(RESTResource):
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
         except AttributeError as err:
+            return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
+                        str(err)}}, indent=4))
+        except TypeError as err:
             return HttpResponseBadRequest(json.dumps({"badRequest": {"code": 400, "message":
                         str(err)}}, indent=4))
         except ObjectDoesNotExist as err:

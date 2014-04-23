@@ -5,7 +5,7 @@ from os import makedirs
 from cloto.settings import *
 
 # Integrate nose with django. django-nose plugin
-INSTALLED_APPS = INSTALLED_APPS + ('django_nose', )
+INSTALLED_APPS = INSTALLED_APPS + ('django_nose', 'cloto')
 
 TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 

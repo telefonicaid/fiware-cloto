@@ -1,4 +1,4 @@
-__author__ = 'Geon'
+__author__ = 'gjp'
 import sys
 import sqlite3 as db
 import json
@@ -131,7 +131,6 @@ def main():
     clips.RegisterPythonFunction(NotifyScale, "notify-scale")
     clips.RegisterPythonFunction(GetNotificationUrl, "get-notification-url")
     e1.Assert("(initial-fact)")
-    e1.Load("%s/model.clp" % CLIPS_PATH)
 
     try:
 

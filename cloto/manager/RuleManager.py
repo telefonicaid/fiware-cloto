@@ -141,6 +141,7 @@ class RuleManager():
         rule.save()
         ruleResult = RuleModel()
         ruleResult.ruleId = str(ruleId)
+        logger.info("RuleId %s was created for server %s" % (str(ruleId), serverId))
         return ruleResult
 
     def update_specific_rule(self, tenantId, serverId, ruleId, rule):
@@ -169,6 +170,7 @@ class RuleManager():
         ruleResult.name = name
         ruleResult.condition = condition
         ruleResult.action = action
+        logger.info("RuleId %s was updated" % str(ruleId))
         return ruleResult
 
     def get_specific_rule(self, tenantId, serverId, ruleId):
@@ -213,6 +215,7 @@ class RuleManager():
         #Deleting subscriptions to that rule
         subscriptions = Subscription.objects.filter(ruleId__exact=ruleId)
         subscriptions.delete()
+        logger.info("RuleId %s from server %s was deleted" % (ruleId, serverId))
         return True
 
     def get_all_entities(self, tenantId):
@@ -258,16 +261,16 @@ class RuleManager():
         self.verify_url(url)
         if not context_broker_subscription:
             cbSubscriptionId = self.orionClient.contextBrokerSubscription(tenantId, serverId)
-            logger.info("This is the cbSubscriptionId %s" % cbSubscriptionId)
         else:
             cbSubscriptionId = context_broker_subscription
-            logger.info("There is a previous subscription to the CB, the cbSubscriptionId %s" % cbSubscriptionId)
         subscription_Id = uuid.uuid1()
         subscr = Subscription(subscription_Id=subscription_Id, ruleId=ruleId, url=url, serverId=serverId,
                               cbSubscriptionId=cbSubscriptionId)
         subscr.save()
         entity.subscription.add(subscr)
         entity.save()
+        logger.info("Server %s was subscribed to rule %s: cbSubscriptionId is %s and internal subscription %s"
+                        % (serverId, ruleId, cbSubscriptionId, str(subscription_Id)))
 
         return subscription_Id
 
@@ -280,6 +283,8 @@ class RuleManager():
             r_query.delete()
         else:
             r_query.delete()
+        logger.info("Server %s was unsubscribed to this subscription: %s"
+                        % (serverId, subscriptionId))
         return True
 
     def get_subscription(self, tenantId, serverId, subscriptionId):
@@ -332,7 +337,6 @@ class RuleManager():
         It is necesary to Rule Engine add this String to be able to get the notification url of each Rule subscribed
         """
         try:
-            logger.debug("Action: " + str(action))
             actionName = action['actionName']
             self.verify_values('actionName', actionName, str)
             action_string = "(python-call " + actionName + " \"" + serverId + "\" ?url"
@@ -361,7 +365,6 @@ class RuleManager():
         """This method builds a CLIPS condition from data received as json.
         """
         try:
-            logger.debug("Condition: " + str(condition))
             operands = {"less": "<", "greater": ">", "less equal": "<=", "greater equal": ">="}
             condition_string = "(ServerFact \"" + serverId + "\""
 

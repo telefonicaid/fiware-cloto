@@ -4,7 +4,7 @@
 # __author__ = 'gjp'
 
 OS=`uname`
-IP=`ifconfig  | grep 'inet addr:'| grep -v '127.0.0.1' | cut -d: -f2 | awk '{ print $1}'`;
+IP=`ping -c 1 $HOSTNAME | grep 'PING' | awk '{print $3}' | sed 's/[:()]//g'`;
 
 cd /opt/policyManager/fiware-cloto
 python manage.py runserver $IP:8000

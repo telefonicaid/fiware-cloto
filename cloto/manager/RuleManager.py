@@ -92,26 +92,35 @@ class RuleManager():
         return ruleResult
 
     def getContition(self, rule):
-        """Splits contitions from a rule."""
+        """Splits condition from a rule.
+
+        :param str rule:        The rule description in json format
+        """
         condition = json.loads(rule)['condition']
         return condition
 
     def getAction(self, rule):
-        """Splits action from a rule."""
+        """Splits action from a rule.
+
+        :param str rule:        The rule description in json format
+        """
         action = json.loads(rule)['action']
         return action
 
     def getName(self, rule):
-        """Splits the name from a rule."""
+        """Splits the name from a rule.
+
+        :param str rule:        The rule description in json format
+        """
         name = json.loads(rule)['name']
         return name
 
     def create_specific_rule(self, tenantId, serverId, rule):
         """Creates a new specific rule for a server
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str rule:       The rule description in json format
+        :param str tenantId:    The id of the tenant
+        :param str serverId:    The id of the server
+        :param str rule:        The rule description in json format
         """
         try:
             entity = Entity.objects.get(serverId__exact=serverId)
@@ -152,10 +161,10 @@ class RuleManager():
     def update_specific_rule(self, tenantId, serverId, ruleId, rule):
         """Updates a specific rule
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str ruleId:       The id of the rule
-        :param str rule:       The rule description in json format
+        :param str tenantId:    The id of the tenant
+        :param str serverId:    The id of the server
+        :param str ruleId:      The id of the rule
+        :param str rule:        The rule description in json format
         """
 
         rule_db = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
@@ -188,9 +197,9 @@ class RuleManager():
     def get_specific_rule(self, tenantId, serverId, ruleId):
         """Returns information about a specific rule.
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str ruleId:       The id of the rule
+        :param str tenantId:    The id of the tenant
+        :param str serverId:    The id of the server
+        :param str ruleId:      The id of the rule
         """
         r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
@@ -204,8 +213,8 @@ class RuleManager():
     def get_all_specific_rules(self, tenantId, serverId):
         """Returns all specific rules of a server.
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
+        :param str tenantId:    The id of the tenant
+        :param str serverId:    The id of the server
         """
         entity = Entity.objects.get(serverId=serverId)
 
@@ -230,9 +239,9 @@ class RuleManager():
     def delete_specific_rule(self, tenantId, serverId, ruleId):
         """Deletes a specific rule.
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str ruleId:       The id of the rule
+        :param str tenantId:    The id of the tenant
+        :param str serverId:    The id of the server
+        :param str ruleId:      The id of the rule
         """
         r_query = SpecificRule.objects.get(specificRule_Id__exact=ruleId,
                                            tenantId__exact=tenantId, entity__exact=serverId)
@@ -272,9 +281,9 @@ class RuleManager():
     def subscribe_to_rule(self, tenantId, serverId, subscription):
         """Creates a server subscription to a rule.
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str subscription:       The subscription description in json format
+        :param str tenantId:        The id of the tenant
+        :param str serverId:        The id of the server
+        :param str subscription:    The subscription description in json format
         """
         context_broker_subscription = False
         try:
@@ -312,9 +321,9 @@ class RuleManager():
     def unsubscribe_to_rule(self, serverId, subscriptionId):
         """Unsuscribe a server from a rule.
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str subscriptionId:       The id of the subscription
+        :param str tenantId:        The id of the tenant
+        :param str serverId:        The id of the server
+        :param str subscriptionId:  The id of the subscription
         """
 
         r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId)
@@ -330,9 +339,9 @@ class RuleManager():
     def get_subscription(self, tenantId, serverId, subscriptionId):
         """Returns information about a subscription.
 
-        :param str tenantId:      The id of the tenant
-        :param str serverId:       The id of the server
-        :param str subscriptionId:       The id of the subscription
+        :param str tenantId:        The id of the tenant
+        :param str serverId:        The id of the server
+        :param str subscriptionId:  The id of the subscription
         """
 
         r_query = Subscription.objects.get(subscription_Id__exact=subscriptionId, serverId__exact=serverId)
@@ -346,9 +355,9 @@ class RuleManager():
     def checkRule(self, name, condition, action):
         """Checks if the parts of the rule fulfill the expected character limit
 
-        :param str name:      The name of the rule
-        :param str condition:       The description of the condition
-        :param str action:       The description of the actions
+        :param str name:        The name of the rule
+        :param str condition:   The description of the condition
+        :param str action:      The description of the actions
         """
 
         try:
@@ -379,9 +388,9 @@ class RuleManager():
     def verify_values(self, name, value, type):
         """Checks if rule operands are expected strings and values are valid floats
 
-        :param str name:      The name
-        :param str value:      The value
-        :param object type:      The type of the value
+        :param str name:        The name
+        :param str value:       The value
+        :param object type:     The type of the value
         """
         try:
             if not value:
@@ -403,9 +412,9 @@ class RuleManager():
         """This method builds a CLIPS rule from data received as json.
         It is necesary to Rule Engine add this String to be able to get the notification url of each Rule subscribed
 
-        :param str action:      The description of the action
-        :param str ruleName:      The name of the rule
-        :param object serverId:      The id of the server
+        :param str action:          The description of the action
+        :param str ruleName:        The name of the rule
+        :param object serverId:     The id of the server
         """
         try:
             actionName = action['actionName']
@@ -435,9 +444,9 @@ class RuleManager():
     def pimp_rule_condition(self, condition, ruleName, serverId):
         """This method builds a CLIPS condition from data received as json.
 
-        :param str condition:      The description of the condition
-        :param str ruleName:      The name of the rule
-        :param object serverId:      The id of the server
+        :param str condition:       The description of the condition
+        :param str ruleName:        The name of the rule
+        :param object serverId:     The id of the server
         """
 
         try:

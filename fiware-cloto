@@ -1,0 +1,46 @@
+#!/bin/sh
+#
+# fiware-cloto
+
+### BEGIN INIT INFO
+# Provides:
+# Short-Description: Execute fiware-cloto server
+# Description: Execute fiware-cloto server
+### END INIT INFO
+
+. /etc/rc.d/init.d/functions
+
+prog=run
+exec="/opt/policyManager/$prog"
+
+start() {
+    cd $exec
+    ./$prog
+}
+
+stop() {
+    kill -9 `ps -aef | grep manage.py | grep -v grep | awk '{print $2}'`
+    kill -9 `ps -aef | grep environmentManager.py | grep -v grep | awk '{print $2}'`
+    kill -9 `ps -aef | grep environment.py | grep -v grep | awk '{print $2}'`
+}
+
+restart() {
+    stop
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+exit $?

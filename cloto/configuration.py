@@ -7,6 +7,7 @@ ADM_USER = u''
 ADM_PASS = u''
 
 # POLICY MANAGER CONFIGURATION
+INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'
 DEFAULT_WINDOW_SIZE = 5
 OWNER = u'Telefonica I+D'
 API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/' \
@@ -16,9 +17,9 @@ MAX_WINDOW_SIZE = 10
 LOGGING_PATH = u'/var/log/fiware-cloto'
 RABBITMQ_URL = u'localhost'
 
-ENVIRONMENTS_MANAGER_PATH = u'cloto/environmentManager.py'
-ENVIRONMENTS_PATH = u'cloto/environment.py'
-CLIPS_PATH = u'cloto/clips'
+ENVIRONMENTS_MANAGER_PATH = INSTALLATION_PATH + u'cloto/environmentManager.py'
+ENVIRONMENTS_PATH = INSTALLATION_PATH + u'cloto/environment.py'
+CLIPS_PATH = INSTALLATION_PATH + u'cloto/clips'
 
 # ORION CONTEXT BROKER CONFIGURATION
 CONTEXT_BROKER_URL = u'http://130.206.81.57:1026/NGSI10'

@@ -9,5 +9,4 @@ mkdir -m 777 /var/log/fiware-cloto
 pip install -r requirements.txt
 echo "no" | python manage.py syncdb
 python manage.py test cloto --settings=settings.jenkins
-deactivate
 

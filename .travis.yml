@@ -1,6 +1,5 @@
 language: python
 python:
-  - "2.6"
   - "2.7"
 
 env:
@@ -8,10 +7,9 @@ env:
     - DJANGO_SETTINGS_MODULE=settings.jenkins
 
 install:
-  - virtualenv ENV
-  - source ENV/bin/activate
   - sudo mkdir -m 777 /var/log/fiware-cloto
   - sudo pip install -r requirements.txt
+  - ls -l /home/travis/virtualenv/python2.7.6/lib/python2.7/site-packages
   - echo "no" | python manage.py syncdb
   - python manage.py test cloto
 

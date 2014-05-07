@@ -1,5 +1,5 @@
 # Django settings for fiware_cloto project.
-CSRF_FAILURE_VIEW = 'cloto.views.fail'
+#CSRF_FAILURE_VIEW = 'cloto.views.fail'
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 APPEND_SLASH = False

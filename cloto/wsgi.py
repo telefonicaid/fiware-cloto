@@ -37,9 +37,8 @@ import datetime
 from django.utils import timezone
 from circus import get_arbiter
 
-from models import ServerInfo
-from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH
-from configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, LOGGING_PATH
+from cloto.models import ServerInfo
+from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH
 from cloto.log import logger
 
 

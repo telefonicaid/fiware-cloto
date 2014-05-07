@@ -8,7 +8,6 @@ env:
 
 script:
   - sudo ./build.sh
-  - coverage run manage.py test cloto --settings=settings.jenkins
 
 after_success:
   - coveralls

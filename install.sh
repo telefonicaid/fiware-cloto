@@ -19,6 +19,7 @@ log_path="/var/log/fiware-cloto"
 
 if [ ! -d "$log_path" ]; then
   mkdir -m 777 $log_path
+  echo 0 > $log_path/RuleEngine2.log
 fi
 
 echo "..."
@@ -32,8 +33,10 @@ fi
 echo "..."
 
 cp -r * /opt/policyManager/fiware-cloto/
+chmod 777 /opt/policyManager/fiware-cloto/
 cd /opt/policyManager/fiware-cloto/
 ln fiware-cloto /etc/init.d/fiware-cloto
+chmod a+x /etc/init.d/fiware-cloto
 
 echo "..."
 pip install -r requirements.txt

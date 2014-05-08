@@ -1,10 +1,9 @@
 __author__ = 'gjp'
 from django.test import TestCase
-from cloto.models import *
 from cloto.manager import AuthorizationManager
 from mockito import *
 from keystoneclient.v2_0 import client
-from keystoneclient.exceptions import AuthorizationFailure, Unauthorized
+from keystoneclient.exceptions import Unauthorized
 
 
 class AuthorizationManagerTests(TestCase):
@@ -17,18 +16,20 @@ class AuthorizationManagerTests(TestCase):
         self.a = AuthorizationManager.AuthorizationManager()
         self.mockedClient = client
         self.auth = mock()
-        self.tokenM= mock()
+        self.tokenM = mock()
 
         self.auth.__setattr__("auth_token", self.authToken)
         self.auth.__setattr__("tokens", self.tokenM)
         when(self.tokenM).authenticate(token=self.token, tenant_id=self.tenantId).thenReturn("Is valid")
-        when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url).thenReturn(self.auth);
+        when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url)\
+            .thenReturn(self.auth);
         when(self.mockedClient).Client(token=self.authToken, auth_url=self.url).thenReturn(self.auth);
         when(self.mockedClient).Client(username="admin", password="fake", auth_url=self.url).thenRaise(Unauthorized());
         self.a.myClient = self.mockedClient
 
     def test_generate_adminToken(self):
         result = self.a.generate_adminToken("admin", "realpassword", self.url)
+
         self.assertEqual(result, self.authToken)
 
     def test_generate_adminToken_exception(self):

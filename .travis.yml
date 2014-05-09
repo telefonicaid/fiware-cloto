@@ -7,7 +7,7 @@ env:
     - DJANGO_SETTINGS_MODULE=settings.jenkins
 
 script:
-  - sudo ./build.sh
+  - sudo ./build.sh travis_build
 
 after_success:
   - coveralls

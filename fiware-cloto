@@ -1,0 +1,45 @@
+#!/bin/sh
+#
+# fiware-cloto
+
+### BEGIN INIT INFO
+# Provides:
+# Short-Description: Execute fiware-cloto server
+# Description: Execute fiware-cloto server
+### END INIT INFO
+
+. /etc/rc.d/init.d/functions
+
+prog=run.sh
+exec="/opt/policyManager/fiware-cloto"
+
+start() {
+    cd $exec
+    sh $prog
+}
+
+stop() {
+    apachectl stop
+}
+
+restart() {
+    stop
+    sleep 5
+    start
+}
+
+case "$1" in
+    start)
+        $1
+        ;;
+    stop)
+        $1
+        ;;
+    restart)
+        $1
+        ;;
+    *)
+        echo $"Usage: $0 {start|stop|restart}"
+        exit 2
+esac
+exit $?

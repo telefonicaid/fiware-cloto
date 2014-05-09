@@ -5,6 +5,7 @@ from django.views.decorators.csrf import csrf_exempt
 from django.views.decorators.csrf import csrf_protect
 from django.template import RequestContext
 
+
 @csrf_exempt
 def some_page(request):
 
@@ -15,20 +16,24 @@ def some_page(request):
     else:
         raise Http404()
 
+
 @csrf_protect
 def test(request):
     return HttpResponse("Mira mi Test")
     print("test")
+
 
 @csrf_protect
 def test(request):
     return HttpResponse("Mira mi Test de POST")
     print("test")
 
+
 @csrf_protect
 def test(request):
     return HttpResponse("Mira mi Test de GET")
     print("test")
+
 
 def fail(request, reason="csrf fails"):
     print("csrf token failed")

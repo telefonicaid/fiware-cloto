@@ -1,2 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?><testsuite name="nosetests" tests="3" errors="0" failures="0" skip="0"><testcase classname="tests.GeneralTests" name="test_get_api_info" time="0.018"></testcase><testcase classname="tests.GeneralTests" name="test_not_update_window" time="0.002"><system-out><![CDATA[error
-]]></system-out></testcase><testcase classname="tests.GeneralTests" name="test_update_window" time="0.001"></testcase></testsuite>

@@ -1,5 +1,5 @@
 # Django settings for fiware_cloto project.
-CSRF_FAILURE_VIEW = 'cloto.views.fail'
+#CSRF_FAILURE_VIEW = 'cloto.views.fail'
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 APPEND_SLASH = False
@@ -11,10 +11,11 @@ ADMINS = (
 
 MANAGERS = ADMINS
 
+from cloto.configuration import INSTALLATION_PATH
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'cloto.db',                      # Or path to database file if using sqlite3.
+        'NAME': INSTALLATION_PATH + '/cloto.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': '',
@@ -128,6 +129,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 

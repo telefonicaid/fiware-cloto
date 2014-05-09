@@ -6,7 +6,7 @@ import sqlite3 as lite
 
 from circus.process import Process
 
-from configuration import ENVIRONMENTS_PATH
+from configuration import ENVIRONMENTS_PATH, INSTALLATION_PATH
 from log import logger
 
 
@@ -25,7 +25,7 @@ def main():
 
     while (True):
         try:
-            conn = lite.connect('cloto.db')
+            conn = lite.connect(INSTALLATION_PATH + 'cloto.db')
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM cloto_tenantinfo')
             data = cursor.fetchall()

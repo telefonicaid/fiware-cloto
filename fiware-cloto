@@ -10,22 +10,21 @@
 
 . /etc/rc.d/init.d/functions
 
-prog=run
-exec="/opt/policyManager/$prog"
+prog=run.sh
+exec="/opt/policyManager/fiware-cloto"
 
 start() {
     cd $exec
-    ./$prog
+    sh $prog
 }
 
 stop() {
-    kill -9 `ps -aef | grep manage.py | grep -v grep | awk '{print $2}'`
-    kill -9 `ps -aef | grep environmentManager.py | grep -v grep | awk '{print $2}'`
-    kill -9 `ps -aef | grep environment.py | grep -v grep | awk '{print $2}'`
+    apachectl stop
 }
 
 restart() {
     stop
+    sleep 5
     start
 }
 

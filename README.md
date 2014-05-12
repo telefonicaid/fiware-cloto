@@ -1,7 +1,7 @@
 fiware-cloto
 ============
 [![Build Status](https://travis-ci.org/telefonicaid/fiware-cloto.svg)](https://travis-ci.org/telefonicaid/fiware-cloto)
-[![Coverage Status](https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png)](https://coveralls.io/r/telefonicaid/fiware-cloto))
+[![Coverage Status](https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png)](https://coveralls.io/r/telefonicaid/fiware-cloto)
 
 FIWARE Cloud Scalability Manager - Cloto
 

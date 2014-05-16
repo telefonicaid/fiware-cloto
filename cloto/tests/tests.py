@@ -24,7 +24,7 @@
 #
 from nose.tools import assert_equal
 
-__author__ = 'Geon'
+__author__ = 'gjp'
 from django.test import TestCase
 import datetime
 import cloto.information as information

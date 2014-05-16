@@ -22,4 +22,4 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'Geon'
+__author__ = 'gjp'

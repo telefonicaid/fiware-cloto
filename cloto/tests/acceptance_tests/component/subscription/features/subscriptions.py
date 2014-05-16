@@ -22,7 +22,7 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'artanis'
+__author__ = 'arobres'
 
 # -*- coding: utf-8 -*-
 from lettuce import step, world, before

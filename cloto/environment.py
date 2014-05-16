@@ -87,14 +87,14 @@ def main():
                + ', "email": "' + email + '", "description": "' + description + '"}'
         logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
 
-        """r = requests.post(url, data=data, headers=headers)
+        r = requests.post(url, data=data, headers=headers)
         if r.status_code == 200:
             logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
         else:
             print(2)
             logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
                         % (email, serverId, url, r.status_code))
-        """
+
 
     def NotifyScale(serverId, url, action):
         """Sends a notification to given url showing that service must scale up or scale down a server.
@@ -103,13 +103,13 @@ def main():
         data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
         logger.info(action + " message sent to %s : %s"
                         % (url, data))
-        """r = requests.post(url, data=data, headers=headers)
+        r = requests.post(url, data=data, headers=headers)
         if r.status_code == 200:
             logger.info(action + " message sent to %s about server %s.--- Response: %d"
                         % (url, serverId, r.status_code))
         else:
             logger.error(action + " message sent to %s about server %s.--- Response: %d"
-                         % (url, serverId, r.status_code))"""
+                         % (url, serverId, r.status_code))
 
     def AddSpecificFunction(e, func, funcname=None):
         try:

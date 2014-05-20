@@ -4,7 +4,7 @@ fiware-cloto
 [![Coverage Status](https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png)](https://coveralls.io/r/telefonicaid/fiware-cloto)
 [![PyPi version](https://pypip.in/v/cloto/badge.png)](https://crate.io/packages/cloto/)
 [![PyPi license](https://pypip.in/license/cloto/badge.png)](https://crate.io/packages/cloto/)
-
+[![License](https://pypip.in/license/cloto/badge.png)](https://pypi.python.org/pypi/cloto/)
 FIWARE Cloud Scalability Manager - Cloto
 
 

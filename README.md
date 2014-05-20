@@ -2,13 +2,15 @@ fiware-cloto
 ============
 [![Build Status](https://travis-ci.org/telefonicaid/fiware-cloto.svg)](https://travis-ci.org/telefonicaid/fiware-cloto)
 [![Coverage Status](https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png)](https://coveralls.io/r/telefonicaid/fiware-cloto))
+[![PyPi version](https://pypip.in/v/$REPO/badge.png)](https://crate.io/packages/$REPO/)
+[![PyPi license](https://pypip.in/license/cloto/badge.png)](https://crate.io/packages/cloto/)
 
 FIWARE Cloud Scalability Manager - Cloto
 
 
 ### Description
 -----------
-This module is part of FI-WARE Policy Manager. It provides an API-REST for create rules associated to servers,
+This module is part of FI-WARE Policy Manager. It provides an API-REST to create rules associated to servers,
 subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
 described in rules when conditions are given.
 

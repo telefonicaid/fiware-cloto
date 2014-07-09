@@ -24,16 +24,16 @@
 #
 from distutils.core import setup
 setup(
-  name = 'cloto',
-  packages = ['cloto'], # this must be the same as the name above
-  version = '1.0',
-  description = 'This module is part of FI-WARE Policy Manager. It provides an API-REST for create rules associated '
-                'to servers, subscribe servers to Context Broker to get information about resources consumption of that'
-                ' servers and launch actions described in rules when conditions are given.',
-  author = 'Fernando Lopez Aguilar, Guillermo Jimenez Prieto',
-  author_email = 'fla@tid.es, e.fiware@tid.es',
-  url = 'https://github.com/telefonicaid/fiware-cloto', # use the URL to the github repo
-  download_url = 'https://github.com/telefonicaid/fiware-cloto/tarball/1.0', # I'll explain this in a second
-  keywords = ['fiware', 'policy', 'manager', 'cloud'], # arbitrary keywords
-  classifiers = [],
+    name='cloto',
+    packages=['cloto'],  # this must be the same as the name above
+    version='1.0',
+    description='This module is part of FI-WARE Policy Manager. It provides an API-REST for create rules associated '
+                'to servers, subscribe servers to Context Broker to get information about resources consumption '
+                'of that servers and launch actions described in rules when conditions are given.',
+    author='Fernando Lopez Aguilar, Guillermo Jimenez Prieto',
+    author_email='fla@tid.es, e.fiware@tid.es',
+    url='https://github.com/telefonicaid/fiware-cloto',  # use the URL to the github repo
+    download_url='https://github.com/telefonicaid/fiware-cloto/tarball/1.0',  # I'll explain this in a second
+    keywords=['fiware', 'policy', 'manager', 'cloud'],  # arbitrary keywords
+    classifiers=[],
 )

@@ -28,6 +28,7 @@ import pika
 import ujson
 from configuration import RABBIT_IP
 
+
 class Rabbit_Utils(object):
 
     def __init__(self):

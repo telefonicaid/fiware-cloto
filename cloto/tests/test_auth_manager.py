@@ -17,14 +17,14 @@ class AuthorizationManagerTests(TestCase):
         self.a = AuthorizationManager.AuthorizationManager()
         self.mockedClient = client
         self.auth = mock()
-        self.tokenM= mock()
+        self.tokenM = mock()
 
         self.auth.__setattr__("auth_token", self.authToken)
         self.auth.__setattr__("tokens", self.tokenM)
         when(self.tokenM).authenticate(token=self.token, tenant_id=self.tenantId).thenReturn("Is valid")
-        when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url).thenReturn(self.auth);
-        when(self.mockedClient).Client(token=self.authToken, auth_url=self.url).thenReturn(self.auth);
-        when(self.mockedClient).Client(username="admin", password="fake", auth_url=self.url).thenRaise(Unauthorized());
+        when(self.mockedClient).Client(username="admin", password="realpass", auth_url=self.url).thenReturn(self.auth)
+        when(self.mockedClient).Client(token=self.authToken, auth_url=self.url).thenReturn(self.auth)
+        when(self.mockedClient).Client(username="admin", password="fake", auth_url=self.url).thenRaise(Unauthorized())
         self.a.myClient = self.mockedClient
 
     def test_generate_adminToken(self):

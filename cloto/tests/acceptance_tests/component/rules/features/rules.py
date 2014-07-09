@@ -326,6 +326,7 @@ def created_rule(step, server_id):
     #Save the Rule ID to obtain the Rule information after
     world.rule_id = req.json()[RULE_ID]
 
+
 @step(u'Given the created scale rule in the in the "([^"]*)" with the following parameters')
 def given_the_created_scale_rule_in_the_in_the_group1_with_the_following_parameters(step, server_id):
 

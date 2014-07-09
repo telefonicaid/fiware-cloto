@@ -32,9 +32,9 @@ def given_a_group1_with_one_rule_subscribed(step, server_id):
 
     world.server_id = server_id
 
-    world.subscription_id = Utils.create_subscription(api_utils, server_id=server_id, headers=HEADERS, rule_name=RANDOM,
-                                                      tenant_id=world.tenant_id, rule_action=DEFAULT,
-                                                      rule_condition=DEFAULT)
+    world.subscription_id = Utils.create_subscription(api_utils, server_id=server_id, headers=HEADERS,
+                                                      rule_name=RANDOM, tenant_id=world.tenant_id,
+                                                      rule_action=DEFAULT, rule_condition=DEFAULT)
 
 
 @step(u'When context update is received to "([^"]*)" with values "([^"]*)", "([^"]*)", "([^"]*)" and "([^"]*)"')

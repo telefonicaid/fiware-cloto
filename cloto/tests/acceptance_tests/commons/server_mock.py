@@ -15,6 +15,7 @@ statistics = {MOCK_NUM_SCALE_UP: 0,
 
 responses_error = deque()
 
+
 @app.post(MOCK_RESPONSE_SAVE)
 def save_response():
 

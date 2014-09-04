@@ -83,6 +83,6 @@ conn.commit()
 # Just be sure any changes have been committed or they will be lost.
 conn.close()
 
-arbiter = get_arbiter([{"cmd": "python "+ ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
+arbiter = get_arbiter([{"cmd": "python " + ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 arbiter.start()
 logger.info("SERVER STARTED")

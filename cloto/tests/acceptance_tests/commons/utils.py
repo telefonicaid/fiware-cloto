@@ -211,7 +211,8 @@ def delete_all_rules_from_tenant(tenant_id=TENANT_ID):
     for server in response[SERVERS]:
         server_id = server[SERVER_ID]
         for rule_server in server[RULES]:
-            req = api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id, rule_id=rule_server[RULE_SPECIFIC_ID])
+            req = api_utils.delete_rule(tenant_id=tenant_id, server_id=server_id,
+                                        rule_id=rule_server[RULE_SPECIFIC_ID])
             assert req.ok
 
 

@@ -48,10 +48,10 @@ class GeneralTests(TestCase):
             id=1, owner="Telefonica I+D", version=1.0, runningfrom=datetime.datetime.now(
                 tz=timezone.get_default_timezone()), doc="test")
         tenantQuery = Models.TenantInfo.objects.create(tenantId="tenantId", windowsize=5)
-        when(serverInfoMock).objects().thenReturn(serverInfoMock);
-        when(tenantInfoMock).objects().thenReturn(tenantInfoMock);
-        when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery);
-        when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery);
+        when(serverInfoMock).objects().thenReturn(serverInfoMock)
+        when(tenantInfoMock).objects().thenReturn(tenantInfoMock)
+        when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery)
+        when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery)
 
         info_manager.setInformations(serverInfoMock, tenantInfoMock)
         myMock = mock()
@@ -89,11 +89,10 @@ class WindowSizeTests(TestCase):
             id=1, owner="Telefonica I+D", version=1.0, runningfrom=datetime.datetime.now(
                 tz=timezone.get_default_timezone()), doc="test")
         tenantQuery = Models.TenantInfo.objects.create(tenantId="tenantId", windowsize=5)
-        when(serverInfoMock).objects().thenReturn(serverInfoMock);
-        when(tenantInfoMock).objects().thenReturn(tenantInfoMock);
-        when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery);
-        when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery);
-
+        when(serverInfoMock).objects().thenReturn(serverInfoMock)
+        when(tenantInfoMock).objects().thenReturn(tenantInfoMock)
+        when(serverInfoMock).get(id__exact='1').thenReturn(mockedQuery)
+        when(tenantInfoMock).get(tenantId__exact="tenantId").thenReturn(tenantQuery)
         info_manager.setInformations(serverInfoMock, tenantInfoMock)
         myMock = mock()
         mockedInfo = information.information("test", "test", "test", datetime.datetime.now(), "test")

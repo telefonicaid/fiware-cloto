@@ -95,7 +95,6 @@ def main():
             logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
                         % (email, serverId, url, r.status_code))
 
-
     def NotifyScale(serverId, url, action):
         """Sends a notification to given url showing that service must scale up or scale down a server.
         """

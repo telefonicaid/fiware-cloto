@@ -46,9 +46,9 @@ class AuthorizationManagerTests(TestCase):
         self.auth.__setattr__("tokens", self.tokenM)
         when(self.tokenM).authenticate(token=self.token, tenant_id=self.tenantId).thenReturn("Is valid")
         when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url)\
-            .thenReturn(self.auth);
-        when(self.mockedClient).Client(token=self.authToken, auth_url=self.url).thenReturn(self.auth);
-        when(self.mockedClient).Client(username="admin", password="fake", auth_url=self.url).thenRaise(Unauthorized());
+            .thenReturn(self.auth)
+        when(self.mockedClient).Client(token=self.authToken, auth_url=self.url).thenReturn(self.auth)
+        when(self.mockedClient).Client(username="admin", password="fake", auth_url=self.url).thenRaise(Unauthorized())
         self.a.myClient = self.mockedClient
 
     def test_generate_adminToken(self):

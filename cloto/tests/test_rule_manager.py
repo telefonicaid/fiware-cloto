@@ -69,7 +69,8 @@ class RuleManagerTests(TestCase):
                 '"attributes": [' \
                             '"cpu",' \
                             '"mem"],' \
-                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + self.newServerId + '",' \
+                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + \
+                            self.newServerId + '",' \
                             '"duration": "P1M",' \
                             '"notifyConditions": [' \
                             '{"type": "' + NOTIFICATION_TYPE + '",' \
@@ -77,9 +78,9 @@ class RuleManagerTests(TestCase):
         #data2 for unsubscription
         data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % expected_cbSubscriptionId)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
-            .thenReturn(response);
+            .thenReturn(response)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
-            .thenReturn(response);
+            .thenReturn(response)
         self.ruleManager.orionClient.client = self.mockedClient
 
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)

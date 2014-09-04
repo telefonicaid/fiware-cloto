@@ -55,18 +55,22 @@ application = get_wsgi_application()
 # from helloworld.wsgi import HelloWorldApplication
 # application = HelloWorldApplication(application)
 
-import sqlite3
+#import sqlite3
+import MySQLdb as mysql
 import datetime
 
 from django.utils import timezone
 from circus import get_arbiter
 
 from cloto.models import ServerInfo
-from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH
+from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH, \
+    DB_NAME, DB_CHARSET, DB_PASSWD, DB_USER, DB_HOST
 from cloto.log import logger
 
 
-conn = sqlite3.connect(INSTALLATION_PATH + 'cloto.db')
+#conn = sqlite3.connect(INSTALLATION_PATH + 'cloto.db')
+conn = mysql.connect(charset=DB_CHARSET, use_unicode=True, host=DB_HOST, user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
+
 c = conn.cursor()
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data
@@ -83,6 +87,6 @@ conn.commit()
 # Just be sure any changes have been committed or they will be lost.
 conn.close()
 
-arbiter = get_arbiter([{"cmd": "python "+ ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
+arbiter = get_arbiter([{"cmd": "python " + ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 arbiter.start()
 logger.info("SERVER STARTED")

@@ -39,11 +39,11 @@ class ClientTests(TestCase):
         self.auth = mock()
         self.auth.stub("authenticate")
         self.auth.__setattr__("auth_token", self.authToken)
-        when(self.auth.stub("tokens")).authenticate(token="1234").thenReturn(True);
+        when(self.auth.stub("tokens")).authenticate(token="1234").thenReturn(True)
         when(AuthorizationManager.AuthorizationManager)\
-            .checkToken(self.authToken, "1234", "tenantId", self.url).thenReturn(True);
+            .checkToken(self.authToken, "1234", "tenantId", self.url).thenReturn(True)
         when(AuthorizationManager.AuthorizationManager).\
-            generate_adminToken("admin", "openstack", self.url).thenReturn(self.authToken);
+            generate_adminToken("admin", "openstack", self.url).thenReturn(self.authToken)
 
     def test_servers_view_url(self):
         response = self.c.get('/v1.0/tenantId/servers/', **{'HTTP_X_AUTH_TOKEN': '1234'})

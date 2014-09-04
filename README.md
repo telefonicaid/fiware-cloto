@@ -23,11 +23,15 @@ To install this module you have to install some components:
 - Apache 2.2 or above + mod_wsgi
 - RabbitMQ Server
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
+- MySQL 5.6.14 or above
 
 
 ### Installation
 ------------
-Once you have all prerequisites installed, run install.sh with sudo privileges in order to start installation.
+Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server and configure database
+access located in cloto/db.cfg
+
+After all  you must run install.sh with sudo privileges in order to start installation.
 This script should install fiware-cloto in /opt/policyManager
 
 After finishing you must configure cloto configuration and some apache settings.

@@ -108,6 +108,7 @@ def assert_error_response(step, error_code, fault_element):
     Utils.assert_error_code_error(response=world.req, expected_error_code=error_code,
                                   expected_fault_element=fault_element)
 
+
 @step(u'incorrect "([^"]*)"')
 def set_incorrect_token(step, token):
 

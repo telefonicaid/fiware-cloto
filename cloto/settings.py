@@ -23,20 +23,28 @@
 # contact with opensource@tid.es
 #
 # Django settings for fiware_cloto project.
-#CSRF_FAILURE_VIEW = 'cloto.views.fail'
+CSRF_FAILURE_VIEW = 'cloto.views.fail'
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
 APPEND_SLASH = False
 
 ADMINS = (
-    # ('Fernando Lopez', 'fla@tid.es'),
-    # ('Guillermo Jimenez', 'e.fiware@tid.es'),
+    # ('Fernando Lopez', 'fernando.lopezaguilar@telefonica.com'),
+    # ('Guillermo Jimenez', 'e.fiware.tid@telefonica.com'),
 )
 
 MANAGERS = ADMINS
 
 from cloto.configuration import INSTALLATION_PATH
 DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'OPTIONS': {
+            'read_default_file': '/Users/Geon/migration/myfork/fiware-cloto/cloto/db.cfg'
+        },
+    }
+}
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'NAME': INSTALLATION_PATH + '/cloto.db',                      # Or path to database file if using sqlite3.
@@ -47,10 +55,11 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
+"""
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name

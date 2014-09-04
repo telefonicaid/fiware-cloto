@@ -30,40 +30,40 @@ class ServerInfo(models.Model):
     """This class models information about Cloto Server.
     """
     id = models.IntegerField(primary_key=True, max_length=1)
-    owner = models.CharField(max_length=30)
+    owner = models.CharField(max_length=40)
     version = models.FloatField()
     runningfrom = models.DateTimeField()
-    doc = models.CharField(max_length=100)
+    doc = models.CharField(max_length=3000)
 
 
 class SpecificRule(models.Model):
     """This class models information about specific rules for Virtual Machines deployed.
     """
-    specificRule_Id = models.CharField(primary_key=True, max_length=30)
-    tenantId = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    condition = models.CharField(max_length=30000)
-    action = models.CharField(max_length=30000)
-    clips_condition = models.CharField(max_length=30000)
-    clips_action = models.CharField(max_length=30000)
+    specificRule_Id = models.CharField(primary_key=True, max_length=40)
+    tenantId = models.CharField(max_length=40)
+    name = models.CharField(max_length=40)
+    condition = models.TextField(max_length=21844)
+    action = models.TextField(max_length=21844)
+    clips_condition = models.TextField(max_length=21844)
+    clips_action = models.TextField(max_length=21844)
     createdAt = models.DateTimeField()
 
 
 class Subscription(models.Model):
     """This class models the server subscription to a rule .
     """
-    subscription_Id = models.CharField(primary_key=True, max_length=30)
+    subscription_Id = models.CharField(primary_key=True, max_length=40)
     url = models.CharField(max_length=140)
-    ruleId = models.CharField(max_length=30)
-    serverId = models.CharField(max_length=30)
-    cbSubscriptionId = models.CharField(max_length=30)
+    ruleId = models.CharField(max_length=40)
+    serverId = models.CharField(max_length=40)
+    cbSubscriptionId = models.CharField(max_length=40)
 
 
 class Entity(models.Model):
     """This class models information about Virtual Machines deployed.
     """
-    serverId = models.CharField(primary_key=True, max_length=30)
-    tenantId = models.CharField(max_length=30)
+    serverId = models.CharField(primary_key=True, max_length=40)
+    tenantId = models.CharField(max_length=40)
     specificrules = models.ManyToManyField(SpecificRule, verbose_name="list of rules")
     subscription = models.ManyToManyField(Subscription, verbose_name="list of subscription")
 
@@ -71,18 +71,18 @@ class Entity(models.Model):
 class TenantInfo(models.Model):
     """This class models information about tenants and their windowsize.
     """
-    tenantId = models.CharField(primary_key=True, max_length=30)
+    tenantId = models.CharField(primary_key=True, max_length=40)
     windowsize = models.IntegerField()
 
 
 class Rule(models.Model):
     """This class models information about general rules.
     """
-    ruleId = models.CharField(primary_key=True, max_length=30)
-    tenantId = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    condition = models.CharField(max_length=30000)
-    action = models.CharField(max_length=30000)
+    ruleId = models.CharField(primary_key=True, max_length=40)
+    tenantId = models.CharField(max_length=40)
+    name = models.CharField(max_length=40)
+    condition = models.TextField(max_length=21844)
+    action = models.TextField(max_length=21844)
     createdAt = models.DateTimeField()
 
 

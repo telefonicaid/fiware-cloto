@@ -90,9 +90,9 @@ def check_tenant_information(step):
         response[TENANT_VERSION] = str(response[TENANT_VERSION])
         assert response[TENANT_VERSION] == expected_result[TENANT_VERSION], 'Expected {} is: {} \n Obtained {} is: ' \
                                                                             '{}'.format(TENANT_VERSION,
-                                                                                        expected_result[TENANT_VERSION],
-                                                                                        TENANT_VERSION,
-                                                                                        response[TENANT_VERSION])
+                                                                                    expected_result[TENANT_VERSION],
+                                                                                    TENANT_VERSION,
+                                                                                    response[TENANT_VERSION])
         response[TENANT_WSIZE] = str(response[TENANT_WSIZE])
         assert response[TENANT_WSIZE] == expected_result[TENANT_WSIZE], 'Expected {} is: {} \n Obtained {} is: ' \
                                                                         '{}'.format(TENANT_WSIZE,

@@ -169,8 +169,8 @@ class RestUtils(object):
         return self._call_api(pattern=CREATE_RULE_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=api_body)
 
-    def update_rule(self, tenant_id=None, server_id=None, rule_name=None, action=None, rule_id=None, cpu=None, mem=None,
-                    body=None, headers=HEADERS):
+    def update_rule(self, tenant_id=None, server_id=None, rule_name=None, action=None, rule_id=None, cpu=None,
+                    mem=None, body=None, headers=HEADERS):
         """Update a elasticity rule in specific server.
         :param tenant_id: Is the id of the tenant.
         :param server_id: Is the id of the server.

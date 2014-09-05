@@ -38,3 +38,10 @@ SERVERID = u'serverId'
 # NOTIFICATION CONSTANS
 OPERATIONS = ["scaleUp", "scaleDown"]
 OPERANDS = ["greater", "less", "greater equal", "less equal"]
+
+#MODELS LENGTH
+ID_LENGTH = 40
+TEXT_LENGTH = 21844
+DOC_LENGTH = 3000
+URL_LENGTH = 140
+NAME_LENGTH = 40

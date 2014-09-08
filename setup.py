@@ -31,7 +31,7 @@ setup(
                 'to servers, subscribe servers to Context Broker to get information about resources consumption '
                 'of that servers and launch actions described in rules when conditions are given.',
     author='Fernando Lopez Aguilar, Guillermo Jimenez Prieto',
-    author_email='fla@tid.es, e.fiware@tid.es',
+    author_email='fernando.lopezaguilar@telefonica.com, e.fiware.tid@telefonica.com',
     url='https://github.com/telefonicaid/fiware-cloto',  # use the URL to the github repo
     download_url='https://github.com/telefonicaid/fiware-cloto/tarball/1.0',  # I'll explain this in a second
     keywords=['fiware', 'policy', 'manager', 'cloud'],  # arbitrary keywords

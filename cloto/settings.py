@@ -40,7 +40,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'OPTIONS': {
-            'read_default_file': '/Users/Geon/migration/myfork/fiware-cloto/cloto/db.cfg'
+            'read_default_file': INSTALLATION_PATH + 'cloto/db.cfg'
         },
     }
 }

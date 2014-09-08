@@ -1,27 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-#
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
-#
-# This file is part of FI-WARE project.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-#
-# You may obtain a copy of the License at:
-#
-#        http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# For those usages not covered by the Apache version 2.0 License please
-# contact with opensource@tid.es
-#
 """
 WSGI config for fiware_cloto project.
 
@@ -61,8 +37,9 @@ import datetime
 from django.utils import timezone
 from circus import get_arbiter
 
-from cloto.models import ServerInfo
-from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH
+from models import ServerInfo
+from configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH
+from configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, LOGGING_PATH
 from cloto.log import logger
 
 
@@ -83,6 +60,6 @@ conn.commit()
 # Just be sure any changes have been committed or they will be lost.
 conn.close()
 
-arbiter = get_arbiter([{"cmd": "python " + ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
+arbiter = get_arbiter([{"cmd": "python "+ ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 arbiter.start()
 logger.info("SERVER STARTED")

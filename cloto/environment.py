@@ -1,27 +1,3 @@
-#!/usr/bin/env python
-# -*- encoding: utf-8 -*-
-#
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
-#
-# This file is part of FI-WARE project.
-#
-# Licensed under the Apache License, Version 2.0 (the "License");
-# you may not use this file except in compliance with the License.
-#
-# You may obtain a copy of the License at:
-#
-#        http://www.apache.org/licenses/LICENSE-2.0
-#
-# Unless required by applicable law or agreed to in writing, software
-# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
-#
-# See the License for the specific language governing permissions and
-# limitations under the License.
-#
-# For those usages not covered by the Apache version 2.0 License please
-# contact with opensource@tid.es
-#
 __author__ = 'gjp'
 import sys
 import sqlite3 as db
@@ -87,13 +63,14 @@ def main():
                + ', "email": "' + email + '", "description": "' + description + '"}'
         logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
 
-        r = requests.post(url, data=data, headers=headers)
+        """r = requests.post(url, data=data, headers=headers)
         if r.status_code == 200:
             logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
         else:
             print(2)
             logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
                         % (email, serverId, url, r.status_code))
+        """
 
     def NotifyScale(serverId, url, action):
         """Sends a notification to given url showing that service must scale up or scale down a server.
@@ -102,13 +79,13 @@ def main():
         data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
         logger.info(action + " message sent to %s : %s"
                         % (url, data))
-        r = requests.post(url, data=data, headers=headers)
+        """r = requests.post(url, data=data, headers=headers)
         if r.status_code == 200:
             logger.info(action + " message sent to %s about server %s.--- Response: %d"
                         % (url, serverId, r.status_code))
         else:
             logger.error(action + " message sent to %s about server %s.--- Response: %d"
-                         % (url, serverId, r.status_code))
+                         % (url, serverId, r.status_code))"""
 
     def AddSpecificFunction(e, func, funcname=None):
         try:

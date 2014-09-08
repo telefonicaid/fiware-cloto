@@ -69,7 +69,7 @@ class RuleManagerTests(TestCase):
                 '"attributes": [' \
                             '"cpu",' \
                             '"mem"],' \
-                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' \
+                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + \
                             self.newServerId + '",' \
                             '"duration": "P1M",' \
                             '"notifyConditions": [' \

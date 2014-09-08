@@ -24,7 +24,6 @@
 #
 __author__ = 'gjp'
 import sys
-#import sqlite3 as db
 import MySQLdb as mysql
 import json
 

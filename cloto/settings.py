@@ -1,3 +1,27 @@
+#!/usr/bin/env python
+# -*- encoding: utf-8 -*-
+#
+# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+#
+# This file is part of FI-WARE project.
+#
+# Licensed under the Apache License, Version 2.0 (the "License");
+# you may not use this file except in compliance with the License.
+#
+# You may obtain a copy of the License at:
+#
+#        http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing, software
+# distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+# WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+#
+# See the License for the specific language governing permissions and
+# limitations under the License.
+#
+# For those usages not covered by the Apache version 2.0 License please
+# contact with opensource@tid.es
+#
 # Django settings for fiware_cloto project.
 CSRF_FAILURE_VIEW = 'cloto.views.fail'
 DEBUG = False
@@ -5,16 +29,25 @@ TEMPLATE_DEBUG = DEBUG
 APPEND_SLASH = False
 
 ADMINS = (
-    # ('Fernando Lopez', 'fla@tid.es'),
-    # ('Guillermo Jimenez', 'e.fiware@tid.es'),
+    # ('Fernando Lopez', 'fernando.lopezaguilar@telefonica.com'),
+    # ('Guillermo Jimenez', 'e.fiware.tid@telefonica.com'),
 )
 
 MANAGERS = ADMINS
 
+from cloto.configuration import INSTALLATION_PATH
 DATABASES = {
     'default': {
+        'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'OPTIONS': {
+            'read_default_file': '/Users/Geon/migration/myfork/fiware-cloto/cloto/db.cfg'
+        },
+    }
+}
+"""DATABASES = {
+    'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': 'cloto.db',                      # Or path to database file if using sqlite3.
+        'NAME': INSTALLATION_PATH + '/cloto.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': '',
@@ -22,10 +55,11 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
+"""
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = ['127.0.0.1']
 
 # Local time zone for this installation. Choices can be found here:
 # http://en.wikipedia.org/wiki/List_of_tz_zones_by_name
@@ -128,6 +162,8 @@ INSTALLED_APPS = (
     # Uncomment the next line to enable admin documentation:
     # 'django.contrib.admindocs',
 )
+
+TEST_RUNNER = 'django_nose.NoseTestSuiteRunner'
 
 SESSION_SERIALIZER = 'django.contrib.sessions.serializers.JSONSerializer'
 

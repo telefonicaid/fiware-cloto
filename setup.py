@@ -28,7 +28,7 @@ setup(
   packages=['cloto'],  # this must be the same as the name above
   version='1.0.0',
   description='This module is part of FI-WARE Policy Manager. It provides an API-REST to create rules associated '
-                'to servers, subscribe servers to Context Broker to get information about resources consumption of that'
+            'to servers, subscribe servers to Context Broker to get information about resources consumption of that'
             ' servers and launch actions described in rules when conditions are given.',
   author='Fernando Lopez Aguilar, Guillermo Jimenez Prieto',
   author_email='fernando.lopezaguilar@telefonica.com, e.fiware.tid@telefonica.com',

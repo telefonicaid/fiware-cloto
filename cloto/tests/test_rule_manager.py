@@ -26,6 +26,7 @@ __author__ = 'gjp'
 from django.test import TestCase
 from cloto.models import *
 from cloto.manager import RuleManager
+from keystoneclient.exceptions import Conflict
 from mockito import *
 from requests import Response
 from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
@@ -48,10 +49,13 @@ class RuleManagerTests(TestCase):
         self.newServerId = "ServerIdThatNoExists"
         entity = Entity(serverId=self.serverId, tenantId=self.tenantId)
         entity.save()
-
+        CONTEXT_BROKER_URL_FAIL = "http://130.206.82.0:1026/NGSI10"
         self.ruleManager = RuleManager.RuleManager()
         self.mockedClient = mock()
         response = Response()
+        responseFailure = Response()
+        self.subscription_failure = "{Invalid subscription body}"
+        responseFailure.status_code = 400
         response.status_code = 200
         expected_cbSubscriptionId = "51c04a21d714fb3b37d7d5a7"
         response._content = "{\"subscribeResponse\": {" \
@@ -81,6 +85,8 @@ class RuleManagerTests(TestCase):
             .thenReturn(response)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
             .thenReturn(response)
+        when(self.mockedClient).post(CONTEXT_BROKER_URL_FAIL + "/subscribeContext", data, headers=headers)\
+            .thenReturn(responseFailure)
         self.ruleManager.orionClient.client = self.mockedClient
 
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
@@ -164,3 +170,28 @@ class RuleManagerTests(TestCase):
 
         result = self.ruleManager.unsubscribe_to_rule(self.newServerId, subscriptionId)
         self.assertIs(result, True)
+
+    def test_suscription_server_no_exists(self):
+        """Tests if method subscribes_fails_with_fake_rule_id."""
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"1234\"}"
+        try:
+            self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        except SpecificRule.DoesNotExist as ex:
+            self.assertRaises(ex)
+
+    def test_double_subscription(self):
+        """Tests if method subscribes a server to a rule, gets the subscription and unsubsribes the server."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+
+        subscriptionId = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        self.assertIsInstance(subscriptionId, uuid.UUID)
+
+        try:
+            subscriptionId2 = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        except Conflict as ex:
+            self.assertRaises(ex)

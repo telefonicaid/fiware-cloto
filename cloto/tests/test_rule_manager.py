@@ -44,6 +44,19 @@ class RuleManagerTests(TestCase):
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
                     ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
                     '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleFake1 = '{\"name\": \"te\", \"condition\": ' \
+                    '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleFake2 = '{\"name\": \"test Name\", \"condition\": ' \
+                    '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    '\"action\": \"\"}'
+        self.ruleFake3 = '{\"name\": \"test Name\", \"condition\": \"\",' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleFake4 = '{\"name\": \"test Name\",' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+
         self.tenantId = "tenantId"
         self.serverId = "serverId"
         self.newServerId = "ServerIdThatNoExists"
@@ -150,6 +163,34 @@ class RuleManagerTests(TestCase):
             self.tenantId, self.newServerId, rule.ruleId, self.ruleUpdated)
         self.assertIsInstance(update, RuleModel)
         self.assertIsNotNone(update.ruleId)
+
+    def test_validate_rule_error_1(self):
+        """Tests if method throws error with malformed rule, name lenght is 2. """
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake1)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_validate_rule_error_2(self):
+        """Tests if method throws error with malformed rule, action is empty."""
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake2)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_validate_rule_error_3(self):
+        """Tests if method throws error with malformed rule, condition is empty."""
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake3)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_validate_rule_error_4(self):
+        """Tests if method throws error with malformed rule, one attribute is missing."""
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake4)
+        except ValueError as ex:
+            self.assertRaises(ex)
 
     def test_get_all_specific_rules(self):
         """Tests if method list all general rules of a server."""

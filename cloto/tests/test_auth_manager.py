@@ -26,8 +26,9 @@ __author__ = 'gjp'
 from django.test import TestCase
 from cloto.manager import AuthorizationManager
 from mockito import *
-from keystoneclient.v2_0 import client
-from keystoneclient.exceptions import Unauthorized
+from keystoneclient.v2_0 import client, tokens
+from keystoneclient.exceptions import Unauthorized, InternalServerError, AuthorizationFailure
+from keystoneclient.v2_0.tokens import Token
 
 
 class AuthorizationManagerTests(TestCase):
@@ -36,19 +37,36 @@ class AuthorizationManagerTests(TestCase):
         self.fakeToken = "fffffffffffffffffffffffffffffffff"
         self.authToken = "77d254b3caba4fb29747958138136ffa"
         self.url = "http://130.206.80.61:35357/v2.0"
+        self.url_noResponse = "http://127.0.0.1:35357/v2.0"
+        self.url_server_error = "http://serverWithErrors.com:35357/v2.0"
         self.tenantId = "6571e3422ad84f7d828ce2f30373b3d4"
         self.a = AuthorizationManager.AuthorizationManager()
         self.mockedClient = client
         self.auth = mock()
         self.tokenM = mock()
-
+        manager = mock()
+        dic_valid = {"token": {"id": self.authToken, "tenant": {"enabled": True,
+                        "description": "Default tenant", "name": "admin", "id": "6571e3422ad84f7d828ce2f30373b3d4"}}}
+        dic_invalid = {"token": {"id": self.authToken, "tenant": {"enabled": True,
+                        "description": "Default tenant", "name": "admin", "id": "anotherTenantId"}}}
+        verification_expected = Token(manager, dic_valid)
+        verification_expected_fail = Token(manager, dic_invalid)
         self.auth.__setattr__("auth_token", self.authToken)
         self.auth.__setattr__("tokens", self.tokenM)
-        when(self.tokenM).authenticate(token=self.token, tenant_id=self.tenantId).thenReturn("Is valid")
+        when(self.tokenM).authenticate(token=self.token, tenant_id=self.tenantId).thenReturn(verification_expected)
+        when(self.tokenM).authenticate(token=self.fakeToken, tenant_id=self.tenantId)\
+            .thenReturn(verification_expected_fail)
         when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url)\
             .thenReturn(self.auth)
-        when(self.mockedClient).Client(token=self.authToken, auth_url=self.url).thenReturn(self.auth)
+        when(self.mockedClient).Client(token=self.authToken, endpoint=self.url).thenReturn(self.auth)
+        when(self.mockedClient)\
+            .Client(token=self.authToken, endpoint=self.url_noResponse).thenRaise(InternalServerError())
+        when(self.mockedClient)\
+            .Client(token=self.authToken, endpoint=self.url_server_error).thenRaise(Exception())
         when(self.mockedClient).Client(username="admin", password="fake", auth_url=self.url).thenRaise(Unauthorized())
+        when(self.mockedClient)\
+            .Client(username="admin", password="fake", auth_url=self.url_server_error)\
+            .thenRaise(AuthorizationFailure())
         self.a.myClient = self.mockedClient
 
     def test_generate_adminToken(self):
@@ -62,12 +80,30 @@ class AuthorizationManagerTests(TestCase):
         except Unauthorized as ex:
             self.assertRaises(ex)
 
-#    def test_check_token(self):
-#        result = self.a.checkToken(self.authToken, self.token, self.tenantId, self.url)
-#        self.assertEqual(result, self.authToken)
+    def test_generate_adminToken_exception_2(self):
+        try:
+            self.a.generate_adminToken("admin", "fake", self.url_server_error)
+        except AuthorizationFailure as ex:
+            self.assertRaises(ex)
 
-#    def test_check_token_exception(self):
-#       try:
-#           result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url)
-#      except Unauthorized as ex:
-#          self.assertRaises(ex)
+    def test_check_token(self):
+        result = self.a.checkToken(self.authToken, self.token, self.tenantId, self.url)
+        self.assertEqual(result, None)
+
+    def test_check_token_exception_1(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url)
+        except Unauthorized as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_exception_2(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url_noResponse)
+        except AuthorizationFailure as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_exception_3(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url_server_error)
+        except Exception as ex:
+            self.assertRaises(ex)

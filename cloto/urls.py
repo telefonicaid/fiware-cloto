@@ -23,7 +23,6 @@
 # contact with opensource@tid.es
 #
 from django.conf.urls import patterns, url
-from cloto import views
 from restCloto import ServerRulesView, GeneralView, \
     ServersGeneralView, ServerView, GeneralRulesView, GeneralRulesViewRule, ServerSubscriptionView, ServerRuleView
 

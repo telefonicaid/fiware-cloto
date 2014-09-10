@@ -45,8 +45,8 @@ class AuthorizationManager():
     def checkToken(self, admin_token, token, tenant_id, url):
         """checks if a token is valid against a url using an admin token."""
         print("Starting Authentication of token %s " % token)
-        admin_client = self.myClient.Client(token=admin_token, endpoint=url)
         try:
+            admin_client = self.myClient.Client(token=admin_token, endpoint=url)
             auth_result = admin_client.tokens.authenticate(token=token, tenant_id=tenant_id)
 
             print("1. %s" % auth_result)

@@ -52,17 +52,18 @@ class RuleManagerTests(TestCase):
         CONTEXT_BROKER_URL_FAIL = "http://130.206.82.0:1026/NGSI10"
         self.ruleManager = RuleManager.RuleManager()
         self.mockedClient = mock()
+        self.OrionClientError = mock()
         response = Response()
         responseFailure = Response()
         self.subscription_failure = "{Invalid subscription body}"
         responseFailure.status_code = 400
         response.status_code = 200
-        expected_cbSubscriptionId = "51c04a21d714fb3b37d7d5a7"
+        self.expected_cbSubscriptionId = "51c04a21d714fb3b37d7d5a7"
         response._content = "{\"subscribeResponse\": {" \
                             "\"duration\": \"P1M\"," \
                             "\"subscriptionId\": \"%s\"" \
                             "}" \
-                            "}" % expected_cbSubscriptionId
+                            "}" % self.expected_cbSubscriptionId
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         #data to subscription
         data = '{"entities": [' \
@@ -80,12 +81,14 @@ class RuleManagerTests(TestCase):
                             '{"type": "' + NOTIFICATION_TYPE + '",' \
                             '"condValues": ["' + NOTIFICATION_TIME + '"]}]}'
         #data2 for unsubscription
-        data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % expected_cbSubscriptionId)
+        data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % self.expected_cbSubscriptionId)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
             .thenReturn(response)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
             .thenReturn(response)
-        when(self.mockedClient).post(CONTEXT_BROKER_URL_FAIL + "/subscribeContext", data, headers=headers)\
+        when(self.OrionClientError).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
+            .thenReturn(responseFailure)
+        when(self.OrionClientError).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
             .thenReturn(responseFailure)
         self.ruleManager.orionClient.client = self.mockedClient
 
@@ -181,7 +184,7 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_double_subscription(self):
-        """Tests if method subscribes a server to a rule, gets the subscription and unsubsribes the server."""
+        """Tests if method throws an error trying to subcribe a server to a rule twice."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -194,4 +197,35 @@ class RuleManagerTests(TestCase):
         try:
             subscriptionId2 = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
         except Conflict as ex:
+            self.assertRaises(ex)
+
+    def test_unsubscription_Orion_Failure(self):
+        """Tests if method throws an error when Orion response is 400 while we are unsubscribing a server."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+
+        subscriptionId = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        self.assertIsInstance(subscriptionId, uuid.UUID)
+
+        self.ruleManager.orionClient.client = self.OrionClientError
+
+        try:
+            result = self.ruleManager.unsubscribe_to_rule(self.newServerId, subscriptionId)
+        except SystemError as ex:
+            self.assertRaises(ex)
+
+    def test_subscription_Orion_Failure(self):
+        """Tests if method throws an error when Orion response is 400 while we are subscribing a server."""
+        self.ruleManager.orionClient.client = self.OrionClientError
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+        try:
+            self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        except SystemError as ex:
             self.assertRaises(ex)

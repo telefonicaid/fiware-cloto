@@ -24,13 +24,18 @@
 #
 __author__ = 'gjp'
 from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, InternalServerError
+from cloto.models import TokenModel
 import json
+import requests
+from cloto.constants import ACCEPT_HEADER, JSON_TYPE, X_AUTH_TOKEN_HEADER, TOKENS_PATH, SERVICE_NOT_AUTORIZED, \
+    TOKEN_NOT_FOUND
 
 
 class AuthorizationManager():
     """This class provides methods to manage authorization.
     """
     myClient = None
+    client = requests
 
     def generate_adminToken(self, username, password, url):
         """This method generates an admin token."""
@@ -46,11 +51,7 @@ class AuthorizationManager():
         """checks if a token is valid against a url using an admin token."""
         print("Starting Authentication of token %s " % token)
         try:
-            admin_client = self.myClient.Client(token=admin_token, endpoint=url)
-            auth_result = admin_client.tokens.authenticate(token=token, tenant_id=tenant_id)
-
-            print("1. %s" % auth_result)
-            print("2. %s" % admin_client.auth_token)
+            auth_result = self.get_info_token(url, admin_token, token)
             if auth_result:
                 if tenant_id == auth_result.tenant["id"]:
                     print('The token is valid')
@@ -62,3 +63,18 @@ class AuthorizationManager():
             raise AuthorizationFailure("Token could not have enough permissions to access tenant: %s" % tenant_id)
         except Exception as ex:
             raise ex
+
+    def get_info_token(self, url, admin_token, token):
+        headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: admin_token}
+        r = self.client.get(url + "/" + TOKENS_PATH + token, headers=headers)
+        response = r.text.decode()
+        if response == TOKEN_NOT_FOUND:
+            raise AuthorizationFailure(response)
+        if response == SERVICE_NOT_AUTORIZED:
+            raise AuthorizationFailure("System has an authorization problem, please ask to administrators.")
+        info = json.loads(response)
+        my_token = TokenModel()
+        my_token.expires = info["access"]["token"]["expires"]
+        my_token.id = info["access"]["token"]["id"]
+        my_token.tenant = info["access"]["token"]["tenant"]
+        return my_token

@@ -35,7 +35,7 @@ from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Confli
 from keystoneclient.v2_0 import client
 import datetime
 from json import JSONEncoder
-from configuration import OPENSTACK_URL, ADM_USER, ADM_PASS
+from configuration import OPENSTACK_URL, ADM_USER, ADM_PASS, ADM_TENANT_ID
 
 
 class RESTResource(object):
@@ -52,7 +52,7 @@ class RESTResource(object):
             try:
                 a = AuthorizationManager.AuthorizationManager()
                 a.myClient = client
-                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, OPENSTACK_URL)
+                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, ADM_TENANT_ID, OPENSTACK_URL)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
                              kwargs.get("tenantId"), OPENSTACK_URL)
                 return callback(request, *args, **kwargs)

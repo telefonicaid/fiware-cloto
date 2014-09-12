@@ -31,6 +31,8 @@ __author__ = 'gjp'
 CONTENT_HEADER = u'Content-Type'
 ACCEPT_HEADER = u'Accept'
 JSON_TYPE = u'application/json'
+X_AUTH_TOKEN_HEADER = u'X-Auth-Token'
+TOKENS_PATH = u'tokens/'
 
 #MODEL CONSTANTS
 SERVERID = u'serverId'
@@ -45,3 +47,7 @@ TEXT_LENGTH = 21844
 DOC_LENGTH = 3000
 URL_LENGTH = 140
 NAME_LENGTH = 40
+
+#KEYSTONE_PROXY
+TOKEN_NOT_FOUND = u'User token not found'
+SERVICE_NOT_AUTORIZED = u'Service not authorized'

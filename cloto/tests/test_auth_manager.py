@@ -29,6 +29,9 @@ from mockito import *
 from keystoneclient.v2_0 import client, tokens
 from keystoneclient.exceptions import Unauthorized, InternalServerError, AuthorizationFailure
 from keystoneclient.v2_0.tokens import Token
+from cloto.constants import ACCEPT_HEADER, JSON_TYPE, X_AUTH_TOKEN_HEADER, TOKENS_PATH, SERVICE_NOT_AUTORIZED, \
+    TOKEN_NOT_FOUND
+from requests import Response
 
 
 class AuthorizationManagerTests(TestCase):
@@ -45,6 +48,20 @@ class AuthorizationManagerTests(TestCase):
         self.auth = mock()
         self.tokenM = mock()
         manager = mock()
+        requestsMock = mock()
+        response = Response()
+        response.status_code = 200
+        response._content = '{"access":{"token":{"expires":"2015-07-09T15:16:07Z",' \
+            '"id":{"token":"3f9b39b55bfab4bb136d7659dfb0ad5c",' \
+            '"tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
+            '"access_token":' \
+            '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
+            '"expires":"2014-09-13T07:23:51.000Z"}' \
+            ',"tenant":{"description":"Tenant from IDM","enabled":true,' \
+            '"id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
+            '"user":{"username":"user","roles_links":[],"id":"user",' \
+            '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+
         dic_valid = {"token": {"id": self.authToken, "tenant": {"enabled": True,
                         "description": "Default tenant", "name": "admin", "id": "6571e3422ad84f7d828ce2f30373b3d4"}}}
         dic_invalid = {"token": {"id": self.authToken, "tenant": {"enabled": True,
@@ -67,6 +84,17 @@ class AuthorizationManagerTests(TestCase):
         when(self.mockedClient)\
             .Client(username="admin", password="fake", auth_url=self.url_server_error)\
             .thenRaise(AuthorizationFailure())
+
+        headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.authToken}
+        when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.token, headers=headers)\
+            .thenReturn(response)
+        when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.fakeToken, headers=headers)\
+            .thenRaise(Unauthorized())
+        when(requestsMock).get(self.url_noResponse + "/" + TOKENS_PATH + self.fakeToken, headers=headers)\
+            .thenRaise(InternalServerError())
+        when(requestsMock).get(self.url_server_error + "/" + TOKENS_PATH + self.token, headers=headers)\
+            .thenRaise(Exception())
+        self.a.client = requestsMock
         self.a.myClient = self.mockedClient
 
     def test_generate_adminToken(self):

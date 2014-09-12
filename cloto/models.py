@@ -117,3 +117,9 @@ class ListRuleModel():
     serverId = None
     servers = None
     subscription = None
+
+
+class TokenModel():
+    tenant = None
+    id = None
+    expires = None

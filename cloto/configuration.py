@@ -29,6 +29,7 @@ __author__ = 'gjp'
 OPENSTACK_URL = u'http://130.206.80.61:35357/v2.0'
 ADM_USER = u''
 ADM_PASS = u''
+ADM_TENANT_ID = u''
 
 # POLICY MANAGER CONFIGURATION
 INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'

@@ -24,6 +24,8 @@
 #
 __author__ = 'gjp'
 from django.test import TestCase
+
+
 class MyTests(TestCase):
     def test_views(self):
         response = self.client.get("/helloworld")

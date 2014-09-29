@@ -47,6 +47,8 @@ class RESTResource(object):
     info = None
 
     def __call__(self, request, *args, **kwargs):
+        """Starting point of the API Agent. All REST requests should enter through this method.
+        """
         callback = getattr(self, request.method, None)
         if callback:
             try:
@@ -78,6 +80,8 @@ class RESTResource(object):
             return http.HttpResponseNotAllowed(allowed_methods)
 
     def set_info(self, information):
+        """Sets information generated about server.
+        """
         self.info = information
 
 

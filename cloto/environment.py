@@ -57,12 +57,16 @@ def main():
     # now we need some helpers to make it easier to set up the environment and
     #  the map of environment specific functions
     def PrepareEnvironment(e):
+        """Prepares environments to be defined.
+        """
         eid = env_id()
         ENV_SPECIFIC_FUNCTIONS[eid] = {}   # a map of functions
         e.Identifier = eid                  # so that we can always get it back
         return eid
 
     def GetNotificationUrl(ruleName, serverId):
+        """Gets url from database where actions should be notified.
+        """
         #conn = db.connect("cloto.db")
         conn = mysql.connect(charset=DB_CHARSET, use_unicode=True,
                              host=DB_HOST, user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
@@ -119,22 +123,6 @@ def main():
                              % (url, serverId, r.status_code))
         except Exception as ex:
             logger.error(ex.message)
-
-    def AddSpecificFunction(e, func, funcname=None):
-        try:
-            eid = e.Identifier
-        except:
-            raise ValueError("The Environment has not been prepared")
-        if funcname is None:
-            funcname = func.__name__    # if needed
-        ENV_SPECIFIC_FUNCTIONS[eid][funcname] = func
-        num_args = func.func_code.co_argcount
-        seq_args = " ".join(['?a%s' % x for x in range(num_args)])
-        e.BuildFunction(
-            funcname,
-            seq_args,
-            "(return (python-call env-call-specific-func %s %s %s))" % (
-                eid, funcname, seq_args))
 
     def get_rules_from_db(tenantId):
         """Gets all subscripted rules for a specified tenant and adds them to CLIPS environment to be checked.

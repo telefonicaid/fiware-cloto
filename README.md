@@ -32,6 +32,9 @@ To install this module you have to install some components:
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
 In addition, be sure you have installed mysql-devel package for development of MySQL applications.
 You should be able to install it from yum or apt-get package managers.
+    examples: yum install mysql-devel
+              apt-get install mysql-devel
+              ...etc
 
 After all  you must run install.sh with sudo privileges in order to start installation.
 This script should install fiware-cloto in /opt/policyManager and it will ask you for some configuration

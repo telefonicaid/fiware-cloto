@@ -52,7 +52,7 @@ class RESTResource(object):
             try:
                 a = AuthorizationManager.AuthorizationManager()
                 a.myClient = client
-                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, ADM_TENANT_ID, OPENSTACK_URL)
+                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, OPENSTACK_URL)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
                              kwargs.get("tenantId"), OPENSTACK_URL)
                 return callback(request, *args, **kwargs)

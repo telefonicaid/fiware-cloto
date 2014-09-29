@@ -31,18 +31,72 @@ if [ "$(whoami)" != "root" ]; then
     exit 1
 fi
 
+echo "Do you wish to insert configuration data before installing?"
+select yn in "Yes" "No"; do
+    case $yn in
+        Yes ) echo "Enter Keystone URL:"; read openstackurl;
+        echo "Enter Openstack Admin User:"; read admuser;
+        echo "Enter Openstack Admin passwd:"; read admpass;
+        echo "Enter Openstack Admin Tenant:"; read admtenant;
+        echo "Enter Mysql user:"; read dbuser;
+        echo "Enter Mysql user passwd:"; read dbpass;
+
+        match1="OPENSTACK_URL = u'";
+        match2="ADM_USER = u'";
+        match3="ADM_PASS = u'";
+        match4="ADM_TENANT_ID = u'";
+        match5="DB_USER = u'";
+        match6="DB_PASSWD = u'";
+        match7="user =";
+        match8="password =";
+        file1='cloto/configuration.py';
+        file2='cloto/db.cfg';
+        if [[ `bash --version | grep 'apple-darwin'` ]]
+        then
+            sed -i "" "s|$match1|$match1$openstackurl|" $file1;
+            sed -i "" "s/$match2/$match2$admuser/" $file1;
+            sed -i "" "s/$match3/$match3$admpass/" $file1;
+            sed -i "" "s/$match4/$match4$admtenant/" $file1;
+            sed -i "" "s/$match5/$match5$dbuser/" $file1;
+            sed -i "" "s/$match6/$match6$dbpass/" $file1;
+            sed -i "" "s/$match7/$match7\ $dbuser/" $file2;
+            sed -i "" "s/$match8/$match8\ $dbpass/" $file2;
+        else
+            sed -i "s|$match1|$match1$openstackurl|" $file1;
+            sed -i "s/$match2/$match2$admuser/" $file1;
+            sed -i "s/$match3/$match3$admpass/" $file1;
+            sed -i "s/$match4/$match4$admtenant/" $file1;
+            sed -i "s/$match5/$match5$dbuser/" $file1;
+            sed -i "s/$match6/$match6$dbpass/" $file1;
+            sed -i "s/$match7/$match7\ $dbuser/" $file2;
+            sed -i "s/$match8/$match8\ $dbpass/" $file2;
+        fi;
+        if [[ `mysql -u$dbuser -p$dbpass -e 'show databases' | grep "cloto"` ]]
+        then
+                echo "Cloto database exist, everything is OK"
+        else
+                mysql -u$dbuser -p$dbpass -e 'CREATE DATABASE cloto'
+                echo "Cloto  database was created, Now its ok"
+        fi
+        break;;
+        No )
+        echo "Probably you will get some errors during installation, do not worry, it is normal if you chose 'NO'";
+        echo "Please remember to complete all configuration data after installation and syncdb after all";
+        break;;
+    esac
+done
+
 echo "Installing fiware-cloto on system..."
 
 installation_path="/opt/policyManager/fiware-cloto"
 config_file="fiware-cloto.cfg"
 config_path="/etc/sysconfig/$config_file"
 
-
 log_path="/var/log/fiware-cloto"
 
 if [ ! -d "$log_path" ]; then
   mkdir -m 777 $log_path
-  echo 0 > $log_path/RuleEngine2.log
+  echo 0 > $log_path/RuleEngine.log
 fi
 
 echo "..."

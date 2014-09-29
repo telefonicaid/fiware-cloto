@@ -28,11 +28,16 @@ To install this module you have to install some components:
 
 ### Installation
 ------------
-Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server and configure database
-access located in cloto/db.cfg
+
+Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
 
 After all  you must run install.sh with sudo privileges in order to start installation.
-This script should install fiware-cloto in /opt/policyManager
+This script should install fiware-cloto in /opt/policyManager and it will ask you for some configuration
+parameters, please, be ensure you have all this data before starting the script in order to install fiware-cloto
+easiest.
+    - Keystone URL.
+    - Keystone admin user, password and tenant.
+    - Mysql user and password.
 
 After finishing you must configure cloto configuration and some apache settings.
 
@@ -43,7 +48,8 @@ After finishing you must configure cloto configuration and some apache settings.
 Before starting the rule engine, you should edit configuration.py located at cloto folder.
 Constants you need to complete are:
 
-    - All in # OPENSTACK CONFIGURATION: Openstack information
+    - All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install
+    script you do not need to edit)
     - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
     - CONTEXT_BROKER_URL: URL where Context Broker is listening
     - NOTIFICATION_URL: URL where notification service is listening (This service must be implemented by the user)

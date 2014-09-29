@@ -120,5 +120,6 @@ pip install -r requirements.txt
 python manage.py syncdb
 echo "..."
 echo "...Done"
-echo "Please check file located in $1 to configure all parameters before start fiware-cloto"
-echo "### To execute fiware-cloto run file run.sh ###"
+echo "Please check file located in $installation_path to configure all parameters "
+echo "and check all configuration described in README.md before start fiware-cloto"
+echo "### To execute fiware-cloto you must execute 'service fiware-cloto start' ###"

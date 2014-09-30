@@ -26,10 +26,10 @@ __author__ = 'gjp'
 
 
 # OPENSTACK CONFIGURATION
-OPENSTACK_URL = u'http://account.dev-havana.fi-ware.org:4731/v2.0'
-ADM_USER = u'admin'
-ADM_PASS = u'8fa3c69e4c3e9fafa61'
-ADM_TENANT_ID = u'admin'
+OPENSTACK_URL = u''
+ADM_USER = u''
+ADM_PASS = u''
+ADM_TENANT_ID = u''
 
 # POLICY MANAGER CONFIGURATION
 INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'
@@ -56,5 +56,5 @@ NOTIFICATION_TIME = u'PT5S'
 DB_CHARSET = u'utf8'
 DB_HOST = u'localhost'
 DB_NAME = u'cloto'
-DB_USER = u'root'
+DB_USER = u''
 DB_PASSWD = u''

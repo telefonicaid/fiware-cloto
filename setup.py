@@ -24,8 +24,8 @@
 #
 from distutils.core import setup
 setup(
-  name='cloto',
-  packages=['cloto'],  # this must be the same as the name above
+  name='fiware-cloto',
+  packages=['fiware-cloto'],  # this must be the same as the name above
   version='1.1.0',
   description='This module is part of FI-WARE Policy Manager. It provides an API-REST to create rules associated '
             'to servers, subscribe servers to Context Broker to get information about resources consumption of that'

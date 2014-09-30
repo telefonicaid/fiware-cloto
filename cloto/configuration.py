@@ -26,7 +26,7 @@ __author__ = 'gjp'
 
 
 # OPENSTACK CONFIGURATION
-OPENSTACK_URL = u'http://130.206.80.61:35357/v2.0'
+OPENSTACK_URL = u''
 ADM_USER = u''
 ADM_PASS = u''
 ADM_TENANT_ID = u''

@@ -57,12 +57,16 @@ def main():
     # now we need some helpers to make it easier to set up the environment and
     #  the map of environment specific functions
     def PrepareEnvironment(e):
+        """Prepares environments to be defined.
+        """
         eid = env_id()
         ENV_SPECIFIC_FUNCTIONS[eid] = {}   # a map of functions
         e.Identifier = eid                  # so that we can always get it back
         return eid
 
     def GetNotificationUrl(ruleName, serverId):
+        """Gets url from database where actions should be notified.
+        """
         #conn = db.connect("cloto.db")
         conn = mysql.connect(charset=DB_CHARSET, use_unicode=True,
                              host=DB_HOST, user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
@@ -86,50 +90,39 @@ def main():
     def NotifyEmail(serverId, url, description, email):
         """Sends a notification to given url showing that service must send an email to an address.
         """
+        try:
+            headers = {'Content-Type': 'application/json'}
+            data = '{"action": "notifyEmail", "serverId": "' + serverId\
+                   + ', "email": "' + email + '", "description": "' + description + '"}'
+            logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
 
-        headers = {'Content-Type': 'application/json'}
-        data = '{"action": "notifyEmail", "serverId": "' + serverId\
-               + ', "email": "' + email + '", "description": "' + description + '"}'
-        logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
-
-        r = requests.post(url, data=data, headers=headers)
-        if r.status_code == 200:
-            logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
-        else:
-            print(2)
-            logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
-                        % (email, serverId, url, r.status_code))
+            r = requests.post(url, data=data, headers=headers)
+            if r.status_code == 200:
+                logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
+            else:
+                print(2)
+                logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
+                            % (email, serverId, url, r.status_code))
+        except Exception as ex:
+            logger.error(ex.message)
 
     def NotifyScale(serverId, url, action):
         """Sends a notification to given url showing that service must scale up or scale down a server.
         """
-        headers = {'Content-Type': 'application/json'}
-        data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
-        logger.info(action + " message sent to %s : %s"
-                        % (url, data))
-        r = requests.post(url, data=data, headers=headers)
-        if r.status_code == 200:
-            logger.info(action + " message sent to %s about server %s.--- Response: %d"
-                        % (url, serverId, r.status_code))
-        else:
-            logger.error(action + " message sent to %s about server %s.--- Response: %d"
-                         % (url, serverId, r.status_code))
-
-    def AddSpecificFunction(e, func, funcname=None):
         try:
-            eid = e.Identifier
-        except:
-            raise ValueError("The Environment has not been prepared")
-        if funcname is None:
-            funcname = func.__name__    # if needed
-        ENV_SPECIFIC_FUNCTIONS[eid][funcname] = func
-        num_args = func.func_code.co_argcount
-        seq_args = " ".join(['?a%s' % x for x in range(num_args)])
-        e.BuildFunction(
-            funcname,
-            seq_args,
-            "(return (python-call env-call-specific-func %s %s %s))" % (
-                eid, funcname, seq_args))
+            headers = {'Content-Type': 'application/json'}
+            data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
+            logger.info(action + " message sent to %s : %s"
+                            % (url, data))
+            r = requests.post(url, data=data, headers=headers)
+            if r.status_code == 200:
+                logger.info(action + " message sent to %s about server %s.--- Response: %d"
+                            % (url, serverId, r.status_code))
+            else:
+                logger.error(action + " message sent to %s about server %s.--- Response: %d"
+                             % (url, serverId, r.status_code))
+        except Exception as ex:
+            logger.error(ex.message)
 
     def get_rules_from_db(tenantId):
         """Gets all subscripted rules for a specified tenant and adds them to CLIPS environment to be checked.

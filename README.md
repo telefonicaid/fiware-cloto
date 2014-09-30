@@ -2,15 +2,15 @@ fiware-cloto
 ============
 [![Build Status](https://travis-ci.org/telefonicaid/fiware-cloto.svg)](https://travis-ci.org/telefonicaid/fiware-cloto)
 [![Coverage Status](https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png)](https://coveralls.io/r/telefonicaid/fiware-cloto)
-[![PyPi version](https://pypip.in/v/cloto/badge.png)](https://crate.io/packages/cloto/)
-[![PyPi license](https://pypip.in/license/cloto/badge.png)](https://crate.io/packages/cloto/)
-[![License](https://pypip.in/license/cloto/badge.png)](https://pypi.python.org/pypi/cloto/)
+[![PyPi version](https://pypip.in/v/fiware-cloto/badge.png)](https://crate.io/packages/fiware-cloto/)
+[![PyPi license](https://pypip.in/license/fiware-cloto/badge.png)](https://crate.io/packages/fiware-cloto/)
+
 FIWARE Cloud Scalability Manager - Cloto
 
 
 ### Description
 -----------
-This module is part of FI-WARE Policy Manager. It provides an API-REST to create rules associated to servers,
+This module is part of FIWARE Policy Manager. It provides an API-REST to create rules associated to servers,
 subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
 described in rules when conditions are given.
 
@@ -23,16 +23,26 @@ To install this module you have to install some components:
 - Apache 2.2 or above + mod_wsgi
 - RabbitMQ Server
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
-- MySQL 5.6.14 or above
+- MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 
 
 ### Installation
 ------------
-Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server and configure database
-access located in cloto/db.cfg
+
+Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
+In addition, be sure you have installed mysql-devel package for development of MySQL applications.
+You should be able to install it from yum or apt-get package managers.
+    examples: yum install mysql-devel
+              apt-get install mysql-devel
+              ...etc
 
 After all  you must run install.sh with sudo privileges in order to start installation.
-This script should install fiware-cloto in /opt/policyManager
+This script should install fiware-cloto in /opt/policyManager and it will ask you for some configuration
+parameters, please, ensure you have all this data before starting the script in order to install fiware-cloto
+easiest.
+    - Keystone URL.
+    - Keystone admin user, password and tenant.
+    - Mysql user and password.
 
 After finishing you must configure cloto configuration and some apache settings.
 
@@ -43,7 +53,8 @@ After finishing you must configure cloto configuration and some apache settings.
 Before starting the rule engine, you should edit configuration.py located at cloto folder.
 Constants you need to complete are:
 
-    - All in # OPENSTACK CONFIGURATION: Openstack information
+    - All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install
+    script you do not need to edit)
     - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
     - CONTEXT_BROKER_URL: URL where Context Broker is listening
     - NOTIFICATION_URL: URL where notification service is listening (This service must be implemented by the user)

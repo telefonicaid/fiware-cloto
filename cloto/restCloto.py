@@ -47,12 +47,14 @@ class RESTResource(object):
     info = None
 
     def __call__(self, request, *args, **kwargs):
+        """Starting point of the API Agent. All REST requests should enter through this method.
+        """
         callback = getattr(self, request.method, None)
         if callback:
             try:
                 a = AuthorizationManager.AuthorizationManager()
                 a.myClient = client
-                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, ADM_TENANT_ID, OPENSTACK_URL)
+                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, OPENSTACK_URL)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
                              kwargs.get("tenantId"), OPENSTACK_URL)
                 return callback(request, *args, **kwargs)
@@ -78,6 +80,8 @@ class RESTResource(object):
             return http.HttpResponseNotAllowed(allowed_methods)
 
     def set_info(self, information):
+        """Sets information generated about server.
+        """
         self.info = information
 
 

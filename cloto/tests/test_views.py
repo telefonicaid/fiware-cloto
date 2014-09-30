@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
 # Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
@@ -22,49 +22,11 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-#
-# fiware-cloto
+__author__ = 'gjp'
+from django.test import TestCase
 
-### BEGIN INIT INFO
-# Provides:
-# Short-Description: Execute fiware-cloto server
-# Description: Execute fiware-cloto server
-### END INIT INFO
 
-. /etc/rc.d/init.d/functions
-
-prog=run.sh
-exec="/opt/policyManager/fiware-cloto"
-
-start() {
-    cd $exec
-    sh $prog
-}
-
-stop() {
-    apachectl stop
-    sleep 5
-    kill -9 `ps awx | grep '/fiware-cloto/' | grep -v grep | awk '{print $1}'`
-}
-
-restart() {
-    stop
-    sleep 5
-    start
-}
-
-case "$1" in
-    start)
-        $1
-        ;;
-    stop)
-        $1
-        ;;
-    restart)
-        $1
-        ;;
-    *)
-        echo $"Usage: $0 {start|stop|restart}"
-        exit 2
-esac
-exit $?
+class MyTests(TestCase):
+    def test_views(self):
+        response = self.client.get("/helloworld")
+        self.assertEqual(response.status_code, 200)

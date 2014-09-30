@@ -23,7 +23,7 @@ To install this module you have to install some components:
 - Apache 2.2 or above + mod_wsgi
 - RabbitMQ Server
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
-- MySQL 5.6.14 or above
+- MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 
 
 ### Installation
@@ -38,7 +38,7 @@ You should be able to install it from yum or apt-get package managers.
 
 After all  you must run install.sh with sudo privileges in order to start installation.
 This script should install fiware-cloto in /opt/policyManager and it will ask you for some configuration
-parameters, please, be ensure you have all this data before starting the script in order to install fiware-cloto
+parameters, please, ensure you have all this data before starting the script in order to install fiware-cloto
 easiest.
     - Keystone URL.
     - Keystone admin user, password and tenant.

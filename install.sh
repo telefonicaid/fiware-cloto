@@ -26,6 +26,7 @@
 #
 # __author__ = 'gjp'
 
+#Checks if you are root or not. Script should be executed as root.
 if [ "$(whoami)" != "root" ]; then
     echo "Sorry, try to install fiware-cloto using root."
     exit 1
@@ -34,6 +35,7 @@ fi
 echo "Do you wish to insert configuration data before installing?"
 select yn in "Yes" "No"; do
     case $yn in
+        #Reads configuration params from command line inserted by user.
         Yes ) echo "Enter Keystone URL:"; read openstackurl;
         echo "Enter Openstack Admin User:"; read admuser;
         echo "Enter Openstack Admin passwd:"; read admpass;
@@ -53,6 +55,7 @@ select yn in "Yes" "No"; do
         file2='cloto/db.cfg';
         if [[ `bash --version | grep 'apple-darwin'` ]]
         then
+        #Insert configuration params into configuration files in Apple systems.
             sed -i "" "s|$match1|$match1$openstackurl|" $file1;
             sed -i "" "s/$match2/$match2$admuser/" $file1;
             sed -i "" "s/$match3/$match3$admpass/" $file1;
@@ -62,6 +65,7 @@ select yn in "Yes" "No"; do
             sed -i "" "s/$match7/$match7\ $dbuser/" $file2;
             sed -i "" "s/$match8/$match8\ $dbpass/" $file2;
         else
+        #Insert configuration params into configuration files in Linux systems.
             sed -i "s|$match1|$match1$openstackurl|" $file1;
             sed -i "s/$match2/$match2$admuser/" $file1;
             sed -i "s/$match3/$match3$admpass/" $file1;
@@ -71,12 +75,14 @@ select yn in "Yes" "No"; do
             sed -i "s/$match7/$match7\ $dbuser/" $file2;
             sed -i "s/$match8/$match8\ $dbpass/" $file2;
         fi;
+        #Checks if database cloto exists.
         if [[ `mysql -u$dbuser -p$dbpass -e 'show databases' | grep "cloto"` ]]
         then
-                echo "Cloto database exist, everything is OK"
+            echo "Cloto database exist, everything is OK"
         else
-                mysql -u$dbuser -p$dbpass -e 'CREATE DATABASE cloto'
-                echo "Cloto  database was created, Now its ok"
+            #creates a database if database cloto is not present.
+            mysql -u$dbuser -p$dbpass -e 'CREATE DATABASE cloto'
+            echo "Cloto  database was created, Now its ok"
         fi
         break;;
         No )
@@ -94,6 +100,7 @@ config_path="/etc/sysconfig/$config_file"
 
 log_path="/var/log/fiware-cloto"
 
+#checks if log folder is created and creates it if not
 if [ ! -d "$log_path" ]; then
   mkdir -m 777 $log_path
   echo 0 > $log_path/RuleEngine.log
@@ -103,12 +110,14 @@ echo "..."
 
 #cp settings/fiware-cloto.cfg $config_path
 
+#creates installation folder
 if [ ! -d "$installation_path" ]; then
   mkdir -p $installation_path
 fi
 
 echo "..."
 
+#Moves fiware-cloto files to the installation folder
 cp -r * /opt/policyManager/fiware-cloto/
 chmod 777 /opt/policyManager/fiware-cloto/
 cd /opt/policyManager/fiware-cloto/
@@ -116,10 +125,13 @@ ln fiware-cloto /etc/init.d/fiware-cloto
 chmod a+x /etc/init.d/fiware-cloto
 
 echo "..."
+#installs python requirements
 pip install -r requirements.txt
+
+#creates database structure
 python manage.py syncdb
 echo "..."
 echo "...Done"
 echo "Please check file located in $installation_path to configure all parameters "
-echo "and check all configuration described in README.md before start fiware-cloto"
+echo "and check all configuration described in README.md before starting fiware-cloto"
 echo "### To execute fiware-cloto you must execute 'service fiware-cloto start' ###"

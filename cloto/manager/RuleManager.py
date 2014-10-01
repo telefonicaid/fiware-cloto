@@ -391,8 +391,8 @@ class RuleManager():
                 raise ValueError("You must provide conditions with length between 1 and 1024 characters")
             if action.__len__() > 1024 or action.__len__() < 1:
                 raise ValueError("You must provide actions with length between 1 and 1024 characters")
-        except Exception:
-            raise AttributeError("An atribute of the rule is missing")
+        except ValueError as ex:
+            raise ex
 
     def verify_url(self, url):
         """Checks if the string is valid URL

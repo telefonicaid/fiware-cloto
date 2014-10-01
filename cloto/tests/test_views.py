@@ -22,10 +22,11 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
+__author__ = 'gjp'
+from django.test import TestCase
 
 
-@csrf_exempt
-def test(request):
-    return HttpResponse("It Works")
+class MyTests(TestCase):
+    def test_views(self):
+        response = self.client.get("/helloworld")
+        self.assertEqual(response.status_code, 200)

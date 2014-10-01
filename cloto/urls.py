@@ -23,12 +23,12 @@
 # contact with opensource@tid.es
 #
 from django.conf.urls import patterns, url
-from cloto import views
 from restCloto import ServerRulesView, GeneralView, \
     ServersGeneralView, ServerView, GeneralRulesView, GeneralRulesViewRule, ServerSubscriptionView, ServerRuleView
-
+from views import test
 
 urlpatterns = patterns('',
+    url(r'^helloworld$', test),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/$', GeneralView()),
 
     url(r'^v1.0/(?P<tenantId>[-\w]+)/rules/$', GeneralRulesView()),

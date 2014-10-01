@@ -43,6 +43,8 @@ start() {
 
 stop() {
     apachectl stop
+    sleep 5
+    kill -9 `ps awx | grep '/fiware-cloto/' | grep -v grep | awk '{print $1}'`
 }
 
 restart() {

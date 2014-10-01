@@ -24,46 +24,47 @@
 #
 __author__ = 'gjp'
 from django.db import models
+from constants import DOC_LENGTH, ID_LENGTH, NAME_LENGTH, TEXT_LENGTH, URL_LENGTH
 
 
 class ServerInfo(models.Model):
     """This class models information about Cloto Server.
     """
     id = models.IntegerField(primary_key=True, max_length=1)
-    owner = models.CharField(max_length=30)
+    owner = models.CharField(max_length=NAME_LENGTH)
     version = models.FloatField()
     runningfrom = models.DateTimeField()
-    doc = models.CharField(max_length=100)
+    doc = models.CharField(max_length=DOC_LENGTH)
 
 
 class SpecificRule(models.Model):
     """This class models information about specific rules for Virtual Machines deployed.
     """
-    specificRule_Id = models.CharField(primary_key=True, max_length=30)
-    tenantId = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    condition = models.CharField(max_length=30000)
-    action = models.CharField(max_length=30000)
-    clips_condition = models.CharField(max_length=30000)
-    clips_action = models.CharField(max_length=30000)
+    specificRule_Id = models.CharField(primary_key=True, max_length=ID_LENGTH)
+    tenantId = models.CharField(max_length=ID_LENGTH)
+    name = models.CharField(max_length=NAME_LENGTH)
+    condition = models.TextField(max_length=TEXT_LENGTH)
+    action = models.TextField(max_length=TEXT_LENGTH)
+    clips_condition = models.TextField(max_length=TEXT_LENGTH)
+    clips_action = models.TextField(max_length=TEXT_LENGTH)
     createdAt = models.DateTimeField()
 
 
 class Subscription(models.Model):
     """This class models the server subscription to a rule .
     """
-    subscription_Id = models.CharField(primary_key=True, max_length=30)
-    url = models.CharField(max_length=140)
-    ruleId = models.CharField(max_length=30)
-    serverId = models.CharField(max_length=30)
-    cbSubscriptionId = models.CharField(max_length=30)
+    subscription_Id = models.CharField(primary_key=True, max_length=ID_LENGTH)
+    url = models.CharField(max_length=URL_LENGTH)
+    ruleId = models.CharField(max_length=ID_LENGTH)
+    serverId = models.CharField(max_length=ID_LENGTH)
+    cbSubscriptionId = models.CharField(max_length=ID_LENGTH)
 
 
 class Entity(models.Model):
     """This class models information about Virtual Machines deployed.
     """
-    serverId = models.CharField(primary_key=True, max_length=30)
-    tenantId = models.CharField(max_length=30)
+    serverId = models.CharField(primary_key=True, max_length=ID_LENGTH)
+    tenantId = models.CharField(max_length=ID_LENGTH)
     specificrules = models.ManyToManyField(SpecificRule, verbose_name="list of rules")
     subscription = models.ManyToManyField(Subscription, verbose_name="list of subscription")
 
@@ -71,18 +72,18 @@ class Entity(models.Model):
 class TenantInfo(models.Model):
     """This class models information about tenants and their windowsize.
     """
-    tenantId = models.CharField(primary_key=True, max_length=30)
+    tenantId = models.CharField(primary_key=True, max_length=ID_LENGTH)
     windowsize = models.IntegerField()
 
 
 class Rule(models.Model):
     """This class models information about general rules.
     """
-    ruleId = models.CharField(primary_key=True, max_length=30)
-    tenantId = models.CharField(max_length=30)
-    name = models.CharField(max_length=30)
-    condition = models.CharField(max_length=30000)
-    action = models.CharField(max_length=30000)
+    ruleId = models.CharField(primary_key=True, max_length=ID_LENGTH)
+    tenantId = models.CharField(max_length=ID_LENGTH)
+    name = models.CharField(max_length=ID_LENGTH)
+    condition = models.TextField(max_length=TEXT_LENGTH)
+    action = models.TextField(max_length=TEXT_LENGTH)
     createdAt = models.DateTimeField()
 
 
@@ -116,3 +117,9 @@ class ListRuleModel():
     serverId = None
     servers = None
     subscription = None
+
+
+class TokenModel():
+    tenant = None
+    id = None
+    expires = None

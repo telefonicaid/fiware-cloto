@@ -80,3 +80,5 @@ class OrionClient():
         else:
             logger.error("ERROR, Server %s was not unsubscribed from Context Broker.--- HTTP Response: %d"
                   % (serverId, r.status_code))
+            raise SystemError("ERROR, Server %s was not unsubscribed.--- HTTP Response: %d"
+                % (serverId, r.status_code))

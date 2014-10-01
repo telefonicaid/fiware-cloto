@@ -26,6 +26,7 @@ __author__ = 'gjp'
 from django.test import TestCase
 from cloto.models import *
 from cloto.manager import RuleManager
+from keystoneclient.exceptions import Conflict
 from mockito import *
 from requests import Response
 from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
@@ -43,22 +44,39 @@ class RuleManagerTests(TestCase):
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
                     ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
                     '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleFake1 = '{\"name\": \"te\", \"condition\": ' \
+                    '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleFake2 = '{\"name\": \"test Name\", \"condition\": ' \
+                    '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    '\"action\": \"\"}'
+        self.ruleFake3 = '{\"name\": \"test Name\", \"condition\": \"\",' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+        self.ruleFake4 = '{\"name\": \"test Name\",' \
+                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+
         self.tenantId = "tenantId"
         self.serverId = "serverId"
         self.newServerId = "ServerIdThatNoExists"
         entity = Entity(serverId=self.serverId, tenantId=self.tenantId)
         entity.save()
-
+        CONTEXT_BROKER_URL_FAIL = "http://130.206.82.0:1026/NGSI10"
         self.ruleManager = RuleManager.RuleManager()
         self.mockedClient = mock()
+        self.OrionClientError = mock()
         response = Response()
+        responseFailure = Response()
+        self.subscription_failure = "{Invalid subscription body}"
+        responseFailure.status_code = 400
         response.status_code = 200
-        expected_cbSubscriptionId = "51c04a21d714fb3b37d7d5a7"
+        self.expected_cbSubscriptionId = "51c04a21d714fb3b37d7d5a7"
         response._content = "{\"subscribeResponse\": {" \
                             "\"duration\": \"P1M\"," \
                             "\"subscriptionId\": \"%s\"" \
                             "}" \
-                            "}" % expected_cbSubscriptionId
+                            "}" % self.expected_cbSubscriptionId
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         #data to subscription
         data = '{"entities": [' \
@@ -69,17 +87,22 @@ class RuleManagerTests(TestCase):
                 '"attributes": [' \
                             '"cpu",' \
                             '"mem"],' \
-                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + self.newServerId + '",' \
+                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + \
+                            self.newServerId + '",' \
                             '"duration": "P1M",' \
                             '"notifyConditions": [' \
                             '{"type": "' + NOTIFICATION_TYPE + '",' \
                             '"condValues": ["' + NOTIFICATION_TIME + '"]}]}'
         #data2 for unsubscription
-        data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % expected_cbSubscriptionId)
+        data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % self.expected_cbSubscriptionId)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
-            .thenReturn(response);
+            .thenReturn(response)
         when(self.mockedClient).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
-            .thenReturn(response);
+            .thenReturn(response)
+        when(self.OrionClientError).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
+            .thenReturn(responseFailure)
+        when(self.OrionClientError).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
+            .thenReturn(responseFailure)
         self.ruleManager.orionClient.client = self.mockedClient
 
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
@@ -141,6 +164,34 @@ class RuleManagerTests(TestCase):
         self.assertIsInstance(update, RuleModel)
         self.assertIsNotNone(update.ruleId)
 
+    def test_validate_rule_error_1(self):
+        """Tests if method throws error with malformed rule, name lenght is 2. """
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake1)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_validate_rule_error_2(self):
+        """Tests if method throws error with malformed rule, action is empty."""
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake2)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_validate_rule_error_3(self):
+        """Tests if method throws error with malformed rule, condition is empty."""
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake3)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_validate_rule_error_4(self):
+        """Tests if method throws error with malformed rule, one attribute is missing."""
+        try:
+            RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake4)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
     def test_get_all_specific_rules(self):
         """Tests if method list all general rules of a server."""
         rules = RuleManager.RuleManager().get_all_specific_rules(self.tenantId, self.serverId)
@@ -163,3 +214,59 @@ class RuleManagerTests(TestCase):
 
         result = self.ruleManager.unsubscribe_to_rule(self.newServerId, subscriptionId)
         self.assertIs(result, True)
+
+    def test_suscription_server_no_exists(self):
+        """Tests if method subscribes_fails_with_fake_rule_id."""
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"1234\"}"
+        try:
+            self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        except SpecificRule.DoesNotExist as ex:
+            self.assertRaises(ex)
+
+    def test_double_subscription(self):
+        """Tests if method throws an error trying to subcribe a server to a rule twice."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+
+        subscriptionId = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        self.assertIsInstance(subscriptionId, uuid.UUID)
+
+        try:
+            subscriptionId2 = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        except Conflict as ex:
+            self.assertRaises(ex)
+
+    def test_unsubscription_Orion_Failure(self):
+        """Tests if method throws an error when Orion response is 400 while we are unsubscribing a server."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+
+        subscriptionId = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        self.assertIsInstance(subscriptionId, uuid.UUID)
+
+        self.ruleManager.orionClient.client = self.OrionClientError
+
+        try:
+            result = self.ruleManager.unsubscribe_to_rule(self.newServerId, subscriptionId)
+        except SystemError as ex:
+            self.assertRaises(ex)
+
+    def test_subscription_Orion_Failure(self):
+        """Tests if method throws an error when Orion response is 400 while we are subscribing a server."""
+        self.ruleManager.orionClient.client = self.OrionClientError
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        url = "http://127.0.0.1:8000/testService"
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+        try:
+            self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        except SystemError as ex:
+            self.assertRaises(ex)

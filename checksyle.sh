@@ -1,4 +1,4 @@
-#!/usr/bin/env python
+#!/bin/sh
 # -*- encoding: utf-8 -*-
 #
 # Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
@@ -22,10 +22,10 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from django.views.decorators.csrf import csrf_exempt
-from django.http import HttpResponse
-
-
-@csrf_exempt
-def test(request):
-    return HttpResponse("It Works")
+# __author__ = 'gjp'
+error=`python fiware-pep8.py . | wc -l`
+totallines=`find . -name '*.py' | xargs  wc -l | grep total| awk '{print $1}'`
+echo "Total lines: $totallines"
+result=$(echo "100 * $error / $totallines" | bc -l)
+finalresult=$(echo "100-$result" |bc)
+echo "Checkstyle result: $finalresult"

@@ -30,11 +30,11 @@ installed the following software of framework in the machine:
    -  MySQL 5.6.14 or above
       `4 <http://dev.mysql.com/downloads/mysql/>`__
 
--  Facts engine dependencies:
-
-   -  Python 2.7.6
-      `5 <http://www.python.org/download/releases/2.7.6/>`__.
-   -  Redis 2.8.8 `6 <http://redis.io/download>`__
+.. -  Facts engine dependencies:
+..
+..    -  Python 2.7.6
+..       `5 <http://www.python.org/download/releases/2.7.6/>`__.
+..    -  Redis 2.8.8 `6 <http://redis.io/download>`__
 
 Rule engine installation
 ------------------------
@@ -212,104 +212,104 @@ execute:
 Where IP is a valid network interface assigned. It is recommended if
 your Rule Engine will be called from different networks.
 
-Facts installation
-------------------
+.. Facts installation
+.. ------------------
+..
+.. Step 1: Install python
+.. ~~~~~~~~~~~~~~~~~~~~~~
+..
+.. The process will be the same that be see in the previous section.
 
-Step 1: Install python
-~~~~~~~~~~~~~~~~~~~~~~
-
-The process will be the same that be see in the previous section.
-
-Step 2: Install Redis
-~~~~~~~~~~~~~~~~~~~~~
-
-Download, extract and compile Redis with:
-
-::
-
-    $ wget http://download.redis.io/releases/redis-2.8.8.tar.gz
-    $ tar xzf redis-2.8.8.tar.gz
-    $ cd redis-2.8.8
-    $ make
-
-The binaries that are now compiled are available in the src directory.
-Run Redis with:
-
-::
-
-    $ src/redis-server
-
-It execute the redis server on port 6379.
-
-You can interact with Redis using the built-in client:
-
-::
-
-    $ src/redis-cli
-    redis> set foo bar
-    OK
-    redis> get foo
-    "bar"
-
-Step 3: Download and execute the facts engine server
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Download the component by executing the following instruction:
-
-::
-
-    git clone git@github.com:telefonicaid/fiware-facts.git
-
-It should show something like the following:
-
-::
-
-    Cloning into 'fiware-facts'...
-    remote: Counting objects: 211, done.
-    remote: Compressing objects: 100% (136/136), done.
-    remote: Total 211 (delta 118), reused 152 (delta 63)
-    Receiving objects: 100% (211/211), 65.79 KiB | 0 bytes/s, done.
-    Resolving deltas: 100% (118/118), done.
-    Checking connectivity... done.
-
-Go to the directory where we download the server and execute the
-following commands:
-
-Go to the directory where we download the server and execute the
-following commands:
-
-1. Installing all dependencies
-
-::
-
-    $ sudo pip install -r requirements.txt
-
-It should install all dependencies showing at the end a message similar
-to:
-
-::
-
-    Successfully installed redis flask gevent pika
-    Cleaning up...
-
-Then, after the installation of the requirements associated to the facts
-engine, it is hour to execute the server, just run:
-
-::
-
-    $ python facts.py
-
-It should shown the following information when it is executed:
-
-::
-
-    2014-04-11 10:42:19,344 INFO policymanager.facts policymanager.facts 1.0.0
-
-    2014-04-11 10:42:19,344 INFO policymanager.facts Running in stand alone mode
-    2014-04-11 10:42:19,345 INFO policymanager.facts Port: 5000
-    2014-04-11 10:42:19,345 INFO policymanager.facts PID: 6059
-
-    2014-04-11 10:42:19,345 INFO policymanager.facts https://github.hi.inet/telefonicaid/fiware-facts
+.. Step 2: Install Redis
+.. ~~~~~~~~~~~~~~~~~~~~~
+..
+.. Download, extract and compile Redis with:
+..
+.. ::
+..
+..     $ wget http://download.redis.io/releases/redis-2.8.8.tar.gz
+..     $ tar xzf redis-2.8.8.tar.gz
+..     $ cd redis-2.8.8
+.. ..     $ make
+..
+.. The binaries that are now compiled are available in the src directory.
+.. Run Redis with:
+..
+.. ::
+..
+..     $ src/redis-server
+..
+.. It execute the redis server on port 6379.
+..
+.. You can interact with Redis using the built-in client:
+..
+.. ::
+..
+..     $ src/redis-cli
+..     redis> set foo bar
+..     OK
+..     redis> get foo
+..     "bar"
+..
+.. Step 3: Download and execute the facts engine server
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+..
+.. Download the component by executing the following instruction:
+..
+.. ::
+..
+..     git clone git@github.com:telefonicaid/fiware-facts.git
+..
+.. It should show something like the following:
+..
+.. ::
+..
+..     Cloning into 'fiware-facts'...
+..     remote: Counting objects: 211, done.
+..     remote: Compressing objects: 100% (136/136), done.
+..     remote: Total 211 (delta 118), reused 152 (delta 63)
+..     Receiving objects: 100% (211/211), 65.79 KiB | 0 bytes/s, done.
+..     Resolving deltas: 100% (118/118), done.
+..    Checking connectivity... done.
+..
+.. Go to the directory where we download the server and execute the
+.. following commands:
+..
+.. Go to the directory where we download the server and execute the
+.. following commands:
+..
+.. 1. Installing all dependencies
+..
+.. ::
+..
+..     $ sudo pip install -r requirements.txt
+..
+.. It should install all dependencies showing at the end a message similar
+.. to:
+..
+.. ::
+..
+..     Successfully installed redis flask gevent pika
+..     Cleaning up...
+..
+.. Then, after the installation of the requirements associated to the facts
+.. engine, it is hour to execute the server, just run:
+..
+.. ::
+..
+..     $ python facts.py
+..
+.. It should shown the following information when it is executed:
+..
+.. ::
+..
+..     2014-04-11 10:42:19,344 INFO policymanager.facts policymanager.facts 1.0.0
+..
+..     2014-04-11 10:42:19,344 INFO policymanager.facts Running in stand alone mode
+..     2014-04-11 10:42:19,345 INFO policymanager.facts Port: 5000
+..     2014-04-11 10:42:19,345 INFO policymanager.facts PID: 6059
+..
+..     2014-04-11 10:42:19,345 INFO policymanager.facts https://github.hi.inet/telefonicaid/fiware-facts
 
 Installation into a Production System
 =====================================
@@ -368,50 +368,50 @@ Finally , run apache service to have a fiware-cloto instance running
 
 ``service fiware-cloto start``
 
-Facts
------
-
-Step 1: Install Apache with mod\_wsgi
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-This step is the same as described in step 1 of Rule Engine. please
-follow those instructions.
-
-Step 2: Apache configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-
-Once you’ve got mod\_wsgi installed and activated, edit your httpd.conf
-file and add:
-
- WSGIScriptAlias / PATH_TO_fiware-facts/facts.py
- WSGIPythonPath PATH_TO_fiware-facts
-
- <Directory PATH_TO_fiware-facts>
- <Files facts.py>
- Order deny,allow
- Allow from all
- </Files>
- </Directory>
-
- <Directory /var/log/fiware-facts>
- <Files fiware-facts.log>
- Allow from all
- </Files>
- </Directory>
-
-If you have apache above 2.2 version, you have to replace "Allow form
-all" with "Require all granted"
-
-In addition you must add the port listening 5000 in case of fiware-facts
-
-``Listen 5000``
-
-Step 3: Run apache
-~~~~~~~~~~~~~~~~~~
-
-Finally , run apache service to have a fiware-facts instance running
-
-``sudo apachectl start``
+.. Facts
+.. -----
+..
+.. Step 1: Install Apache with mod\_wsgi
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+..
+.. This step is the same as described in step 1 of Rule Engine. please
+.. follow those instructions.
+..
+.. Step 2: Apache configuration
+.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+..
+.. Once you’ve got mod\_wsgi installed and activated, edit your httpd.conf
+.. file and add:
+..
+..  WSGIScriptAlias / PATH_TO_fiware-facts/facts.py
+..  WSGIPythonPath PATH_TO_fiware-facts
+..
+..  <Directory PATH_TO_fiware-facts>
+..  <Files facts.py>
+..  Order deny,allow
+..  Allow from all
+..  </Files>
+..  </Directory>
+..
+..  <Directory /var/log/fiware-facts>
+..  <Files fiware-facts.log>
+..  Allow from all
+..  </Files>
+..  </Directory>
+..
+.. If you have apache above 2.2 version, you have to replace "Allow form
+.. all" with "Require all granted"
+..
+.. In addition you must add the port listening 5000 in case of fiware-facts
+..
+.. ``Listen 5000``
+..
+.. Step 3: Run apache
+.. ~~~~~~~~~~~~~~~~~~
+..
+.. Finally , run apache service to have a fiware-facts instance running
+..
+.. ``sudo apachectl start``
 
 Sanity check procedures
 =======================
@@ -582,45 +582,59 @@ inside the code of the rule engine server:
 
 ::
 
-    $ sqlite3 cloto.db
+    $ mysql -u user -p
 
-Where cloto.db is the file that contains the information of the SQLite
-Databases. The previous command should show something like the
-following:
+Where user is the administration user defined for cloto database
+ The previous command should ask you for the password and after that show you:
 
 ::
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 155286
+    Server version: 5.6.14 MySQL Community Server (GPL)
 
-    SQLite version 3.6.20
-    Enter ".help" for instructions
-    Enter SQL statements terminated with a ";"
-    sqlite> 
+    Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
+
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    mysql>
 
 In order to show the different tables contained in this database, we
 should execute the following commands with the result that we show here:
 
 ::
 
-    sqlite> .tables
-    auth_group                  cloto_rule                
-    auth_group_permissions      cloto_serverinfo          
-    auth_permission             cloto_specificrule        
-    auth_user                   cloto_subscription        
-    auth_user_groups            cloto_tenantinfo          
-    auth_user_user_permissions  django_content_type       
-    cloto_entity                django_session            
-    cloto_entity_specificrules  django_site               
-    cloto_entity_subscription 
-    sqlite> 
+    mysql> SHOW TABLES FROM cloto;
+    +----------------------------+
+    | Tables_in_cloto            |
+    +----------------------------+
+    | auth_group                 |
+    | auth_group_permissions     |
+    | auth_permission            |
+    | auth_user                  |
+    | auth_user_groups           |
+    | auth_user_user_permissions |
+    | cloto_entity               |
+    | cloto_entity_specificrules |
+    | cloto_entity_subscription  |
+    | cloto_rule                 |
+    | cloto_serverinfo           |
+    | cloto_specificrule         |
+    | cloto_subscription         |
+    | cloto_tenantinfo           |
+    | django_content_type        |
+    | django_session             |
+    | django_site                |
+    +----------------------------+
 
 Now, we can execute a simple test query in order to check the content of
 the table:
 
 ::
 
-    sqlite> .header on
-    sqlite> .width 2 14 7 26 80
-    sqlite> .mode column
-    sqlite> select * from cloto_serverinfo;
+    mysql> select * from cloto.cloto_serverinfo;
 
 It is important that you execute the command "*.header on*\ ", which
 allows you showing the header info of the tables. The other instructions
@@ -629,9 +643,11 @@ should return with the following information:
 
 ::
 
-    id  owner           version  runningfrom                 doc                                                                             
-    --  --------------  -------  --------------------------  --------------------------------------------------------------------------------
-    1   Telefonica I+D  1.0      2014-04-11 12:32:29.604238  https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWAR
+    +----+----------------+---------+---------------------+---------------------------------------------------------------------------------------------------------------------------------+
+    | id | owner          | version | runningfrom         | doc                                                                                                                             |
+    +----+----------------+---------+---------------------+---------------------------------------------------------------------------------------------------------------------------------+
+    |  1 | Telefonica I+D |       1 | 2014-10-02 14:04:41 | https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager |
+    +----+----------------+---------+---------------------+---------------------------------------------------------------------------------------------------------------------------------+
 
 Diagnosis Procedures
 ====================

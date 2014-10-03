@@ -30,6 +30,9 @@ To install this module you have to install some components:
 ------------
 
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
+Ensure your mysql path is in your path. If not, you can add executing (change /usr/local/ with your mysql folder):
+    export PATH=$PATH:/usr/local/mysql/bin
+
 In addition, be sure you have installed mysql-devel package for development of MySQL applications.
 You should be able to install it from yum or apt-get package managers.
     examples: yum install mysql-devel

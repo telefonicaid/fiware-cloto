@@ -28,4 +28,4 @@ Documentation
 -   `User and Programmers Guide <user_guide.rst>`_
 -   `Installation and Administration Guide <admin_guide.rst>`_
 -   `Open RESTful API Specification <open_spec.rst>`_
--   `Architecture Desciption <arcbitecture.rst>`_
+-   `Architecture Description <architecture.rst>`_

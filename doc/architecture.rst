@@ -62,13 +62,10 @@ facts based on the rules or infer new actions to take by third parties.
 .. figure:: resources/PolicyManagerArchitecture.png
    :alt: Policy Manager architecture specification
 
-   <center>
 
 **Policy Manager architecture specification**
 
 .. raw:: html
-
-   </center>
 
 | 
 
@@ -206,7 +203,7 @@ The Policy Manager GE is involved in three different phases:
 -  Management of rules status at runtime.
 
 Rules Management
-~~~~~~~~~~~~~~~~
+---------------------
 
 The management of rules involves several operations to prepare the
 scalability system working. First of all, the rules have to be defined.
@@ -227,7 +224,7 @@ Policy Manager unsubscribe the virtual machine from Context Broker if
 rule is a Specific Rule.
 
 Collecting data
-~~~~~~~~~~~~~~~
+---------------------
 
 The Context Broker has subscribed a number of virtual machines. Each
 virtual machine publishes the status of its resources in the Context
@@ -239,7 +236,7 @@ value into the Rule Engine. Finally, Policy Manager discards the oldest
 value in the queue.
 
 Runtime Management
-~~~~~~~~~~~~~~~~~~
+---------------------
 
 During the runtime of an application, the Policy Manager can detect if a
 rule condition is inferred and is in charge of launch actions associated

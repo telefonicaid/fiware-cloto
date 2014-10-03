@@ -2,7 +2,7 @@ Introduction to the PMI Policy API
 ==================================
 
 | Please check the `FI-WARE Open Specifications Legal
-Notice <FI-WARE Open Specifications Legal Notice>`__ to understand the
+Notice <https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specifications_Legal_Notice>`__ to understand the
 rights to use FI-WARE Open Specifications.
 
 PMI Policy API
@@ -67,8 +67,7 @@ concepts. The following list summarizes these special notations.
 -  The variables are represented between brackets, e.g. {id} and in
    italic font. When the reader find it, can change it by any value.
 
-| For a description of some terms used along this document, see
-`1 <https://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/FIWARE.ArchitectureDescription.Cloud.SM#Main_conceptsFIWARE.ArchitectureDescription.Cloud.SM>`__.
+| For a description of some terms used along this document, see `1 <https://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/FIWARE.ArchitectureDescription.Cloud.SM#Main_conceptsFIWARE.ArchitectureDescription.Cloud.SM>`__.
 
 Additional Resources
 --------------------

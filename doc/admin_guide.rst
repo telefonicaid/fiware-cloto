@@ -335,21 +335,21 @@ Step 2: Apache configuration
 Once you’ve got mod\_wsgi installed and activated, edit your httpd.conf
 file and add:
 
-| ``WSGIScriptAlias / PATH_TO_fiware-cloto/cloto/wsgi.py``
-| ``WSGIPythonPath PATH_TO_fiware-cloto``
+ WSGIScriptAlias / PATH_TO_fiware-cloto/cloto/wsgi.py
+ WSGIPythonPath PATH_TO_fiware-cloto
 
-| 
-| 
-| ``Order deny,allow``
-| ``Allow from all``
-| 
-| 
+ <Directory PATH_TO_fiware-cloto/cloto>
+ <Files wsgi.py>
+ Order deny,allow
+ Allow from all
+ </Files>
+ </Directory>
 
-| 
-| 
-| ``Allow from all``
-| 
-| 
+ <Directory /var/log/fiware-cloto>
+ <Files RuleEngine.log>
+ Allow from all
+ </Files>
+ </Directory>
 
 If you have apache above 2.2 version, you have to replace "Allow form
 all" with "Require all granted"
@@ -380,21 +380,21 @@ Step 2: Apache configuration
 Once you’ve got mod\_wsgi installed and activated, edit your httpd.conf
 file and add:
 
-| ``WSGIScriptAlias / PATH_TO_fiware-facts/facts.py``
-| ``WSGIPythonPath PATH_TO_fiware-facts``
+ WSGIScriptAlias / PATH_TO_fiware-facts/facts.py
+ WSGIPythonPath PATH_TO_fiware-facts
 
-| 
-| 
-| ``Order deny,allow``
-| ``Allow from all``
-| 
-| 
+ <Directory PATH_TO_fiware-facts>
+ <Files facts.py>
+ Order deny,allow
+ Allow from all
+ </Files>
+ </Directory>
 
-| 
-| 
-| ``Allow from all``
-| 
-| 
+ <Directory /var/log/fiware-facts>
+ <Files fiware-facts.log>
+ Allow from all
+ </Files>
+ </Directory>
 
 If you have apache above 2.2 version, you have to replace "Allow form
 all" with "Require all granted"

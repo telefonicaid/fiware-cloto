@@ -11,7 +11,7 @@ improved, and so will be the most appropriate place to get the most up
 to date information on using this interface.
 
 Background and Detail
-~~~~~~~~~~~~~~~~~~~~~
+---------------------
 
 This User and Programmers Guide relates to the Policy Manager GE which
 is part of the `Cloud Hosting Chapter <Cloud_Hosting_Architecture>`__.

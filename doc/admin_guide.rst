@@ -1,3 +1,6 @@
+FIWARE Policy Manager - Installation and Administration Guide
+_____________________________________________________________
+
 Policy Manager Installation
 ===========================
 

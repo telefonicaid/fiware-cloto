@@ -1,9 +1,9 @@
 Introduction to the PMI Policy API
 ==================================
 
-| Please check the `FI-WARE Open Specifications Legal
-Notice <https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specifications_Legal_Notice>`__ to understand the
-rights to use FI-WARE Open Specifications.
+Please check the
+`FI-WARE Open Specifications Legal Notice <https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specifications_Legal_Notice>`__
+to understand the rights to use FI-WARE Open Specifications.
 
 PMI Policy API
 --------------

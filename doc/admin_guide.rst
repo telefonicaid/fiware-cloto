@@ -636,10 +636,7 @@ the table:
 
     mysql> select * from cloto.cloto_serverinfo;
 
-It is important that you execute the command "*.header on*\ ", which
-allows you showing the header info of the tables. The other instructions
-are used in order to show the information in a more friendly way. And it
-should return with the following information:
+It should return with the following information:
 
 ::
 

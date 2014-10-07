@@ -20,8 +20,9 @@ described in rules when conditions are given.
 To install this module you have to install some components:
 
 - Python 2.7
+- PyClips 1.0 (http://sourceforge.net/projects/pyclips/files/)
 - Apache 2.2 or above + mod_wsgi
-- RabbitMQ Server
+- RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 

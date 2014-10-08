@@ -97,13 +97,14 @@ localIp=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-
 echo $localIp
 file3='cloto/settings.py';
 matchIp="ALLOWED_HOSTS = \['";
-  if [[ `bash --version | grep 'apple-darwin'` ]]
-        then
-        #Insert Allowed host into settings file in Apple systems.
-            sed -i "" "s/$matchIp/$matchIp$localIp','/" $file3;
-        else
-        #Insert Allowed host into settings file in Linux systems.
-            sed -i "s/$matchIp/$matchIp$localIp','/" $file3;
+if [[ `bash --version | grep 'apple-darwin'` ]]
+    then
+    #Insert Allowed host into settings file in Apple systems.
+        sed -i "" "s/$matchIp/$matchIp$localIp','/" $file3;
+    else
+    #Insert Allowed host into settings file in Linux systems.
+        sed -i "s/$matchIp/$matchIp$localIp','/" $file3;
+fi
 
 echo "Installing fiware-cloto on system..."
 

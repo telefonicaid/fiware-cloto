@@ -101,6 +101,10 @@ Finally you sould add cloto port to this httpd.conf file
 
     Listen 8000
 
+We recommend you to disable HTTP TRACK|TRACE methods adding to httpd.conf TraceEnable directive
+and set the value to Off
+
+    TraceEnable Off
 
 ### Running fiware-cloto
 --------------------

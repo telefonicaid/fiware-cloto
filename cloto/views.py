@@ -30,6 +30,6 @@ from django.http import HttpResponse
 def test(request):
     return HttpResponse("It Works")
 
+
 def fail(request, reason="csrf fails"):
     print("csrf token failed")
-

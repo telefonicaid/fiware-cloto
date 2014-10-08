@@ -25,6 +25,7 @@
 __author__ = 'gjp'
 import datetime
 import json
+import yaml
 import uuid
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
@@ -120,7 +121,7 @@ class RuleManager():
 
         :param str rule:        The rule description in json format
         """
-        condition = json.loads(rule)['condition']
+        condition = yaml.load(rule)['condition']
         return condition
 
     def getAction(self, rule):
@@ -128,7 +129,7 @@ class RuleManager():
 
         :param str rule:        The rule description in json format
         """
-        action = json.loads(rule)['action']
+        action = yaml.load(rule)['action']
         return action
 
     def getName(self, rule):
@@ -136,7 +137,7 @@ class RuleManager():
 
         :param str rule:        The rule description in json format
         """
-        name = json.loads(rule)['name']
+        name = yaml.load(rule)['name']
         return name
 
     def create_specific_rule(self, tenantId, serverId, rule):

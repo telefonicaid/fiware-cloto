@@ -441,10 +441,10 @@ curl sentence.
 
 ::
 
-    curl -d '{"auth": {"tenantName": $TENNANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}' 
+    curl -d '{"auth": {"tenantName": $TENANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
     -H "Content-type: application/json" -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
 
-Both $TENNANT (Project), $USERNAME and $PASSWORD must be values
+Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The IP address
 10.95.171.115 and the Port 35357 are the data of our internal
 installation of IdM, if you planned to execute it you must changed it by
@@ -459,11 +459,11 @@ We obtained two data from the previous sentence:
 
     <token expires="2012-10-25T16:35:42Z" id="a9a861db6276414094bc1567f664084d">
 
--  Tennant-Id
+-  Tenant-Id
 
 ::
 
-    <tenant enabled="true" id="c907498615b7456a9513500fe24101e0" name=$TENNANT>
+    <tenant enabled="true" id="c907498615b7456a9513500fe24101e0" name=$TENANT>
 
 After it, we can check if the Policy Manager is up and running with a
 single instruction which is used to return the information of the status
@@ -696,7 +696,7 @@ organization with the following curl commands:
 
     root@fiware:~# curl -d '{"auth": {"tenantName": "<MY_ORG_NAME>", "passwordCredentials":{"username": "<MY_USERNAME>", "password": "<MY_PASS>"}}}' -H "Content-type: application/json" -H "Accept: application/xml"  http://<KEYSTONE_HOST>:<KEYSTONE_PORT>/v2.0/tokens
 
-The will be the name of my Organization/Tennat/Project predefined in the
+The will be the name of my Organization/Tenant/Project predefined in the
 IdM GE (aka Keystone). The and variables will be the user name and
 password predefined in the IdM GE and finally the and variables will be
 the IP direction and port in which we can find the IdM GE (aka
@@ -739,7 +739,7 @@ for this tenant in the following json response structure:
         "owner": "Telefonica I+D", 
         "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager", 
         "runningfrom": "14/04/11 12:32:29", 
-        "version": 1.0, 
+        "version": "1.0",
         "windowsize": 5
     }
 

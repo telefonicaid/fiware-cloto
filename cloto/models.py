@@ -24,7 +24,7 @@
 #
 __author__ = 'gjp'
 from django.db import models
-from constants import DOC_LENGTH, ID_LENGTH, NAME_LENGTH, TEXT_LENGTH, URL_LENGTH
+from constants import DOC_LENGTH, ID_LENGTH, NAME_LENGTH, TEXT_LENGTH, URL_LENGTH, VERSION_LENGTH
 
 
 class ServerInfo(models.Model):
@@ -32,7 +32,7 @@ class ServerInfo(models.Model):
     """
     id = models.IntegerField(primary_key=True, max_length=1)
     owner = models.CharField(max_length=NAME_LENGTH)
-    version = models.FloatField()
+    version = models.CharField(max_length=VERSION_LENGTH)
     runningfrom = models.DateTimeField()
     doc = models.CharField(max_length=DOC_LENGTH)
 

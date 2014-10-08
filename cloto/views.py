@@ -29,3 +29,7 @@ from django.http import HttpResponse
 @csrf_exempt
 def test(request):
     return HttpResponse("It Works")
+
+def fail(request, reason="csrf fails"):
+    print("csrf token failed")
+

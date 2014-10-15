@@ -100,10 +100,10 @@ matchIp="ALLOWED_HOSTS = \['";
 if [[ `bash --version | grep 'apple-darwin'` ]]
     then
     #Insert Allowed host into settings file in Apple systems.
-        sed -i "" "s/$matchIp/$matchIp$localIp','/" $file3;
+        sed -i "" "s/$matchIp/$matchIp$localIp', '/" $file3;
     else
     #Insert Allowed host into settings file in Linux systems.
-        sed -i "s/$matchIp/$matchIp$localIp','/" $file3;
+        sed -i "s/$matchIp/$matchIp$localIp', '/" $file3;
 fi
 
 echo "Installing fiware-cloto on system..."

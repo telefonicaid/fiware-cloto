@@ -32,5 +32,5 @@ class MyTests(TestCase):
         self.assertEqual(response.status_code, 200)
 
     def test_views_fail(self):
-        response = self.client.post("/fail",data={})
+        response = self.client.post("/fail", data={})
         self.assertEqual(response.status_code, 400)

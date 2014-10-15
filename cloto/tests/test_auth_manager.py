@@ -86,7 +86,6 @@ class AuthorizationManagerTests(TestCase):
         response_not_authorized.status_code = 200
         response_not_authorized._content = 'Service not authorized'
 
-
         dic_valid = {"token": {"id": self.authToken, "tenant": {"enabled": True,
                         "description": "Default tenant", "name": "admin", "id": "6571e3422ad84f7d828ce2f30373b3d4"}}}
         dic_invalid = {"token": {"id": self.authToken, "tenant": {"enabled": True,

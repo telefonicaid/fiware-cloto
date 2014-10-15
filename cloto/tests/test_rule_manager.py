@@ -28,6 +28,7 @@ from cloto.models import *
 from cloto.manager import RuleManager
 from keystoneclient.exceptions import Conflict
 from mockito import *
+from mock import patch
 from requests import Response
 from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
 import uuid
@@ -140,7 +141,8 @@ class RuleManagerTests(TestCase):
         rules = RuleManager.RuleManager().get_all_rules(self.tenantId)
         self.assertIsInstance(rules, ListRuleModel)
 
-    def test_create_get_delete_specific_rule(self):
+    @patch('cloto.manager.RuleManager.logger')
+    def test_create_get_delete_specific_rule(self, mock_logging):
         """Tests lifecycle of a specific rule, creating a rule, checking if it was created and deleting it."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
         self.assertIsInstance(rule, RuleModel)
@@ -152,8 +154,10 @@ class RuleManagerTests(TestCase):
 
         response = RuleManager.RuleManager().delete_specific_rule(self.tenantId, self.serverId, rule.ruleId)
         self.assertEqual(response, True)
+        self.assertTrue(mock_logging.info.called)
 
-    def test_create_specific_rule_for_new_server_and_updating(self):
+    @patch('cloto.manager.RuleManager.logger')
+    def test_create_specific_rule_for_new_server_and_updating(self, mock_logging):
         """Tests if method creates the first specific rule for a server and update it with other information."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
@@ -163,6 +167,7 @@ class RuleManagerTests(TestCase):
             self.tenantId, self.newServerId, rule.ruleId, self.ruleUpdated)
         self.assertIsInstance(update, RuleModel)
         self.assertIsNotNone(update.ruleId)
+        self.assertTrue(mock_logging.info.called)
 
     def test_validate_rule_error_1(self):
         """Tests if method throws error with malformed rule, name lenght is 2. """
@@ -258,7 +263,9 @@ class RuleManagerTests(TestCase):
         except SystemError as ex:
             self.assertRaises(ex)
 
-    def test_subscription_Orion_Failure(self):
+    @patch('cloto.manager.RuleManager.logger')
+    @patch('cloto.OrionClient.logger')
+    def test_subscription_Orion_Failure(self, mock_logging, mock2):
         """Tests if method throws an error when Orion response is 400 while we are subscribing a server."""
         self.ruleManager.orionClient.client = self.OrionClientError
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
@@ -270,3 +277,5 @@ class RuleManagerTests(TestCase):
             self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
         except SystemError as ex:
             self.assertRaises(ex)
+        self.assertTrue(mock2.info.called)
+        self.assertTrue(mock_logging.error.called)

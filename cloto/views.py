@@ -32,4 +32,4 @@ def test(request):
 
 
 def fail(request, reason="csrf fails"):
-    print("csrf token failed")
+    return HttpResponse("csrf fails", status=400)

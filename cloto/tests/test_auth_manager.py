@@ -37,6 +37,9 @@ from requests import Response
 class AuthorizationManagerTests(TestCase):
     def setUp(self):
         self.token = "ff01eb8a8d69418c95f0009dda9bc1852"
+        self.token_other_tenant = "gg01eb8a8d69418c95f0009dda9bc1852"
+        self.token_not_found = "0001eb8a8d69418c95f0009dda9bc1852"
+        self.token_not_authorized = "bbbbbbba8d69418c95f0009dda9bc1852"
         self.fakeToken = "fffffffffffffffffffffffffffffffff"
         self.authToken = "77d254b3caba4fb29747958138136ffa"
         self.url = "http://130.206.80.61:35357/v2.0"
@@ -52,7 +55,7 @@ class AuthorizationManagerTests(TestCase):
         response = Response()
         response.status_code = 200
         response._content = '{"access":{"token":{"expires":"2015-07-09T15:16:07Z",' \
-            '"id":{"token":"3f9b39b55bfab4bb136d7659dfb0ad5c",' \
+            '"id":{"token":"ff01eb8a8d69418c95f0009dda9bc1852",' \
             '"tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
             '"access_token":' \
             '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
@@ -61,6 +64,27 @@ class AuthorizationManagerTests(TestCase):
             '"id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
             '"user":{"username":"user","roles_links":[],"id":"user",' \
             '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+
+        response2 = Response()
+        response2.status_code = 200
+        response2._content = '{"access":{"token":{"expires":"2015-07-09T15:16:07Z",' \
+            '"id":{"token":"gg01eb8a8d69418c95f0009dda9bc1852",' \
+            '"tenant":"1111e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
+            '"access_token":' \
+            '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
+            '"expires":"2014-09-13T07:23:51.000Z"}' \
+            ',"tenant":{"description":"Different Tenant from IDM","enabled":true,' \
+            '"id":"1111e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
+            '"user":{"username":"user","roles_links":[],"id":"user",' \
+            '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+
+        response_not_found = Response()
+        response_not_found.status_code = 200
+        response_not_found._content = 'User token not found'
+
+        response_not_authorized = Response()
+        response_not_authorized.status_code = 200
+        response_not_authorized._content = 'Service not authorized'
 
         dic_valid = {"token": {"id": self.authToken, "tenant": {"enabled": True,
                         "description": "Default tenant", "name": "admin", "id": "6571e3422ad84f7d828ce2f30373b3d4"}}}
@@ -88,6 +112,12 @@ class AuthorizationManagerTests(TestCase):
         headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.authToken}
         when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.token, headers=headers)\
             .thenReturn(response)
+        when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.token_other_tenant, headers=headers)\
+            .thenReturn(response2)
+        when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.token_not_found, headers=headers)\
+            .thenReturn(response_not_found)
+        when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.token_not_authorized, headers=headers)\
+            .thenReturn(response_not_authorized)
         when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.fakeToken, headers=headers)\
             .thenRaise(Unauthorized())
         when(requestsMock).get(self.url_noResponse + "/" + TOKENS_PATH + self.fakeToken, headers=headers)\
@@ -134,4 +164,28 @@ class AuthorizationManagerTests(TestCase):
         try:
             result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url_server_error)
         except Exception as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_exception_4(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url)
+        except Exception as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_other_tenant(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.token_other_tenant, self.tenantId, self.url)
+        except Unauthorized as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_not_found(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.token_not_found, self.tenantId, self.url)
+        except AuthorizationFailure as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_not_authorized(self):
+        try:
+            result = self.a.checkToken(self.authToken, self.token_not_authorized, self.tenantId, self.url)
+        except AuthorizationFailure as ex:
             self.assertRaises(ex)

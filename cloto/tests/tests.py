@@ -30,6 +30,7 @@ import datetime
 import cloto.information as information
 from django.test.client import RequestFactory
 from mockito import *
+from mock import patch
 from cloto.manager import InfoManager
 from django.utils import timezone
 import cloto.models as Models
@@ -109,13 +110,15 @@ class WindowSizeTests(TestCase):
         self.general = GeneralView()
         self.general.set_info(myMock)
 
-    def test_update_window(self):
+    @patch('cloto.manager.InfoManager.logger')
+    def test_update_window(self, mock_logging):
         # Create an instance of a GET request.
         request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": 4}", "application/json")
 
         # Test my_view() as if it were deployed at /customer/details
         response = self.general.PUT(request, "tenantId")
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(mock_logging.info.called)
 
     def test_not_update_window(self):
         # Create an instance of a GET request.

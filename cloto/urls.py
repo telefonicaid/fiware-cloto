@@ -25,10 +25,11 @@
 from django.conf.urls import patterns, url
 from restCloto import ServerRulesView, GeneralView, \
     ServersGeneralView, ServerView, GeneralRulesView, GeneralRulesViewRule, ServerSubscriptionView, ServerRuleView
-from views import test
+from views import test, fail
 
 urlpatterns = patterns('',
     url(r'^helloworld$', test),
+    url(r'^fail$', fail),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/$', GeneralView()),
 
     url(r'^v1.0/(?P<tenantId>[-\w]+)/rules/$', GeneralRulesView()),

@@ -76,3 +76,15 @@ class InfoManager():
     def checkSize(self, newSize):
             if newSize <= 0 or newSize > MAX_WINDOW_SIZE:
                 raise ValidationError("New size is not an integer between 1 and %d" % MAX_WINDOW_SIZE)
+
+    def init_information(self):
+        """Creates initial data in data base."""
+        import datetime
+        from django.utils import timezone
+        from cloto.models import ServerInfo
+        from cloto.configuration import OWNER, API_INFO_URL, VERSION
+
+        runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
+        # Creating initial data
+        s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
+        s.save()

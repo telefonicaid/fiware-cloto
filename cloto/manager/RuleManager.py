@@ -459,12 +459,10 @@ class RuleManager():
             string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
                                              + "\" \"" + serverId + "\"))"
             return string_to_get_url_subscription + action_string
-        except ValidationError as error:
+        except ValueError as error:
             raise error
         except KeyError as error:
-            raise KeyError("%s is missing" % error.message)
-        except Exception as e:
-            raise e
+            raise error
 
     def pimp_rule_condition(self, condition, ruleName, serverId):
         """This method builds a CLIPS condition from data received as json.
@@ -491,8 +489,4 @@ class RuleManager():
         except ValueError as error:
             raise error
         except KeyError as error:
-            raise KeyError("%s is missing" % error.message)
-        except TypeError:
-            raise TypeError("One parameter of the condition is missing")
-        except Exception as e:
-            raise e
+            raise error

@@ -44,7 +44,8 @@ class RuleManagerTests(TestCase):
         self.ruleUpdated = '{\"name\": \"test Name2\", \"condition\": ' \
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
                     ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
-                    '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
+                    '\"action\": {\"actionName\": \"notify-email\", \"body\": \"test body\",' \
+                    ' \"email\": \"test@host.com\"}}'
         self.ruleFake1 = '{\"name\": \"te\", \"condition\": ' \
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
                     ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
@@ -136,6 +137,24 @@ class RuleManagerTests(TestCase):
         self.assertIsInstance(updated, RuleModel)
         self.assertIsNotNone(updated.ruleId)
 
+    def test_create_general_rule_incomplete(self):
+        """Tests if create general rule throws error with malformed rule, condition is missing."""
+        try:
+            rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.ruleFake4)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
+    def test_create_rule_and_update_fake_rule(self):
+        """Tests if update a rule throws error with malformed rule, one attribute is missing."""
+        rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+
+        try:
+            updated = RuleManager.RuleManager().update_rule(self.tenantId, rule.ruleId, self.ruleFake4)
+        except ValueError as ex:
+            self.assertRaises(ex)
+
     def test_get_all_rules(self):
         """Tests if method list all general rules of a tenant."""
         rules = RuleManager.RuleManager().get_all_rules(self.tenantId)
@@ -167,6 +186,20 @@ class RuleManagerTests(TestCase):
             self.tenantId, self.newServerId, rule.ruleId, self.ruleUpdated)
         self.assertIsInstance(update, RuleModel)
         self.assertIsNotNone(update.ruleId)
+        self.assertTrue(mock_logging.info.called)
+
+    @patch('cloto.manager.RuleManager.logger')
+    def test_create_specific_rule_for_new_server_and_updating_with_fake_rule(self, mock_logging):
+        """Tests if method creates the first rule for a server and fails when update it with fake information."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+
+        try:
+            update = RuleManager.RuleManager().update_specific_rule(
+            self.tenantId, self.newServerId, rule.ruleId, self.ruleFake4)
+        except ValueError as ex:
+            self.assertRaises(ex)
         self.assertTrue(mock_logging.info.called)
 
     def test_validate_rule_error_1(self):
@@ -202,11 +235,24 @@ class RuleManagerTests(TestCase):
         rules = RuleManager.RuleManager().get_all_specific_rules(self.tenantId, self.serverId)
         self.assertIsInstance(rules, ListRuleModel)
 
-    def test_suscription_get_subscription_and_unsuscribe_to_a_rule_(self):
-        """Tests if method subscribes a server to a rule, gets the subscription and unsubsribes the server."""
+    @patch('cloto.manager.RuleManager.logger')
+    def test_get_all_entities(self, mock_logging):
+        """Tests if method creates a rule for a server and gets all information about all servers."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
+        self.assertTrue(mock_logging.info.called)
+
+        listRules = RuleManager.RuleManager().get_all_entities(self.tenantId)
+        self.assertIsInstance(listRules, ListRuleModel)
+
+    @patch('cloto.manager.RuleManager.logger')
+    def test_suscription_get_subscription_and_unsuscribe_to_a_rule_(self, mock_logging):
+        """Tests if method subscribes a server to a rule, gets the subscription and unsubscribes the server."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        self.assertTrue(mock_logging.info.called)
         url = "http://127.0.0.1:8000/testService"
         subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
 
@@ -279,3 +325,32 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
         self.assertTrue(mock2.info.called)
         self.assertTrue(mock_logging.error.called)
+
+    @patch('cloto.manager.RuleManager.logger')
+    @patch('cloto.OrionClient.logger')
+    def test_double_suscription_with_different_rules_and_unsubscription(self, mock_logging, mock2):
+        """Tests if method subscribes a server to a rule, and use the same subscriptions for more rules."""
+        rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
+        self.assertIsInstance(rule, RuleModel)
+        self.assertIsNotNone(rule.ruleId)
+        self.assertTrue(mock2.info.called)
+        rule2 = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleUpdated)
+        self.assertIsInstance(rule2, RuleModel)
+        self.assertIsNotNone(rule2.ruleId)
+        self.assertTrue(mock2.info.called)
+        subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule.ruleId
+
+        subscriptionId = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription)
+        self.assertIsInstance(subscriptionId, uuid.UUID)
+
+        subscription2 = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"%s\"}" % rule2.ruleId
+        subscriptionId2 = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription2)
+        self.assertIsInstance(subscriptionId2, uuid.UUID)
+
+        """Tests if method list all rules of a server."""
+        rules = RuleManager.RuleManager().get_all_specific_rules(self.tenantId, self.newServerId)
+        self.assertIsInstance(rules, ListRuleModel)
+
+        result = self.ruleManager.unsubscribe_to_rule(self.newServerId, subscriptionId2)
+        self.assertIs(result, True)
+        self.assertTrue(mock_logging.info.called)

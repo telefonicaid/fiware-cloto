@@ -51,12 +51,6 @@ os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cloto.settings")
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
-# Apply WSGI middleware here.
-# from helloworld.wsgi import HelloWorldApplication
-# application = HelloWorldApplication(application)
-
-#import sqlite3
-import MySQLdb as mysql
 import datetime
 
 from django.utils import timezone
@@ -67,25 +61,10 @@ from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAG
     DB_NAME, DB_CHARSET, DB_PASSWD, DB_USER, DB_HOST
 from cloto.log import logger
 
-
-#conn = sqlite3.connect(INSTALLATION_PATH + 'cloto.db')
-conn = mysql.connect(charset=DB_CHARSET, use_unicode=True, host=DB_HOST, user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
-
-c = conn.cursor()
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data
-try:
-    s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
-    s.save()
-except Exception as err:
-    logger.warn("DataBase already exists: %s" % err)
-
-# Save (commit) the changes.
-conn.commit()
-
-# We can also close the connection if we are done with it.
-# Just be sure any changes have been committed or they will be lost.
-conn.close()
+s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
+s.save()
 
 arbiter = get_arbiter([{"cmd": "python " + ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 arbiter.start()

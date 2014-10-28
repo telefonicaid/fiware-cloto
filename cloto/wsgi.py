@@ -54,18 +54,22 @@ application = get_wsgi_application()
 import datetime
 
 from django.utils import timezone
-from circus import get_arbiter
+
 
 from cloto.models import ServerInfo
 from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH, \
     DB_NAME, DB_CHARSET, DB_PASSWD, DB_USER, DB_HOST
 from cloto.log import logger
+from cloto import environment_controller
 
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data
 s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
 s.save()
 
-arbiter = get_arbiter([{"cmd": "python " + ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
-arbiter.start()
+# Starting environments Controller
+controller = environment_controller.environment_controller()
+if not controller.is_started():
+    controller.start_manager()
+
 logger.info("SERVER STARTED")

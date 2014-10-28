@@ -35,6 +35,7 @@ from mock import patch
 class WSGITest(TestCase):
     urls = "cloto.urls"
 
+    @override_settings(WSGI_APPLICATION="cloto.wsgi.application")
     def test_get_wsgi_application(self):
         """
         Verify that ``get_wsgi_application`` returns a functioning WSGI callable.

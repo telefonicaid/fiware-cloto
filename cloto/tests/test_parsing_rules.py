@@ -26,13 +26,7 @@ __author__ = 'gjp'
 from django.test import TestCase
 from cloto.models import *
 from cloto.manager import RuleManager
-from keystoneclient.exceptions import Conflict
-from mockito import *
 from mock import patch
-from requests import Response
-from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
-import uuid
-import json
 
 
 class RuleManagerTests(TestCase):

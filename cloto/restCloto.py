@@ -25,6 +25,7 @@
 __author__ = 'gjp'
 from django import http
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
+from django.views.decorators.csrf import csrf_exempt
 
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
@@ -35,7 +36,7 @@ from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Confli
 from keystoneclient.v2_0 import client
 import datetime
 from json import JSONEncoder
-from configuration import OPENSTACK_URL, ADM_USER, ADM_PASS, ADM_TENANT_ID
+from django.conf import settings
 
 
 class RESTResource(object):
@@ -46,6 +47,7 @@ class RESTResource(object):
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     info = None
 
+    @csrf_exempt
     def __call__(self, request, *args, **kwargs):
         """Starting point of the API Agent. All REST requests should enter through this method.
         """
@@ -54,9 +56,9 @@ class RESTResource(object):
             try:
                 a = AuthorizationManager.AuthorizationManager()
                 a.myClient = client
-                adm_token = a.generate_adminToken(ADM_USER, ADM_PASS, OPENSTACK_URL)
+                adm_token = a.generate_adminToken(settings.ADM_USER, settings.ADM_PASS, settings.OPENSTACK_URL)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
-                             kwargs.get("tenantId"), OPENSTACK_URL)
+                             kwargs.get("tenantId"), settings.OPENSTACK_URL)
                 return callback(request, *args, **kwargs)
             except AuthorizationFailure as auf:
                 return HttpResponse(json.dumps(
@@ -226,11 +228,12 @@ class ServerView(RESTResource):
         return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
 
-
+@csrf_exempt
 class ServerRulesView(RESTResource):
     """
     Servers view PATH( /v1.0/{tenantID}/servers/{serverId}/rules/ ).
     """
+
     def POST(self, request, tenantId, serverId):
         try:
             rule = RuleManager.RuleManager().create_specific_rule(tenantId, serverId, request.body)

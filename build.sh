@@ -30,9 +30,9 @@
 virtualenv ENV
 source ENV/bin/activate
 mkdir -m 777 /var/log/fiware-cloto
-#cp -R . /opt/policyManager/fiware-cloto
 pip install -r requirements.txt
 echo "no" | python manage.py syncdb
+export DJANGO_SETTINGS_MODULE=cloto.settings_tests
 coverage run --source=cloto manage.py test
 
 if [ ! $1 = "travis_build" ];

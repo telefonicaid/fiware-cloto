@@ -30,7 +30,7 @@ from keystoneclient.exceptions import Conflict
 from mockito import *
 from mock import patch
 from requests import Response
-from cloto.configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
+from django.conf import settings
 import uuid
 import json
 
@@ -89,21 +89,21 @@ class RuleManagerTests(TestCase):
                 '"attributes": [' \
                             '"cpu",' \
                             '"mem"],' \
-                            '"reference": "' + NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + \
+                            '"reference": "' + settings.NOTIFICATION_URL + '/' + self.tenantId + 'servers/' + \
                             self.newServerId + '",' \
                             '"duration": "P1M",' \
                             '"notifyConditions": [' \
-                            '{"type": "' + NOTIFICATION_TYPE + '",' \
-                            '"condValues": ["' + NOTIFICATION_TIME + '"]}]}'
+                            '{"type": "' + settings.NOTIFICATION_TYPE + '",' \
+                            '"condValues": ["' + settings.NOTIFICATION_TIME + '"]}]}'
         #data2 for unsubscription
         data2 = json.dumps("{\"subscriptionId\": \"%s\"}" % self.expected_cbSubscriptionId)
-        when(self.mockedClient).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
+        when(self.mockedClient).post(settings.CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
             .thenReturn(response)
-        when(self.mockedClient).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
+        when(self.mockedClient).post(settings.CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
             .thenReturn(response)
-        when(self.OrionClientError).post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
+        when(self.OrionClientError).post(settings.CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)\
             .thenReturn(responseFailure)
-        when(self.OrionClientError).post(CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
+        when(self.OrionClientError).post(settings.CONTEXT_BROKER_URL + "/unsubscribeContext", data2, headers=headers)\
             .thenReturn(responseFailure)
         self.ruleManager.orionClient.client = self.mockedClient
 

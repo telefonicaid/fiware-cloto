@@ -33,6 +33,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 echo "Do you wish to insert configuration data before installing?"
+file1='cloto/settings.py';
 select yn in "Yes" "No"; do
     case $yn in
         #Reads configuration params from command line inserted by user.
@@ -51,7 +52,6 @@ select yn in "Yes" "No"; do
         match6="DB_PASSWD = u'";
         match7="user =";
         match8="password =";
-        file1='cloto/configuration.py';
         file2='cloto/db.cfg';
         if [[ `bash --version | grep 'apple-darwin'` ]]
         then
@@ -95,22 +95,25 @@ done
 ## Adding local IP to ALLOWED HOSTS
 localIp=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
 echo $localIp
-file3='cloto/settings.py';
 matchIp="ALLOWED_HOSTS = \['";
 if [[ `bash --version | grep 'apple-darwin'` ]]
     then
     #Insert Allowed host into settings file in Apple systems.
-        sed -i "" "s/$matchIp/$matchIp$localIp', '/" $file3;
+        sed -i "" "s/$matchIp/$matchIp$localIp', '/" $file1;
     else
     #Insert Allowed host into settings file in Linux systems.
-        sed -i "s/$matchIp/$matchIp$localIp', '/" $file3;
+        sed -i "s/$matchIp/$matchIp$localIp', '/" $file1;
 fi
 
 echo "Installing fiware-cloto on system..."
 
 installation_path="/opt/policyManager/fiware-cloto"
-config_file="fiware-cloto.cfg"
-config_path="/etc/sysconfig/$config_file"
+config_path="/etc/sysconfig"
+
+#checks if config folder is created and creates it if not
+if [ ! -d "$config_path" ]; then
+  mkdir -m 777 $config_path
+fi
 
 log_path="/var/log/fiware-cloto"
 
@@ -137,6 +140,7 @@ chmod 777 /opt/policyManager/fiware-cloto/
 cd /opt/policyManager/fiware-cloto/
 ln fiware-cloto /etc/init.d/fiware-cloto
 chmod a+x /etc/init.d/fiware-cloto
+ln cloto/settings.py /etc/sysconfig/fiware-cloto.cfg
 
 echo "..."
 #installs python requirements

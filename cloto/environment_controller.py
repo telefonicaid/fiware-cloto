@@ -24,7 +24,8 @@
 #
 __author__ = 'gjp'
 
-from configuration import ENVIRONMENTS_MANAGER_PATH
+from django.conf import settings
+#from settings import ENVIRONMENTS_MANAGER_PATH, SETTINGS_TYPE
 from circus import get_arbiter
 
 
@@ -35,9 +36,11 @@ class environment_controller():
     started = False
 
     def start_manager(self):
-        arbiter = get_arbiter([{"cmd": "python " + ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
-        arbiter.start()
-        self.started = True
+        arbiter = get_arbiter([{"cmd": "python "
+                                       "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
+        if settings.SETTINGS_TYPE == 'production':
+            arbiter.start()
+            self.started = True
 
     def is_started(self):
         return self.started

@@ -57,14 +57,14 @@ from django.utils import timezone
 
 
 from cloto.models import ServerInfo
-from cloto.configuration import OWNER, API_INFO_URL, VERSION, ENVIRONMENTS_MANAGER_PATH, INSTALLATION_PATH, \
-    DB_NAME, DB_CHARSET, DB_PASSWD, DB_USER, DB_HOST
+from django.conf import settings
 from cloto.log import logger
 from cloto import environment_controller
 
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data
-s = ServerInfo(id=1, owner=OWNER, version=VERSION, runningfrom=runningfrom, doc=API_INFO_URL)
+s = ServerInfo(id=1, owner=settings.OWNER, version=settings.VERSION,
+               runningfrom=runningfrom, doc=settings.API_INFO_URL)
 s.save()
 
 # Starting environments Controller

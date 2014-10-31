@@ -25,8 +25,6 @@
 __author__ = 'gjp'
 from django import http
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from django.views.decorators.csrf import csrf_exempt
-
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
 import OrionClient
@@ -47,7 +45,6 @@ class RESTResource(object):
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     info = None
 
-    @csrf_exempt
     def __call__(self, request, *args, **kwargs):
         """Starting point of the API Agent. All REST requests should enter through this method.
         """
@@ -228,7 +225,7 @@ class ServerView(RESTResource):
         return HttpResponseServerError(json.dumps({"notImplemented": {"code": 501, "message":
                         "Should update the context of server %s" % serverId}}, indent=4))
 
-@csrf_exempt
+
 class ServerRulesView(RESTResource):
     """
     Servers view PATH( /v1.0/{tenantID}/servers/{serverId}/rules/ ).

@@ -26,10 +26,7 @@ __author__ = 'fla'
 
 from os.path import join, exists
 from os import makedirs
-
 from cloto.settings import *
-
-
 
 # Integrate nose with django. django-nose plugin
 INSTALLED_APPS = INSTALLED_APPS + ('django_nose', 'cloto')

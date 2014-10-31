@@ -48,7 +48,7 @@ DEFAULT_WINDOW_SIZE = 5
 OWNER = u'Telefonica I+D'
 API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/' \
                u'index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager'
-VERSION = u'1.1.0'
+VERSION = u'1.2.0'
 MAX_WINDOW_SIZE = 10
 LOGGING_PATH = u'/var/log/fiware-cloto'
 RABBITMQ_URL = u'localhost'

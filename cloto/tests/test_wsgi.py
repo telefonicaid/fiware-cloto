@@ -62,7 +62,6 @@ class WSGITest(TestCase):
 
 class GetInternalWSGIApplicationTest(unittest.TestCase):
 
-    @unittest.skip('circus ignore')
     @override_settings(WSGI_APPLICATION="cloto.wsgi.application")
     def test_success(self):
         """
@@ -73,7 +72,6 @@ class GetInternalWSGIApplicationTest(unittest.TestCase):
         from cloto.wsgi import application
         self.assertTrue(app is application)
 
-    @unittest.skip('circus ignore')
     @override_settings(WSGI_APPLICATION=None)
     def test_default(self):
         """
@@ -95,7 +93,6 @@ class GetInternalWSGIApplicationTest(unittest.TestCase):
         finally:
             basehttp.get_wsgi_application = _orig_get_wsgi_app
 
-    @unittest.skip('circus ignore')
     @override_settings(WSGI_APPLICATION="cloto.wsgi.noexist.app")
     def test_bad_module(self):
         with six.assertRaisesRegex(self,
@@ -104,7 +101,6 @@ class GetInternalWSGIApplicationTest(unittest.TestCase):
             r"could not import module 'cloto.wsgi.noexist':"):
             get_internal_wsgi_application()
 
-    @unittest.skip('circus ignore')
     @override_settings(WSGI_APPLICATION="cloto.wsgi.noexist")
     def test_bad_name(self):
         with six.assertRaisesRegex(self,

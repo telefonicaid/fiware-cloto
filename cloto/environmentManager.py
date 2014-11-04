@@ -31,7 +31,8 @@ import MySQLdb as mysql
 
 from circus.process import Process
 
-from configuration import ENVIRONMENTS_PATH, INSTALLATION_PATH, DB_HOST, DB_CHARSET, DB_USER, DB_NAME, DB_PASSWD
+from cloto.settings import ENVIRONMENTS_PATH, INSTALLATION_PATH, DB_HOST, DB_CHARSET, DB_USER, \
+    DB_NAME, DB_PASSWD, SETTINGS_TYPE
 from log import logger
 
 
@@ -50,9 +51,13 @@ def main():
 
     while (True):
         try:
-            conn = mysql.connect(charset=DB_CHARSET, use_unicode=True, host=DB_HOST,
+            conn = None
+            if SETTINGS_TYPE == 'production':
+                conn = mysql.connect(charset=DB_CHARSET, use_unicode=True, host=DB_HOST,
                                  user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
-            #conn = lite.connect(INSTALLATION_PATH + 'cloto.db')
+            elif SETTINGS_TYPE == "test":
+                import sqlite3 as lite
+                conn = lite.connect(INSTALLATION_PATH + 'cloto.db')
             cursor = conn.cursor()
             cursor.execute('SELECT * FROM cloto.cloto_tenantinfo')
             data = cursor.fetchall()

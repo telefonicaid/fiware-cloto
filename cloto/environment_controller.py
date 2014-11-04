@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
 # Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
@@ -22,23 +22,25 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-# File to execute the covertura and unit test and generate the information
-# to be shown in sonar
-#
-# __author__ = 'fla'
+__author__ = 'gjp'
 
-virtualenv ENV
-source ENV/bin/activate
-mkdir -m 777 /var/log/fiware-cloto
-pip install -r requirements.txt
-echo "no" | python manage.py syncdb
-export DJANGO_SETTINGS_MODULE=cloto.settings_tests
-coverage run --source=cloto manage.py test
+from django.conf import settings
+#from settings import ENVIRONMENTS_MANAGER_PATH, SETTINGS_TYPE
+from circus import get_arbiter
 
-if [ ! $1 = "travis_build" ];
-then
-    deactivate
-    echo "Deactivate completed"
-else
-    echo "Travis does not have deactivate command for no reason :SS"
-fi
+
+class environment_controller():
+    """This class provides a control over circus launching.
+    """
+
+    started = False
+
+    def start_manager(self):
+        arbiter = get_arbiter([{"cmd": "python "
+                                       "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
+        if settings.SETTINGS_TYPE == 'production':
+            arbiter.start()
+            self.started = True
+
+    def is_started(self):
+        return self.started

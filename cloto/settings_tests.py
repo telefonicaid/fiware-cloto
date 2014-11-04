@@ -23,6 +23,7 @@
 # contact with opensource@tid.es
 #
 # Django settings for fiware_cloto project.
+
 CSRF_FAILURE_VIEW = 'cloto.views.fail'
 DEBUG = False
 TEMPLATE_DEBUG = DEBUG
@@ -42,12 +43,12 @@ ADM_PASS = u''
 ADM_TENANT_ID = u''
 
 # POLICY MANAGER CONFIGURATION
-SETTINGS_TYPE = u'production'
-INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'
+SETTINGS_TYPE = u'test'
+INSTALLATION_PATH = u''
 DEFAULT_WINDOW_SIZE = 5
 OWNER = u'Telefonica I+D'
-API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/' \
-               u'Policy_Manager_Open_RESTful_API_Specification'
+API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/' \
+               u'index.php/Policy_Manager_Open_RESTful_API_Specification'
 VERSION = u'1.2.0'
 MAX_WINDOW_SIZE = 10
 LOGGING_PATH = u'/var/log/fiware-cloto'
@@ -71,7 +72,7 @@ DB_USER = u''
 DB_PASSWD = u''
 
 #from cloto.configuration import INSTALLATION_PATH
-DATABASES = {
+"""DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'OPTIONS': {
@@ -79,10 +80,11 @@ DATABASES = {
         },
     }
 }
-"""DATABASES = {
+"""
+DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': INSTALLATION_PATH + '/cloto.db',                      # Or path to database file if using sqlite3.
+        'NAME': INSTALLATION_PATH + 'cloto.db',                      # Or path to database file if using sqlite3.
         # The following settings are not used with sqlite3:
         'USER': 'root',
         'PASSWORD': '',
@@ -90,7 +92,7 @@ DATABASES = {
         'PORT': '',                      # Set to empty string for default.
     }
 }
-"""
+
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -166,7 +168,7 @@ TEMPLATE_LOADERS = (
 MIDDLEWARE_CLASSES = (
     'django.middleware.common.CommonMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
-    #'django.middleware.csrf.CsrfViewMiddleware',
+    'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     # Uncomment the next line for simple clickjacking protection:

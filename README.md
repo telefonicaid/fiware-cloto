@@ -54,7 +54,7 @@ After finishing you must configure cloto configuration and some apache settings.
 ### Configuration - Cloto
 ---------------------
 
-Before starting the rule engine, you should edit configuration.py located at cloto folder.
+Before starting the rule engine, you should edit settings.py located at cloto folder or in /etc/sysconfig/fiware-cloto.cfg.
 Constants you need to complete are:
 
     - All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install

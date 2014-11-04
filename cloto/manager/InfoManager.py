@@ -26,7 +26,7 @@ __author__ = 'gjp'
 import cloto.information as information
 from cloto.models import TenantInfo, ServerInfo
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
-from cloto.configuration import MAX_WINDOW_SIZE
+from django.conf import settings
 from cloto.log import logger
 
 
@@ -74,5 +74,17 @@ class InfoManager():
         self.serverInfo = sInfo
 
     def checkSize(self, newSize):
-            if newSize <= 0 or newSize > MAX_WINDOW_SIZE:
-                raise ValidationError("New size is not an integer between 1 and %d" % MAX_WINDOW_SIZE)
+            if newSize <= 0 or newSize > settings.MAX_WINDOW_SIZE:
+                raise ValidationError("New size is not an integer between 1 and %d" % settings.MAX_WINDOW_SIZE)
+
+    def init_information(self):
+        """Creates initial data in data base."""
+        import datetime
+        from django.utils import timezone
+        from cloto.models import ServerInfo
+
+        runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
+        # Creating initial data
+        s = ServerInfo(id=1, owner=settings.OWNER, version=settings.VERSION,
+                       runningfrom=runningfrom, doc=settings.API_INFO_URL)
+        s.save()

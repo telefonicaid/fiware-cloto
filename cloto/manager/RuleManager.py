@@ -25,6 +25,7 @@
 __author__ = 'gjp'
 import datetime
 import json
+import yaml
 import uuid
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
@@ -120,7 +121,7 @@ class RuleManager():
 
         :param str rule:        The rule description in json format
         """
-        condition = json.loads(rule)['condition']
+        condition = yaml.load(rule)['condition']
         return condition
 
     def getAction(self, rule):
@@ -128,7 +129,7 @@ class RuleManager():
 
         :param str rule:        The rule description in json format
         """
-        action = json.loads(rule)['action']
+        action = yaml.load(rule)['action']
         return action
 
     def getName(self, rule):
@@ -136,7 +137,7 @@ class RuleManager():
 
         :param str rule:        The rule description in json format
         """
-        name = json.loads(rule)['name']
+        name = yaml.load(rule)['name']
         return name
 
     def create_specific_rule(self, tenantId, serverId, rule):
@@ -458,12 +459,10 @@ class RuleManager():
             string_to_get_url_subscription = "(bind ?url (python-call get-notification-url \"" + ruleName\
                                              + "\" \"" + serverId + "\"))"
             return string_to_get_url_subscription + action_string
-        except ValidationError as error:
+        except ValueError as error:
             raise error
         except KeyError as error:
-            raise KeyError("%s is missing" % error.message)
-        except Exception as e:
-            raise e
+            raise error
 
     def pimp_rule_condition(self, condition, ruleName, serverId):
         """This method builds a CLIPS condition from data received as json.
@@ -490,8 +489,4 @@ class RuleManager():
         except ValueError as error:
             raise error
         except KeyError as error:
-            raise KeyError("%s is missing" % error.message)
-        except TypeError:
-            raise TypeError("One parameter of the condition is missing")
-        except Exception as e:
-            raise e
+            raise error

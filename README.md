@@ -20,8 +20,9 @@ described in rules when conditions are given.
 To install this module you have to install some components:
 
 - Python 2.7
+- PyClips 1.0 (http://sourceforge.net/projects/pyclips/files/)
 - Apache 2.2 or above + mod_wsgi
-- RabbitMQ Server
+- RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 
@@ -30,6 +31,9 @@ To install this module you have to install some components:
 ------------
 
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
+Ensure your mysql path is in your path. If not, you can add executing (change /usr/local/ with your mysql folder):
+    export PATH=$PATH:/usr/local/mysql/bin
+
 In addition, be sure you have installed mysql-devel package for development of MySQL applications.
 You should be able to install it from yum or apt-get package managers.
     examples: yum install mysql-devel
@@ -50,7 +54,7 @@ After finishing you must configure cloto configuration and some apache settings.
 ### Configuration - Cloto
 ---------------------
 
-Before starting the rule engine, you should edit configuration.py located at cloto folder.
+Before starting the rule engine, you should edit settings.py located at cloto folder or in /etc/sysconfig/fiware-cloto.cfg.
 Constants you need to complete are:
 
     - All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install
@@ -97,6 +101,10 @@ Finally you sould add cloto port to this httpd.conf file
 
     Listen 8000
 
+We recommend you to disable HTTP TRACK|TRACE methods adding to httpd.conf TraceEnable directive
+and set the value to Off
+
+    TraceEnable Off
 
 ### Running fiware-cloto
 --------------------

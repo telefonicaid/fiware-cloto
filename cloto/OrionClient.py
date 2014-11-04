@@ -25,7 +25,7 @@
 __author__ = 'gjp'
 import json
 import requests
-from configuration import CONTEXT_BROKER_URL, NOTIFICATION_URL, NOTIFICATION_TIME, NOTIFICATION_TYPE
+from django.conf import settings
 import constants
 from cloto.log import logger
 
@@ -48,13 +48,14 @@ class OrionClient():
                 '"attributes": [' \
                             '"cpu",' \
                             '"mem"],' \
-                            '"reference": "' + NOTIFICATION_URL + '/' + tenantId + 'servers/' + serverId + '",' \
+                            '"reference": "' + settings.NOTIFICATION_URL + '/' + \
+                            tenantId + 'servers/' + serverId + '",' \
                             '"duration": "P1M",' \
                             '"notifyConditions": [' \
-                            '{"type": "' + NOTIFICATION_TYPE + '",' \
-                            '"condValues": ["' + NOTIFICATION_TIME + '"]}]}'
+                            '{"type": "' + settings.NOTIFICATION_TYPE + '",' \
+                            '"condValues": ["' + settings.NOTIFICATION_TIME + '"]}]}'
 
-        r = self.client.post(CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)
+        r = self.client.post(settings.CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)
 
         if r.status_code == 200:
             decoded = json.loads(r.text.decode())
@@ -73,7 +74,7 @@ class OrionClient():
         headers = {'Content-Type': 'application/json', 'Accept': 'application/json'}
         data = json.dumps("{\"subscriptionId\": \"%s\"}" % cbSubscriptionId)
 
-        r = self.client.post(CONTEXT_BROKER_URL + "/unsubscribeContext", data, headers=headers)
+        r = self.client.post(settings.CONTEXT_BROKER_URL + "/unsubscribeContext", data, headers=headers)
         if r.status_code == 200:
             logger.info("Server %s was unsubscribed from Context Broker.--- HTTP Response: %d"
                   % (serverId, r.status_code))

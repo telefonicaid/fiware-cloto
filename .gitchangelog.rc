@@ -59,7 +59,7 @@ ignore_regexps = [
         r'@refactor', r'!refactor',
         r'@wip', r'!wip',
         r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[p|P]kg:',
-        r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[d|D]ev:',
+        ##r'^([cC]hg|[fF]ix|[nN]ew)\s*:\s*[d|D]ev:',
         r'^(.{3,3}\s*:)?\s*[fF]irst commit.?\s*$',
   ]
 
@@ -116,8 +116,7 @@ body_split_regexp = r'\n(?=\w+\s*:)'
 ##
 ## Tags that will be used for the changelog must match this regexp.
 ##
-tag_filter_regexp = r'^[0-9]+\.[0-9]+(\.[0-9]+)?$'
-## tag_filter_regexp = r'^release-[0-9]+\.[0-9]+(\.[0-9]+)?$'
+tag_filter_regexp = r'^v[0-9]+\.[0-9]+(\.[0-9]+)?$'
 
 ## ``unreleased_version_label`` is a string
 ##

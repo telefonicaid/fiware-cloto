@@ -35,7 +35,7 @@ setup(
   author_email='fernando.lopezaguilar@telefonica.com, e.fiware.tid@telefonica.com',
   license='Apache 2.0',
   url='https://github.com/telefonicaid/fiware-cloto',
-  download_url='https://github.com/telefonicaid/fiware-cloto/tarball/v1.1.0',
+  download_url='https://github.com/telefonicaid/fiware-cloto/tarball/v%s' % settings.VERSION,
   keywords=['fiware', 'policy', 'manager', 'cloud'],
   classifiers=[
         "License :: OSI Approved :: Apache Software License", ],

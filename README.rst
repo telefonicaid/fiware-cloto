@@ -12,8 +12,7 @@ This module is part of FIWARE Policy Manager. It provides an API-REST to create 
 subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
 described in rules when conditions are given.
 
-For more information, please refer to the `documentation <doc/README.rst>`_ and,
-additionally, to the description of this GE in `FIWARE Catalogue`__.
+For more information, please refer to the `documentation <doc/README.rst>`_.
 
 
 Prerequisites

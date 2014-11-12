@@ -34,7 +34,7 @@ pip install -r requirements.txt
 export DJANGO_SETTINGS_MODULE=cloto.settings_tests
 echo "no" | python manage.py syncdb
 coverage run --source=cloto manage.py test
-coverage xml -o target/site/cobertura/cobertura.xml
+coverage xml -o target/site/cobertura/coverage.xml
 
 if [ ! $1 = "travis_build" ];
 then

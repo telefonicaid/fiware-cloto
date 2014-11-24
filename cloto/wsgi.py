@@ -58,8 +58,8 @@ from django.utils import timezone
 
 from cloto.models import ServerInfo
 from django.conf import settings
-from cloto.log import logger
 from cloto import environment_controller
+import logging as logger
 
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data

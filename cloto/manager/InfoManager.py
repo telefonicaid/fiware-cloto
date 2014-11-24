@@ -27,7 +27,7 @@ import cloto.information as information
 from cloto.models import TenantInfo, ServerInfo
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.conf import settings
-from cloto.log import logger
+import logging as logger
 
 
 class InfoManager():

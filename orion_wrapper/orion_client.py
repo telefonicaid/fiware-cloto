@@ -27,7 +27,7 @@ import json
 import requests
 from django.conf import settings
 import cloto.constants as constants
-from cloto.log import logger
+import logging as logger
 
 
 class orion_client():

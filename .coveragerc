@@ -2,3 +2,4 @@
 omit =
     cloto/tests/*
     cloto/settings.py
+    cloto/settings_production.py

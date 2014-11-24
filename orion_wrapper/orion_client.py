@@ -26,11 +26,11 @@ __author__ = 'gjp'
 import json
 import requests
 from django.conf import settings
-import constants
+import cloto.constants as constants
 from cloto.log import logger
 
 
-class OrionClient():
+class orion_client():
     """This class provides methods to provide connection with Orion Context Broker.
     """
     client = requests

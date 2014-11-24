@@ -31,7 +31,7 @@ import MySQLdb as mysql
 
 from circus.process import Process
 
-from cloto.settings import ENVIRONMENTS_PATH, INSTALLATION_PATH, DB_HOST, DB_CHARSET, DB_USER, \
+from settings.settings import ENVIRONMENTS_PATH, INSTALLATION_PATH, DB_HOST, DB_CHARSET, DB_USER, \
     DB_NAME, DB_PASSWD, SETTINGS_TYPE
 from log import logger
 

@@ -32,7 +32,7 @@ import pika
 import clips
 import requests
 
-from cloto.settings import RABBITMQ_URL, LOGGING_PATH, DB_CHARSET, DB_HOST, DB_NAME, DB_PASSWD, DB_USER
+from settings.settings import RABBITMQ_URL, LOGGING_PATH, DB_CHARSET, DB_HOST, DB_NAME, DB_PASSWD, DB_USER
 from constants import SERVERID
 from log import logger
 LOGGER_COMPONENT = 'ENVIRONMENT'

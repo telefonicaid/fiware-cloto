@@ -36,9 +36,9 @@ class environment_controller():
     started = False
 
     def start_manager(self):
-        arbiter = get_arbiter([{"cmd": "python "
-                                       "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
         if settings.SETTINGS_TYPE == 'production':
+            arbiter = get_arbiter([{"cmd": "python "
+                                       "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
             arbiter.start()
             self.started = True
 

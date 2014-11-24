@@ -25,22 +25,24 @@
 __author__ = 'gjp'
 import datetime
 import json
-import yaml
 import uuid
+
+import yaml
+from django.utils import timezone
+from django.core.validators import URLValidator, validate_email
+from keystoneclient.exceptions import Conflict
+
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
-from django.utils import timezone
-from django.core.validators import URLValidator, validate_email, ValidationError
-from keystoneclient.exceptions import Conflict
-import cloto.OrionClient as OrionClient
-from cloto.log import logger
-
+import orion_wrapper.orion_client as orion_client
+##from cloto.log import logger
+import logging as logger
 
 class RuleManager():
     """This class provides methods to manage rules.
     """
     #ContextBrokerClient
-    orionClient = OrionClient.OrionClient()
+    orionClient = orion_client.orion_client()
 
     def get_rule_model(self):
         """Returns model of Rule."""
@@ -477,7 +479,7 @@ class RuleManager():
             condition_string = "(ServerFact \"" + serverId + "\""
 
             ##Adding CPU condition
-            parameters = ["cpu", "mem"]
+            parameters = ["cpu", "mem", "hdd", "net"]
             for k in parameters:
                 self.verify_values("cpu operand", condition[k]["operand"], str)
                 self.verify_values("cpu value", condition[k]["value"], float)

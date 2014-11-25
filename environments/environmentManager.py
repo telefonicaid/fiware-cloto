@@ -26,6 +26,7 @@ __author__ = 'gjp'
 import signal
 import time
 import sys
+import os
 import MySQLdb as mysql
 
 from circus.process import Process
@@ -35,6 +36,8 @@ from log import logger
 
 
 def main():
+    if os.environ.get("SETTINGS_TYPE"):
+            SETTINGS_TYPE = os.environ.get("SETTINGS_TYPE")
 
     tenants = []
     processes = []

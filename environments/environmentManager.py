@@ -37,7 +37,9 @@ from log import logger
 
 def main():
     if os.environ.get("SETTINGS_TYPE"):
-            SETTINGS_TYPE = os.environ.get("SETTINGS_TYPE")
+        execution_type = os.environ.get("SETTINGS_TYPE")
+    else:
+        execution_type = SETTINGS_TYPE
 
     tenants = []
     processes = []
@@ -53,10 +55,10 @@ def main():
     while (True):
         try:
             conn = None
-            if SETTINGS_TYPE == 'production':
+            if execution_type == 'production':
                 conn = mysql.connect(charset=DB_CHARSET, use_unicode=True, host=DB_HOST,
                                  user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
-            elif SETTINGS_TYPE == "test":
+            elif execution_type == "test":
                 import sqlite3 as lite
                 conn = lite.connect(INSTALLATION_PATH + 'cloto.db')
             cursor = conn.cursor()
@@ -79,7 +81,7 @@ def main():
             if conn:
                 conn.close()
             time.sleep(5)
-            if SETTINGS_TYPE == "test":
+            if execution_type == "test":
                 exit_program()
 
 if __name__ == '__main__':

@@ -23,12 +23,23 @@
 # contact with opensource@tid.es
 #
 __author__ = 'gjp'
+
 from django.conf import settings
-import logging
-logger = logging.getLogger('RuleEngine')
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler(settings.LOGGING_PATH + '/RuleEngine.log')
-fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
-fh.setFormatter(formatter)
-logger.addHandler(fh)
+from circus import get_arbiter
+
+
+class environment_controller():
+    """This class provides a control over circus launching.
+    """
+
+    started = False
+
+    def start_manager(self):
+        if settings.SETTINGS_TYPE == 'production':
+            arbiter = get_arbiter([{"cmd": "python "
+                                       "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
+            arbiter.start()
+            self.started = True
+
+    def is_started(self):
+        return self.started

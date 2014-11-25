@@ -172,6 +172,12 @@ class AuthorizationManagerTests(TestCase):
         except Exception as ex:
             self.assertRaises(ex)
 
+    def test_check_empty_token(self):
+        try:
+            result = self.a.checkToken(self.authToken, "", self.tenantId, self.url)
+        except Exception as ex:
+            self.assertRaises(ex)
+
     def test_check_token_other_tenant(self):
         try:
             result = self.a.checkToken(self.authToken, self.token_other_tenant, self.tenantId, self.url)

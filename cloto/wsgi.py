@@ -43,11 +43,12 @@ import os
 # if running multiple sites in the same mod_wsgi process. To fix this, use
 # mod_wsgi daemon mode with each site in its own daemon process, or use
 # os.environ["DJANGO_SETTINGS_MODULE"] = "cloto.settings"
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "cloto.settings")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "settings.settings")
 
 # This application object is used by any WSGI server configured to use this
 # file. This includes Django's development server, if the WSGI_APPLICATION
 # setting points here.
+from environments import environment_controller
 from django.core.wsgi import get_wsgi_application
 application = get_wsgi_application()
 
@@ -58,8 +59,7 @@ from django.utils import timezone
 
 from cloto.models import ServerInfo
 from django.conf import settings
-from cloto.log import logger
-from cloto import environment_controller
+import logging as logger
 
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data

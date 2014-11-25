@@ -24,18 +24,19 @@
 #
 __author__ = 'gjp'
 import sys
-#import sqlite3 as db
-import MySQLdb as mysql
 import json
 
+import MySQLdb as mysql
 import pika
 import clips
 import requests
 
-from cloto.settings import RABBITMQ_URL, LOGGING_PATH, DB_CHARSET, DB_HOST, DB_NAME, DB_PASSWD, DB_USER
-from constants import SERVERID
+from settings_environments import RABBITMQ_URL, LOGGING_PATH, DB_CHARSET, DB_HOST, DB_NAME, DB_PASSWD, DB_USER
 from log import logger
+
 LOGGER_COMPONENT = 'ENVIRONMENT'
+#MODEL CONSTANTS
+SERVERID = u'serverId'
 
 
 def main():

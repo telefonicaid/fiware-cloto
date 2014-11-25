@@ -22,12 +22,13 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
+from orion_wrapper import orion_client
+
 __author__ = 'gjp'
 from django import http
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
-import OrionClient
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
 from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Conflict
@@ -316,7 +317,7 @@ class ServerSubscriptionView(RESTResource):
     def POST(self, request, tenantId, serverId):
         try:
             ruleManager = RuleManager.RuleManager()
-            ruleManager.orionClient = OrionClient.OrionClient()
+            ruleManager.orionClient = orion_client.orion_client()
             subscriptionId = ruleManager.subscribe_to_rule(tenantId, serverId, request.body)
             return HttpResponse(json.dumps({"serverId": serverId, "subscriptionId": str(subscriptionId)}, indent=4))
         except ObjectDoesNotExist as err:
@@ -335,7 +336,7 @@ class ServerSubscriptionView(RESTResource):
     def DELETE(self, request, tenantId, serverId, subscriptionId):
         try:
             ruleManager = RuleManager.RuleManager()
-            ruleManager.orionClient = OrionClient.OrionClient()
+            ruleManager.orionClient = orion_client.orion_client()
             ruleManager.unsubscribe_to_rule(serverId, subscriptionId)
             return HttpResponse()
         except ObjectDoesNotExist as err:
@@ -349,7 +350,7 @@ class ServerSubscriptionView(RESTResource):
         # Should return the specified rule of server
         try:
             ruleManager = RuleManager.RuleManager()
-            ruleManager.orionClient = OrionClient.OrionClient()
+            ruleManager.orionClient = orion_client.orion_client()
             rule = ruleManager.get_subscription(tenantId, serverId, subscriptionId)
             return HttpResponse(json.dumps(vars(rule), cls=DateEncoder, indent=4))
         except ObjectDoesNotExist as err:

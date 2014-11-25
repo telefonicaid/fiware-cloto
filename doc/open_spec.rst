@@ -884,7 +884,7 @@ Example Rule
 The rule is compound of three parts, name, conditions and actions. In
 this case, the name will be "AlertCPU"
 
-Every fact is like "(server (server-id 12345-abcd)(cpu 50)(mem 33))"
+Every fact is like "(server (server-id 12345-abcd)(cpu 50)(mem 33)(hdd 66)(net 66))"
 
 In this case, the condition defined expects all server with cpu usage
 more than 98.3
@@ -909,6 +909,14 @@ This is the rule as is expected to:
                       "operand": "greater"
                },
                "mem": {
+                      "value": 95,
+                      "operand": "greater equal"
+               },
+               "hdd": {
+                      "value": 95,
+                      "operand": "greater equal"
+               },
+               "net": {
                       "value": 95,
                       "operand": "greater equal"
                }

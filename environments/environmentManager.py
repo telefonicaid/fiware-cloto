@@ -26,17 +26,20 @@ __author__ = 'gjp'
 import signal
 import time
 import sys
-#import sqlite3 as lite
+import os
 import MySQLdb as mysql
 
 from circus.process import Process
-
-from cloto.settings import ENVIRONMENTS_PATH, INSTALLATION_PATH, DB_HOST, DB_CHARSET, DB_USER, \
-    DB_NAME, DB_PASSWD, SETTINGS_TYPE
+from settings_environments import SETTINGS_TYPE, DB_CHARSET, DB_HOST, DB_NAME, \
+    DB_PASSWD, DB_USER, INSTALLATION_PATH, ENVIRONMENTS_PATH
 from log import logger
 
 
 def main():
+    if os.environ.get("SETTINGS_TYPE"):
+        execution_type = os.environ.get("SETTINGS_TYPE")
+    else:
+        execution_type = SETTINGS_TYPE
 
     tenants = []
     processes = []
@@ -52,10 +55,10 @@ def main():
     while (True):
         try:
             conn = None
-            if SETTINGS_TYPE == 'production':
+            if execution_type == 'production':
                 conn = mysql.connect(charset=DB_CHARSET, use_unicode=True, host=DB_HOST,
                                  user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
-            elif SETTINGS_TYPE == "test":
+            elif execution_type == "test":
                 import sqlite3 as lite
                 conn = lite.connect(INSTALLATION_PATH + 'cloto.db')
             cursor = conn.cursor()
@@ -78,6 +81,8 @@ def main():
             if conn:
                 conn.close()
             time.sleep(5)
+            if execution_type == "test":
+                exit_program()
 
 if __name__ == '__main__':
     main()

@@ -23,7 +23,7 @@
 # contact with opensource@tid.es
 
 # POLICY MANAGER CONFIGURATION
-SETTINGS_TYPE = u'test'
+SETTINGS_TYPE = u'production'
 INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'
 LOGGING_PATH = u'/var/log/fiware-cloto'
 

@@ -21,19 +21,16 @@
 #
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
+#
+__author__ = 'gjp'
+from django.test import TestCase
+import environments.environmentManager as manager
 
-# POLICY MANAGER CONFIGURATION
-SETTINGS_TYPE = u'test'
-INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'
-LOGGING_PATH = u'/var/log/fiware-cloto'
 
-ENVIRONMENTS_PATH = INSTALLATION_PATH + u'environments/environment.py'
+class InformationTests(TestCase):
 
-# MYSQL CONFIGURATION
-DB_CHARSET = u'utf8'
-DB_HOST = u'localhost'
-DB_NAME = u'cloto'
-DB_USER = u'policymanager'
-DB_PASSWD = u'policymanager'
-
-RABBITMQ_URL = u'localhost'
+    def test_starting_environment_manager(self):
+        try:
+            manager.main()
+        except SystemExit as ex:
+            self.assertEqual(ex.code, 0)

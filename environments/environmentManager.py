@@ -76,6 +76,8 @@ def main():
             if conn:
                 conn.close()
             time.sleep(5)
+            if SETTINGS_TYPE == "test":
+                exit_program()
 
 if __name__ == '__main__':
     main()

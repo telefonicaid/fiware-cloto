@@ -26,13 +26,11 @@ __author__ = 'gjp'
 import signal
 import time
 import sys
-#import sqlite3 as lite
 import MySQLdb as mysql
 
 from circus.process import Process
-
-from settings.settings import ENVIRONMENTS_PATH, INSTALLATION_PATH, DB_HOST, DB_CHARSET, DB_USER, \
-    DB_NAME, DB_PASSWD, SETTINGS_TYPE
+from settings_environments import SETTINGS_TYPE, DB_CHARSET, DB_HOST, DB_NAME, \
+    DB_PASSWD, DB_USER, INSTALLATION_PATH, ENVIRONMENTS_PATH
 from log import logger
 
 

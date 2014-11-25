@@ -1,4 +1,4 @@
-#!/bin/sh
+#!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
 # Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
@@ -22,24 +22,14 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-# File to execute the covertura and unit test and generate the information
-# to be shown in sonar
-#
-# __author__ = 'fla'
+__author__ = 'gjp'
+from settings_environments import LOGGING_PATH
+import logging
 
-virtualenv ENV
-source ENV/bin/activate
-mkdir -m 777 /var/log/fiware-cloto
-pip install -r requirements.txt
-export DJANGO_SETTINGS_MODULE=settings.settings_tests
-echo "no" | python manage.py syncdb
-coverage run --source=cloto,orion_wrapper,environments manage.py test
-coverage xml -o target/site/cobertura/coverage.xml
-
-if [ ! $1 = "travis_build" ];
-then
-    deactivate
-    echo "Deactivate completed"
-else
-    echo "Travis does not have deactivate command for no reason :SS"
-fi
+logger = logging.getLogger('RuleEngine')
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler(LOGGING_PATH + '/RuleEngine.log')
+fh.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)

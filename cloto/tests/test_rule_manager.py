@@ -39,11 +39,15 @@ class RuleManagerTests(TestCase):
     def setUp(self):
         self.rule = '{\"name\": \"test Name\", \"condition\": ' \
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
-                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    ' \"mem\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"hdd\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"net\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
                     '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
         self.ruleUpdated = '{\"name\": \"test Name2\", \"condition\": ' \
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
-                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    ' \"mem\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"hdd\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"net\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
                     '\"action\": {\"actionName\": \"notify-email\", \"body\": \"test body\",' \
                     ' \"email\": \"test@host.com\"}}'
         self.ruleFake1 = '{\"name\": \"te\", \"condition\": ' \
@@ -310,7 +314,7 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
 
     @patch('cloto.manager.RuleManager.logger')
-    @patch('cloto.OrionClient.logger')
+    @patch('orion_wrapper.orion_client.logger')
     def test_subscription_Orion_Failure(self, mock_logging, mock2):
         """Tests if method throws an error when Orion response is 400 while we are subscribing a server."""
         self.ruleManager.orionClient.client = self.OrionClientError
@@ -327,7 +331,7 @@ class RuleManagerTests(TestCase):
         self.assertTrue(mock_logging.error.called)
 
     @patch('cloto.manager.RuleManager.logger')
-    @patch('cloto.OrionClient.logger')
+    @patch('orion_wrapper.orion_client.logger')
     def test_double_suscription_with_different_rules_and_unsubscription(self, mock_logging, mock2):
         """Tests if method subscribes a server to a rule, and use the same subscriptions for more rules."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)

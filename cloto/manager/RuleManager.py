@@ -35,8 +35,8 @@ from keystoneclient.exceptions import Conflict
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
 import orion_wrapper.orion_client as orion_client
-##from cloto.log import logger
 import logging as logger
+
 
 class RuleManager():
     """This class provides methods to manage rules.

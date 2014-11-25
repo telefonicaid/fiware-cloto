@@ -33,7 +33,7 @@ if [ "$(whoami)" != "root" ]; then
 fi
 
 echo "Do you wish to insert configuration data before installing?"
-file1='cloto/settings.py';
+file1='settings/settings.py';
 select yn in "Yes" "No"; do
     case $yn in
         #Reads configuration params from command line inserted by user.
@@ -52,7 +52,7 @@ select yn in "Yes" "No"; do
         match6="DB_PASSWD = u'";
         match7="user =";
         match8="password =";
-        file2='cloto/db.cfg';
+        file2='settings/db.cfg';
         if [[ `bash --version | grep 'apple-darwin'` ]]
         then
         #Insert configuration params into configuration files in Apple systems.
@@ -140,7 +140,7 @@ chmod 777 /opt/policyManager/fiware-cloto/
 cd /opt/policyManager/fiware-cloto/
 ln fiware-cloto /etc/init.d/fiware-cloto
 chmod a+x /etc/init.d/fiware-cloto
-ln cloto/settings.py /etc/sysconfig/fiware-cloto.cfg
+ln settings/settings.py /etc/sysconfig/fiware-cloto.cfg.py
 
 echo "..."
 #installs python requirements

@@ -51,11 +51,9 @@ API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.p
 VERSION = u'1.2.0'
 MAX_WINDOW_SIZE = 10
 LOGGING_PATH = u'/var/log/fiware-cloto'
-RABBITMQ_URL = u'localhost'
 
-ENVIRONMENTS_MANAGER_PATH = INSTALLATION_PATH + u'cloto/environmentManager.py'
-ENVIRONMENTS_PATH = INSTALLATION_PATH + u'cloto/environment.py'
-CLIPS_PATH = INSTALLATION_PATH + u'cloto/clips'
+ENVIRONMENTS_MANAGER_PATH = INSTALLATION_PATH + u'environments/environmentManager.py'
+ENVIRONMENTS_PATH = INSTALLATION_PATH + u'environments/environment.py'
 
 # ORION CONTEXT BROKER CONFIGURATION
 CONTEXT_BROKER_URL = u'http://130.206.82.11:1026/NGSI10'
@@ -67,30 +65,17 @@ NOTIFICATION_TIME = u'PT5S'
 DB_CHARSET = u'utf8'
 DB_HOST = u'localhost'
 DB_NAME = u'cloto'
-DB_USER = u''
-DB_PASSWD = u''
+DB_USER = u'policymanager'
+DB_PASSWD = u'policymanager'
 
-#from cloto.configuration import INSTALLATION_PATH
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.mysql',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
         'OPTIONS': {
-            'read_default_file': INSTALLATION_PATH + 'cloto/db.cfg'
+            'read_default_file': INSTALLATION_PATH + 'settings/db.cfg'
         },
     }
 }
-"""DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
-        'NAME': INSTALLATION_PATH + '/cloto.db',                      # Or path to database file if using sqlite3.
-        # The following settings are not used with sqlite3:
-        'USER': 'root',
-        'PASSWORD': '',
-        'HOST': '',                      # Empty for localhost through domain sockets.
-        'PORT': '',                      # Set to empty string for default.
-    }
-}
-"""
 
 # Hosts/domain names that are valid for this site; required if DEBUG is False
 # See https://docs.djangoproject.com/en/1.5/ref/settings/#allowed-hosts
@@ -154,7 +139,7 @@ STATICFILES_FINDERS = (
 )
 
 # Make this unique, and don't share it with anybody.
-SECRET_KEY = 'z%&5#wx^^ira(+4&z4n91=qyl77bz&nkvli#%a*qt7cjpi&(tr'
+SECRET_KEY = ''
 
 # List of callables that know how to import templates from various sources.
 TEMPLATE_LOADERS = (
@@ -193,6 +178,7 @@ INSTALLED_APPS = (
     'django.contrib.staticfiles',
     'cloto',
     'orion_wrapper',
+    'environments',
     # Uncomment the next line to enable the admin:
     # 'django.contrib.admin',
     # Uncomment the next line to enable admin documentation:

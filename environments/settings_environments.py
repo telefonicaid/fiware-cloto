@@ -21,14 +21,19 @@
 #
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
-#
-__author__ = 'gjp'
-from django.conf import settings
-import logging
-logger = logging.getLogger('RuleEngine')
-logger.setLevel(logging.DEBUG)
-fh = logging.FileHandler(settings.LOGGING_PATH + '/RuleEngine.log')
-fh.setLevel(logging.DEBUG)
-formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
-fh.setFormatter(formatter)
-logger.addHandler(fh)
+
+# POLICY MANAGER CONFIGURATION
+SETTINGS_TYPE = u'production'
+INSTALLATION_PATH = u'/opt/policyManager/fiware-cloto/'
+LOGGING_PATH = u'/var/log/fiware-cloto'
+
+ENVIRONMENTS_PATH = INSTALLATION_PATH + u'environments/environment.py'
+
+# MYSQL CONFIGURATION
+DB_CHARSET = u'utf8'
+DB_HOST = u'localhost'
+DB_NAME = u'cloto'
+DB_USER = u'policymanager'
+DB_PASSWD = u'policymanager'
+
+RABBITMQ_URL = u'localhost'

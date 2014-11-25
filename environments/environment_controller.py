@@ -25,7 +25,6 @@
 __author__ = 'gjp'
 
 from django.conf import settings
-#from settings import ENVIRONMENTS_MANAGER_PATH, SETTINGS_TYPE
 from circus import get_arbiter
 
 

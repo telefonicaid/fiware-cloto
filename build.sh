@@ -32,6 +32,7 @@ source ENV/bin/activate
 mkdir -m 777 /var/log/fiware-cloto
 pip install -r requirements.txt
 export DJANGO_SETTINGS_MODULE=settings.settings_tests
+export SETTINGS_TYPE=test
 echo "no" | python manage.py syncdb
 coverage run --source=cloto,orion_wrapper,environments manage.py test
 coverage xml -o target/site/cobertura/coverage.xml

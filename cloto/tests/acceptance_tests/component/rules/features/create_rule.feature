@@ -9,14 +9,16 @@ Scenario Outline: Create a new specific rule for scale_up or scale_down
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a scale rule with "<name>" and "<action>"
   Then the rule is saved in Policy Manager
 
   Examples:
-  | server_id | name        | cpu_value | cpu_operand | mem_value | mem_operand   | action    |
-  | qatest    | random      | 90        | greater     | 98        | greater equal | scaleUp   |
-  | qatest    | random      | 10        | less        | 5         | less equal    | scaleDown |
-  | qatest    | !@#$%^&*()_ | 10        | less        | 5         | less equal    | scaleDown |
+  | server_id | name        | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    |
+  | qatest    | random      | 90        | greater     | 98        | greater equal | 98        | greater equal | 98        | greater equal | scaleUp   |
+  | qatest    | random      | 10        | less        | 5         | less equal    | 98        | greater equal | 98        | greater equal | scaleDown |
+  | qatest    | !@#$%^&*()_ | 10        | less        | 5         | less equal    | 98        | greater equal | 98        | greater equal | scaleDown |
 
 
 Scenario Outline: Create a new specific rule for notify mail
@@ -24,13 +26,15 @@ Scenario Outline: Create a new specific rule for notify mail
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a notify rule with "<name>", "<body>" and "<email>"
   Then the rule is saved in Policy Manager
 
   Examples:
-  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | body  | email         |
-  | qatest    | random  | 90        | greater     | 98        | greater equal | hello!| aaaa@aaaa.es  |
-  | qatest    | random  | 10        | less        | 5         | less equal    | hello!| aaaa@aaaa.es  |
+  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | body  | email         |
+  | qatest    | random  | 90        | greater     | 98        | greater equal | 98        | greater equal | 98        | greater equal | hello!| aaaa@aaaa.es  |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 98        | greater equal | 98        | greater equal | hello!| aaaa@aaaa.es  |
 
 
 Scenario Outline: Create a new specific rule for scale without some value
@@ -38,17 +42,19 @@ Scenario Outline: Create a new specific rule for scale without some value
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a scale rule with "<name>" and "<action>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
-  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | action    | Error_code  | FaultElement  |
-  | qatest    |         | 90        | greater     | 98        | greater equal | scaleUp   | 400         | badRequest    |
-  | qatest    | random  |           | greater     | 98        | greater equal | scaleUp   | 400         | badRequest    |
-  | qatest    | random  | 90        |             | 98        | greater equal | scaleUp   | 400         | badRequest    |
-  | qatest    | random  | 90        | greater     |           | greater equal | scaleUp   | 400         | badRequest    |
-  | qatest    | random  | 90        | greater     | 98        |               | scaleUp   | 400         | badRequest    |
-  | qatest    | random  | 90        | greater     | 98        | greater equal |           | 400         | badRequest    |
+  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    | Error_code  | FaultElement  |
+  | qatest    |         | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   | 400         | badRequest    |
+  | qatest    | random  |           | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   | 400         | badRequest    |
+  | qatest    | random  | 90        |             | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   | 400         | badRequest    |
+  | qatest    | random  | 90        | greater     |           | greater equal | 90        | greater       | 90        | greater       | scaleUp   | 400         | badRequest    |
+  | qatest    | random  | 90        | greater     | 98        |               | 90        | greater       | 90        | greater       | scaleUp   | 400         | badRequest    |
+  | qatest    | random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       |           | 400         | badRequest    |
 
 
 Scenario Outline: Create a new specific rule for notify without some value
@@ -56,13 +62,15 @@ Scenario Outline: Create a new specific rule for notify without some value
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a notify rule with "<name>", "<body>" and "<email>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
-  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | body  | email         | Error_code  | FaultElement  |
-  | qatest    | random  | 90        | greater     | 98        | greater equal |       | aaaa@aaaa.es  | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | hello!|               | 400         | badRequest    |
+  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | body  | email         | Error_code  | FaultElement  |
+  | qatest    | random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       |       | aaaa@aaaa.es  | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | hello!|               | 400         | badRequest    |
 
 
 Scenario Outline: Create a new specific rule for scale without some parameter
@@ -130,56 +138,60 @@ Scenario Outline: Create a new specific rule for scale with incorrect parameters
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a scale rule with "<name>" and "<action>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
-  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | action    | Error_code  | FaultElement  |
-  | qatest    | random  | -1        | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 101       | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 100.1     | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 5'5       | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 5,5       | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | testing   | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 1 0       | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 1F        | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | -1        | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 101       | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 100.1     | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5'5       | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5,5       | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5 0       | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5F        | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | testing   | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | les s       | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | testing     | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less less   | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | equal less  | 5         | less equal    | scaleDown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scale_Down| 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scale     | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | testing   | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scale Down| 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scaledown | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scale Up  | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scaleup   | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | ScaleUp   | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | SCALEUP   | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | scaleUp_  | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | SCALEUP?  | 400         | badRequest    |
-  | qatest    | qa      | 10        | less        | 5         | less equal    | scaleDown | 400         | badRequest    |
+  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    | Error_code  | FaultElement  |
+  | qatest    | random  | -1        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 101       | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 100.1     | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 5'5       | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 5,5       | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | testing   | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 1 0       | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 1F        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | -1        | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 101       | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 100.1     | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5'5       | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5,5       | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5 0       | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5F        | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | testing   | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | les s       | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | testing     | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less less   | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | equal less  | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scale_Down| 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scale     | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | testing   | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scale Down| 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaledown | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scale Up  | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleup   | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | ScaleUp   | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | SCALEUP   | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleUp_  | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | SCALEUP?  | 400         | badRequest    |
+  | qatest    | qa      | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | scaleDown | 400         | badRequest    |
 
 Scenario Outline: Create a new specific rule for notify with incorrect parameters
 
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a notify rule with "<name>", "<body>" and "<email>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
-  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | body  | email         | Error_code  | FaultElement  |
-  | qatest    | random  | 90        | greater     | 98        | greater equal | hello!| aaaa@aaaa     | 400         | badRequest    |
-  | qatest    | random  | 10        | less        | 5         | less equal    | hello!| aaaaaaaa.es   | 400         | badRequest    |
+  | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | body  | email         | Error_code  | FaultElement  |
+  | qatest    | random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | hello!| aaaa@aaaa     | 400         | badRequest    |
+  | qatest    | random  | 10        | less        | 5         | less equal    | 90        | greater       | 90        | greater       | hello!| aaaaaaaa.es   | 400         | badRequest    |
 
 
 Scenario Outline: Create a rule in not existent tenant_id and / or server_id
@@ -187,14 +199,16 @@ Scenario Outline: Create a rule in not existent tenant_id and / or server_id
   Given a non created "<tenant_id>" and "<server_id>"
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   When I create a scale rule with "<name>" and "<action>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
 
-  | Error_code  | FaultElement  | server_id   | name    | cpu_value | cpu_operand | mem_value | mem_operand   | action    | tenant_id |
-  | 401         | unauthorized  | qatestserver| random  | 90        | greater     | 98        | greater equal | scaleUp   | qatest    |
-  | 401         | unauthorized  | qatest      | random  | 90        | greater     | 98        | greater equal | scaleUp   | qatest    |
+  | Error_code  | FaultElement  | server_id   | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    | tenant_id |
+  | 401         | unauthorized  | qatestserver| random  | 90        | greater     | 98        | 90        | greater       | 90        | greater       | greater equal | scaleUp   | qatest    |
+  | 401         | unauthorized  | qatest      | random  | 90        | greater     | 98        | 90        | greater       | 90        | greater       | greater equal | scaleUp   | qatest    |
 
 
 @security
@@ -203,14 +217,16 @@ Scenario Outline: Create a rule with incorrect token
   Given a created "<server_id>" inside tenant
   And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
   And parameter "mem" with "<mem_value>" and "<mem_operand>"
+  And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
+  And parameter "net" with "<net_value>" and "<net_operand>"
   And incorrect "<token>"
   When I create a scale rule with "<name>" and "<action>"
   Then I obtain an "<Error_code>" and the "<FaultElement>"
 
   Examples:
 
-  | Error_code  | FaultElement  | token     | server_id   | name    | cpu_value | cpu_operand | mem_value | mem_operand   | action    |
-  | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | 90        | greater     | 98        | greater equal | scaleUp   |
-  | 401         | unauthorized  | old_token | qatestserver| random  | 90        | greater     | 98        | greater equal | scaleUp   |
-  | 401         | unauthorized  |           | qatestserver| random  | 90        | greater     | 98        | greater equal | scaleUp   |
-  | 401         | unauthorized  | null      | qatestserver| random  | 90        | greater     | 98        | greater equal | scaleUp   |
+  | Error_code  | FaultElement  | token     | server_id   | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    |
+  | 401         | unauthorized  | 1a2b3c    | qatestserver| random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   |
+  | 401         | unauthorized  | old_token | qatestserver| random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   |
+  | 401         | unauthorized  |           | qatestserver| random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   |
+  | 401         | unauthorized  | null      | qatestserver| random  | 90        | greater     | 98        | greater equal | 90        | greater       | 90        | greater       | scaleUp   |

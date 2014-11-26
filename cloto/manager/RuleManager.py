@@ -420,8 +420,8 @@ class RuleManager():
         :param object type:     The type of the value
         """
         try:
-            if not value:
-                raise ValueError
+            if value == None or value == "":
+                raise ValueError()
             if type == str:
                 if name == "operation" and value not in OPERATIONS:
                     raise ValueError
@@ -430,7 +430,7 @@ class RuleManager():
             else:
                 if type == float:
                     myfloat = float(value)
-                if myfloat < 0 or myfloat > 100:
+                if myfloat < 0.0 or myfloat > 100.0:
                     raise ValueError
         except ValueError:
             raise ValueError("You must provide a valid value and operand for %s" % name)
@@ -447,6 +447,7 @@ class RuleManager():
             actionName = action['actionName']
             self.verify_values('actionName', actionName, str)
             action_string = "(python-call " + actionName + " \"" + serverId + "\" ?url"
+
             if actionName == "notify-email":
                 email = action['email']
                 body = action['body']
@@ -481,8 +482,8 @@ class RuleManager():
             ##Adding CPU condition
             parameters = ["cpu", "mem", "hdd", "net"]
             for k in parameters:
-                self.verify_values("cpu operand", condition[k]["operand"], str)
-                self.verify_values("cpu value", condition[k]["value"], float)
+                self.verify_values(k + " operand", condition[k]["operand"], str)
+                self.verify_values(k, condition[k]["value"], float)
                 operand = operands[condition[k]["operand"]]
                 condition_string += " ?" + k + "&:(" + operand + " ?" + k + " " \
                                     + str(condition[k]["value"]) + ")"

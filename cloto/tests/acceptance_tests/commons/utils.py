@@ -33,9 +33,9 @@ from constants import CONTENT_TYPE_HEADER, AUTHENTICATION_HEADER, DEFAULT_CONTEN
 
 from constants import ATTRIBUTES_NAME, ATTRIBUTES_TYPE, ATTRIBUTES_VALUE, ATTRIBUTES_LIST, ATTRIBUTE_PROBE, ATTRIBUTES
 from constants import CONTEXT_IS_PATTERN, CONTEXT_IS_PATTERN_VALUE, CONTEXT_SERVER, \
-    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT
+    CONTEXT_SERVER_ID, CONTEXT_TYPE, CONTEXT_ELEMENT, SERVERS, RULES, SERVER_ID, RULE_URL_DEFAULT, RULE_ID
 from constants import CONTEXT_STATUS_CODE_CODE, CONTEXT_STATUS_CODE_DETAILS, CONTEXT_STATUS_CODE_OK, \
-    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID
+    CONTEXT_STATUS_CODE_REASON, CONTEXT_STATUS_CODE, ORIGINATOR, CONTEXT_RESPONSES, SUBSCRIPTION_ID, RESPONSE_OK_CODE
 from errors import FAULT_ELEMENT_ERROR, ERROR_CODE_ERROR, HTTP_CODE_NOT_OK
 from configuration import TENANT_ID, HEADERS
 from rest_utils import RestUtils
@@ -228,12 +228,18 @@ def create_subscription(api_utils, server_id=None, headers=HEADERS, tenant_id=TE
     :param rule_action: Action of the rule to be created
     :returns subscription_id: Subscription unique identifier
     """
-    rule_id = RestUtils.create_rule(api_utils, tenant_id, server_id, rule_name, rule_condition, rule_action, headers)
 
+    example_rule = {'action': {'actionName': 'notify-scale', 'operation': 'scaleUp'}, 'name': 'aSbKDLIHx', 'condition':
+        {'mem': {'operand': 'greater equal', 'value': '98'},
+         'net': {'operand': 'greater equal', 'value': '98'},
+         'hdd': {'operand': 'greater equal', 'value': '98'},
+         'cpu': {'operand': 'greater', 'value': '90'}}}
+    rule_id = RestUtils.create_rule(api_utils, tenant_id=tenant_id, server_id=server_id, rule_name=rule_name,
+                                    body=example_rule, headers=headers)
     req = api_utils.create_subscription(tenant_id=tenant_id, server_id=server_id,
-                                        rule_id=rule_id, url=RULE_URL_DEFAULT, headers=headers)
+                                        rule_id=rule_id.json()[RULE_ID], url=RULE_URL_DEFAULT, headers=headers)
 
-    assert_true(req.ok, HTTP_CODE_NOT_OK.format(req.status_code))
+    assert_equals(req.status_code, RESPONSE_OK_CODE)
     subscription_id = req.json()[SUBSCRIPTION_ID]
     return subscription_id
 

@@ -31,11 +31,12 @@ import utils as Utils
 import random
 from constants import RULE_ACTION_SCALE_LIST, DEFAULT_BODY, RANDOM, RULE_ACTION, RULE_ACTION_NAME, BODY, \
     RULE_ACTION_NAME_LIST, MEM, CPU, EMAIL, RULE_NAME, RULE_CONDITION, RULE_OPERATION, RULE_OPERAND, RULE_VALUE, \
-    RULE_ID, RULE_SPECIFIC_ID
+    RULE_ID, RULE_SPECIFIC_ID, HDD, NET
 
 
 def create_scale_specific_rule(operation=random.choice(RULE_ACTION_SCALE_LIST), name=Utils.id_generator(),
-                               mem_value='1', mem_operand='less equal', cpu_value='0', cpu_operand='less'):
+                               mem_value=1, mem_operand='less equal', cpu_value=0, cpu_operand='less',
+                               hdd_value=0, hdd_operand='less', net_value=0, net_operand='less'):
 
     """Method to create a default scalability rule body used to create or update rules
     :param operation: operation to be performed by the Scalability manager
@@ -58,19 +59,30 @@ def create_scale_specific_rule(operation=random.choice(RULE_ACTION_SCALE_LIST), 
                 MEM: {
                     RULE_OPERAND: mem_operand,
                     RULE_VALUE: mem_value
-            },
+                },
                 CPU: {
                     RULE_OPERAND: cpu_operand,
                     RULE_VALUE: cpu_value
-                    }
+
+                },
+                HDD: {
+                    RULE_OPERAND: hdd_operand,
+                    RULE_VALUE: hdd_value
+                },
+                NET: {
+                    RULE_OPERAND: net_operand,
+                    RULE_VALUE: net_value
                 }
             }
+
+    }
 
     return rule
 
 
-def create_notify_specific_rule(body=DEFAULT_BODY, email="aaa@aaa.es", name=Utils.id_generator(), mem_value='1',
-                                mem_operand='less equal', cpu_value='0', cpu_operand='less'):
+def create_notify_specific_rule(body=DEFAULT_BODY, email="aaa@aaa.es", name=Utils.id_generator(), mem_value=1,
+                                mem_operand='less equal', cpu_value=0, cpu_operand='less', hdd_value=0,
+                                hdd_operand='less', net_value=0, net_operand='less'):
 
     """Method to create a default notify rule body used to create or update rules
     :param body: body to be send to the user
@@ -94,17 +106,27 @@ def create_notify_specific_rule(body=DEFAULT_BODY, email="aaa@aaa.es", name=Util
                 MEM: {
                     RULE_OPERAND: mem_operand,
                     RULE_VALUE: mem_value
-            },
+                },
                 CPU: {
                     RULE_OPERAND: cpu_operand,
                     RULE_VALUE: cpu_value
-                    }
+                    },
+                HDD: {
+                    RULE_OPERAND: hdd_operand,
+                    RULE_VALUE: hdd_value
+                },
+                NET: {
+                    RULE_OPERAND: net_operand,
+                    RULE_VALUE: net_value
                 }
+            }
+
             }
     return rule
 
 
-def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=None, mem=None, body=None):
+def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=None, mem=None, hdd=None, net=None,
+                            body=None):
 
     """Method to verify the rule body parameters
     :param response: Response body received from server
@@ -117,6 +139,8 @@ def assert_rule_information(response, rule_id=None, name=None, action=None, cpu=
         assert_equals(response[RULE_ACTION], action)
         assert_equals(response[RULE_CONDITION][CPU], cpu)
         assert_equals(response[RULE_CONDITION][MEM], mem)
+        assert_equals(response[RULE_CONDITION][HDD], hdd)
+        assert_equals(response[RULE_CONDITION][NET], net)
     else:
         assert_equals(response[RULE_NAME], body[RULE_NAME])
         assert_equals(response[RULE_ID], rule_id)

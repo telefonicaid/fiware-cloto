@@ -60,6 +60,8 @@ def set_tenant_and_server_id(step, server_id):
     world.server_id = server_id
     world.cpu = None
     world.mem = None
+    world.hdd = None
+    world.net = None
 
 
 @step(u'the rule is saved in Policy Manager')
@@ -158,7 +160,7 @@ def assert_rule_is_updated(step):
     assert world.req.ok, world.req.content
     response = Utils.assert_json_format(world.req)
     Rule_Utils.assert_rule_information(response=response, rule_id=world.rule_id, name=world.rule_name, cpu=world.cpu,
-                                  mem=world.mem, action=world.rule_action)
+                                  mem=world.mem, hdd=world.hdd, net=world.net, action=world.rule_action)
 
 
 @step(u'I update "([^"]*)"')
@@ -286,6 +288,12 @@ def and_parameter_group1_with_group2_and_group3(step, parameter_name, parameter_
     elif parameter_name == 'mem':
         world.mem = Rule_Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
 
+    elif parameter_name == 'hdd':
+        world.hdd = Rule_Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
+
+    elif parameter_name == 'net':
+        world.net = Rule_Utils.create_rule_parameter_dict(value=parameter_value, operand=parameter_operand)
+
 
 @step(u'When I create a scale rule with "([^"]*)" and "([^"]*)"')
 def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
@@ -296,7 +304,8 @@ def when_i_create_a_scale_rule_with_group1_and_group2(step, rule_name, action):
     action = Rule_Utils.create_rule_action_dict(action_name='notify-scale', operation=action)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
-                                      cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
+                                      cpu=world.cpu, mem=world.mem, hdd=world.hdd, net=world.net, action=action,
+                                      headers=world.headers)
 
 
 @step(u'When I create a notify rule with "([^"]*)", "([^"]*)" and "([^"]*)"')
@@ -305,7 +314,8 @@ def when_i_create_a_notify_rule_with_group1_group2_and_group3(step, rule_name, b
     action = Rule_Utils.create_rule_action_dict(action_name='notify-email', body=body, email=email)
 
     world.req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=rule_name,
-                                      cpu=world.cpu, mem=world.mem, action=action, headers=world.headers)
+                                      cpu=world.cpu, mem=world.mem, hdd=world.hdd, net=world.net, action=action,
+                                      headers=world.headers)
 
 
 @step(u'And some rule prepared with all data')
@@ -356,6 +366,8 @@ def given_the_created_scale_rule_in_the_in_the_group1_with_the_following_paramet
 
     world.cpu = None
     world.mem = None
+    world.hdd = None
+    world.net = None
     world.server_id = server_id
 
     for examples in step.hashes:
@@ -364,7 +376,11 @@ def given_the_created_scale_rule_in_the_in_the_group1_with_the_following_paramet
                                                           cpu_value=examples['cpu_value'],
                                                           cpu_operand=examples['cpu_operand'],
                                                           mem_value=examples['mem_value'],
-                                                          mem_operand=examples['mem_operand'])
+                                                          mem_operand=examples['mem_operand'],
+                                                          hdd_value=examples['hdd_value'],
+                                                          hdd_operand=examples['hdd_operand'],
+                                                          net_value=examples['net_value'],
+                                                          net_operand=examples['net_operand'])
 
         req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=rule_body)
         world.rule_id = req.json()[RULE_ID]
@@ -383,14 +399,16 @@ def when_i_update_the_rule_with_group1_and_group2(step, new_name, new_action, se
     world.rule_action = Rule_Utils.create_rule_action_dict(action_name='notify-scale', operation=new_action)
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
-                                      cpu=world.cpu, mem=world.mem, action=world.rule_action, headers=world.headers,
-                                      rule_id=world.rule_id)
+                                      cpu=world.cpu, mem=world.mem, hdd=world.hdd, net=world.net,
+                                      action=world.rule_action, headers=world.headers, rule_id=world.rule_id)
 
 
 @step(u'Given the created notify rule in the in the "([^"]*)" with the following parameters')
 def given_the_created_notify_rule_in_the_in_the_group1_with_the_following_parameters(step, server_id):
     world.cpu = None
     world.mem = None
+    world.hdd = None
+    world.net = None
     world.server_id = server_id
 
     for examples in step.hashes:
@@ -400,7 +418,11 @@ def given_the_created_notify_rule_in_the_in_the_group1_with_the_following_parame
                                                            cpu_value=examples['cpu_value'],
                                                            cpu_operand=examples['cpu_operand'],
                                                            mem_value=examples['mem_value'],
-                                                           mem_operand=examples['mem_operand'])
+                                                           mem_operand=examples['mem_operand'],
+                                                           hdd_value=examples['hdd_value'],
+                                                           hdd_operand=examples['hdd_operand'],
+                                                           net_value=examples['net_value'],
+                                                           net_operand=examples['net_operand'])
 
         req = api_utils.create_rule(tenant_id=world.tenant_id, server_id=world.server_id, body=rule_body)
         world.rule_id = req.json()[RULE_ID]
@@ -418,5 +440,5 @@ def when_i_update_the_notify_rule_with_group1_group2_and_group3(step, new_name, 
     world.rule_action = Rule_Utils.create_rule_action_dict(action_name='notify-email', body=new_body, email=new_mail)
 
     world.req = api_utils.update_rule(tenant_id=world.tenant_id, server_id=world.server_id, rule_name=world.rule_name,
-                                      cpu=world.cpu, mem=world.mem, action=world.rule_action, headers=world.headers,
-                                      rule_id=world.rule_id)
+                                      cpu=world.cpu, mem=world.mem, hdd=world.hdd, net=world.net,
+                                      action=world.rule_action, headers=world.headers, rule_id=world.rule_id)

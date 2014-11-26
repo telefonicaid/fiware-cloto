@@ -34,8 +34,8 @@ TENANT_WSIZE = u'windowsize'
 TENANT_DOC = u'doc'
 TENANT_VERSION = u'version'
 TENANT_KEY = u'tenantId'
-TENANT_DEFAULT_DOC = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/' \
-    'FIWARE.OpenSpecification.Details.Cloud.PolicyManager'
+TENANT_DEFAULT_DOC = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/' \
+                     u'Policy_Manager_Open_RESTful_API_Specification'
 
 CONTENT_TYPE_HEADER = u'content-type'
 DEFAULT_CONTENT_TYPE_HEADER = u'application/json'
@@ -62,6 +62,8 @@ OPERANDS = ["greater", "less", "greater equal", "less equal"]
 BODY = u'body'
 MEM = u'mem'
 CPU = u'cpu'
+HDD = u'hdd'
+NET = u'net'
 EMAIL = u'email'
 DEFAULT_BODY = "Be careful, the mem is too low!!!!"
 LONG_NAME = u'This is a long name to test the maximum length of elasticity rule'
@@ -112,6 +114,7 @@ CONTEXT_STATUS_CODE_OK = u'Ok'
 CONTEXT_STATUS_CODE_REASON = u'reasonPhrase'
 CONTEXT_STATUS_CODE_DETAILS = u'details'
 CONTEXT_STATUS_CODE = u'statusCode'
+RESPONSE_OK_CODE = 200
 
 #MOCK PATHS
 

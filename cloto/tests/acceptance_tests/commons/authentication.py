@@ -28,9 +28,9 @@ import requests
 
 
 def get_token():
-    body = '{"auth": {"tenantName": "admin", "passwordCredentials":{"username": "admin", "password": ""}}}'
+    body = '{"auth": {"tenantName": "", "passwordCredentials":{"username": "", "password": ""}}}'
     headers = {'content-type': 'application/json', 'Accept': 'application/json'}
-    url = 'http://130.206.80.61:35357/v2.0/tokens'
+    url = ''
     r = requests.request(method='post', url=url, data=body, headers=headers)
     response = r.json()
     token_id = response['access']['token']['id']

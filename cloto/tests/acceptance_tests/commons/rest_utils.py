@@ -29,7 +29,8 @@ from json import JSONEncoder
 import requests
 
 from commons.configuration import POLICY_MANAGER_PORT, POLICY_MANAGER_IP, HEADERS, FACTS_IP, FACTS_PORT
-from commons.constants import RULE_ACTION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE, CPU, MEM, RULE_CONDITION
+from commons.constants import RULE_ACTION, RULE_NAME, RULE_ID, RULE_URL, TENANT_WSIZE, CPU, MEM, HDD, NET,\
+    RULE_CONDITION
 
 
 POLICY_MANAGER_SERVER = 'http://{}:{}/v1.0'.format(POLICY_MANAGER_IP, POLICY_MANAGER_PORT)
@@ -70,13 +71,11 @@ class RestUtils(object):
         kwargs['url_root'] = self.api_url
 
         url = pattern.format(**kwargs)
-
         print 'METHOD: {}\nURL: {} \nHEADERS: {} \nBODY: {}'.format(method, url, headers, self.encoder.encode(body))
 
         try:
             r = requests.request(method=method, url=url, data=self.encoder.encode(body), headers=headers,
                                  params=payload)
-
         except Exception, e:
             print "Request {} to {} crashed: {}".format(method, url, str(e))
             return None
@@ -133,7 +132,7 @@ class RestUtils(object):
         return self._call_api(pattern=UPDATE_CONTEXT_PATTERN, method='post', headers=headers, tenant_id=tenant_id,
                               server_id=server_id, body=body)
 
-    def create_rule(self, tenant_id=None, server_id=None, rule_name=None, cpu=None, mem=None,
+    def create_rule(self, tenant_id=None, server_id=None, rule_name=None, cpu=None, mem=None, hdd=None, net=None,
                         action=None, headers=HEADERS, body=None):
 
         """Create a new elasticity rule in specific server.
@@ -157,6 +156,12 @@ class RestUtils(object):
             if mem is not None:
                 condition[MEM] = mem
 
+            if hdd is not None:
+                condition[HDD] = hdd
+
+            if net is not None:
+                condition[NET] = net
+
             if len(condition) > 0:
                 api_body[RULE_CONDITION] = condition
 
@@ -170,7 +175,7 @@ class RestUtils(object):
                               server_id=server_id, body=api_body)
 
     def update_rule(self, tenant_id=None, server_id=None, rule_name=None, action=None, rule_id=None, cpu=None,
-                    mem=None, body=None, headers=HEADERS):
+                    mem=None, hdd=None, net=None, body=None, headers=HEADERS):
         """Update a elasticity rule in specific server.
         :param tenant_id: Is the id of the tenant.
         :param server_id: Is the id of the server.
@@ -193,6 +198,12 @@ class RestUtils(object):
 
             if mem is not None:
                 condition[MEM] = mem
+
+            if hdd is not None:
+                condition[HDD] = hdd
+
+            if net is not None:
+                condition[NET] = net
 
             if len(condition) > 0:
                 api_body[RULE_CONDITION] = condition

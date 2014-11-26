@@ -33,7 +33,9 @@ FACTS_PORT = 5000
 RABBIT_IP = '127.0.0.1'
 
 AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
-TENANT_ID = '000000000000000000000000000admin'
+TENANT_ID = ''
+USER = ''
+PASSWORD = ''
 CONTENT_TYPE = 'application/json'
 HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
 DB_PATH = '../../../../cloto.db'

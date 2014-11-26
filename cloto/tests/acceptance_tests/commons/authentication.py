@@ -25,10 +25,11 @@
 __author__ = 'arobres'
 
 import requests
+from configuration import TENANT_ID, USER, PASSWORD
 
 
 def get_token():
-    body = '{"auth": {"tenantName": "", "passwordCredentials":{"username": "", "password": ""}}}'
+    body = '{"auth": {"tenantName": "%s", "passwordCredentials":{"username": "%s", "password": "%s"}}}' % (TENANT_ID, USER, PASSWORD)
     headers = {'content-type': 'application/json', 'Accept': 'application/json'}
     url = ''
     r = requests.request(method='post', url=url, data=body, headers=headers)

@@ -482,7 +482,7 @@ class RuleManager():
             ##Adding CPU condition
             parameters = ["cpu", "mem", "hdd", "net"]
             for k in parameters:
-                self.verify_values(k, condition[k]["operand"], str)
+                self.verify_values(k + " operand", condition[k]["operand"], str)
                 self.verify_values(k, condition[k]["value"], float)
                 operand = operands[condition[k]["operand"]]
                 condition_string += " ?" + k + "&:(" + operand + " ?" + k + " " \

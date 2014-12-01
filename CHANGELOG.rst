@@ -1,6 +1,25 @@
 Changelog
 =========
 
+v1.3.0 (2014-12-01)
+------------------
+
+Changes
+~~~~~~~
+
+- Readme is now in RsT format. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Fixing Acceptance Tests with all new cloto structure. [Guillermo
+  Jimenez Prieto]
+
+- Fixing logging from django files. [Guillermo Jimenez Prieto]
+
+- Fixing cobertura report to work with jenkins and sonar. [Guillermo
+  Jimenez Prieto]
+
 v1.2.0 (2014-11-04)
 -------------------
 

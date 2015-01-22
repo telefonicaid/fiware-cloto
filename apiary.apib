@@ -1,0 +1,352 @@
+FORMAT: 1A
+HOST: http://policymanager.testbed.fi-ware.org:8000/v1.0
+
+# Policy Manager
+The PMI Scalability API is a RESTful, resource-oriented API accessed via HTTP/HTTPS that uses JSON-based representations for information interchange that provide functionalities to the Policy Manager GE. This document describes the FI-WARE-specific features extension, which allows cloud user to extend the basic functionalities offered by Policy Manager GE in order to cope with elasticity management.
+
+# Group Facts
+Notes related resources of the **Facts API**
+
+## Facts Collection [/{tenantid}/servers/{serverid}]
+### Create new facts associated to a server [POST]
+This operation updates the context related to a specific server, identified with its serverId. The context information contains the description of the CPU, Memory, Disk and/or Network usages. This message follows the NGSI-10 information model but using JSON format and the response has no body.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Numeric `id` of the 
+
++ Request (application/json)
+
+        {
+            "subscriptionId": "<SubscriptionId>",
+            "originator": "http://localhost/test",
+            "contextResponses": [
+                {
+                    "contextElement": {
+                        "type": "Server",
+                        "isPattern": "false",
+                        "id": "<ServerId>",
+                        "attributes": [
+                            {
+                                "name": "CPU",
+                                "type": "Probe",
+                                "contextValue": "0.75"
+                            },
+                            {
+                                "name": "Memory",
+                                "type": "Probe",
+                                "contextValue": "0.83"
+                            },
+                            {
+                                "name": "Disk",
+                                "type": "Probe",
+                                "contextValue": "0.83"
+                            },
+                            {
+                                "name": "Network",
+                                "type": "Probe",
+                                "contextValue": "0.83"
+                            }
+                        ]
+                    },
+                    "statusCode": {
+                        "code": "200",
+                        "reasonPhrase": "Ok",
+                        "details": "a message"
+                    }
+                }
+            ]
+        }
+
+
++ Response 200 (application/json)
+
+        { "id": 3, "title": "no error." }
+
+# Group Cloto
+Notes related resources of the **Cloto API**
+
+## General Operations [/{tenantid}]
+### Get the information of the API [GET]
+This operation lists the information of the current version of the API.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of the Tenant to perform action with. Has example value.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+
+        {
+            "owner": "TELEFONICA I+D",
+            "windowsize": <windows_size>,
+            "version": "<API_version>",
+            "runningfrom": "<last_launch_date>
+            "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification"
+        }
+
+### Update the window size [PUT]
+This call updates the window size of the service in order to change the stabilization window size to be applied to the monitoring data received from the Monitoring GE
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of the Tenant to perform action with. Has example value.
+
++ Request (application/json)
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "windowsize": <windows_size>
+            }  
+
++ Response 200 (application/json)
+
+        {
+            "windowsize": <windows_size>
+        }
+
+## Servers Collection [/{tenantid}/servers/]
+### Get the list of all server's rules [GET]
+This operation returns a list of servers with their rules.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of the Tenant to perform action with. Has example value.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+
+        {
+         "servers": [
+              {
+                  "serverId": "<serverId>",
+                  "rules": [
+                     {
+                          "condition": <CONDITION_DESCRIPTION>,
+                          "action": <ACTION_ON_SERVER>,
+                          "ruleId": "<RULE_ID>"      
+                     },
+                     {
+                          "condition": <CONDITION_DESCRIPTION>,
+                          "action": <ACTION_ON_SERVER>,
+                          "ruleId": "<RULE_ID>"      
+                     }
+                  ]
+              },
+              {
+                  "serverId": "<serverId>",
+                  "rules": [
+                     {
+                          "condition": <CONDITION_DESCRIPTION>,
+                          "action": <ACTION_ON_SERVER>,
+                          "ruleId": "<RULE_ID>"      
+                     },
+                     {
+                          "condition": <CONDITION_DESCRIPTION>,
+                          "action": <ACTION_ON_SERVER>,
+                          "ruleId": "<RULE_ID>"      
+                     }
+                  ]
+              }
+          ]
+        }
+
+## Server Collection [/{tenantid}/servers/{serverid}/]
+### Get the list of all rules of a server [GET]
+This operation returns the list of elasticity rules associated.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+
+        {
+            "serverId": "<serverId>",
+            "rules": [
+                {
+                    "name": <NAME>,
+                    "condition": <CONDITION_DESCRIPTION>,
+                    "action": <ACTION_ON_SERVER>,
+                    "ruleId": "<RULE_ID>"      
+                },
+                {
+                    "name": <NAME>,
+                    "condition": <CONDITION_DESCRIPTION>,
+                    "action": <ACTION_ON_SERVER>,
+                    "ruleId": "<RULE_ID>"      
+                }
+            ]
+        }
+
+## Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]
+### Create a new elasticity rule [POST]
+This operation creates a new elasticity rules associated to a server
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+
++ Request (application/json)
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
++ Response 200 (application/json)
+
+        {
+            "serverId": <serverId>,
+            "ruleId": <RULE_ID>
+        }
+    
+## Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]
+### Update an elasticity rule [PUT]
+This operation allows to update the rule condition, the action or both or a specific server
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+    + ruleid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the rule following the OpenStack ID format.
+
++ Request (application/json)
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
++ Response 200 (application/json)
+
+        {
+            "name": <NAME>,
+            "condition": <CONDITION_DESCRIPTION>,
+            "action": <ACTION_ON_SERVER>
+        }
+
+### Delete an elasticity rule [DELETE]
+This operation deletes a specific rule.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+    + ruleid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the rule following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 ()
+
+### Get an elasticity rule [GET]
+This operation gets a specific rule.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+    + ruleid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the rule following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+
+        {
+            "name": <NAME>,
+            "condition": <CONDITION_DESCRIPTION>,
+            "action": <ACTION_ON_SERVER>,
+            "ruleId": "<RULE_ID>"      
+        }
+
+## Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]
+### Create a new subscription [POST]
+This operation creates a new subcription associated to a rule
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+
++ Request (application/json)
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "ruleId": <RULE_ID>,
+                "url": <URL_TO_NOTIFY>,
+            }
+
++ Response 200 (application/json)
+
+        {
+            "subscriptionId": <SUBSCRIPTION_ID>
+        }
+
+## Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
+### Delete a subscription [DELETE]
+This operation deletes a subscription.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+    + subscriptionid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the subscription following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 ()
+
+### Get a subscription [GET]
+This operation gets a subscription.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
+    + subscriptionid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the subscription following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+
+        {
+            "subscriptionId": <SUBSCRIPTION_ID>,
+            "url": <URL_TO_NOTIFY>,
+            "serverId": <SERVER_ID>,
+            "ruleId": "<RULE_ID>"      
+        }

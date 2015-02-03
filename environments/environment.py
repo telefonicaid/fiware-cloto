@@ -182,7 +182,8 @@ def main():
             try:
                 decoded = json.loads(body)
                 f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
-                               + " " + str(decoded['mem']) + ")")
+                               + " " + str(decoded['mem']) + " " + str(decoded['hdd']) + " " + str(decoded['net'])
+                               + ")")
                 logger.info("received fact: %s" % body)
                 get_rules_from_db(tenantId)
                 saveout = sys.stdout
@@ -196,6 +197,7 @@ def main():
                 f1.Retract()
             except ValueError:
                 logger.error("receiving an invalid body: " + body)
+
             except clips.ClipsError:
                 logger.error(clips.ErrorStream.Read())
             except Exception as ex:

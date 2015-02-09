@@ -34,6 +34,7 @@ pip install -r requirements.txt
 
 #PYCLIPS installation
 wget -O pyclips.tar.gz http://downloads.sourceforge.net/project/pyclips/pyclips/pyclips-1.0/pyclips-1.0.7.348.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpyclips%2Ffiles%2Fpyclips%2Fpyclips-1.0%2F&ts=1423484225&use_mirror=softlayer-ams
+sleep 3
 tar -xvzf pyclips.tar.gz
 cd pyclips
 python setup.py build

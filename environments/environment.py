@@ -39,6 +39,14 @@ LOGGER_COMPONENT = 'ENVIRONMENT'
 SERVERID = u'serverId'
 
 
+def build_fact(environment, body):
+    decoded = json.loads(body)
+    f1 = environment.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
+            + " " + str(decoded['mem']) + " " + str(decoded['hdd']) + " " + str(decoded['net'])
+            + ")")
+    return f1
+
+
 def main():
     tenantId = sys.argv[1]
 
@@ -180,10 +188,11 @@ def main():
 
         def callback(ch, method, properties, body):
             try:
-                decoded = json.loads(body)
-                f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
-                               + " " + str(decoded['mem']) + " " + str(decoded['hdd']) + " " + str(decoded['net'])
-                               + ")")
+                f1 = build_fact(e1, body)
+                #decoded = json.loads(body)
+                # f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
+                #                + " " + str(decoded['mem']) + " " + str(decoded['hdd']) + " " + str(decoded['net'])
+                #                + ")")
                 logger.info("received fact: %s" % body)
                 get_rules_from_db(tenantId)
                 saveout = sys.stdout

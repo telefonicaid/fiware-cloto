@@ -33,10 +33,10 @@ FACTS_PORT = 5000
 RABBIT_IP = '127.0.0.1'
 
 AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
-KEYSTONE_URL = ''
-TENANT_ID = ''
-USER = ''
-PASSWORD = ''
+KEYSTONE_URL = 'http://account.dev-havana.fi-ware.org:4731/v2.0/tokens'
+TENANT_ID = '000000000000000000000000000000admin'
+USER = 'admin'
+PASSWORD = '8fa3c69e4c3e9fafa61'
 CONTENT_TYPE = 'application/json'
 HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
 DB_PATH = '../../../../cloto.db'

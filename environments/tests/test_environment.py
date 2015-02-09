@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2015 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -32,6 +32,7 @@ from environments import environment
 class ClientTests(TestCase):
 
     def setUp(self):
+        """sets up the environment to work with."""
         id = 'tenantId'
         self.json_fact = '{"serverId": "serverId", "cpu": 90, "mem": 30, "hdd":70, "net":90}'
         clips.Reset()
@@ -40,6 +41,7 @@ class ClientTests(TestCase):
         self.e1.Identifier = eid
 
     def test_build_fact(self):
+        """test_build_fact should check that environment creates a new fact and this fact is not empty."""
         fact = environment.build_fact(self.e1, self.json_fact)
         self.assertIsNotNone(fact)
         self.assertIsNotNone(self.e1)

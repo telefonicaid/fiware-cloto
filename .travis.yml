@@ -4,7 +4,7 @@ python:
 
 env:
   global:
-    - DJANGO_SETTINGS_MODULE=settings.jenkins
+    - DJANGO_SETTINGS_MODULE=settings.tests
 
 script:
   - python fiware-pep8.py .

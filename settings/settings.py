@@ -48,8 +48,8 @@ DEFAULT_WINDOW_SIZE = 5
 OWNER = u'Telefonica I+D'
 API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/' \
                u'Policy_Manager_Open_RESTful_API_Specification'
-VERSION = u'1.3.0'
-MAX_WINDOW_SIZE = 10
+VERSION = u'1.4.0'
+MAX_WINDOW_SIZE = 5
 LOGGING_PATH = u'/var/log/fiware-cloto'
 
 ENVIRONMENTS_MANAGER_PATH = INSTALLATION_PATH + u'environments/environmentManager.py'

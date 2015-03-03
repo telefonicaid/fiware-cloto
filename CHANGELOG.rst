@@ -1,6 +1,16 @@
 Changelog
 =========
 
+v1.4.0 (2015-03-03)
+------------------
+
+New
+~~~
+
+- New unit tests and refactor of environment script. [Guillermo
+  Jimenez Prieto]
+
+
 v1.3.0 (2014-12-01)
 ------------------
 

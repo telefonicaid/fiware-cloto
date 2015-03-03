@@ -40,7 +40,6 @@ sleep 5
 tar -xvzf pyclips.tar.gz
 cd pyclips
 python setup.py build
-#su -c "python setup.py install"
 sudo python setup.py install
 cd ..
 

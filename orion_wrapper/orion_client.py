@@ -26,11 +26,11 @@ __author__ = 'gjp'
 import json
 import requests
 from django.conf import settings
-import constants
-from cloto.log import logger
+from cloto.constants import CONTENT_HEADER, JSON_TYPE, ACCEPT_HEADER
+import logging as logger
 
 
-class OrionClient():
+class orion_client():
     """This class provides methods to provide connection with Orion Context Broker.
     """
     client = requests
@@ -38,7 +38,7 @@ class OrionClient():
     def contextBrokerSubscription(self, tenantId, serverId):
         """Subscribes server to Context Broker to get information about cpu and memory monitoring"""
 
-        headers = {constants.CONTENT_HEADER: constants.JSON_TYPE, constants.ACCEPT_HEADER: constants.JSON_TYPE}
+        headers = {CONTENT_HEADER: JSON_TYPE, ACCEPT_HEADER: JSON_TYPE}
 
         data = '{"entities": [' \
                '{"type": "Server",'\

@@ -23,24 +23,14 @@
 # contact with opensource@tid.es
 #
 __author__ = 'gjp'
-
-from django.conf import settings
-#from settings import ENVIRONMENTS_MANAGER_PATH, SETTINGS_TYPE
-from circus import get_arbiter
+from django.test import TestCase
+import environments.environmentManager as manager
 
 
-class environment_controller():
-    """This class provides a control over circus launching.
-    """
+class InformationTests(TestCase):
 
-    started = False
-
-    def start_manager(self):
-        arbiter = get_arbiter([{"cmd": "python "
-                                       "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
-        if settings.SETTINGS_TYPE == 'production':
-            arbiter.start()
-            self.started = True
-
-    def is_started(self):
-        return self.started
+    def test_starting_environment_manager(self):
+        try:
+            manager.main()
+        except SystemExit as ex:
+            self.assertEqual(ex.code, 0)

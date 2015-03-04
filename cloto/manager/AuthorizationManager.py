@@ -51,6 +51,8 @@ class AuthorizationManager():
         """checks if a token is valid against a url using an admin token."""
         print("Starting Authentication of token %s " % token)
         try:
+            if not token:
+                raise Unauthorized("Token is empty")
             auth_result = self.get_info_token(url, admin_token, token)
             if auth_result:
                 if tenant_id == auth_result.tenant["id"]:

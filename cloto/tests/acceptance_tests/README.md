@@ -24,6 +24,8 @@ Folder for acceptance tests of the FIWARE Scalability Manager & FIWARE Facts.
 
 - Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
 
+- Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+
 ### Tests execution:
 
 - Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it

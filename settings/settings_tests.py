@@ -22,24 +22,22 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'arobres'
+# Django settings for fiware_cloto project.
+from settings import *
 
+SETTINGS_TYPE = u'test'
 
-REST_PATH = '../../../../manage.py'
-POLICY_MANAGER_IP = '127.0.0.1'
-POLICY_MANAGER_PORT = 8000
-FACTS_IP = '127.0.0.1'
-FACTS_PORT = 5000
-RABBIT_IP = '127.0.0.1'
+DATABASES = {
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',  # Add 'postgresql_psycopg2', 'mysql', 'sqlite3' or 'oracle'.
+        'NAME': INSTALLATION_PATH + 'cloto.db',                      # Or path to database file if using sqlite3.
+        # The following settings are not used with sqlite3:
+        'USER': 'root',
+        'PASSWORD': '',
+        'HOST': '',                      # Empty for localhost through domain sockets.
+        'PORT': '',                      # Set to empty string for default.
+    }
+}
 
-AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
-KEYSTONE_URL = ''
-TENANT_ID = ''
-USER = ''
-PASSWORD = ''
-CONTENT_TYPE = 'application/json'
-HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
-DB_PATH = '../../../../cloto.db'
-MOCK_IP = u'127.0.0.1'
-MOCK_PORT = 8080
-MOCK_PATH = u'commons/server_mock.py'
+# Make this unique, and don't share it with anybody.
+SECRET_KEY = 'TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj'

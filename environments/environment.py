@@ -24,18 +24,27 @@
 #
 __author__ = 'gjp'
 import sys
-#import sqlite3 as db
-import MySQLdb as mysql
 import json
 
+import MySQLdb as mysql
 import pika
 import clips
 import requests
 
-from cloto.settings import RABBITMQ_URL, LOGGING_PATH, DB_CHARSET, DB_HOST, DB_NAME, DB_PASSWD, DB_USER
-from constants import SERVERID
+from settings_environments import RABBITMQ_URL, LOGGING_PATH, DB_CHARSET, DB_HOST, DB_NAME, DB_PASSWD, DB_USER
 from log import logger
+
 LOGGER_COMPONENT = 'ENVIRONMENT'
+#MODEL CONSTANTS
+SERVERID = u'serverId'
+
+
+def build_fact(environment, body):
+    decoded = json.loads(body)
+    f1 = environment.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
+            + " " + str(decoded['mem']) + " " + str(decoded['hdd']) + " " + str(decoded['net'])
+            + ")")
+    return f1
 
 
 def main():
@@ -179,9 +188,11 @@ def main():
 
         def callback(ch, method, properties, body):
             try:
-                decoded = json.loads(body)
-                f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
-                               + " " + str(decoded['mem']) + ")")
+                f1 = build_fact(e1, body)
+                #decoded = json.loads(body)
+                # f1 = e1.Assert("(ServerFact \"" + str(decoded[SERVERID]) + "\" " + str(decoded['cpu'])
+                #                + " " + str(decoded['mem']) + " " + str(decoded['hdd']) + " " + str(decoded['net'])
+                #                + ")")
                 logger.info("received fact: %s" % body)
                 get_rules_from_db(tenantId)
                 saveout = sys.stdout
@@ -195,6 +206,7 @@ def main():
                 f1.Retract()
             except ValueError:
                 logger.error("receiving an invalid body: " + body)
+
             except clips.ClipsError:
                 logger.error(clips.ErrorStream.Read())
             except Exception as ex:

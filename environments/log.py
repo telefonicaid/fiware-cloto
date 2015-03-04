@@ -22,24 +22,14 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'arobres'
+__author__ = 'gjp'
+from settings_environments import LOGGING_PATH
+import logging
 
-
-REST_PATH = '../../../../manage.py'
-POLICY_MANAGER_IP = '127.0.0.1'
-POLICY_MANAGER_PORT = 8000
-FACTS_IP = '127.0.0.1'
-FACTS_PORT = 5000
-RABBIT_IP = '127.0.0.1'
-
-AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
-KEYSTONE_URL = ''
-TENANT_ID = ''
-USER = ''
-PASSWORD = ''
-CONTENT_TYPE = 'application/json'
-HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
-DB_PATH = '../../../../cloto.db'
-MOCK_IP = u'127.0.0.1'
-MOCK_PORT = 8080
-MOCK_PATH = u'commons/server_mock.py'
+logger = logging.getLogger('RuleEngine')
+logger.setLevel(logging.DEBUG)
+fh = logging.FileHandler(LOGGING_PATH + '/RuleEngine.log')
+fh.setLevel(logging.DEBUG)
+formatter = logging.Formatter('%(asctime)s %(levelname)s policymanager.cloto [-] %(message)s')
+fh.setFormatter(formatter)
+logger.addHandler(fh)

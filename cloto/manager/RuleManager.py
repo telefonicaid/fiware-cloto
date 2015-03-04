@@ -25,22 +25,24 @@
 __author__ = 'gjp'
 import datetime
 import json
-import yaml
 import uuid
+
+import yaml
+from django.utils import timezone
+from django.core.validators import URLValidator, validate_email
+from keystoneclient.exceptions import Conflict
+
 from cloto.constants import OPERATIONS, OPERANDS
 from cloto.models import Rule, RuleModel, ListRuleModel, Entity, SpecificRule, Subscription, SubscriptionModel
-from django.utils import timezone
-from django.core.validators import URLValidator, validate_email, ValidationError
-from keystoneclient.exceptions import Conflict
-import cloto.OrionClient as OrionClient
-from cloto.log import logger
+import orion_wrapper.orion_client as orion_client
+import logging as logger
 
 
 class RuleManager():
     """This class provides methods to manage rules.
     """
     #ContextBrokerClient
-    orionClient = OrionClient.OrionClient()
+    orionClient = orion_client.orion_client()
 
     def get_rule_model(self):
         """Returns model of Rule."""
@@ -418,8 +420,8 @@ class RuleManager():
         :param object type:     The type of the value
         """
         try:
-            if not value:
-                raise ValueError
+            if value == None or value == "":
+                raise ValueError()
             if type == str:
                 if name == "operation" and value not in OPERATIONS:
                     raise ValueError
@@ -428,7 +430,7 @@ class RuleManager():
             else:
                 if type == float:
                     myfloat = float(value)
-                if myfloat < 0 or myfloat > 100:
+                if myfloat < 0.0 or myfloat > 100.0:
                     raise ValueError
         except ValueError:
             raise ValueError("You must provide a valid value and operand for %s" % name)
@@ -445,6 +447,7 @@ class RuleManager():
             actionName = action['actionName']
             self.verify_values('actionName', actionName, str)
             action_string = "(python-call " + actionName + " \"" + serverId + "\" ?url"
+
             if actionName == "notify-email":
                 email = action['email']
                 body = action['body']
@@ -477,10 +480,10 @@ class RuleManager():
             condition_string = "(ServerFact \"" + serverId + "\""
 
             ##Adding CPU condition
-            parameters = ["cpu", "mem"]
+            parameters = ["cpu", "mem", "hdd", "net"]
             for k in parameters:
-                self.verify_values("cpu operand", condition[k]["operand"], str)
-                self.verify_values("cpu value", condition[k]["value"], float)
+                self.verify_values(k + " operand", condition[k]["operand"], str)
+                self.verify_values(k, condition[k]["value"], float)
                 operand = operands[condition[k]["operand"]]
                 condition_string += " ?" + k + "&:(" + operand + " ?" + k + " " \
                                     + str(condition[k]["value"]) + ")"

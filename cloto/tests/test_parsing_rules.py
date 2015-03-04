@@ -33,7 +33,9 @@ class RuleManagerTests(TestCase):
     def setUp(self):
         self.rule = '{\"name\": \"test Name\", \"condition\": ' \
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \
-                    ' \"mem\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
+                    ' \"mem\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"hdd\": {\"value\": 98, \"operand\": \"greater\"},' \
+                    ' \"net\": {\"value\": 95, \"operand\": \"greater equal\"}},' \
                     '\"action\": {\"actionName\": \"notify-scale\", \"operation\": \"scaleUp\"}}'
         self.rule_without_operation = '{\"name\": \"test Name\", \"condition\": ' \
                     '{\"cpu\": {\"value\": 98, \"operand\": \"greater\"},' \

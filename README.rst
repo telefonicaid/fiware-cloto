@@ -25,6 +25,7 @@ To install this module you have to install some components:
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
+- gcc-c++ and gcc libraries
 
 
 Installation

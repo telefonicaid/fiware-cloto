@@ -32,7 +32,7 @@ import json
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
 from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Conflict
-from keystoneclient.v2_0 import client
+from keystoneclient import session
 import datetime
 from json import JSONEncoder
 from django.conf import settings
@@ -53,27 +53,21 @@ class RESTResource(object):
         if callback:
             try:
                 a = AuthorizationManager.AuthorizationManager()
-                a.myClient = client
-                adm_token = a.generate_adminToken(settings.ADM_USER, settings.ADM_PASS, settings.OPENSTACK_URL)
+                if settings.AUTH_API == 'v2.0':
+                    from keystoneclient.v2_0 import client as keystone_client
+                elif settings.AUTH_API == 'v3':
+                    from keystoneclient.v2_0 import client as keystone_client
+                a.session = session
+                a.myClient = keystone_client
+                adm_token = a.generate_session(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
+                                                  settings.ADM_TENANT_NAME, settings.USER_DOMAIN_NAME,
+                                                  settings.AUTH_API, settings.OPENSTACK_URL)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
-                             kwargs.get("tenantId"), settings.OPENSTACK_URL)
+                             kwargs.get("tenantId"), settings.OPENSTACK_URL, settings.AUTH_API)
                 return callback(request, *args, **kwargs)
-            except AuthorizationFailure as auf:
+            except Exception as excep:
                 return HttpResponse(json.dumps(
-                    {"unauthorized": {"code": 401, "message": str(auf)}}, indent=4), status=401)
-            except Unauthorized as unauth:
-                return HttpResponse(json.dumps(
-                    {"unauthorized": {"code": 401, "message": str(unauth)}}, indent=4), status=401)
-            except ValueError as excep:
-                return HttpResponse(json.dumps({"unauthorized": {"code": 401,
-                                                                 "message": str(excep)}}, indent=4), status=401)
-            except KeyError as excep:
-                f = str(excep)
-                if f.__contains__("HTTP_X_AUTH_TOKEN"):
-                    return HttpResponse(json.dumps({"unauthorized": {"code": 401, "message":
-                        "This server could not verify that you are authorized to access the document you requested."
-                        " Either you supplied the wrong credentials (e.g., bad password), or your browser does not "
-                        "understand how to supply the credentials required."}}, indent=4), status=401)
+                    {"unauthorized": {"code": 401, "message": str(excep)}}, indent=4), status=401)
 
         else:
             allowed_methods = [m for m in self.methods if hasattr(self, m)]

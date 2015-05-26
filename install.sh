@@ -40,14 +40,18 @@ select yn in "Yes" "No"; do
         Yes ) echo "Enter Keystone URL:"; read openstackurl;
         echo "Enter Openstack Admin User:"; read admuser;
         echo "Enter Openstack Admin passwd:"; read admpass;
-        echo "Enter Openstack Admin Tenant:"; read admtenant;
+        echo "Enter Openstack Admin Tenant Id:"; read admtenantid;
+        echo "Enter Openstack Admin Tenant Name:"; read admtenantname;
+        echo "Enter Openstack Admin User Domain Name:"; read userdomainname;
         echo "Enter Mysql user:"; read dbuser;
         echo "Enter Mysql user passwd:"; read dbpass;
 
-        match1="OPENSTACK_URL = u'";
-        match2="ADM_USER = u'";
-        match3="ADM_PASS = u'";
-        match4="ADM_TENANT_ID = u'";
+        match1="OPENSTACK_URL = '";
+        match2="ADM_USER = '";
+        match3="ADM_PASS = '";
+        match4="ADM_TENANT_ID = '";
+        match41="ADM_TENANT_NAME = '";
+        match42="USER_DOMAIN_NAME = '";
         match5="DB_USER = u'";
         match6="DB_PASSWD = u'";
         match7="user =";
@@ -59,7 +63,9 @@ select yn in "Yes" "No"; do
             sed -i "" "s|$match1|$match1$openstackurl|" $file1;
             sed -i "" "s/$match2/$match2$admuser/" $file1;
             sed -i "" "s/$match3/$match3$admpass/" $file1;
-            sed -i "" "s/$match4/$match4$admtenant/" $file1;
+            sed -i "" "s/$match4/$match4$admtenantid/" $file1;
+            sed -i "" "s/$match41/$match41$admtenantname/" $file1;
+            sed -i "" "s/$match42/$match42$userdomainname/" $file1;
             sed -i "" "s/$match5/$match5$dbuser/" $file1;
             sed -i "" "s/$match6/$match6$dbpass/" $file1;
             sed -i "" "s/$match7/$match7\ $dbuser/" $file2;

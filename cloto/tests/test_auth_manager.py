@@ -48,7 +48,8 @@ class MySession(MagicMock):
             authToken = "77d254b3caba4fb29747958138136ffa"
             when(session_mocked).get_token().thenReturn(authToken)
         else:
-            raise AuthorizationFailure(u'{"error": {"message": "Could not find token: f28d546408bb43e0978ac0d91bd4a7a",'
+            raise AuthorizationFailure(u'{"error": {"message": '
+                                       u'"Could not find token: f28d546408bb43e0978ac0d91bd4a7a",'
                                        u' "code": 404, "title": "Not Found"}}')
 
         return session_mocked

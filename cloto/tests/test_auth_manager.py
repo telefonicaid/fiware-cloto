@@ -34,11 +34,12 @@ from cloto.constants import ACCEPT_HEADER, JSON_TYPE, X_AUTH_TOKEN_HEADER, TOKEN
      TOKENS_PATH_V3, X_SUBJECT_TOKEN_HEADER
 from requests import Response
 
+
 class MySession(MagicMock):
     # Mock of a keystone session
 
-     def Session(self, auth, timeout):
-         # Mock of the Keystone session generator
+    def Session(self, auth, timeout):
+        # Mock of the Keystone session generator
         session_mocked = mock()
 
         if auth.auth_url != "http://130.206.80.61:35357/v2.0":
@@ -51,6 +52,7 @@ class MySession(MagicMock):
                                        u' "code": 404, "title": "Not Found"}}')
 
         return session_mocked
+
 
 class AuthorizationManagerTests(TestCase):
     def setUp(self):
@@ -89,7 +91,8 @@ class AuthorizationManagerTests(TestCase):
 
         response_v3 = Response()
         response_v3.status_code = 200
-        response_v3._content = '{"token": {"methods": ["password"], "roles": [{"id": "ff01eb8a8d69418c95f0009dda9bc1852",' \
+        response_v3._content = '{"token": {"methods": ["password"], "roles": ' \
+                               '[{"id": "ff01eb8a8d69418c95f0009dda9bc1852",' \
                                ' "name": "owner"}], "expires_at": "2015-05-26T13:01:49.632762Z", ' \
                                '"project": {"domain": {"id": "default", "name": "Default"},' \
                                ' "id": "6571e3422ad84f7d828ce2f30373b3d4", "name": "user@mail.com"}}}'
@@ -145,8 +148,10 @@ class AuthorizationManagerTests(TestCase):
             .thenRaise(AuthorizationFailure())
 
         headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.authToken}
-        headers_v3 = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.authToken, X_SUBJECT_TOKEN_HEADER: self.token}
-        headers_v3_fake = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.fakeToken, X_SUBJECT_TOKEN_HEADER: self.token}
+        headers_v3 = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.authToken,
+                      X_SUBJECT_TOKEN_HEADER: self.token}
+        headers_v3_fake = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.fakeToken,
+                           X_SUBJECT_TOKEN_HEADER: self.token}
 
         when(requestsMock).get(self.url + "/" + TOKENS_PATH + self.token, headers=headers)\
             .thenReturn(response)
@@ -172,7 +177,8 @@ class AuthorizationManagerTests(TestCase):
 
     def test_generate_adminToken(self):
 
-        result = self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default", "v2.0", self.url)
+        result = self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default", "v2.0",
+                                         self.url)
 
         self.assertEqual(result, self.authToken)
 
@@ -184,7 +190,8 @@ class AuthorizationManagerTests(TestCase):
 
     def test_generate_adminToken_exception_2(self):
         try:
-            self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default", "v2.0", self.url_server_error)
+            self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default", "v2.0",
+                                    self.url_server_error)
         except ConnectionRefused as ex:
             self.assertRaises(ex)
 
@@ -246,13 +253,15 @@ class AuthorizationManagerTests(TestCase):
 
     def test_generate_adminToken_v3(self):
 
-        result = self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default", self.auth_api_v3, self.url)
+        result = self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default",
+                                         self.auth_api_v3, self.url)
 
         self.assertEqual(result, self.authToken)
 
     def test_generate_adminToken_v_unsupported(self):
         try:
-            result = self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default", "v4.0", self.url)
+            result = self.a.generate_session("admin", "realpassword", "tenantId", "tenantName", "Default",
+                                             "v4.0", self.url)
         except ImportError as ex:
             self.assertRaises(ex)
 

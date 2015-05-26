@@ -111,7 +111,7 @@ class AuthorizationManager():
             headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: admin_token}
             r = self.client.get(url + "/" + TOKENS_PATH + token, headers=headers)
 
-            if r.status_code != 200 or r.text == "User token not found" or r.text =="Service not authorized" :
+            if r.status_code != 200 or r.text == "User token not found" or r.text == "Service not authorized":
                 raise AuthorizationFailure(r.text)
             response = r.text.decode()
             info = json.loads(response)
@@ -122,7 +122,7 @@ class AuthorizationManager():
             return my_token
         elif auth_api == 'v3':
             headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: admin_token, X_SUBJECT_TOKEN_HEADER: token}
-            r = self.client.get(url +"/" + TOKENS_PATH_V3, headers=headers)
+            r = self.client.get(url + "/" + TOKENS_PATH_V3, headers=headers)
             response = r.text.decode()
             if r.status_code is not 200:
                 raise AuthorizationFailure(response)

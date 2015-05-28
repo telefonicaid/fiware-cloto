@@ -37,14 +37,14 @@ file1='settings/settings.py';
 select yn in "Yes" "No"; do
     case $yn in
         #Reads configuration params from command line inserted by user.
-        Yes ) echo "Enter Keystone URL:"; read openstackurl;
-        echo "Enter Openstack Admin User:"; read admuser;
-        echo "Enter Openstack Admin passwd:"; read admpass;
-        echo "Enter Openstack Admin Tenant Id:"; read admtenantid;
-        echo "Enter Openstack Admin Tenant Name:"; read admtenantname;
-        echo "Enter Openstack Admin User Domain Name:"; read userdomainname;
-        echo "Enter Mysql user:"; read dbuser;
-        echo "Enter Mysql user passwd:"; read dbpass;
+        Yes ) read -p  "Enter Keystone URL:" openstackurl;
+        read -p  "Enter Openstack Admin User:" admuser;
+        read -p  "Enter Openstack Admin passwd:" admpass;
+        read -p  "Enter Openstack Admin Tenant Id:" admtenantid;
+        read -p  "Enter Openstack Admin Tenant Name:" admtenantname;
+        read -p  "Enter Openstack Admin User Domain Name:" userdomainname;
+        read -p  "Enter Mysql user:" dbuser;
+        read -p  "Enter Mysql user passwd:" dbpass;
 
         match1="OPENSTACK_URL = '";
         match2="ADM_USER = '";

@@ -43,7 +43,7 @@ class ClientTests(TestCase):
         when(AuthorizationManager.AuthorizationManager)\
             .checkToken(self.authToken, "1234", "tenantId", self.url).thenReturn(True)
         when(AuthorizationManager.AuthorizationManager).\
-            generate_session("admin", "openstack", self.url).thenReturn(self.authToken)
+            get_auth_token("admin", "openstack", self.url).thenReturn(self.authToken)
 
     def test_servers_view_url(self):
         response = self.c.get('/v1.0/tenantId/servers/', **{'HTTP_X_AUTH_TOKEN': '1234'})

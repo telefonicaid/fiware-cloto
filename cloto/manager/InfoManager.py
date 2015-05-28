@@ -27,7 +27,7 @@ import cloto.information as information
 from cloto.models import TenantInfo, ServerInfo
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.conf import settings
-import logging as logger
+from cloto.utils.log import logger
 
 
 class InfoManager():
@@ -65,7 +65,7 @@ class InfoManager():
         t = self.tenantInfo.objects.get(tenantId__exact=tenantId)
         t.windowsize = newSize
         t.save()
-        logger.info("%s windowsize updated to %d" % (tenantId, newSize))
+        logger.info("%s windowsize updated to %d", tenantId, newSize)
         return t
 
     def setInformations(self, sInfo, tInfo):

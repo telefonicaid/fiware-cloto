@@ -33,7 +33,7 @@ ACCEPT_HEADER = u'Accept'
 JSON_TYPE = u'application/json'
 X_AUTH_TOKEN_HEADER = u'X-Auth-Token'
 X_SUBJECT_TOKEN_HEADER = u'X-Subject-Token'
-TOKENS_PATH = u'tokens/'
+TOKENS_PATH_V2 = u'tokens/'
 TOKENS_PATH_V3 = u'auth/tokens/'
 
 #MODEL CONSTANTS
@@ -55,3 +55,7 @@ VERSION_LENGTH = 8
 TOKEN_NOT_FOUND = u'User token not found'
 SERVICE_NOT_AUTORIZED = u'Service not authorized'
 DEFAULT_REQUEST_TIMEOUT = 60
+HTTP_RESPONSE_CODE_OK = 200
+HTTP_RESPONSE_CODE_UNAUTHORIZED = 401
+AUTH_API_V3 = "v3"
+AUTH_API_V2 = "v2.0"

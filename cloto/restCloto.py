@@ -29,6 +29,7 @@ from django import http
 from django.core.exceptions import ObjectDoesNotExist, ValidationError
 from django.http import HttpResponse, HttpResponseBadRequest, HttpResponseServerError
 import json
+from constants import HTTP_RESPONSE_CODE_UNAUTHORIZED, AUTH_API_V3, AUTH_API_V2
 from cloto.manager import InfoManager, RuleManager, AuthorizationManager
 from cloto.models import TenantInfo
 from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, Conflict
@@ -53,21 +54,23 @@ class RESTResource(object):
         if callback:
             try:
                 a = AuthorizationManager.AuthorizationManager()
-                if settings.AUTH_API == 'v2.0':
+                if settings.AUTH_API == AUTH_API_V2:
                     from keystoneclient.v2_0 import client as keystone_client
-                elif settings.AUTH_API == 'v3':
+                elif settings.AUTH_API == AUTH_API_V3:
                     from keystoneclient.v2_0 import client as keystone_client
                 a.session = session
                 a.myClient = keystone_client
-                adm_token = a.generate_session(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
-                                                  settings.ADM_TENANT_NAME, settings.USER_DOMAIN_NAME,
-                                                  settings.AUTH_API, settings.OPENSTACK_URL)
+                adm_token = a.get_auth_token(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
+                                                  settings.AUTH_API, settings.OPENSTACK_URL,
+                                                  tenant_name=settings.ADM_TENANT_NAME,
+                                             user_domain_name=settings.USER_DOMAIN_NAME)
                 a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
                              kwargs.get("tenantId"), settings.OPENSTACK_URL, settings.AUTH_API)
                 return callback(request, *args, **kwargs)
             except Exception as excep:
                 return HttpResponse(json.dumps(
-                    {"unauthorized": {"code": 401, "message": str(excep)}}, indent=4), status=401)
+                    {"unauthorized": {"code": HTTP_RESPONSE_CODE_UNAUTHORIZED, "message": str(excep)}}, indent=4),
+                    status=HTTP_RESPONSE_CODE_UNAUTHORIZED)
 
         else:
             allowed_methods = [m for m in self.methods if hasattr(self, m)]

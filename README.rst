@@ -131,7 +131,7 @@ License
    :target: https://travis-ci.org/telefonicaid/fiware-cloto
 .. |Coverage Status| image:: https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png?branch=develop
    :target: https://coveralls.io/r/telefonicaid/fiware-cloto
-.. |Pypi Version| image:: https://pypip.in/v/fiware-cloto/badge.png
+.. |Pypi Version| image:: https://badge.fury.io/py/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/
-.. |Pypi License| image:: https://pypip.in/license/fiware-cloto/badge.png
+.. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/

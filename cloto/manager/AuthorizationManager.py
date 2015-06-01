@@ -24,11 +24,14 @@
 #
 __author__ = 'gjp'
 from keystoneclient.exceptions import AuthorizationFailure, Unauthorized, InternalServerError
+from keystoneclient.exceptions import ClientException as KeystoneClientException
+from keystoneclient.exceptions import ConnectionRefused as KeystoneConnectionRefused
 from cloto.models import TokenModel
 import json
 import requests
-from cloto.constants import ACCEPT_HEADER, JSON_TYPE, X_AUTH_TOKEN_HEADER, TOKENS_PATH, SERVICE_NOT_AUTORIZED, \
-    TOKEN_NOT_FOUND
+from cloto.utils.log import logger
+from cloto.constants import ACCEPT_HEADER, JSON_TYPE, X_AUTH_TOKEN_HEADER, TOKENS_PATH_V2, DEFAULT_REQUEST_TIMEOUT,\
+    X_SUBJECT_TOKEN_HEADER, TOKENS_PATH_V3, HTTP_RESPONSE_CODE_OK, AUTH_API_V2, AUTH_API_V3
 
 
 class AuthorizationManager():
@@ -36,47 +39,105 @@ class AuthorizationManager():
     """
     myClient = None
     client = requests
+    session = None
 
-    def generate_adminToken(self, username, password, url):
-        """This method generates an admin token."""
+    def get_auth_token(self, username, password, tenant_id, auth_api, url, **kwargs):
+        """
+        Init the variables related to authorization, needed to execute tests
+        :return: The auth token retrieved
+        """
+
+        cred_kwargs = {
+            'auth_url': url,
+            'username': username,
+            'password': password
+        }
+
+        # Currently, both v2 and v3 Identity API versions are supported
+        if auth_api == AUTH_API_V2:
+            cred_kwargs['tenant_name'] = kwargs.get('tenant_name')
+        elif auth_api == AUTH_API_V3:
+            cred_kwargs['user_domain_name'] = kwargs.get('user_domain_name')
+
+        # Instantiate a Password object
         try:
-            admin_client = self.myClient.Client(username=username, password=password, auth_url=url)
-            return admin_client.auth_token
-        except AuthorizationFailure as auf:
-            raise(auf)
-        except Unauthorized as unauth:
-            raise(unauth)
+            identity_package = 'keystoneclient.auth.identity.%s' % auth_api.replace('.0', '')
+            identity_module = __import__(identity_package, fromlist=['Password'])
+            password_class = getattr(identity_module, 'Password')
+            logger.debug("Authentication with %s", password_class)
+            credentials = password_class(**cred_kwargs)
+        except (ImportError, AttributeError) as e:
+                raise e
+        # Get auth token
+        logger.debug("Getting auth token for tenant %s...", tenant_id)
+        try:
+            auth_sess = self.session.Session(auth=credentials, timeout=DEFAULT_REQUEST_TIMEOUT)
+            auth_token = auth_sess.get_token()
+            logger.debug("Admin token generated:" + auth_token)
 
-    def checkToken(self, admin_token, token, tenant_id, url):
+        except (KeystoneClientException, KeystoneConnectionRefused) as e:
+            logger.error("No auth token (%s)", e.message)
+            raise(e)
+
+        return auth_token
+
+    def checkToken(self, admin_token, token, tenant_id, url, auth_api):
         """checks if a token is valid against a url using an admin token."""
-        print("Starting Authentication of token %s " % token)
+        logger.info("Starting Authentication of token %s ", token)
         try:
             if not token:
                 raise Unauthorized("Token is empty")
-            auth_result = self.get_info_token(url, admin_token, token)
+            auth_result = self.get_info_token(url, admin_token, token, auth_api)
             if auth_result:
                 if tenant_id == auth_result.tenant["id"]:
-                    print('The token is valid')
+                    logger.info('The token is valid')
                 else:
+                    logger.error("TenantId %s ", tenant_id)
+                    logger.error("Token TenantId %s ", auth_result.tenant["id"])
                     raise Unauthorized("Token is not valid for specified tenant %s" % tenant_id)
         except Unauthorized as unauth:
+            logger.error(unauth)
             raise unauth
         except InternalServerError as internalError:
             raise AuthorizationFailure("Token could not have enough permissions to access tenant: %s" % tenant_id)
         except Exception as ex:
             raise ex
 
-    def get_info_token(self, url, admin_token, token):
-        headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: admin_token}
-        r = self.client.get(url + "/" + TOKENS_PATH + token, headers=headers)
-        response = r.text.decode()
-        if response == TOKEN_NOT_FOUND:
-            raise AuthorizationFailure(response)
-        if response == SERVICE_NOT_AUTORIZED:
-            raise AuthorizationFailure("System has an authorization problem, please ask to administrators.")
-        info = json.loads(response)
-        my_token = TokenModel()
-        my_token.expires = info["access"]["token"]["expires"]
-        my_token.id = info["access"]["token"]["id"]
-        my_token.tenant = info["access"]["token"]["tenant"]
+    def get_info_token(self, url, admin_token, token, auth_api):
+        """ Gets the token details and return a TokenModel with that information
+        :param url: Keystone URL
+        :param admin_token: the auth token needed to get token information
+        :param token: the token which information will be taken
+        :param auth_api: the version of the keystone API
+        :return: TokenModel with the information.
+        """
+
+        if auth_api == AUTH_API_V2:
+            headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: admin_token}
+            r = self.client.get(url + "/" + TOKENS_PATH_V2 + token, headers=headers)
+
+            if r.status_code != HTTP_RESPONSE_CODE_OK or r.text == "User token not found" \
+                    or r.text == "Service not authorized":
+                raise AuthorizationFailure(r.text)
+            response = r.text.decode()
+            info = json.loads(response)
+            my_token = TokenModel()
+            tmp = info["access"]["token"]
+            my_token.expires = tmp["expires"]
+            my_token.id = tmp["id"]
+            my_token.tenant = tmp["tenant"]
+
+        elif auth_api == AUTH_API_V3:
+            headers = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: admin_token, X_SUBJECT_TOKEN_HEADER: token}
+            r = self.client.get(url + "/" + TOKENS_PATH_V3, headers=headers)
+            response = r.text.decode()
+            if r.status_code is not HTTP_RESPONSE_CODE_OK:
+                raise AuthorizationFailure(response)
+            info = json.loads(response)
+            my_token = TokenModel()
+            tmp = info["token"]
+            my_token.expires = tmp["expires_at"]
+            my_token.tenant = tmp["project"]
+            my_token
+
         return my_token

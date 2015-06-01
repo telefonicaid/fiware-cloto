@@ -36,10 +36,13 @@ ADMINS = (
 MANAGERS = ADMINS
 
 # OPENSTACK CONFIGURATION
-OPENSTACK_URL = u''
-ADM_USER = u''
-ADM_PASS = u''
-ADM_TENANT_ID = u''
+OPENSTACK_URL = ''
+ADM_USER = ''
+ADM_PASS = ''
+ADM_TENANT_ID = ''
+ADM_TENANT_NAME = ''
+USER_DOMAIN_NAME = ''
+AUTH_API = 'v2.0'
 
 # POLICY MANAGER CONFIGURATION
 SETTINGS_TYPE = u'production'
@@ -48,7 +51,7 @@ DEFAULT_WINDOW_SIZE = 5
 OWNER = u'Telefonica I+D'
 API_INFO_URL = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/' \
                u'Policy_Manager_Open_RESTful_API_Specification'
-VERSION = u'1.4.0'
+VERSION = u'1.5.0'
 MAX_WINDOW_SIZE = 5
 LOGGING_PATH = u'/var/log/fiware-cloto'
 
@@ -65,8 +68,8 @@ NOTIFICATION_TIME = u'PT5S'
 DB_CHARSET = u'utf8'
 DB_HOST = u'localhost'
 DB_NAME = u'cloto'
-DB_USER = u'policymanager'
-DB_PASSWD = u'policymanager'
+DB_USER = u''
+DB_PASSWD = u''
 
 DATABASES = {
     'default': {

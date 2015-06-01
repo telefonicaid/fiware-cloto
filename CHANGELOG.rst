@@ -1,6 +1,15 @@
 Changelog
 =========
 
+v1.5.0 (2015-05-29)
+------------------
+
+New
+~~~
+
+- Develop the functionality to connect Policy Manager with Keystone
+  using APIv3. [Guillermo Jimenez Prieto]
+
 v1.4.0 (2015-03-03)
 ------------------
 

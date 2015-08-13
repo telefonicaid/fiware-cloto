@@ -11,7 +11,7 @@ to understand the rights to use FI-WARE Open Specifications.
 PMI Policy API
 --------------
 
-| The PMI Policy API is a RESTful, resource-oriented API accessed via
+The PMI Policy API is a RESTful, resource-oriented API accessed via
 HTTP/HTTPS that uses JSON-based representations for information
 interchange that provide functionalities to the Policy Manager GE. This
 document describes the FI-WARE-specific features extension, which allows
@@ -37,7 +37,7 @@ and also be familiar with:
 -  `JSON <http://www.ietf.org/rfc/rfc4627.txt?number=4627>`__ data
    serialization formats.
 
-| 
+|
 
 API Change History
 ------------------
@@ -50,7 +50,6 @@ below:
 | Revision Date   | Changes Summary                           |
 +=================+===========================================+
 | Oct 17, 2012    | -  First version of the PMI Policy API.   |
-                                                             
 +-----------------+-------------------------------------------+
 
 | 
@@ -120,7 +119,7 @@ http://{serverRoot}:{serverPort}.
 Authentication
 --------------
 
-| Each HTTP request against the **PMI** requires the inclusion of
+Each HTTP request against the **PMI** requires the inclusion of
 specific authentication credentials. The specific implementation of this
 API supports OAuth v2.0 authentication schemes and will be determined by
 the specific provider that implements this GE and Interface. Please
@@ -423,7 +422,7 @@ The values that you receive are the following:
    52415800-8b69-11e0-9b19-734f6af67565.
 -  **condition** is the key whose value is the description of the
    scalability rule associated to this server. It could be one or more
-   than one and the format of this rule is the following:
+   than one. You can find an example condition at the end of this document.
 -  **action** is the key whose value represents the action to take over
    the server. Its values are up and down.
 -  **ruleId** is the key that represents the id of the rule, following
@@ -876,7 +875,112 @@ Rules Engine
 ------------
 
 Rules are described using JSON, and contain information about CPU and
-Memory usage, in first instance.
+Memory, Disk and Network usage, in first instance.
+
+Conditions
+----------
+
+Conditions are represented as JSON format as a compound of attributes
+ representing server measures with a value and an operator.
+
+Attributes are:
+ -  cpu
+ -  mem
+ -  hdd
+ -  net
+
+
+Supported operators are:
+ - greater
+ - greater equal
+ - less
+ - less equal
+
+::
+
+    "condition": {
+               "cpu": {
+                      "value": 98.3,
+                      "operand": "greater"
+               },
+               "mem": {
+                      "value": 95,
+                      "operand": "greater equal"
+               },
+               "hdd": {
+                      "value": 95,
+                      "operand": "greater equal"
+               },
+               "net": {
+                      "value": 95,
+                      "operand": "greater equal"
+               }
+       }
+
+Actions
+-------
+There are two types of actions:
+
+- notify-scale: with two different options
+
+ -  scaleUp
+
+::
+
+        "action": {
+              "actionName": "notify-scale",
+              "operation": "scaleUp"
+        },
+
+|
+
+ -  scaleDown
+
+::
+
+        "action": {
+              "actionName": "notify-scale",
+              "operation": "scaleDown"
+        },
+
+
+These actions send a meessage with the following format:
+::
+
+    {"action": <ACTION_NAME>,
+     "serverId": <SERVER_ID>}
+
+Where:
+
+-  **ACTION_NAME** is the name of the action (scaleUp or Scale Down).
+-  **SERVER_ID** is the key whose value specifies the server ID that fulfills the condition, following the OpenStack ID
+   format. An example of it is the id 52415800-8b69-11e0-9b19-734f6af67565.
+
+- notify-email
+
+::
+
+    "action": {
+          "actionName": "notify-email",
+          "email": “name@host.com”,
+          "body": “Example body”
+    },
+
+This action send a meessage with the following format:
+::
+
+    {"action": "notify-email",
+     "serverId": <SERVER_ID>,
+     "email": <EMAIL>,
+     "description": <DESCRIPTION>}
+
+Where:
+
+-  **SERVER_ID** is the key whose value specifies the server ID that fulfills the contidion, following the OpenStack ID
+   format. An example of it is the id
+   52415800-8b69-11e0-9b19-734f6af67565.
+-  **EMAIL** is the email address where the message should be sent.
+-  **DESCRIPTION** is the body of the email which contains the detail that the creator of the rule wanted to inform.
 
 Example Rule
 ------------
@@ -887,7 +991,7 @@ this case, the name will be "AlertCPU"
 Every fact is like "(server (server-id 12345-abcd)(cpu 50)(mem 33)(hdd 66)(net 66))"
 
 In this case, the condition defined expects all server with cpu usage
-more than 98.3
+more than 98.3, memory usage 95, hdd space used 95 and network usage 95.
 
 Actions will create an HTTP POST notification to an url specified on
 every subscription to this rule. In this case the notification will be

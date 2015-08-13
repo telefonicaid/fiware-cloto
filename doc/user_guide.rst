@@ -168,12 +168,12 @@ it has the following appearance:
             "contextElement": {
                "attributes": [
                    {
-                       "value": "99.12",
+                       "value": "0.12",
                        "name": "usedMemPct",
                        "type": "string"
                    },
                    {
-                       "value": "99.14",
+                       "value": "0.14",
                        "name": "cpuLoadPct",
                        "type": "string"
                    },

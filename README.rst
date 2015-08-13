@@ -1,22 +1,55 @@
-FIWARE Policy Manager GE
-____________________
+FIWARE Policy Manager GE - Cloto
+________________________________
 
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
 
-Description
-===========
+GEi overall description
+=======================
+Policy Manager is called Bosun.
 
-This module is part of FIWARE Policy Manager. It provides an API-REST to create rules associated to servers,
-subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
-described in rules when conditions are given.
+Bosun GEri offers decision-making ability, independently of the type of resource (physical/virtual resources,
+network, service, etc.)  being able to solve complex problems within the Cloud field by reasoning about the knowledge
+base, represented by facts and rules.
+Bosun GEri provides the basic management of cloud resources based on rules, as well as management of the corresponding
+resources within FIWARE Cloud instances based on infrastructure physical monitoring, resources and services
+security monitoring or whatever that could be defined by facts, actions and rules.
+
+The baseline for the Bosun GEri is PyCLIPS, which is a module to interact with CLIPS expert system implemented in
+python language. The reason to take PyCLIPS is to extend the OpenStack ecosystem with an expert system, written in
+the same language as the rest of the OpenStack services.
+Besides, It provides notification service to your own HTTP server where you can define your
+own actions based on the notifications launched by Policy Manager.
+Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
+system and calculate any possible change on it based on the knowledge database defined for it.
+
+Components
+----------
+
+Fiware-Cloto
+    Fiware-cloto is part of FIWARE Policy Manager. It provides an API-REST to create rules associated to servers,
+    subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
+    described in rules when conditions are given.
+
+Fiware-Facts
+    Server to process the incoming facts from the
+    `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__
+    and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
+    resources consumption.
 
 For more information, please refer to the `documentation <doc/README.rst>`_.
 
 
-Prerequisites
-=============
+Build and Install
+=================
+
+Requirements
+------------
+
+- Operating systems: CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the
+  reference operating system.
+
 To install this module you have to install some components:
 
 - Python 2.7
@@ -27,24 +60,34 @@ To install this module you have to install some components:
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
 - gcc-c++ and gcc libraries
 
+This module also needs the installation of these other components:
+
+- Fiware-facts module installed (https://github.com/telefonicaid/fiware-facts)
+- A running instance of Orion Context Broker (https://github.com/telefonicaid/fiware-orion)
+- fiware-monitoring connected to the Orion instance to provide
+  information about servers (https://github.com/telefonicaid/fiware-monitoring).
+
 
 Installation
-============
+------------
 
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
-Ensure your mysql path is in your path. If not, you can add executing (change /usr/local/ with your mysql folder):
-    export PATH=$PATH:/usr/local/mysql/bin
+Ensure your mysql path is in your path. If not, you can add executing (change ``/usr/local/`` with your mysql folder):
+
+``export PATH=$PATH:/usr/local/mysql/bin``
 
 In addition, be sure you have installed mysql-devel package for development of MySQL applications.
 You should be able to install it from yum or apt-get package managers.
+
     examples: yum install mysql-devel
               apt-get install mysql-devel
               ...etc
 
 After all  you must run install.sh with sudo privileges in order to start installation.
-This script should install fiware-cloto in /opt/policyManager and it will ask you for some configuration
+This script should install fiware-cloto in ``/opt/policyManager`` and it will ask you for some configuration
 parameters, please, ensure you have all this data before starting the script in order to install fiware-cloto
 easiest.
+
     - Keystone URL.
     - Keystone admin user, password and tenant.
     - Mysql user and password.
@@ -52,18 +95,18 @@ easiest.
 After finishing you must configure cloto configuration and some apache settings.
 
 
-Configuration - Cloto
-=====================
-Before starting the rule engine, you should edit settings.py located at cloto folder or in /etc/sysconfig/fiware-cloto.cfg.
+Configuration file - Cloto
+--------------------------
+Before starting the rule engine, you should edit settings.py located at cloto folder or in ``/etc/sysconfig/fiware-cloto.cfg``.
 Constants you need to complete are:
 
 - All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install
    script you do not need to edit)
 - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
-- CONTEXT_BROKER_URL: URL where Context Broker is listening
+- CONTEXT_BROKER_URL: URL where Orion Context Broker is listening
 - NOTIFICATION_URL: URL where notification service is listening (This service must be implemented by the user)
 
-in addition you could modify other constants like NOTIFICATION_TIME, or DEFAULT_WINDOW_SIZE.
+In addition you could modify other constants like NOTIFICATION_TIME, or DEFAULT_WINDOW_SIZE.
 
 Finally you should modify ALLOWED_HOSTS parameter in settings.py adding the hosts you want to be accesible from outside,
 your IP address, the domain name, etc. An example could be like this:
@@ -72,8 +115,9 @@ your IP address, the domain name, etc. An example could be like this:
 
 
 Configuration - Apache + wsgi
-=============================
+-----------------------------
 Edit your httpd.conf file and add:
+::
 
     WSGIScriptAlias / PATH_TO_fiware-cloto/cloto/wsgi.py
     WSGIPythonPath PATH_TO_fiware-cloto
@@ -95,9 +139,9 @@ Edit your httpd.conf file and add:
         </Files>
     </Directory>
 
-Note that PATH_TO_fiware-cloto should be: /opt/policyManager/fiware-cloto
+Note that PATH_TO_fiware-cloto should be: ``/opt/policyManager/fiware-cloto``
 
-Finally you sould add cloto port to this httpd.conf file
+Finally you should add cloto port to this httpd.conf file
 
     Listen 8000
 
@@ -110,6 +154,8 @@ and set the value to Off
 Running fiware-cloto
 ====================
 
+**CentOS**
+
 To run fiware-cloto, just execute:
 
     service fiware-cloto start
@@ -118,6 +164,87 @@ To stop fiware-cloto, execute:
 
     service fiware-cloto stop
 
+**Ubuntu**
+
+To run fiware-cloto, just start apache:
+
+    service apache2 start
+
+To stop fiware-cloto, execute:
+
+    service apache2 stop
+
+API Overview
+============
+
+To create a new rule for a server, user should send the rule as body of a POST request to the cloto server, with the
+condition and action that should be performed.
+
+For example, this operation allows to create a specific rule associate to a server:
+
+::
+
+    curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4' -X POST http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/32c23ac4-230d-42b6-81f2-db9bd7e5b790/rules/ -d '{"action": {"actionName": "notify-scale", "operation": "scaleUp"}, "name": "ScaleUpRule", "condition": { "cpu": { "value": 98, "operand": "greater" }, "mem": { "value": 95, "operand": "greater equal"}}}'
+
+
+The result of this operation is a JSON with the Id of the server affected and the ruleId of the created rule:
+
+::
+
+    {
+        "serverId": "32c23ac4-230d-42b6-81f2-db9bd7e5b790",
+        "ruleId": "68edb416-bfc6-11e3-a8b9-fa163e202949"
+    }
+
+Then user could perform a subscription to that rule with a new operation.
+
+Please have a look at the `API Reference Documentation`_ section below and
+at the `user and programmer guide <doc/user_guide.rst>`_ for more description of the possibilities and operations.
+
+API Reference Documentation
+---------------------------
+
+- `FIWARE Policy Manager v1 (Apiary)`__
+
+__ `FIWARE Policy Manager - Apiary`_
+
+
+Testing
+=======
+
+Unit tests
+----------
+
+To execute the unit tests, you must set the environment variable pointing to the settings_test file.
+Then you can use coverage to execute the tests and obtain the percentage of lines coveved by the tests.
+
+::
+
+    $ export DJANGO_SETTINGS_MODULE=settings.settings_tests
+    $ coverage run --source=cloto,orion_wrapper,environments manage.py test
+
+End-to-end tests
+----------------
+
+Please refer to the `Installation and administration guide
+<doc/admin_guide.rst#end-to-end-testing>`_ for details.
+
+Acceptance tests
+----------------
+
+In the following document you will find the steps to execute automated
+tests for the Policy Manager GE:
+
+- `Policy Manager acceptance tests <cloto/tests/acceptance_tests/README.md>`_
+
+
+Advanced topics
+===============
+
+- `Installation and administration <doc/admin_guide.rst>`_
+- `User and programmers guide <doc/user_guide.rst>`_
+- `Open RESTful API Specification <doc/open_spec.rst>`_
+- `Architecture Description <doc/architecture.rst>`_
 
 License
 =======
@@ -135,3 +262,8 @@ License
    :target: https://pypi.python.org/pypi/fiware-cloto/
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/
+
+
+.. REFERENCES
+
+.. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html

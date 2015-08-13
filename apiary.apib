@@ -17,43 +17,40 @@ This operation updates the context related to a specific server, identified with
 + Request (application/json)
 
         {
-            "subscriptionId": "<SubscriptionId>",
-            "originator": "http://localhost/test",
             "contextResponses": [
                 {
                     "contextElement": {
-                        "type": "Server",
-                        "isPattern": "false",
-                        "id": "<ServerId>",
-                        "attributes": [
-                            {
-                                "name": "CPU",
-                                "type": "Probe",
-                                "contextValue": "0.75"
-                            },
-                            {
-                                "name": "Memory",
-                                "type": "Probe",
-                                "contextValue": "0.83"
-                            },
-                            {
-                                "name": "Disk",
-                                "type": "Probe",
-                                "contextValue": "0.83"
-                            },
-                            {
-                                "name": "Network",
-                                "type": "Probe",
-                                "contextValue": "0.83"
-                            }
-                        ]
-                    },
-                    "statusCode": {
-                        "code": "200",
-                        "reasonPhrase": "Ok",
-                        "details": "a message"
-                    }
-                }
+                       "attributes": [
+                           {
+                               "value": "0.12",
+                               "name": "usedMemPct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.14",
+                               "name": "cpuLoadPct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.856240",
+                               "name": "freeSpacePct",
+                               "type": "string"
+                           },
+                           {
+                               "value": "0.8122",
+                               "name": "netLoadPct",
+                               "type": "string"
+                           }
+                       ],
+                       "id": "Trento:193.205.211.69",
+                       "isPattern": "false",
+                       "type": "host"
+                   },
+                   "statusCode": {
+                       "code": "200",
+                       "reasonPhrase": "OK"
+                   }
+               }
             ]
         }
 

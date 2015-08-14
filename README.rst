@@ -1,5 +1,6 @@
+================================
 FIWARE Policy Manager GE - Cloto
-________________________________
+================================
 
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
@@ -34,7 +35,7 @@ Fiware-Cloto
 
 Fiware-Facts
     Server to process the incoming facts from the
-    `Orion Context Broker <http://catalogue.fi-ware.org/enablers/publishsubscribe-context-broker-orion-context-broker>`__
+    `Orion Context Broker <https://github.com/telefonicaid/fiware-orion>`__
     and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
     resources consumption.
 
@@ -143,10 +144,14 @@ Note that PATH_TO_fiware-cloto should be: ``/opt/policyManager/fiware-cloto``
 
 Finally you should add cloto port to this httpd.conf file
 
+::
+
     Listen 8000
 
 We recommend you to disable HTTP TRACK|TRACE methods adding to httpd.conf TraceEnable directive
 and set the value to Off
+
+::
 
     TraceEnable Off
 
@@ -225,6 +230,29 @@ Then you can use coverage to execute the tests and obtain the percentage of line
 
 End-to-end tests
 ----------------
+
+In order to check that fiware-cloto is up and running, you can execute a GET request similar to:
+
+::
+
+    curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
+
+Where:
+**$AUTH_TOKEN**: is a valid token owned by the user. You can request this token from keystone.
+**$HOST**: is the url/IP of the machine where fiware facts is installed, for example: (policymanager-host.org, 127.0.0.1, etc)
+**$TENANT_ID**: is a tenantId of the user, for example: 6571e3422ad84f7d828ce2f30373b3d4
+
+the response should be similar to:
+
+::
+
+    {
+        "owner": "Telefonica I+D",
+        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification",
+        "runningfrom": "15/08/14 10:12:45",
+        "version": "1.7.0",
+        "windowsize": 2
+    }
 
 Please refer to the `Installation and administration guide
 <doc/admin_guide.rst#end-to-end-testing>`_ for details.

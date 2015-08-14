@@ -229,7 +229,7 @@ Which produces the following result after the execution:
 
 **6. Unsubscribe the previous rule**
 
-In order to stop the process to evaluate rules, is is needed to
+In order to stop the process to evaluate rules, it is needed to
 unsubscribe the activated rule. We can do it with the following
 operation:
 

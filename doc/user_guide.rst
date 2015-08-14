@@ -60,7 +60,7 @@ operations.
     curl -d '{"auth": {"tenantName": $TENNANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}' 
     -H "Content-type: application/json" -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
 
-Both $TENNANT (Project), $USERNAME and $PASSWORD must be values
+Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The IP address
 10.95.171.115 and the Port 35357 are the data of our internal
 installation of IdM, if you planned to execute it you must changed it by
@@ -75,7 +75,7 @@ We obtained two data from the previous sentence:
 
     <token expires="2012-10-25T16:35:42Z" id="a9a861db6276414094bc1567f664084d">
 
--  Tennant-Id
+-  Tenant-Id
 
 ::
 
@@ -157,48 +157,47 @@ An the expected result is the following.
 This operation simulate the operation that the context broker used to
 send data to the Policy Manager, the normal execution of this process
 will be automatically once that the Policy Manager subscribes a rule to
-a specific server. The operation is the following:
+a specific server. The operation is related to fiware-facts component and
+it has the following appearance:
 
 ::
 
     curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/serverI1 -d '{
-    >     "contextResponses": [
-    >         {
-    >             "contextElement": {
-    >                 "attributes": [
-    >                     {
-    >                         "contextValue": "6", 
-    >                         "name": "users", 
-    >                         "type": "string"
-    >                     }, 
-    >                     {
-    >                         "contextValue": "1", 
-    >                         "name": "usedMemPct", 
-    >                         "type": "string"
-    >                     }, 
-    >                     {
-    >                         "contextValue": "0.14", 
-    >                         "name": "cpuLoadPct", 
-    >                         "type": "string"
-    >                     }, 
-    >                     {
-    >                         "contextValue": "0.856240", 
-    >                         "name": "freeSpacePct", 
-    >                         "type": "string"
-    >                     }
-    >                 ], 
-    >                 "id": "Trento:193.205.211.69", 
-    >                 "isPattern": "false", 
-    >                 "type": "host"
-    >             }, 
-    >             "statusCode": {
-    >                 "code": "200", 
-    >                 "reasonPhrase": "OK"
-    >             }
-    >         }
-    >     ]
-    > }
-    > '
+    "contextResponses": [
+        {
+            "contextElement": {
+               "attributes": [
+                   {
+                       "value": "0.12",
+                       "name": "usedMemPct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.14",
+                       "name": "cpuLoadPct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.856240",
+                       "name": "freeSpacePct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.8122",
+                       "name": "netLoadPct",
+                       "type": "string"
+                   }
+               ],
+               "id": "Trento:193.205.211.69",
+               "isPattern": "false",
+               "type": "host"
+           },
+           "statusCode": {
+               "code": "200",
+               "reasonPhrase": "OK"
+           }
+       }]
+    }'
 
 Which produces the following result after the execution:
 
@@ -230,7 +229,7 @@ Which produces the following result after the execution:
 
 **6. Unsubscribe the previous rule**
 
-In order to stop the process to evaluate rules, ir is needed to
+In order to stop the process to evaluate rules, it is needed to
 unsubscribe the activated rule. We can do it with the following
 operation:
 

@@ -6,6 +6,19 @@ FIWARE Policy Manager GE - Cloto
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
 
+This is the code repository for **FIWARE Policy Manager GE - Cloto**, a server that provides an API-REST to
+create rules associated to servers, subscribe servers to Context Broker to get information about resources
+consumption of that servers and launch actions described in rules when conditions are given.
+
+This project is part of FIWARE_ and `FIWARE Ops`_ suite of tools for the operation of FIWARE Lab.
+
+Any feedback on this documentation is highly welcome, including bugs, typos or
+things you think should be included but aren't. You can use `github issues`__
+to provide feedback.
+
+__ `Fiware-cloto - GitHub issues`_
+
+
 GEi overall description
 =======================
 Policy Manager is called Bosun.
@@ -316,4 +329,7 @@ License
 
 .. REFERENCES
 
+.. _FIWARE: https://www.fiware.org/
+.. _FIWARE Ops: https://www.fiware.org/fiware-operations/
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
+.. _Fiware-facts - GitHub issues: https://github.com/telefonicaid/fiware-facts/issues/new

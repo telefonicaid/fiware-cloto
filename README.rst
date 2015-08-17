@@ -143,8 +143,8 @@ Configuration file - Cloto
 Before starting the rule engine, you should edit settings.py located at cloto folder or in ``/etc/sysconfig/fiware-cloto.cfg``.
 Constants you need to complete are:
 
-- All in ``# OPENSTACK CONFIGURATION``: Openstack information (If you provide this information in the install
-   script you do not need to edit)
+- All in `# OPENSTACK CONFIGURATION`: Openstack information (If you provide this information in the install
+  script you do not need to edit)
 - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
 - CONTEXT_BROKER_URL: URL where Orion Context Broker is listening
 - NOTIFICATION_URL: URL where notification service is listening (This service must be implemented by the user)

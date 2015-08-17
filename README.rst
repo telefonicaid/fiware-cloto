@@ -311,9 +311,10 @@ In order to check that fiware-cloto is up and running, you can execute a GET req
     curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
 
 Where:
-**$AUTH_TOKEN**: is a valid token owned by the user. You can request this token from keystone.
-**$HOST**: is the url/IP of the machine where fiware facts is installed, for example: (policymanager-host.org, 127.0.0.1, etc)
-**$TENANT_ID**: is a tenantId of the user, for example: 6571e3422ad84f7d828ce2f30373b3d4
+
+- **$AUTH_TOKEN**: is a valid token owned by the user. You can request this token from keystone.
+- **$HOST**: is the url/IP of the machine where fiware facts is installed, for example: (policymanager-host.org, 127.0.0.1, etc)
+- **$TENANT_ID**: is a tenantId of the user, for example: 6571e3422ad84f7d828ce2f30373b3d4
 
 the response should be similar to:
 
@@ -337,27 +338,28 @@ __ `FIWARE Policy Manager GE - Cloto`_
 Acceptance tests
 ----------------
 
- Requirements
+Requirements
 
-  - Python 2.7 or newer
-  - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
-  - virtualenv installed (pip install virtalenv)
-  - Git installed (yum install git-core / apt-get install git)
+- Python 2.7 or newer
+- pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
+- virtualenv installed (pip install virtalenv)
+- Git installed (yum install git-core / apt-get install git)
 
- Environment preparation:
+Environment preparation:
 
-  - Create a virtual environment somewhere, e.g. in ENV (virtualenv ENV)
-  - Activate the virtual environment (source ENV/bin/activate)
-  - Change to the test/acceptance folder of the project
-  - Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
-  - Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+- Create a virtual environment somewhere, e.g. in ENV (virtualenv ENV)
+- Activate the virtual environment (source ENV/bin/activate)
+- Change to the test/acceptance folder of the project
+- Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
+- Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
 
- Tests execution
+Tests execution
 
-  Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
-  ::
+Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
 
-        lettuce_tools
+::
+
+       $ lettuce_tools
 
 In the following document you will find the steps to execute automated
 tests for the Policy Manager GE:

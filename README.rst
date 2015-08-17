@@ -31,7 +31,7 @@ __ `FIWARE Policy Manager GE - Cloto`_
 
 GEi overall description
 =======================
-Policy Manager is called Bosun.
+Bosun GEri is the reference implementation of Policy Manager GE.
 
 Bosun GEri offers decision-making ability, independently of the type of resource (physical/virtual resources,
 network, service, etc.)  being able to solve complex problems within the Cloud field by reasoning about the knowledge
@@ -141,7 +141,7 @@ __ `FIWARE Policy Manager GE - Cloto`_
 Configuration file - Cloto
 --------------------------
 Before starting the rule engine, you should edit settings.py located at cloto folder or in ``/etc/sysconfig/fiware-cloto.cfg``.
-Constants you need to complete are:
+Constants you eed to complete are:
 
 - All in ``# OPENSTACK CONFIGURATION``: Openstack information (If you provide this information in the install script you do not need to edit)
 - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)

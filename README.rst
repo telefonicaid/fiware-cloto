@@ -14,6 +14,7 @@ This is the code repository for **FIWARE Policy Manager GE - Cloto**, a server t
 create rules associated to servers, subscribe servers to Context Broker to get information about resources
 consumption of that servers and launch actions described in rules when conditions are given.
 
+This project is part of FIWARE_.
 Check also the `FIWARE Catalogue entry for Policy Manager`__
 
 __ `FIWARE Policy Manager - Catalogue`_
@@ -142,7 +143,7 @@ Configuration file - Cloto
 Before starting the rule engine, you should edit settings.py located at cloto folder or in ``/etc/sysconfig/fiware-cloto.cfg``.
 Constants you need to complete are:
 
-- All in ``# OPENSTACK CONFIGURATION``: Openstack information (If you provide this information in the install
+- All in ``# OPENSTACK CONFIGURATION`: Openstack information (If you provide this information in the install
    script you do not need to edit)
 - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
 - CONTEXT_BROKER_URL: URL where Orion Context Broker is listening

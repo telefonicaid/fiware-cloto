@@ -1,3 +1,5 @@
+.. _Top:
+
 ===============================
 FIWARE Policy Manager GE: Cloto
 ===============================
@@ -25,9 +27,7 @@ to provide feedback.
 
 __ `Fiware-cloto - GitHub issues`_
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 GEi overall description
 =======================
@@ -48,9 +48,7 @@ own actions based on the notifications launched by Policy Manager.
 Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
 system and calculate any possible change on it based on the knowledge database defined for it.
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Components
 ----------
@@ -68,9 +66,7 @@ Fiware-Facts
 
 For more information, please refer to the `documentation <doc/README.rst>`_.
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Build and Install
 =================
@@ -98,9 +94,7 @@ This module also needs the installation of these other components:
 - fiware-monitoring connected to the Orion instance to provide
   information about servers (https://github.com/telefonicaid/fiware-monitoring).
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Installation
 ------------
@@ -134,9 +128,7 @@ easiest.
 
 After finishing you must configure cloto configuration and some apache settings.
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Configuration file - Cloto
 --------------------------
@@ -157,9 +149,7 @@ your IP address, the domain name, etc. An example could be like this:
 
    ALLOWED_HOSTS = ['policymanager.host.com','80.71.123.2’]
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Configuration - Apache + wsgi
 -----------------------------
@@ -201,9 +191,7 @@ and set the value to Off
 
     TraceEnable Off
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Running
 =======
@@ -238,9 +226,7 @@ To stop fiware-cloto, execute:
 
     $ service apache2 stop
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 API Overview
 ============
@@ -269,9 +255,7 @@ Then user could perform a subscription to that rule with a new operation.
 Please have a look at the `API Reference Documentation`_ section below and
 at the `user and programmer guide <doc/user_guide.rst>`_ for more description of the possibilities and operations.
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 API Reference Documentation
 ---------------------------
@@ -280,9 +264,7 @@ API Reference Documentation
 
 __ `FIWARE Policy Manager - Apiary`_
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Testing
 =======
@@ -298,9 +280,7 @@ Then you can use coverage to execute the tests and obtain the percentage of line
     $ export DJANGO_SETTINGS_MODULE=settings.settings_tests
     $ coverage run --source=cloto,orion_wrapper,environments manage.py test
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 End-to-end tests
 ----------------
@@ -332,9 +312,7 @@ the response should be similar to:
 Please refer to the `Installation and administration guide
 <doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Acceptance tests
 ----------------
@@ -367,9 +345,7 @@ tests for the Policy Manager GE:
 
 - `Policy Manager acceptance tests <cloto/tests/acceptance_tests/README.md>`_
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Advanced topics
 ===============
@@ -379,9 +355,7 @@ Advanced topics
 - `Open RESTful API Specification <doc/open_spec.rst>`_
 - `Architecture Description <doc/architecture.rst>`_
 
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
+Top_.
 
 Support
 =======
@@ -389,9 +363,8 @@ Support
 Ask your thorough programming questions using stackoverflow and your general questions on FIWARE Q&A.
 In both cases please use the tag fiware-bosun
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 License
 =======

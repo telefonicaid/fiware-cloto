@@ -756,11 +756,11 @@ between:
 -  High usage, in which we send 100 concurrent accesses to the Claudia
    and OpenStack API.
 
-| 
-|  The results were obtained with a top command execution over the
-following machine configuration:
+|
 
-| 
+The results were obtained with a top command execution over the following machine configuration:
+
+|
 | {\| style="background:#cccc99;color:black;width:50%;" border="1"
 cellpadding="3" cellspacing="0" align="center" \|+ Machine Info ! !!
 Rule Engine Node !! Facts Engine Node \|- style="background:white;
@@ -772,8 +772,9 @@ style="background:white; color:black" align="center" ! RAM \| 2GB \| 2GB
 \| 20GB \|- style="background:white; color:black" align="center" !
 Operating System \| CentOS 6.3 \| CentOS 6.3 \|}
 
-| 
-|  The results of requirements both RAM, CPU and I/O to HDD in case of
+|
+
+The results of requirements both RAM, CPU and I/O to HDD in case of
 Rule engine node is shown in the following table:
 
 | 
@@ -787,7 +788,8 @@ style="background:white; color:black" align="center" ! I/O HDD \| 6GB \|
 6GB \|}
 
 | 
-| And the results of requirements both RAM, CPU and I/O to HDD in case
+
+And the results of requirements both RAM, CPU and I/O to HDD in case
 of Tomcat node is shown in the following table:
 
 | 

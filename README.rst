@@ -402,7 +402,7 @@ License
 
 .. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-cloto.svg?branch=develop
    :target: https://travis-ci.org/telefonicaid/fiware-cloto
-.. |Coverage Status| image:: https://coveralls.io/repos/telefonicaid/fiware-cloto/badge.png?branch=develop
+.. |Coverage Status| image:: https://img.shields.io/coveralls/telefonicaid/fiware-cloto/develop.svg
    :target: https://coveralls.io/r/telefonicaid/fiware-cloto
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/

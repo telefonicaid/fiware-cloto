@@ -1,6 +1,6 @@
-================================
-FIWARE Policy Manager GE - Cloto
-================================
+===============================
+FIWARE Policy Manager GE: Cloto
+===============================
 
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
@@ -27,7 +27,7 @@ __ `Fiware-cloto - GitHub issues`_
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 GEi overall description
 =======================
@@ -50,7 +50,7 @@ system and calculate any possible change on it based on the knowledge database d
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Components
 ----------
@@ -70,7 +70,7 @@ For more information, please refer to the `documentation <doc/README.rst>`_.
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Build and Install
 =================
@@ -100,7 +100,7 @@ This module also needs the installation of these other components:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Installation
 ------------
@@ -136,7 +136,7 @@ After finishing you must configure cloto configuration and some apache settings.
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Configuration file - Cloto
 --------------------------
@@ -159,7 +159,7 @@ your IP address, the domain name, etc. An example could be like this:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Configuration - Apache + wsgi
 -----------------------------
@@ -203,7 +203,7 @@ and set the value to Off
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Running
 =======
@@ -230,6 +230,8 @@ To run fiware-cloto, just start apache:
 
     $ service apache2 start
 
+Note: Cloto runs under apache.
+
 To stop fiware-cloto, execute:
 
 .. code::
@@ -238,7 +240,7 @@ To stop fiware-cloto, execute:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 API Overview
 ============
@@ -269,7 +271,7 @@ at the `user and programmer guide <doc/user_guide.rst>`_ for more description of
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 API Reference Documentation
 ---------------------------
@@ -280,7 +282,7 @@ __ `FIWARE Policy Manager - Apiary`_
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Testing
 =======
@@ -298,7 +300,7 @@ Then you can use coverage to execute the tests and obtain the percentage of line
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 End-to-end tests
 ----------------
@@ -332,7 +334,7 @@ Please refer to the `Installation and administration guide
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Acceptance tests
 ----------------
@@ -367,7 +369,7 @@ tests for the Policy Manager GE:
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Advanced topics
 ===============
@@ -379,7 +381,7 @@ Advanced topics
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 Support
 =======
@@ -389,7 +391,7 @@ In both cases please use the tag fiware-bosun
 
 `Top`__.
 
-__ `FIWARE Policy Manager GE - Cloto`_
+__ `FIWARE Policy Manager GE: Cloto`_
 
 License
 =======

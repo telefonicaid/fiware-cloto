@@ -5,38 +5,7 @@ FIWARE Policy Manager GE - Cloto
 
 | |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
 
-
-- `Introduction`_
-
-- `GEi overall description`_
-
-  * `Components`_
-
-- `Build and Install`_
-
-  * `Requirements`_
-  * `Installation`_
-  * `Configuration file - Cloto`_
-  * `Configuration - Apache + wsgi`_
-
-- `Running`_
-
-- `API Overview`_
-
-  * `API Reference Documentation`_
-
-- `Testing`_
-
-  * `Unit tests`_
-  * `End-to-end tests`_
-  * `Acceptance tests`_
-
-- `Advanced topics`_
-
-- `Support`_
-
-- `License`_
-
+.. contents:: :local:
 
 Introduction
 ============
@@ -45,7 +14,9 @@ This is the code repository for **FIWARE Policy Manager GE - Cloto**, a server t
 create rules associated to servers, subscribe servers to Context Broker to get information about resources
 consumption of that servers and launch actions described in rules when conditions are given.
 
-Check also the `FIWARE Catalogue entry for Policy Manager <http://catalogue.fiware.org/enablers/policy-manager-bosun>`__
+Check also the `FIWARE Catalogue entry for Policy Manager`__
+
+__ `FIWARE Policy Manager - Catalogue`_
 
 Any feedback on this documentation is highly welcome, including bugs, typos or
 things you think should be included but aren't. You can use `github issues`__
@@ -136,23 +107,29 @@ Installation
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
 Ensure your mysql path is in your path. If not, you can add executing (change ``/usr/local/`` with your mysql folder):
 
-``export PATH=$PATH:/usr/local/mysql/bin``
+.. code::
+
+    $ export PATH=$PATH:/usr/local/mysql/bin
 
 In addition, be sure you have installed mysql-devel package for development of MySQL applications.
 You should be able to install it from yum or apt-get package managers.
 
-    examples: yum install mysql-devel
-              apt-get install mysql-devel
-              ...etc
+Examples:
+
+.. code::
+
+    centos$ sudo yum install mysql-devel
+    ubuntu$ sudo apt-get install mysql-devel
+
 
 After all  you must run install.sh with sudo privileges in order to start installation.
 This script should install fiware-cloto in ``/opt/policyManager`` and it will ask you for some configuration
 parameters, please, ensure you have all this data before starting the script in order to install fiware-cloto
 easiest.
 
-    - Keystone URL.
-    - Keystone admin user, password and tenant.
-    - Mysql user and password.
+- Keystone URL.
+- Keystone admin user, password and tenant.
+- Mysql user and password.
 
 After finishing you must configure cloto configuration and some apache settings.
 
@@ -165,7 +142,7 @@ Configuration file - Cloto
 Before starting the rule engine, you should edit settings.py located at cloto folder or in ``/etc/sysconfig/fiware-cloto.cfg``.
 Constants you need to complete are:
 
-- All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install
+- All in ``# OPENSTACK CONFIGURATION``: Openstack information (If you provide this information in the install
    script you do not need to edit)
 - RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
 - CONTEXT_BROKER_URL: URL where Orion Context Broker is listening
@@ -175,6 +152,8 @@ In addition you could modify other constants like NOTIFICATION_TIME, or DEFAULT_
 
 Finally you should modify ALLOWED_HOSTS parameter in settings.py adding the hosts you want to be accesible from outside,
 your IP address, the domain name, etc. An example could be like this:
+
+::
 
    ALLOWED_HOSTS = ['policymanager.host.com','80.71.123.2’]
 
@@ -233,21 +212,29 @@ Running
 
 To run fiware-cloto, just execute:
 
-    service fiware-cloto start
+.. code::
+
+    $ service fiware-cloto start
 
 To stop fiware-cloto, execute:
 
-    service fiware-cloto stop
+.. code::
+
+    $ service fiware-cloto stop
 
 **Ubuntu**
 
 To run fiware-cloto, just start apache:
 
-    service apache2 start
+.. code::
+
+    $ service apache2 start
 
 To stop fiware-cloto, execute:
 
-    service apache2 stop
+.. code::
+
+    $ service apache2 stop
 
 `Top`__.
 
@@ -425,4 +412,5 @@ License
 .. _FIWARE: https://www.fiware.org/
 .. _FIWARE Ops: https://www.fiware.org/fiware-operations/
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
-.. _Fiware-facts - GitHub issues: https://github.com/telefonicaid/fiware-facts/issues/new
+.. _Fiware-cloto - GitHub issues: https://github.com/telefonicaid/fiware-cloto/issues/new
+.. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun

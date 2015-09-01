@@ -36,6 +36,24 @@ Notes related resources of the **Facts API**
 ## Facts Collection [/{tenantid}/servers/{serverid}]
 ### Create new facts associated to a server [POST]
 This operation updates the context related to a specific server, identified with its serverId. The context information contains the description of the CPU, Memory, Disk and/or Network usages. This message follows the NGSI-10 information model but using JSON format and the response has no body.
+
+Attributes:
+Context element contains different measures. Each measure is an attribute which contains:
+
+* `name`: The name of the monitored attribute (usedMemPct, cpuLoadPct, netLoadPct, freeSpacePct).
+* `value`: The value of the attribute.
+* `type`: The type of the value (this component uses string).
+
+In addition there are three more attributes inside the context element:
+
+* `id`: Subscription unique identifier. Automatically created at creation time in the Context Broker.
+* `isPattern`: it shows if the query is related to a regular expression for the entity ID. (false, true)
+* `type`: The type of the context element (this component uses "host").
+
+Finally, Context element is involved into a context response, which also contains 
+
+* `statusCode`: with the result of the context broker query.
+
 + Parameters
     + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of the Tenant to perform action with. Has example value.
     + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Numeric `id` of the 
@@ -112,6 +130,11 @@ This operation lists the information of the current version of the API.
 
 ### Update the window size [PUT]
 This call updates the window size of the service in order to change the stabilization window size to be applied to the monitoring data received from the Monitoring GE
+
+Attributes:
+
+* `windowsize`: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).
+
 + Parameters
     + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of the Tenant to perform action with. Has example value.
 
@@ -218,6 +241,13 @@ This operation returns the list of elasticity rules associated.
 ## Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]
 ### Create a new elasticity rule [POST]
 This operation creates a new elasticity rules associated to a server
+
+Attributes:
+
+* `name`: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).
+* `condition`: Condition is a JSON description with the attributes representing server measures with a value and an operator. 
+* `action`: It is a JSON description with the action to be performed if condition is taken place.
+
 + Parameters
     + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
     + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
@@ -246,6 +276,14 @@ This operation creates a new elasticity rules associated to a server
 ## Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]
 ### Update an elasticity rule [PUT]
 This operation allows to update the rule condition, the action or both or a specific server
+
+Attributes:
+
+* `name`: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).
+* `condition`: Condition is a JSON description with the attributes representing server measures with a value and an operator. 
+* `action`: It is a JSON description with the action to be performed if condition is taken place.
+
+
 + Parameters
     + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
     + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.
@@ -313,6 +351,12 @@ This operation gets a specific rule.
 ## Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]
 ### Create a new subscription [POST]
 This operation creates a new subcription associated to a rule
+
+Attributes:
+
+* `ruleId`:  is the key that represents the id of the rule, following the OpenStack Id format (e.g. 52415800-8b69-11e0-9b19-734f6f006e54).
+* `url`:  the key whose value is the url to notify the action when the rule is fired.
+
 + Parameters
     + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
     + serverid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the server following the OpenStack ID format.

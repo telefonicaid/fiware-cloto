@@ -11,7 +11,7 @@ Feature: Policy Manager information
       When I retrieve the tenant information
       Then I get the following information:
       | doc                                          | owner          | version | windowsize |
-      | https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification | Telefonica I+D | 1.7.0     | 5          |
+      | https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification | Telefonica I+D | 1.8.0     | 5          |
 
 
     Scenario Outline: Get not existant tenant information

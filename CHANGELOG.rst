@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v1.7.1 (2015-09-08)
+-------------------
+
+Fix
+~~~
+
+- Updated apiary documentation in order to add new data. [Fernando]
+
 v1.6.0 (2015-07-28)
 -------------------
 

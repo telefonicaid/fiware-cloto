@@ -78,7 +78,7 @@ SETTINGS_TYPE = config.get('policy_manager', 'SETTINGS_TYPE')
 INSTALLATION_PATH = os.path.dirname(fiware_cloto.__file__)
 ENVIRONMENTS_MANAGER_PATH = INSTALLATION_PATH + u'/environments/environmentManager.py'
 ENVIRONMENTS_PATH = INSTALLATION_PATH + u'/environments/environment.py'
-RABBITMQ_URL = u'localhost'
+RABBITMQ_URL = config.get('rabbitmq', 'RABBITMQ_URL')
 
 
 DEFAULT_WINDOW_SIZE = config.get('policy_manager', 'DEFAULT_WINDOW_SIZE')

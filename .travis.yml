@@ -4,9 +4,11 @@ python:
 
 env:
   global:
-    - DJANGO_SETTINGS_MODULE=settings.tests
+    - DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
 
 script:
+  - ls
+  - cd fiware_cloto
   - python fiware-pep8.py .
   - sudo ./build.sh travis_build
 

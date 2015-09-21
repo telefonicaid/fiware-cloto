@@ -22,12 +22,26 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from distutils.core import setup
-from django.conf import settings
+__VERSION__ = "1.8.0"
+from setuptools import setup, find_packages
+from pip.req import parse_requirements
+import os
+
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fiware_cloto.cloto_settings.settings_tests")
+
+# parse_requirements() returns generator of pip.req.InstallRequirement objects
+install_reqs = parse_requirements("fiware_cloto/requirements.txt", session=False)
+# > requirements_list is a list of requirement; e.g. ['requests==2.6.0', 'Fabric==1.8.3']
+requirements_list = [str(ir.req) for ir in install_reqs]
+
 setup(
   name='fiware-cloto',
-  packages=['fiware-cloto'],  # this must be the same as the name above
-  version=settings.VERSION,
+  packages=find_packages(exclude=['*tests*']),
+  install_requires=requirements_list,
+  package_data={
+    'cloto_settings': ['*.cfg']
+  },
+  version=__VERSION__,
   description='This module is part of FI-WARE Policy Manager. It provides an API-REST to create rules associated '
             'to servers, subscribe servers to Context Broker to get information about resources consumption of that'
             ' servers and launch actions described in rules when conditions are given.',
@@ -35,7 +49,7 @@ setup(
   author_email='fernando.lopezaguilar@telefonica.com, e.fiware.tid@telefonica.com',
   license='Apache 2.0',
   url='https://github.com/telefonicaid/fiware-cloto',
-  download_url='https://github.com/telefonicaid/fiware-cloto/tarball/v%s' % settings.VERSION,
+  download_url='https://github.com/telefonicaid/fiware-cloto/tarball/v%s' % __VERSION__,
   keywords=['fiware', 'policy', 'manager', 'cloud'],
   classifiers=[
         "License :: OSI Approved :: Apache Software License", ],

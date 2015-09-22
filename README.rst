@@ -148,7 +148,7 @@ This file is located here:
 ``/etc/fiware.d/fiware-cloto.cfg``
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
-You can copy the `default configuration file <cloto_settings/fiware_cloto.cfg>`_ to the folder defined for your OS, and
+You can copy the `default configuration file <fiware_cloto/cloto_settings/fiware_cloto.cfg>`_ to the folder defined for your OS, and
 complete data about cloto MYSQL configuration (user and password) and all openstack configuration.
 
 In addition, user could have a copy of this file in other location and pass its location to the server in running
@@ -161,9 +161,9 @@ Options that user could define:
     [openstack]         # OPENSTACK information about KEYSTONE to validate tokens received
     OPENSTACK_URL: http://cloud.lab.fi-ware.org:4731/v2.0
     ADM_USER:
-    ADM_PASS: asXK3r9V4n1Ad93
-    ADM_TENANT_ID: 00000000000004212208890821784600
-    ADM_TENANT_NAME: admin
+    ADM_PASS:
+    ADM_TENANT_ID:
+    ADM_TENANT_NAME:
     USER_DOMAIN_NAME: Default
     AUTH_API: v2.0
 
@@ -186,8 +186,8 @@ Options that user could define:
     DB_CHARSET: utf8
     DB_HOST: localhost
     DB_NAME: cloto
-    DB_USER: policymanager
-    DB_PASSWD: policymanager
+    DB_USER:
+    DB_PASSWD:
 
 
 
@@ -244,7 +244,7 @@ The result of this operation is a JSON with the Id of the server affected and th
 Then user could perform a subscription to that rule with a new operation.
 
 Please have a look at the `API Reference Documentation`_ section below and
-at the `user and programmer guide <doc/user_guide.rst>`_ for more description of the possibilities and operations.
+at the `user and programmer guide <fiware_cloto/doc/user_guide.rst>`_ for more description of the possibilities and operations.
 
 `Top`__.
 

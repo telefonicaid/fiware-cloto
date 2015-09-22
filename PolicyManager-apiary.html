@@ -1,0 +1,4081 @@
+
+
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Policy Manager</title>
+    <link href="css/bootstrap-combined.no-icons.min.css" rel="stylesheet">
+    <link href="css/font-awesome.css" rel="stylesheet">
+    <link rel="stylesheet" href="css/bootstrap.min.css">
+    <link rel="stylesheet" href="css/idea.css">
+    <script src="js/highlight.pack.js"></script>
+    <script>hljs.initHighlightingOnLoad();</script>
+
+    <link rel="stylesheet" type="text/css" href="css/api-specification.css"> 
+
+    
+</head>
+<body id="respecDocument" class="h-entry">
+<div class="container">
+  <div id="TOC-container">
+    
+<section id="toc">
+
+        <div id="fiware-logo"></div>
+    <ul class="toc">
+
+
+    
+    
+
+
+
+
+
+<li><a href="#API_specification">API Specification</a>
+    <ul class="toc">
+    
+
+                        <li>
+                            
+                                <a href="#resource_group_facts" title = "Group Facts">Group Facts</a>
+                            
+                            <ul class="toc">
+                              
+                                
+                                    <li>
+                                        <a href="#resource_facts-collection" title = "Resource Facts Collection">Resource Facts Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_create-new-facts-associated-to-a-server" title ="POST - Create new facts associated to a server">POST - Create new facts associated to a server</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                            </ul>
+                        </li>
+                      
+
+                        <li>
+                            
+                                <a href="#resource_group_cloto" title = "Group Cloto">Group Cloto</a>
+                            
+                            <ul class="toc">
+                              
+                                
+                                    <li>
+                                        <a href="#resource_general-operations" title = "Resource General Operations">Resource General Operations</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_get-the-information-of-the-api" title ="GET - Get the information of the API">GET - Get the information of the API</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_update-the-window-size" title ="PUT - Update the window size">PUT - Update the window size</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_servers-collection" title = "Resource Servers Collection">Resource Servers Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_get-the-list-of-all-server's-rules" title ="GET - Get the list of all server's rules">GET - Get the list of all server's rules</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_server-collection" title = "Resource Server Collection">Resource Server Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_get-the-list-of-all-rules-of-a-server" title ="GET - Get the list of all rules of a server">GET - Get the list of all rules of a server</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_elasticity-rules-collection" title = "Resource Elasticity Rules Collection">Resource Elasticity Rules Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_create-a-new-elasticity-rule" title ="POST - Create a new elasticity rule">POST - Create a new elasticity rule</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_elasticity-rule-collection" title = "Resource Elasticity Rule Collection">Resource Elasticity Rule Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_update-an-elasticity-rule" title ="PUT - Update an elasticity rule">PUT - Update an elasticity rule</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_delete-an-elasticity-rule" title ="DELETE - Delete an elasticity rule">DELETE - Delete an elasticity rule</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_get-an-elasticity-rule" title ="GET - Get an elasticity rule">GET - Get an elasticity rule</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_subscriptions-collection" title = "Resource Subscriptions Collection">Resource Subscriptions Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_create-a-new-subscription" title ="POST - Create a new subscription">POST - Create a new subscription</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                                
+                                    <li>
+                                        <a href="#resource_subscription-collection" title = "Resource Subscription Collection">Resource Subscription Collection</a>
+                                        <ul class="toc  ">
+                                        
+                                            
+                                                <li><a href="#action_delete-a-subscription" title ="DELETE - Delete a subscription">DELETE - Delete a subscription</a></li>
+                                            
+
+                                        
+                                            
+                                                <li><a href="#action_get-a-subscription" title ="GET - Get a subscription">GET - Get a subscription</a></li>
+                                            
+
+                                        
+                                        </ul>
+                                    </li>
+                                
+                              
+                            </ul>
+                        </li>
+                      
+    <li><a href="#examples">Examples</a></li>
+    </ul>
+</li>
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   </ul>
+</section>
+
+  </div>
+  <div id="API-content">
+  
+	
+
+	
+		<h1>Policy Manager API Specification </h1>
+	
+
+	
+
+	
+
+	
+
+	
+
+
+
+	
+
+	
+
+	
+		<span class="dateLabel">DATE:</span> <span class="dateValue"> 19 August 2015 </span>
+	
+
+	
+
+	
+
+	
+
+
+
+
+	
+
+	
+
+	
+
+	
+
+	
+		
+		<dl>
+		
+			
+		
+			
+		
+			
+		
+			
+				<dt class="versionLabel">This version:</dt> 
+				<dd class="versionValue"> <a href="https://jsapi.apiary.io/apis/policymanager/reference.htmlv1.0">
+					https://jsapi.apiary.io/apis/policymanager/reference.htmlv1.0</a> </dd>
+			
+		
+			
+		
+			
+		
+
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+			
+		
+
+		<dt class="versionLabel">Latest version:</dt> 
+		<dd class="versionValue"> <a href="https://jsapi.apiary.io/apis/policymanager/reference.htmllatest">https://jsapi.apiary.io/apis/policymanager/reference.htmllatest</a> </dd>
+
+
+		</dl>
+	
+
+	
+
+
+
+	
+		<h2 id="editors">Editors</h2>
+		<ul>
+<li>Fernando López Aguilar, Telefónica I+D</li>
+<li>Guillermo Jiménez Prieto, IMDEA Software Institute. </li>
+</ul>
+	
+
+	
+
+	
+
+
+
+	
+
+	
+		<h2 id="copyright">Copyright</h2>
+		<p>This specification is licensed under the
+[FIWARE Open Specification License]
+(http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specification_Legal_Notice_%28essential_patents_license%29).</p>
+	
+
+	
+
+
+<hr>
+
+
+	<h2 id="abstract">Abstract</h2>
+	<!--
+Copyright 2015 Telefónica I+D
+All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+        http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+-->
+
+<p>The PMI Scalability API is a RESTful, resource-oriented API accessed via HTTP/HTTPS that uses JSON-based representations for information interchange that provide functionalities to the Policy Manager GE. This document describes the FI-WARE-specific features extension, which allows cloud user to extend the basic functionalities offered by Policy Manager GE in order to cope with elasticity management.</p>
+
+
+
+
+	
+
+	
+
+	
+		<h2 id="status">Status of this document</h2>
+		<p>Final version aligned with FIWARE Release 4.4.</p>
+	
+
+<hr>
+
+    
+    
+
+
+
+
+		
+	
+	
+		
+	
+		
+	
+		
+	
+
+
+
+
+
+	
+		
+	
+		
+	
+		
+	
+
+
+
+    
+
+  
+  <section id="API_specification">
+      <h1>API Specification</h1>
+      
+
+
+
+
+        
+            <section id="resource_group_facts" class="resourceGroup">
+            <h2 id="h-resource_group_facts">Facts</h2>
+        
+	<p>Notes related resources of the <strong>Facts API</strong></p>
+        
+            <section id="resource_facts-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_facts-collection">Facts Collection [/{tenantid}/servers/{serverid}]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_create-new-facts-associated-to-a-server" class="action POST">
+                        
+
+                        
+    <h4 id="h-action_create-new-facts-associated-to-a-server">
+        Create new facts associated to a server -
+        POST
+        
+            /{tenantid}/servers/{serverid}
+        
+    </h4>
+
+        
+                            <div id="create-new-facts-associated-to-a-server_body" class="">
+                                <p>This operation updates the context related to a specific server, identified with its serverId. The context information contains the description of the CPU, Memory, Disk and/or Network usages. This message follows the NGSI-10 information model but using JSON format and the response has no body.</p>
+<p>Attributes:
+Context element contains different measures. Each measure is an attribute which contains:</p>
+<ul>
+<li>
+<p><code>name</code>: The name of the monitored attribute (usedMemPct, cpuLoadPct, netLoadPct, freeSpacePct).</p>
+</li>
+<li>
+<p><code>value</code>: The value of the attribute.</p>
+</li>
+<li>
+<p><code>type</code>: The type of the value (this component uses string).</p>
+</li>
+</ul>
+<p>In addition there are three more attributes inside the context element:</p>
+<ul>
+<li>
+<p><code>id</code>: Subscription unique identifier. Automatically created at creation time in the Context Broker.</p>
+</li>
+<li>
+<p><code>isPattern</code>: it shows if the query is related to a regular expression for the entity ID. (false, true)</p>
+</li>
+<li>
+<p><code>type</code>: The type of the context element (this component uses "host").</p>
+</li>
+</ul>
+<p>Finally, Context element is involved into a context response, which also contains </p>
+<ul>
+<li><code>statusCode</code>: with the result of the context broker query.</li>
+</ul>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_create-new-facts-associated-to-a-server_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/facts/facts-collection/create-new-facts-associated-to-a-server">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+    </section>
+
+        
+            <section id="resource_group_cloto" class="resourceGroup">
+            <h2 id="h-resource_group_cloto">Cloto</h2>
+        
+	<p>Notes related resources of the <strong>Cloto API</strong></p>
+        
+            <section id="resource_general-operations" class="resource">
+                 <div class= "header" ><h3 id="h-resource_general-operations">General Operations [/{tenantid}]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_get-the-information-of-the-api" class="action GET">
+                        
+
+                        
+    <h4 id="h-action_get-the-information-of-the-api">
+        Get the information of the API -
+        GET
+        
+            /{tenantid}
+        
+    </h4>
+
+        
+                            <div id="get-the-information-of-the-api_body" class="">
+                                <p>This operation lists the information of the current version of the API.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_get-the-information-of-the-api_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/general-operations/get-the-information-of-the-api">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+                        
+                            <div id="action_update-the-window-size" class="action PUT">
+                        
+
+                        
+    <h4 id="h-action_update-the-window-size">
+        Update the window size -
+        PUT
+        
+            /{tenantid}
+        
+    </h4>
+
+        
+                            <div id="update-the-window-size_body" class="">
+                                <p>This call updates the window size of the service in order to change the stabilization window size to be applied to the monitoring data received from the Monitoring GE</p>
+<p>Attributes:</p>
+<ul>
+<li><code>windowsize</code>: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).</li>
+</ul>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_update-the-window-size_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/general-operations/update-the-window-size">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_servers-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_servers-collection">Servers Collection [/{tenantid}/servers/]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_get-the-list-of-all-server's-rules" class="action GET">
+                        
+
+                        
+    <h4 id="h-action_get-the-list-of-all-server's-rules">
+        Get the list of all server's rules -
+        GET
+        
+            /{tenantid}/servers/
+        
+    </h4>
+
+        
+                            <div id="get-the-list-of-all-server's-rules_body" class="">
+                                <p>This operation returns a list of servers with their rules.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_get-the-list-of-all-server's-rules_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/servers-collection/get-the-list-of-all-server's-rules">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_server-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_server-collection">Server Collection [/{tenantid}/servers/{serverid}/]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_get-the-list-of-all-rules-of-a-server" class="action GET">
+                        
+
+                        
+    <h4 id="h-action_get-the-list-of-all-rules-of-a-server">
+        Get the list of all rules of a server -
+        GET
+        
+            /{tenantid}/servers/{serverid}/
+        
+    </h4>
+
+        
+                            <div id="get-the-list-of-all-rules-of-a-server_body" class="">
+                                <p>This operation returns the list of elasticity rules associated.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_get-the-list-of-all-rules-of-a-server_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/server-collection/get-the-list-of-all-rules-of-a-server">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_elasticity-rules-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_elasticity-rules-collection">Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_create-a-new-elasticity-rule" class="action POST">
+                        
+
+                        
+    <h4 id="h-action_create-a-new-elasticity-rule">
+        Create a new elasticity rule -
+        POST
+        
+            /{tenantid}/servers/{serverid}/rules
+        
+    </h4>
+
+        
+                            <div id="create-a-new-elasticity-rule_body" class="">
+                                <p>This operation creates a new elasticity rules associated to a server</p>
+<p>Attributes:</p>
+<ul>
+<li>
+<p><code>name</code>: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).</p>
+</li>
+<li>
+<p><code>condition</code>: Condition is a JSON description with the attributes representing server measures with a value and an operator. </p>
+</li>
+<li>
+<p><code>action</code>: It is a JSON description with the action to be performed if condition is taken place.</p>
+</li>
+</ul>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_create-a-new-elasticity-rule_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/elasticity-rules-collection/create-a-new-elasticity-rule">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_elasticity-rule-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_elasticity-rule-collection">Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_update-an-elasticity-rule" class="action PUT">
+                        
+
+                        
+    <h4 id="h-action_update-an-elasticity-rule">
+        Update an elasticity rule -
+        PUT
+        
+            /{tenantid}/servers/{serverid}/rules/{ruleid}
+        
+    </h4>
+
+        
+                            <div id="update-an-elasticity-rule_body" class="">
+                                <p>This operation allows to update the rule condition, the action or both or a specific server</p>
+<p>Attributes:</p>
+<ul>
+<li>
+<p><code>name</code>: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).</p>
+</li>
+<li>
+<p><code>condition</code>: Condition is a JSON description with the attributes representing server measures with a value and an operator. </p>
+</li>
+<li>
+<p><code>action</code>: It is a JSON description with the action to be performed if condition is taken place.</p>
+</li>
+</ul>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				ruleid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the rule following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_update-an-elasticity-rule_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/elasticity-rule-collection/update-an-elasticity-rule">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+                        
+                            <div id="action_delete-an-elasticity-rule" class="action DELETE">
+                        
+
+                        
+    <h4 id="h-action_delete-an-elasticity-rule">
+        Delete an elasticity rule -
+        DELETE
+        
+            /{tenantid}/servers/{serverid}/rules/{ruleid}
+        
+    </h4>
+
+        
+                            <div id="delete-an-elasticity-rule_body" class="">
+                                <p>This operation deletes a specific rule.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				ruleid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the rule following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_delete-an-elasticity-rule_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/elasticity-rule-collection/delete-an-elasticity-rule">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+                        
+                            <div id="action_get-an-elasticity-rule" class="action GET">
+                        
+
+                        
+    <h4 id="h-action_get-an-elasticity-rule">
+        Get an elasticity rule -
+        GET
+        
+            /{tenantid}/servers/{serverid}/rules/{ruleid}
+        
+    </h4>
+
+        
+                            <div id="get-an-elasticity-rule_body" class="">
+                                <p>This operation gets a specific rule.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				ruleid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the rule following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_get-an-elasticity-rule_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/elasticity-rule-collection/get-an-elasticity-rule">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_subscriptions-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_subscriptions-collection">Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_create-a-new-subscription" class="action POST">
+                        
+
+                        
+    <h4 id="h-action_create-a-new-subscription">
+        Create a new subscription -
+        POST
+        
+            /{tenantid}/servers/{serverid}/subscription
+        
+    </h4>
+
+        
+                            <div id="create-a-new-subscription_body" class="">
+                                <p>This operation creates a new subcription associated to a rule</p>
+<p>Attributes:</p>
+<ul>
+<li>
+<p><code>ruleId</code>:  is the key that represents the id of the rule, following the OpenStack Id format (e.g. 52415800-8b69-11e0-9b19-734f6f006e54).</p>
+</li>
+<li>
+<p><code>url</code>:  the key whose value is the url to notify the action when the rule is fired.</p>
+</li>
+</ul>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_create-a-new-subscription_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/subscriptions-collection/create-a-new-subscription">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+            <section id="resource_subscription-collection" class="resource">
+                 <div class= "header" ><h3 id="h-resource_subscription-collection">Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]</h3> </div>
+                
+                
+                
+
+		        
+                
+                
+
+
+
+
+
+
+    
+
+
+                
+
+
+                    
+                        
+                            <div id="action_delete-a-subscription" class="action DELETE">
+                        
+
+                        
+    <h4 id="h-action_delete-a-subscription">
+        Delete a subscription -
+        DELETE
+        
+            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+        
+    </h4>
+
+        
+                            <div id="delete-a-subscription_body" class="">
+                                <p>This operation deletes a subscription.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				subscriptionid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the subscription following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_delete-a-subscription_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/subscription-collection/delete-a-subscription">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+                        
+                            <div id="action_get-a-subscription" class="action GET">
+                        
+
+                        
+    <h4 id="h-action_get-a-subscription">
+        Get a subscription -
+        GET
+        
+            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+        
+    </h4>
+
+        
+                            <div id="get-a-subscription_body" class="">
+                                <p>This operation gets a subscription.</p>
+                                
+                                
+                                
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				subscriptionid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the subscription following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+			
+                                
+                                
+      
+                                    
+        	                            
+                                            
+                                            
+                                            
+                                            
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+     
+</div>
+        	                            
+    
+        	                            
+        		                            
+                                        
+                                        
+                                        
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+     
+</div>
+        	                            
+                                    
+                                    
+                                    <div class="goExample">
+                                        <a href="#action_get-a-subscription_examples">Go to example</a>
+                                    </div>
+                                    
+                                        
+    <div class="goApiary">
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+    
+        
+            
+                <a target="_blank" href="http://docs.policymanager.apiary.io/#reference/cloto/subscription-collection/get-a-subscription">View in Apiary</a>
+            
+        
+    
+    </div>
+
+                                    
+                                
+                            </div>
+                        </div>
+                    
+            </section>
+        
+    </section>
+
+<section id="examples">
+    <div class= "header" ><h2>Examples</h2> </div>
+    
+        
+            <section id="resource_group_facts_example" class="resourceGroupExample">
+                <div class= "header" ><h3 id="h-resource_group_facts_example">Facts</h3> </div>
+        
+
+                
+                    <section id="resource_facts-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_facts-collection_example">Facts Collection [/{tenantid}/servers/{serverid}]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_create-new-facts-associated-to-a-server_examples" class="actionExample POST">
+
+                                    
+    <h4 id="h-action_create-new-facts-associated-to-a-server_examples">
+        Create new facts associated to a server -
+        POST
+        
+            /{tenantid}/servers/{serverid}
+        
+    </h4>
+
+                
+                                    <div id="action_create-new-facts-associated-to-a-server_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_create-new-facts-associated-to-a-server_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "contextResponses": [
+        {
+            "contextElement": {
+               "attributes": [
+                   {
+                       "value": "0.12",
+                       "name": "usedMemPct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.14",
+                       "name": "cpuLoadPct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.856240",
+                       "name": "freeSpacePct",
+                       "type": "string"
+                   },
+                   {
+                       "value": "0.8122",
+                       "name": "netLoadPct",
+                       "type": "string"
+                   }
+               ],
+               "id": "Trento:193.205.211.69",
+               "isPattern": "false",
+               "type": "host"
+           },
+           "statusCode": {
+               "code": "200",
+               "reasonPhrase": "OK"
+           }
+       }
+    ]
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_create-new-facts-associated-to-a-server_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{ "id": 3, "title": "no error." }
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_create-new-facts-associated-to-a-server">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+        </section>
+    
+        
+            <section id="resource_group_cloto_example" class="resourceGroupExample">
+                <div class= "header" ><h3 id="h-resource_group_cloto_example">Cloto</h3> </div>
+        
+
+                
+                    <section id="resource_general-operations_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_general-operations_example">General Operations [/{tenantid}]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_get-the-information-of-the-api_examples" class="actionExample GET">
+
+                                    
+    <h4 id="h-action_get-the-information-of-the-api_examples">
+        Get the information of the API -
+        GET
+        
+            /{tenantid}
+        
+    </h4>
+
+                
+                                    <div id="action_get-the-information-of-the-api_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-the-information-of-the-api_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-the-information-of-the-api_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "owner": "TELEFONICA I+D",
+    "windowsize": &lt;windows_size>,
+    "version": "&lt;API_version>",
+    "runningfrom": "&lt;last_launch_date>
+    "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification"
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_get-the-information-of-the-api">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                                <div id="action_update-the-window-size_examples" class="actionExample PUT">
+
+                                    
+    <h4 id="h-action_update-the-window-size_examples">
+        Update the window size -
+        PUT
+        
+            /{tenantid}
+        
+    </h4>
+
+                
+                                    <div id="action_update-the-window-size_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_update-the-window-size_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json
+X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "windowsize": &lt;windows_size>
+}  
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_update-the-window-size_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "windowsize": &lt;windows_size>
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_update-the-window-size">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+                    <section id="resource_servers-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_servers-collection_example">Servers Collection [/{tenantid}/servers/]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_get-the-list-of-all-server's-rules_examples" class="actionExample GET">
+
+                                    
+    <h4 id="h-action_get-the-list-of-all-server's-rules_examples">
+        Get the list of all server's rules -
+        GET
+        
+            /{tenantid}/servers/
+        
+    </h4>
+
+                
+                                    <div id="action_get-the-list-of-all-server's-rules_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Numeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-the-list-of-all-server's-rules_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-the-list-of-all-server's-rules_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+ "servers": [
+      {
+          "serverId": "&lt;serverId>",
+          "rules": [
+             {
+                  "condition": &lt;CONDITION_DESCRIPTION>,
+                  "action": &lt;ACTION_ON_SERVER>,
+                  "ruleId": "&lt;RULE_ID>"      
+             },
+             {
+                  "condition": &lt;CONDITION_DESCRIPTION>,
+                  "action": &lt;ACTION_ON_SERVER>,
+                  "ruleId": "&lt;RULE_ID>"      
+             }
+          ]
+      },
+      {
+          "serverId": "&lt;serverId>",
+          "rules": [
+             {
+                  "condition": &lt;CONDITION_DESCRIPTION>,
+                  "action": &lt;ACTION_ON_SERVER>,
+                  "ruleId": "&lt;RULE_ID>"      
+             },
+             {
+                  "condition": &lt;CONDITION_DESCRIPTION>,
+                  "action": &lt;ACTION_ON_SERVER>,
+                  "ruleId": "&lt;RULE_ID>"      
+             }
+          ]
+      }
+  ]
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_get-the-list-of-all-server's-rules">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+                    <section id="resource_server-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_server-collection_example">Server Collection [/{tenantid}/servers/{serverid}/]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_get-the-list-of-all-rules-of-a-server_examples" class="actionExample GET">
+
+                                    
+    <h4 id="h-action_get-the-list-of-all-rules-of-a-server_examples">
+        Get the list of all rules of a server -
+        GET
+        
+            /{tenantid}/servers/{serverid}/
+        
+    </h4>
+
+                
+                                    <div id="action_get-the-list-of-all-rules-of-a-server_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-the-list-of-all-rules-of-a-server_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-the-list-of-all-rules-of-a-server_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "serverId": "&lt;serverId>",
+    "rules": [
+        {
+            "name": &lt;NAME>,
+            "condition": &lt;CONDITION_DESCRIPTION>,
+            "action": &lt;ACTION_ON_SERVER>,
+            "ruleId": "&lt;RULE_ID>"      
+        },
+        {
+            "name": &lt;NAME>,
+            "condition": &lt;CONDITION_DESCRIPTION>,
+            "action": &lt;ACTION_ON_SERVER>,
+            "ruleId": "&lt;RULE_ID>"      
+        }
+    ]
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_get-the-list-of-all-rules-of-a-server">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+                    <section id="resource_elasticity-rules-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_elasticity-rules-collection_example">Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_create-a-new-elasticity-rule_examples" class="actionExample POST">
+
+                                    
+    <h4 id="h-action_create-a-new-elasticity-rule_examples">
+        Create a new elasticity rule -
+        POST
+        
+            /{tenantid}/servers/{serverid}/rules
+        
+    </h4>
+
+                
+                                    <div id="action_create-a-new-elasticity-rule_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_create-a-new-elasticity-rule_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json
+X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "name": &lt;NAME>,
+    "condition": &lt;CONDITION_DESCRIPTION>,
+    "action": &lt;ACTION_ON_SERVER>
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_create-a-new-elasticity-rule_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "serverId": &lt;serverId>,
+    "ruleId": &lt;RULE_ID>
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_create-a-new-elasticity-rule">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+                    <section id="resource_elasticity-rule-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_elasticity-rule-collection_example">Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_update-an-elasticity-rule_examples" class="actionExample PUT">
+
+                                    
+    <h4 id="h-action_update-an-elasticity-rule_examples">
+        Update an elasticity rule -
+        PUT
+        
+            /{tenantid}/servers/{serverid}/rules/{ruleid}
+        
+    </h4>
+
+                
+                                    <div id="action_update-an-elasticity-rule_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				ruleid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the rule following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_update-an-elasticity-rule_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json
+X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "name": &lt;NAME>,
+    "condition": &lt;CONDITION_DESCRIPTION>,
+    "action": &lt;ACTION_ON_SERVER>
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_update-an-elasticity-rule_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "name": &lt;NAME>,
+    "condition": &lt;CONDITION_DESCRIPTION>,
+    "action": &lt;ACTION_ON_SERVER>
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_update-an-elasticity-rule">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                                <div id="action_delete-an-elasticity-rule_examples" class="actionExample DELETE">
+
+                                    
+    <h4 id="h-action_delete-an-elasticity-rule_examples">
+        Delete an elasticity rule -
+        DELETE
+        
+            /{tenantid}/servers/{serverid}/rules/{ruleid}
+        
+    </h4>
+
+                
+                                    <div id="action_delete-an-elasticity-rule_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				ruleid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the rule following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_delete-an-elasticity-rule_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_delete-an-elasticity-rule_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_delete-an-elasticity-rule">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                                <div id="action_get-an-elasticity-rule_examples" class="actionExample GET">
+
+                                    
+    <h4 id="h-action_get-an-elasticity-rule_examples">
+        Get an elasticity rule -
+        GET
+        
+            /{tenantid}/servers/{serverid}/rules/{ruleid}
+        
+    </h4>
+
+                
+                                    <div id="action_get-an-elasticity-rule_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				ruleid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the rule following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-an-elasticity-rule_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-an-elasticity-rule_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "name": &lt;NAME>,
+    "condition": &lt;CONDITION_DESCRIPTION>,
+    "action": &lt;ACTION_ON_SERVER>,
+    "ruleId": "&lt;RULE_ID>"      
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_get-an-elasticity-rule">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+                    <section id="resource_subscriptions-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_subscriptions-collection_example">Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_create-a-new-subscription_examples" class="actionExample POST">
+
+                                    
+    <h4 id="h-action_create-a-new-subscription_examples">
+        Create a new subscription -
+        POST
+        
+            /{tenantid}/servers/{serverid}/subscription
+        
+    </h4>
+
+                
+                                    <div id="action_create-a-new-subscription_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+            (application/json)
+        
+    
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_create-a-new-subscription_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json
+X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "ruleId": &lt;RULE_ID>,
+    "url": &lt;URL_TO_NOTIFY>,
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_create-a-new-subscription_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "subscriptionId": &lt;SUBSCRIPTION_ID>
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_create-a-new-subscription">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+                    <section id="resource_subscription-collection_example" class="resourceExample">
+                         <div class= "header" ><h4 id="h-resource_subscription-collection_example">Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]</h4></div>
+                            
+                            
+                            
+
+                            
+                            
+                            
+
+                            
+
+
+                            
+                                <div id="action_delete-a-subscription_examples" class="actionExample DELETE">
+
+                                    
+    <h4 id="h-action_delete-a-subscription_examples">
+        Delete a subscription -
+        DELETE
+        
+            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+        
+    </h4>
+
+                
+                                    <div id="action_delete-a-subscription_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				subscriptionid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the subscription following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_delete-a-subscription_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_delete-a-subscription_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_delete-a-subscription">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                                <div id="action_get-a-subscription_examples" class="actionExample GET">
+
+                                    
+    <h4 id="h-action_get-a-subscription_examples">
+        Get a subscription -
+        GET
+        
+            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+        
+    </h4>
+
+                
+                                    <div id="action_get-a-subscription_body" class=""> 
+                                        
+                                        
+                                        
+                                        
+
+	<span class="parameters-title">Parameters</span>
+	<dl>
+		
+			<dt>
+				tenantid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				
+			</dd>
+		
+			<dt>
+				serverid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the server following the OpenStack ID format.
+				
+			</dd>
+		
+			<dt>
+				subscriptionid (Required, text
+				)
+			</dt>
+			<dd>
+				Alphanumeric `id` of the subscription following the OpenStack ID format.
+				
+			</dd>
+		
+	</dl>
+         
+                                        
+                                            
+                                            
+                                                
+                                                    
+                                                    
+                                                    
+                                                    
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Request </span> 
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-a-subscription_Request_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
+                
+
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+            
+                                                
+                                                    
+                                                
+                                                
+                                                
+
+<div class="rest-packet-div">
+
+            <span class="packetType">Response 200</span> 
+        
+            (application/json)
+        
+    
+            
+            
+            
+            
+
+
+
+ 
+            <div id="action_get-a-subscription_Response_1_body" class=" action-div-body">
+                <p></p>
+
+                
+        	         <div class= "header"><p>Headers</p></div>
+                    
+                    
+                        
+                    
+
+        	        <pre><code>Content-Type: application/json</code></pre>
+                
+
+                
+                    <div class= "header"><p>Body</p></div>
+                    <pre><code>{
+    "subscriptionId": &lt;SUBSCRIPTION_ID>,
+    "url": &lt;URL_TO_NOTIFY>,
+    "serverId": &lt;SERVER_ID>,
+    "ruleId": "&lt;RULE_ID>"      
+}
+</code></pre>
+                
+
+                
+            </div>
+            
+            
+     
+</div>
+                                                
+                                            
+                                            <div class="goActions">
+                                                <a href="#action_get-a-subscription">Go to specification</a>
+                                            </div>
+                                    </div>
+                                </div>
+                            
+                    </section>
+            
+        </section>
+    
+
+
+
+</section>
+  </section>
+  
+   
+
+
+
+	
+
+	
+
+	
+
+    
+    
+    
+  </div>
+</div>
+</body>
+</html>

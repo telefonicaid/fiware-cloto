@@ -148,7 +148,7 @@ This file is located here:
 ``/etc/fiware.d/fiware-cloto.cfg``
 
 MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
-You can copy the `default configuration file <fiware_cloto/cloto_settings/fiware_cloto.cfg>`_ to the folder defined for your OS, and
+You can copy the `default configuration file <fiware_cloto/cloto_settings/fiware-cloto.cfg>`_ to the folder defined for your OS, and
 complete data about cloto MYSQL configuration (user and password) and all openstack configuration.
 
 In addition, user could have a copy of this file in other location and pass its location to the server in running

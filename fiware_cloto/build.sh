@@ -45,7 +45,6 @@ python setup.py build
 python setup.py install
 cd ..
 
-ls
 export DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
 export CLOTO_SETTINGS_FILE=$(pwd)/cloto_settings/fiware-cloto.cfg
 export PYTHONPATH=$(pwd):$PYTHONPATH

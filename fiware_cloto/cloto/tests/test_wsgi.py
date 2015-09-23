@@ -97,15 +97,14 @@ class GetInternalWSGIApplicationTest(unittest.TestCase):
     def test_bad_module(self):
         with six.assertRaisesRegex(self,
             ImproperlyConfigured,
-            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist.app' could not be loaded; "
-            r"Error importing module: 'No module named noexist'"):
+            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist.app' could not be loaded;"
+            r" could not import module 'fiware_cloto.cloto.wsgi.noexist': No module named noexist"):
             get_internal_wsgi_application()
 
     @override_settings(WSGI_APPLICATION="fiware_cloto.cloto.wsgi.noexist")
     def test_bad_name(self):
         with six.assertRaisesRegex(self,
             ImproperlyConfigured,
-            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist'"
-            r" could not be loaded; Error importing module: 'Module \"fiware_cloto.cloto.wsgi\""
-            r" does not define a \"noexist\" attribute/class'"):
+            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist' could not be loaded; can't find 'noexist' in "
+            r"module 'fiware_cloto.cloto.wsgi': 'module' object has no attribute 'noexist'"):
             get_internal_wsgi_application()

@@ -28,7 +28,7 @@ import json
 from fiware_cloto.cloto.models import *
 from django.test import TestCase
 from keystoneclient.exceptions import Conflict
-from mockito import *
+from mockito import mock, when
 from mock import patch
 from requests import Response
 from django.conf import settings

@@ -28,7 +28,7 @@ __author__ = 'gjp'
 import datetime
 
 from django.test import TestCase
-from mockito import *
+from mockito import mock, when
 from django.utils import timezone
 
 from fiware_cloto.cloto.manager import InfoManager

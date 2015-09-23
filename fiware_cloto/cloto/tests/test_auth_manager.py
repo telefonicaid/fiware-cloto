@@ -26,7 +26,7 @@ from fiware_cloto.cloto.manager import AuthorizationManager
 
 __author__ = 'gjp'
 from django.test import TestCase
-from mockito import *
+from mockito import mock, when
 from mock import MagicMock
 from keystoneclient.v2_0 import client
 from keystoneclient.exceptions import Unauthorized, InternalServerError, AuthorizationFailure, ConnectionRefused

@@ -115,12 +115,12 @@ class RuleManagerTests(TestCase):
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
 
     def test_get_rule_info(self):
-        """Tests if method returns information about a general rule."""
+        """Test if method returns information about a general rule."""
         r_model = RuleManager.RuleManager().get_rule_model()
         self.assertEqual(RuleModel, r_model)
 
     def test_create_get_delete_rule(self):
-        """Tests lifecycle of a general rule, creating a rule, checking if it was created and deleting it."""
+        """Test lifecycle of a general rule, creating a rule, checking if it was created and deleting it."""
         rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -133,7 +133,7 @@ class RuleManagerTests(TestCase):
         self.assertEqual(response, True)
 
     def test_create_rule_and_update(self):
-        """Tests if method creates a general rule."""
+        """Test if method creates a general rule."""
         rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -143,14 +143,14 @@ class RuleManagerTests(TestCase):
         self.assertIsNotNone(updated.ruleId)
 
     def test_create_general_rule_incomplete(self):
-        """Tests if create general rule throws error with malformed rule, condition is missing."""
+        """Test if create general rule throws error with malformed rule, condition is missing."""
         try:
             rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.ruleFake4)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_create_rule_and_update_fake_rule(self):
-        """Tests if update a rule throws error with malformed rule, one attribute is missing."""
+        """Test if update a rule throws error with malformed rule, one attribute is missing."""
         rule = RuleManager.RuleManager().create_general_rule(self.tenantId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -161,13 +161,13 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_get_all_rules(self):
-        """Tests if method list all general rules of a tenant."""
+        """Test if method list all general rules of a tenant."""
         rules = RuleManager.RuleManager().get_all_rules(self.tenantId)
         self.assertIsInstance(rules, ListRuleModel)
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_create_get_delete_specific_rule(self, mock_logging):
-        """Tests lifecycle of a specific rule, creating a rule, checking if it was created and deleting it."""
+        """Test lifecycle of a specific rule, creating a rule, checking if it was created and deleting it."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -182,7 +182,7 @@ class RuleManagerTests(TestCase):
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_create_specific_rule_for_new_server_and_updating(self, mock_logging):
-        """Tests if method creates the first specific rule for a server and update it with other information."""
+        """Test if method creates the first specific rule for a server and update it with other information."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -195,7 +195,7 @@ class RuleManagerTests(TestCase):
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_create_specific_rule_for_new_server_and_updating_with_fake_rule(self, mock_logging):
-        """Tests if method creates the first rule for a server and fails when update it with fake information."""
+        """Test if method creates the first rule for a server and fails when update it with fake information."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -208,41 +208,41 @@ class RuleManagerTests(TestCase):
         self.assertTrue(mock_logging.info.called)
 
     def test_validate_rule_error_1(self):
-        """Tests if method throws error with malformed rule, name lenght is 2. """
+        """Test if method throws error with malformed rule, name lenght is 2. """
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake1)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_validate_rule_error_2(self):
-        """Tests if method throws error with malformed rule, action is empty."""
+        """Test if method throws error with malformed rule, action is empty."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake2)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_validate_rule_error_3(self):
-        """Tests if method throws error with malformed rule, condition is empty."""
+        """Test if method throws error with malformed rule, condition is empty."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake3)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_validate_rule_error_4(self):
-        """Tests if method throws error with malformed rule, one attribute is missing."""
+        """Test if method throws error with malformed rule, one attribute is missing."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.ruleFake4)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_get_all_specific_rules(self):
-        """Tests if method list all general rules of a server."""
+        """Test if method list all general rules of a server."""
         rules = RuleManager.RuleManager().get_all_specific_rules(self.tenantId, self.serverId)
         self.assertIsInstance(rules, ListRuleModel)
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_get_all_entities(self, mock_logging):
-        """Tests if method creates a rule for a server and gets all information about all servers."""
+        """Test if method creates a rule for a server and gets all information about all servers."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -253,7 +253,7 @@ class RuleManagerTests(TestCase):
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_suscription_get_subscription_and_unsuscribe_to_a_rule_(self, mock_logging):
-        """Tests if method subscribes a server to a rule, gets the subscription and unsubscribes the server."""
+        """Test if method subscribes a server to a rule, gets the subscription and unsubscribes the server."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -272,7 +272,7 @@ class RuleManagerTests(TestCase):
         self.assertIs(result, True)
 
     def test_suscription_server_no_exists(self):
-        """Tests if method subscribes_fails_with_fake_rule_id."""
+        """Test if method subscribes_fails_with_fake_rule_id."""
         url = "http://127.0.0.1:8000/testService"
         subscription = "{\"url\": \"http://127.0.0.1:8000/testService\", \"ruleId\": \"1234\"}"
         try:
@@ -281,7 +281,7 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_double_subscription(self):
-        """Tests if method throws an error trying to subcribe a server to a rule twice."""
+        """Test if method throws an error trying to subcribe a server to a rule twice."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -297,7 +297,7 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_unsubscription_Orion_Failure(self):
-        """Tests if method throws an error when Orion response is 400 while we are unsubscribing a server."""
+        """Test if method throws an error when Orion response is 400 while we are unsubscribing a server."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -315,7 +315,7 @@ class RuleManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_subscription_Orion_Failure(self):
-        """Tests if method throws an error when Orion response is 400 while we are subscribing a server."""
+        """Test if method throws an error when Orion response is 400 while we are subscribing a server."""
         self.ruleManager.orionClient.client = self.OrionClientError
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
@@ -329,7 +329,7 @@ class RuleManagerTests(TestCase):
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_double_suscription_with_different_rules_and_unsubscription(self, mock_logging,):
-        """Tests if method subscribes a server to a rule, and use the same subscriptions for more rules."""
+        """Test if method subscribes a server to a rule, and use the same subscriptions for more rules."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.newServerId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
@@ -345,7 +345,7 @@ class RuleManagerTests(TestCase):
         subscriptionId2 = self.ruleManager.subscribe_to_rule(self.tenantId, self.newServerId, subscription2)
         self.assertIsInstance(subscriptionId2, uuid.UUID)
 
-        """Tests if method list all rules of a server."""
+        """Test if method list all rules of a server."""
         rules = RuleManager.RuleManager().get_all_specific_rules(self.tenantId, self.newServerId)
         self.assertIsInstance(rules, ListRuleModel)
 

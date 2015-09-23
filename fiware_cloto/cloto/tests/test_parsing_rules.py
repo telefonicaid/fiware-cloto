@@ -71,56 +71,56 @@ class RuleManagerTests(TestCase):
 
     @patch('fiware_cloto.cloto.manager.RuleManager.logger')
     def test_pimp_rule(self, mock_logging):
-        """Tests if method creates the first rule for a server and fails when update it with fake information."""
+        """Test if method creates the first rule for a server and fails when update it with fake information."""
         rule = RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule)
         self.assertIsInstance(rule, RuleModel)
         self.assertIsNotNone(rule.ruleId)
         self.assertTrue(mock_logging.info.called)
 
     def test_pimp_rule_error_1(self):
-        """Tests if method throws error with malformed rule without action name."""
+        """Test if method throws error with malformed rule without action name."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule_without_actionname)
         except KeyError as ex:
             self.assertRaises(ex)
 
     def test_pimp_rule_error_2(self):
-        """Tests if method throws error with malformed rule without operation."""
+        """Test if method throws error with malformed rule without operation."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule_without_operation)
         except KeyError as ex:
             self.assertRaises(ex)
 
     def test_pimp_rule_error_3(self):
-        """Tests if method throws error with malformed rule with an empty action name."""
+        """Test if method throws error with malformed rule with an empty action name."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule_empty_actionname)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_pimp_rule_error_4(self):
-        """Tests if method throws error with malformed rule with an unknown operation."""
+        """Test if method throws error with malformed rule with an unknown operation."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule_operation_unknown)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_pimp_rule_error_5(self):
-        """Tests if method throws error with malformed rule, CPU has value over 100"""
+        """Test if method throws error with malformed rule, CPU has value over 100"""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule_cpu_overlimit)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_pimp_rule_error_6(self):
-        """Tests if method throws error with malformed rule with an unknown operand. """
+        """Test if method throws error with malformed rule with an unknown operand. """
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId, self.rule_operand_unknown)
         except ValueError as ex:
             self.assertRaises(ex)
 
     def test_pimp_rule_condition_error_1(self):
-        """Tests if method throws error with malformed rule, with a missing parameter in the condition."""
+        """Test if method throws error with malformed rule, with a missing parameter in the condition."""
         try:
             RuleManager.RuleManager().create_specific_rule(self.tenantId, self.serverId,
                                                            self.rule_condition_parameter_missing)

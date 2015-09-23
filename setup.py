@@ -30,7 +30,7 @@ import os
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fiware_cloto.cloto_settings.settings_tests")
 
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
-install_reqs = parse_requirements("fiware_cloto/requirements.txt", session=False)
+install_reqs = parse_requirements("requirements.txt", session=False)
 # > requirements_list is a list of requirement; e.g. ['requests==2.6.0', 'Fabric==1.8.3']
 requirements_list = [str(ir.req) for ir in install_reqs]
 

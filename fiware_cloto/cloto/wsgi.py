@@ -68,7 +68,7 @@ s = ServerInfo(id=1, owner=settings.OWNER, version=settings.VERSION,
 try:
     s.save()
 except Exception as ex:
-    logger.error(ex)
+    logger.error("Error saving initial server data into DB while server was starting: %s", ex)
 
 
 # Starting environments Controller

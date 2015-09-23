@@ -29,7 +29,7 @@ import datetime
 
 from django.test import TestCase
 from django.test.client import RequestFactory
-from mockito import *
+from mockito import mock, when
 from mock import patch
 from fiware_cloto.cloto.manager import InfoManager
 from fiware_cloto.cloto import information

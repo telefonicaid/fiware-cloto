@@ -7,9 +7,8 @@ env:
     - DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
 
 script:
-  - ls
+  - sh checkstyle.sh
   - cd fiware_cloto
-  - python fiware-pep8.py .
   - sudo ./build.sh travis_build
 
 after_success:

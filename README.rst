@@ -85,7 +85,6 @@ To install this module you have to install some components:
 
 - Python 2.7
 - PyClips 1.0 (http://sourceforge.net/projects/pyclips/files/)
-- Apache 2.2 or above + mod_wsgi
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
@@ -127,12 +126,6 @@ After all you must install fiware-cloto from pypi repository executing:
 .. code::
 
     $ sudo pip install fiware-cloto
-
-
-
-- Keystone URL.
-- Keystone admin user, password and tenant.
-- Mysql user and password.
 
 After finishing you must configure cloto configuration and create all tables into the database.
 
@@ -188,8 +181,6 @@ Options that user could define:
     DB_NAME: cloto
     DB_USER:
     DB_PASSWD:
-
-
 
     [django]
     DEBUG: False

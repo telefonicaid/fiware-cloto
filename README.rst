@@ -66,7 +66,7 @@ Fiware-Facts
     and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
     resources consumption.
 
-For more information, please refer to the `documentation <fiware_cloto/doc/README.rst>`_.
+For more information, please refer to the `documentation <doc/README.rst>`_.
 
 `Top`__.
 
@@ -244,7 +244,7 @@ The result of this operation is a JSON with the Id of the server affected and th
 Then user could perform a subscription to that rule with a new operation.
 
 Please have a look at the `API Reference Documentation`_ section below and
-at the `user and programmer guide <fiware_cloto/doc/user_guide.rst>`_ for more description of the possibilities and operations.
+at the `user and programmer guide <doc/user_guide.rst>`_ for more description of the possibilities and operations.
 
 `Top`__.
 
@@ -315,7 +315,7 @@ the response should be similar to:
     }
 
 Please refer to the `Installation and administration guide
-<fiware_cloto/doc/admin_guide.rst#end-to-end-testing>`_ for details.
+<doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
 `Top`__.
 
@@ -359,10 +359,10 @@ __ `FIWARE Policy Manager GE: Cloto`_
 Advanced topics
 ===============
 
-- `Installation and administration <fiware_cloto/doc/admin_guide.rst>`_
-- `User and programmers guide <fiware_cloto/doc/user_guide.rst>`_
-- `Open RESTful API Specification <fiware_cloto/doc/open_spec.rst>`_
-- `Architecture Description <fiware_cloto/doc/architecture.rst>`_
+- `Installation and administration <doc/admin_guide.rst>`_
+- `User and programmers guide <doc/user_guide.rst>`_
+- `Open RESTful API Specification <doc/open_spec.rst>`_
+- `Architecture Description <doc/architecture.rst>`_
 
 `Top`__.
 

@@ -25,7 +25,7 @@
 __author__ = 'gjp'
 import uuid
 import json
-from fiware_cloto.cloto.models import *
+from fiware_cloto.cloto.models import RuleModel, Entity, ListRuleModel, SubscriptionModel, SpecificRule
 from django.test import TestCase
 from keystoneclient.exceptions import Conflict
 from mockito import mock, when

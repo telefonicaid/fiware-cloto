@@ -57,7 +57,7 @@ operations.
 
 ::
 
-    curl -d '{"auth": {"tenantName": $TENNANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}' 
+    curl -d '{"auth": {"tenantName": $TENANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
     -H "Content-type: application/json" -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
 
 Both $TENANT (Project), $USERNAME and $PASSWORD must be values
@@ -79,7 +79,7 @@ We obtained two data from the previous sentence:
 
 ::
 
-    <tenant enabled="true" id="c907498615b7456a9513500fe24101e0" name=$TENNANT>
+    <tenant enabled="true" id="c907498615b7456a9513500fe24101e0" name=$TENANT>
 
 **2. Get tenant information**
 

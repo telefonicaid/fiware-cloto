@@ -127,7 +127,7 @@ After all you must install fiware-cloto from pypi repository executing:
 
     $ sudo pip install fiware-cloto
 
-After finishing you must configure cloto configuration and create all tables into the database.
+After finishing you must configure cloto configuration and ensure your database is created with mysql.
 
 `Top`__.
 
@@ -168,7 +168,7 @@ Options that user could define:
 
     [context_broker]
     CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
-    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0
+    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0        # Public IP of fiware-facts module
     NOTIFICATION_TYPE: ONTIMEINTERVAL
     NOTIFICATION_TIME: PT5S
 
@@ -204,7 +204,17 @@ To run fiware-cloto, just execute:
 
     $ gunicorn fiware_cloto.cloto.wsgi -b $IP
 
-To stop fiware-cloto, you can stop gunicorn server, or kill it:
+To stop fiware-cloto, you can stop gunicorn server, or kill it
+
+NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
+
+Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
+in that folder.
+
+::
+
+    mkdir -m /var/log/fiware-cloto
 
 `Top`__.
 

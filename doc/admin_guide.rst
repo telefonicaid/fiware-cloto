@@ -9,12 +9,6 @@ in a machine, including its requirements and possible troubleshooting
 that we could find during the installation. We have to talk about two
 applications deployed in a Django server.
 
-Final deployment into a production system should be performed in apache
-server with mod wsgi.
-
-You could find instructions for deploy policy Manager in apache +
-mod\_wgsi at the end of this document.
-
 Requirements
 ------------
 
@@ -92,327 +86,267 @@ You will need four packages:
 | ``mysql-devel``
 
 After installation, you should create a user, create database called
-'cloto' and give all privileges to the user for this database.
+'cloto' and give all privileges to the user for this database. The name of
+that database could be different but should be configured in the config file
+of fiware-facts and fiware-cloto.
 
 To add a user to the server, please follow official documentation:
 http://dev.mysql.com/doc/refman/5.5/en/adding-users.html
 
+
+
 Step 5: Download and execute the Rule Engine server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Download the component by executing the following instruction:
+1. Installing fiware-cloto
+
+Install the component by executing the following instruction:
 
 ::
 
-    git clone git@github.com:telefonicaid/fiware-cloto.git
+    sudo pip install fiware-cloto
 
 It should show something like the following:
 
 ::
 
-    Cloning into 'fiware-cloto'...
-    remote: Counting objects: 1483, done.
-    remote: Compressing objects: 100% (692/692), done.
-    remote: Total 1483 (delta 951), reused 1261 (delta 743)
-    Receiving objects: 100% (1483/1483), 196.42 KiB | 0 bytes/s, done.
-    Resolving deltas: 100% (951/951), done.
-    Checking connectivity... done.
-
-Go to the directory where we download the server and follow next steps:
-
-1. Installing fiware-cloto
-
-::
-
-    $ sh install.sh
-
-This script will install fiware-cloto in /opt/policyManager and it will
-ask you for some configuration parameters. Please, ensure you have all
-this data before starting the script in order to install fiware-cloto
-easiest.
-
-| ``   - Keystone URL.``
-| ``   - Keystone admin user, password and tenant.``
-| ``   - Mysql user and password.``
-
-If you do not provide previous data to installer, you must complete all
-configuration fields described in step, write mysql user and password in
-db.cfg file located in cloto folder and relaunch installation script
-saying NO again when it asks you about configuration data.
-
-At the end of the script it should shown a message without errors
-similar to:
-
-::
-
+    Installing collected packages: fiware-cloto
+        Running setup.py install for fiware-cloto
+    Successfully installed fiware-cloto
     Cleaning up...
-    Creating tables ...
-    Installing custom SQL ...
-    Installing indexes ...
-    Installed 0 object(s) from 0 fixture(s)
-    ...
-    ...Done
-    Please check file located in /opt/policyManager/fiware-cloto to configure all parameters 
-    and check all configuration described in README.md before starting fiware-cloto
-    ### To execute fiware-cloto you must execute 'service fiware-cloto start' ###
+
 
 2. Configuring Rule engine
 
-Before starting the rule engine, you should edit settings.py
-located at cloto folder or in /etc/sysconfig/fiware-cloto.cfg.
-Constants you need to complete are:
+Before starting the rule engine, you should edit settings file and add it to the default folder
+located in /etc/fiware.d/fiware-cloto.cfg
 
-| ``- All in # OPENSTACK CONFIGURATION: Openstack information (If you provide this information in the install script you do not need to edit)``
-| ``- RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port) ``
-| ``- CONTEXT_BROKER_URL: URL where Context Broker is listening``
-| ``- NOTIFICATION_URL: URL where notification service is listening (This service must be implemented by the user)``
+In addition, user could have a copy of this file in other location and pass its location to the server in running
+execution defining an environment variable called CLOTO_SETTINGS_FILE.
 
-in addition you could modify other constants like NOTIFICATION\_TIME, or
-DEFAULT\_WINDOW\_SIZE.
-
-Finally you should modify ALLOWED\_HOSTS parameter in settings.py adding
-the hosts you want to be accesible from outside, your IP address, the
-domain name, etc. An example could be like this:
-
-``ALLOWED_HOSTS = ['policymanager.host.com','80.71.123.2’]``
-
-3. Starting the server
-
-At end of installation you could see ### To execute fiware-cloto you
-must execute 'service fiware-cloto start' ###, well this way is for
-starting server in a production system, please, check instructions in
-the section "Installation into a Production System" to execute policy
-manager using that way.
-
-If you prefer play with policy manager locally, you could start the
-server using this following command:
+You can find the reference file inside `cloto_settings <../fiware_cloto/cloto_settings/fiware-cloto.cfg>`_.
+You should copy this file into default folder and complete all empty keys.
 
 ::
 
-    $ python manage.py runserver 8000
+    [openstack]         # OPENSTACK information about KEYSTONE to validate tokens received
+    OPENSTACK_URL: http://cloud.lab.fi-ware.org:4731/v2.0
+    ADM_USER:
+    ADM_PASS:
+    ADM_TENANT_ID:
+    ADM_TENANT_NAME:
+    USER_DOMAIN_NAME: Default
+    AUTH_API: v2.0
+
+    [policy_manager]
+    SETTINGS_TYPE: production
+    DEFAULT_WINDOW_SIZE: 5
+    MAX_WINDOW_SIZE: 10
+    LOGGING_PATH: /var/log/fiware-cloto
+
+    [context_broker]
+    CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
+    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0        # Public IP of fiware-facts module
+    NOTIFICATION_TYPE: ONTIMEINTERVAL
+    NOTIFICATION_TIME: PT5S
+
+    [rabbitmq]
+    RABBITMQ_URL: localhost     #URL Where RabbitMQ is listening (no port needed, it uses default port)
+
+    [mysql]
+    DB_CHARSET: utf8
+    DB_HOST: localhost
+    DB_NAME: cloto
+    DB_USER:
+    DB_PASSWD:
+
+    [django]
+    DEBUG: False
+    DATABASE_ENGINE: django.db.backends.mysql
+    ALLOWED_HOSTS: ['127.0.0.1', 'localhost']
+    SECRET_KEY: TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj         ### Must be a unique generated value. keep that key safe.
+
+    [logging]
+    level: INFO
+
+
+You should also modify ``ALLOWED_HOSTS`` parameter adding
+the hosts you want to be accesible from outside, your IP address, the
+domain name, etc. An example could be like this:
+
+::
+
+    ALLOWED_HOSTS: ['127.0.0.1', 'localhost', 'policymanager.host.com','80.71.123.2’]
+
+
+Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
+in that folder.
+
+::
+
+    mkdir -m /var/log/fiware-cloto
+
+3. Starting the server
+
+To run fiware-cloto, just execute:
+
+.. code::
+
+    $ gunicorn fiware_cloto.cloto.wsgi -b $IP
+
+Where $IP is a valid network interface assigned with a public address. If you execute the command
+with ``127.0.0.1`` fiware-cloto won't be accessible from outside.
+
+To stop fiware-cloto, you can stop gunicorn server, or kill it
+
+NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
+
+
+Facts installation
+------------------
+
+Step 1: Install python
+~~~~~~~~~~~~~~~~~~~~~~
+The process will be the same that be see in the previous section.
+
+Step 2: Install Redis
+~~~~~~~~~~~~~~~~~~~~~
+
+Download, extract and compile Redis with:
+
+::
+
+     $ wget http://download.redis.io/releases/redis-2.8.8.tar.gz
+     $ tar xzf redis-2.8.8.tar.gz
+     $ cd redis-2.8.8
+     $ make
+
+The binaries that are now compiled are available in the src directory.
+Run Redis with:
+
+::
+
+     $ src/redis-server
+
+It execute the redis server on port 6379.
+
+You can interact with Redis using the built-in client:
+
+::
+
+    $ src/redis-cli
+    redis> set foo bar
+    OK
+    redis> get foo
+    "bar"
+
+Step 3: Install MySQL
+~~~~~~~~~~~~~~~~~~~~~
+The process is the same as process seen in the previous section.
+If fiware-facts is being installed in the same system as fiware-cloto, you could omit this step.
+
+Step 4: Download and execute the facts engine server
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+
+1. Installing fiware-facts
+
+**Using pip**
+Install the component by executing the following instruction:
+::
+
+    pip install fiware-facts
+
+This operation will install the component in your python site-packages folder.
 
 It should shown the following information when it is executed:
 
 ::
 
-    Validating models...
+    Installing collected packages: fiware-facts
+      Running setup.py install for fiware-facts
 
-    0 errors found
-    April 11, 2014 - 14:12:42
-    Django version 1.5.5, using settings 'cloto.settings'
-    Development server is running at http://127.0.0.1:8000/
-    Quit the server with CONTROL-C.
+    Successfully installed fiware-facts
+    Cleaning up...
 
-If you want to start Rule Engine using other IP address, you should
-execute:
+
+2. Configuring fiware-facts
+
+The configuration used by the fiware-facts component is read from the configuration file.
+This file is located here:
+
+``/etc/fiware.d/fiware-facts.cfg``
+
+
+MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
+You can copy the `default configuration file <facts_conf/fiware_facts.cfg>`_ to the folder defined for your OS, and
+complete data about cloto MYSQL configuration (user and password).
+
+In addition, user could have a copy of this file in other location and pass its location to the server in running
+execution defining an environment variable called FACTS_SETTINGS_FILE.
+
+Options that user could define:
+::
+
+    [common]
+     brokerPort: 5000       # Port listening fiware-facts
+     clotoPort:  8000       # Port listening fiware-cloto
+     redisPort:  6379       # Port listening redis-server
+     redisHost:  localhost  # Address of redis-server
+     rabbitMQ:   localhost  # Address of RabbitMQ server
+     cloto:      127.0.0.1  # Address of fiware-cloto
+
+    [mysql]
+     host: localhost        # address of mysql that fiware-cloto is using
+     user:                  # mysql user
+     password:              # mysql password
+
+    [logger_root]
+     level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+
+Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/`` (by default), with the right permissions to write
+in that folder.
 
 ::
 
-    $ python manage.py runserver <IP>:8000
+    mkdir -m /var/log/fiware-facts
 
-Where IP is a valid network interface assigned. It is recommended if
-your Rule Engine will be called from different networks.
+3. Starting the server
 
-.. Facts installation
-.. ------------------
-..
-.. Step 1: Install python
-.. ~~~~~~~~~~~~~~~~~~~~~~
-..
-.. The process will be the same that be see in the previous section.
+Execute command:
 
-.. Step 2: Install Redis
-.. ~~~~~~~~~~~~~~~~~~~~~
-..
-.. Download, extract and compile Redis with:
-..
-.. ::
-..
-..     $ wget http://download.redis.io/releases/redis-2.8.8.tar.gz
-..     $ tar xzf redis-2.8.8.tar.gz
-..     $ cd redis-2.8.8
-.. ..     $ make
-..
-.. The binaries that are now compiled are available in the src directory.
-.. Run Redis with:
-..
-.. ::
-..
-..     $ src/redis-server
-..
-.. It execute the redis server on port 6379.
-..
-.. You can interact with Redis using the built-in client:
-..
-.. ::
-..
-..     $ src/redis-cli
-..     redis> set foo bar
-..     OK
-..     redis> get foo
-..     "bar"
-..
-.. Step 3: Download and execute the facts engine server
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-..
-.. Download the component by executing the following instruction:
-..
-.. ::
-..
-..     git clone git@github.com:telefonicaid/fiware-facts.git
-..
-.. It should show something like the following:
-..
-.. ::
-..
-..     Cloning into 'fiware-facts'...
-..     remote: Counting objects: 211, done.
-..     remote: Compressing objects: 100% (136/136), done.
-..     remote: Total 211 (delta 118), reused 152 (delta 63)
-..     Receiving objects: 100% (211/211), 65.79 KiB | 0 bytes/s, done.
-..     Resolving deltas: 100% (118/118), done.
-..    Checking connectivity... done.
-..
-.. Go to the directory where we download the server and execute the
-.. following commands:
-..
-.. Go to the directory where we download the server and execute the
-.. following commands:
-..
-.. 1. Installing all dependencies
-..
-.. ::
-..
-..     $ sudo pip install -r requirements.txt
-..
-.. It should install all dependencies showing at the end a message similar
-.. to:
-..
-.. ::
-..
-..     Successfully installed redis flask gevent pika
-..     Cleaning up...
-..
-.. Then, after the installation of the requirements associated to the facts
-.. engine, it is hour to execute the server, just run:
-..
-.. ::
-..
-..     $ python facts.py
-..
-.. It should shown the following information when it is executed:
-..
-.. ::
-..
-..     2014-04-11 10:42:19,344 INFO policymanager.facts policymanager.facts 1.0.0
-..
-..     2014-04-11 10:42:19,344 INFO policymanager.facts Running in stand alone mode
-..     2014-04-11 10:42:19,345 INFO policymanager.facts Port: 5000
-..     2014-04-11 10:42:19,345 INFO policymanager.facts PID: 6059
-..
-..     2014-04-11 10:42:19,345 INFO policymanager.facts https://github.hi.inet/telefonicaid/fiware-facts
+::
 
-Installation into a Production System
-=====================================
+    gunicorn facts.server:app -b $IP:5000
 
-If you want to deploy Policy Manager with this propose, you should
-deploy on Apache Server with mod\_wsgi
+Where $IP should be the IP assigned to the network interface that should be listening (ej. 192.168.1.33)
 
-Rule Engine
------------
+You can also execute the server with a different settings file providing an environment variable with the location
+of the file:
 
-Step 1: Install Apache with mod\_wsgi
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+::
 
-Apache used to be installed on most of linux systems. If you do not have
-apache installed, try downloading from your package manager like apt-get
-or yum Also you can download from the official site
-http://httpd.apache.org/
+    gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
-After install apache, The official mod\_wsgi documentation it’s the best
-guide for all the details about how to use mod\_wsgi on your system.
-https://code.google.com/p/modwsgi/wiki/InstallationInstructions
+NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
 
-Step 2: Apache configuration
-~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
-Once you’ve got mod\_wsgi installed and activated, edit your httpd.conf
-file and add:
+When you execute the server you can see some information about the server:
 
- WSGIScriptAlias / PATH_TO_fiware-cloto/cloto/wsgi.py
- WSGIPythonPath PATH_TO_fiware-cloto
+::
 
- <Directory PATH_TO_fiware-cloto/cloto>
- <Files wsgi.py>
- Order deny,allow
- Allow from all
- </Files>
- </Directory>
+    2015-09-24 16:30:10,845 INFO policymanager.facts policymanager.facts 1.7.0
 
- <Directory /var/log/fiware-cloto>
- <Files RuleEngine.log>
- Allow from all
- </Files>
- </Directory>
+    2015-09-24 16:30:10,846 INFO policymanager.facts Running in stand alone mode
+    2015-09-24 16:30:10,846 INFO policymanager.facts Port: 5000
+    2015-09-24 16:30:10,846 INFO policymanager.facts PID: 19472
 
-If you have apache above 2.2 version, you have to replace "Allow form
-all" with "Require all granted"
+    2015-09-24 16:30:10,846 INFO policymanager.facts https://github.com/telefonicaid/fiware-facts
 
-In addition you must add the port listening 8000 in case of fiware-cloto
 
-``Listen 8000``
 
-Step 3: Run Server
-~~~~~~~~~~~~~~~~~~
-
-Finally , run apache service to have a fiware-cloto instance running
-
-``service fiware-cloto start``
-
-.. Facts
-.. -----
-..
-.. Step 1: Install Apache with mod\_wsgi
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-..
-.. This step is the same as described in step 1 of Rule Engine. please
-.. follow those instructions.
-..
-.. Step 2: Apache configuration
-.. ~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-..
-.. Once you’ve got mod\_wsgi installed and activated, edit your httpd.conf
-.. file and add:
-..
-..  WSGIScriptAlias / PATH_TO_fiware-facts/facts.py
-..  WSGIPythonPath PATH_TO_fiware-facts
-..
-..  <Directory PATH_TO_fiware-facts>
-..  <Files facts.py>
-..  Order deny,allow
-..  Allow from all
-..  </Files>
-..  </Directory>
-..
-..  <Directory /var/log/fiware-facts>
-..  <Files fiware-facts.log>
-..  Allow from all
-..  </Files>
-..  </Directory>
-..
-.. If you have apache above 2.2 version, you have to replace "Allow form
-.. all" with "Require all granted"
-..
-.. In addition you must add the port listening 5000 in case of fiware-facts
-..
-.. ``Listen 5000``
-..
-.. Step 3: Run apache
-.. ~~~~~~~~~~~~~~~~~~
-..
-.. Finally , run apache service to have a fiware-facts instance running
-..
-.. ``sudo apachectl start``
+    2015-09-24 16:30:10,896 INFO policymanager.facts Waiting for windowsizes
 
 Sanity check procedures
 =======================

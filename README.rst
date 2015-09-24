@@ -209,6 +209,13 @@ To stop fiware-cloto, you can stop gunicorn server, or kill it
 NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
 ``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
 
+Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
+in that folder.
+
+::
+
+    mkdir -m /var/log/fiware-cloto
+
 `Top`__.
 
 __ `FIWARE Policy Manager GE: Cloto`_

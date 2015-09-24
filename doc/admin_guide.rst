@@ -168,7 +168,7 @@ You should copy this file into default folder and complete all empty keys.
     level: INFO
 
 
-Finally you should modify ``ALLOWED_HOSTS`` parameter adding
+You should also modify ``ALLOWED_HOSTS`` parameter adding
 the hosts you want to be accesible from outside, your IP address, the
 domain name, etc. An example could be like this:
 
@@ -176,6 +176,13 @@ domain name, etc. An example could be like this:
 
     ALLOWED_HOSTS: ['127.0.0.1', 'localhost', 'policymanager.host.com','80.71.123.2’]
 
+
+Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/`` (by default), with the right permissions to write
+in that folder.
+
+::
+
+    mkdir -m /var/log/fiware-facts
 
 3. Starting the server
 
@@ -289,6 +296,13 @@ Options that user could define:
 
     [logger_root]
      level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+
+Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/`` (by default), with the right permissions to write
+in that folder.
+
+::
+
+    mkdir -m /var/log/fiware-facts
 
 3. Starting the server
 

@@ -93,6 +93,8 @@ of fiware-facts and fiware-cloto.
 To add a user to the server, please follow official documentation:
 http://dev.mysql.com/doc/refman/5.5/en/adding-users.html
 
+
+
 Step 5: Download and execute the Rule Engine server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
@@ -177,12 +179,12 @@ domain name, etc. An example could be like this:
     ALLOWED_HOSTS: ['127.0.0.1', 'localhost', 'policymanager.host.com','80.71.123.2’]
 
 
-Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/`` (by default), with the right permissions to write
+Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
 in that folder.
 
 ::
 
-    mkdir -m /var/log/fiware-facts
+    mkdir -m /var/log/fiware-cloto
 
 3. Starting the server
 
@@ -239,7 +241,12 @@ You can interact with Redis using the built-in client:
     redis> get foo
     "bar"
 
-Step 3: Download and execute the facts engine server
+Step 3: Install MySQL
+~~~~~~~~~~~~~~~~~~~~~
+The process is the same as process seen in the previous section.
+If fiware-facts is being installed in the same system as fiware-cloto, you could omit this step.
+
+Step 4: Download and execute the facts engine server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Installing fiware-facts
@@ -263,7 +270,7 @@ It should shown the following information when it is executed:
     Cleaning up...
 
 
-2. Configuring fiware facts
+2. Configuring fiware-facts
 
 The configuration used by the fiware-facts component is read from the configuration file.
 This file is located here:

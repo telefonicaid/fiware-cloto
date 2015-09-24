@@ -85,7 +85,6 @@ To install this module you have to install some components:
 
 - Python 2.7
 - PyClips 1.0 (http://sourceforge.net/projects/pyclips/files/)
-- Apache 2.2 or above + mod_wsgi
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
 - pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
@@ -122,17 +121,13 @@ Examples:
     centos$ sudo yum install mysql-devel
     ubuntu$ sudo apt-get install mysql-devel
 
+After all you must install fiware-cloto from pypi repository executing:
 
-After all  you must run install.sh with sudo privileges in order to start installation.
-This script should install fiware-cloto in ``/opt/policyManager`` and it will ask you for some configuration
-parameters, please, ensure you have all this data before starting the script in order to install fiware-cloto
-easiest.
+.. code::
 
-- Keystone URL.
-- Keystone admin user, password and tenant.
-- Mysql user and password.
+    $ sudo pip install fiware-cloto
 
-After finishing you must configure cloto configuration and some apache settings.
+After finishing you must configure cloto configuration and create all tables into the database.
 
 `Top`__.
 
@@ -140,66 +135,61 @@ __ `FIWARE Policy Manager GE: Cloto`_
 
 Configuration file - Cloto
 --------------------------
-Before starting the rule engine, you should edit settings.py located at cloto folder or in ``/etc/sysconfig/fiware-cloto.cfg``.
-Constants you eed to complete are:
+The configuration used by the fiware-cloto component is read from the configuration file.
+This file is located here:
 
-- All in ``# OPENSTACK CONFIGURATION``: Openstack information (If you provide this information in the install script you do not need to edit)
-- RABBITMQ_URL: URL Where RabbitMQ is listening (no port needed, it uses default port)
-- CONTEXT_BROKER_URL: URL where Orion Context Broker is listening
-- NOTIFICATION_URL: URL where notification service is listening (This service must be implemented by the user)
+``/etc/fiware.d/fiware-cloto.cfg``
 
-In addition you could modify other constants like NOTIFICATION_TIME, or DEFAULT_WINDOW_SIZE.
+MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
+You can copy the `default configuration file <fiware_cloto/cloto_settings/fiware-cloto.cfg>`_ to the folder defined for your OS, and
+complete data about cloto MYSQL configuration (user and password) and all openstack configuration.
 
-Finally you should modify ALLOWED_HOSTS parameter in settings.py adding the hosts you want to be accesible from outside,
-your IP address, the domain name, etc. An example could be like this:
+In addition, user could have a copy of this file in other location and pass its location to the server in running
+execution defining an environment variable called CLOTO_SETTINGS_FILE.
 
-::
-
-   ALLOWED_HOSTS = ['policymanager.host.com','80.71.123.2’]
-
-`Top`__.
-
-__ `FIWARE Policy Manager GE: Cloto`_
-
-Configuration - Apache + wsgi
------------------------------
-Edit your httpd.conf file and add:
-::
-
-    WSGIScriptAlias / PATH_TO_fiware-cloto/cloto/wsgi.py
-    WSGIPythonPath PATH_TO_fiware-cloto
-
-    <Directory PATH_TO_fiware-cloto/cloto>
-        <Files wsgi.py>
-            Order deny,allow
-            Allow from all
-        </Files>
-    </Directory>
-    <Directory PATH_TO_fiware-cloto>
-        <Files cloto.db>
-            Allow from all
-        </Files>
-    </Directory>
-    <Directory /var/log/fiware-cloto>
-        <Files RuleEngine.log>
-            Allow from all
-        </Files>
-    </Directory>
-
-Note that PATH_TO_fiware-cloto should be: ``/opt/policyManager/fiware-cloto``
-
-Finally you should add cloto port to this httpd.conf file
+Options that user could define:
 
 ::
 
-    Listen 8000
+    [openstack]         # OPENSTACK information about KEYSTONE to validate tokens received
+    OPENSTACK_URL: http://cloud.lab.fi-ware.org:4731/v2.0
+    ADM_USER:
+    ADM_PASS:
+    ADM_TENANT_ID:
+    ADM_TENANT_NAME:
+    USER_DOMAIN_NAME: Default
+    AUTH_API: v2.0
 
-We recommend you to disable HTTP TRACK|TRACE methods adding to httpd.conf TraceEnable directive
-and set the value to Off
+    [policy_manager]
+    SETTINGS_TYPE: production
+    DEFAULT_WINDOW_SIZE: 5
+    MAX_WINDOW_SIZE: 10
+    LOGGING_PATH: /var/log/fiware-cloto
 
-::
+    [context_broker]
+    CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
+    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0
+    NOTIFICATION_TYPE: ONTIMEINTERVAL
+    NOTIFICATION_TIME: PT5S
 
-    TraceEnable Off
+    [rabbitmq]
+    RABBITMQ_URL: localhost     #URL Where RabbitMQ is listening (no port needed, it uses default port)
+
+    [mysql]
+    DB_CHARSET: utf8
+    DB_HOST: localhost
+    DB_NAME: cloto
+    DB_USER:
+    DB_PASSWD:
+
+    [django]
+    DEBUG: False
+    DATABASE_ENGINE: django.db.backends.mysql
+    ALLOWED_HOSTS: ['127.0.0.1', 'localhost']
+    SECRET_KEY: TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj         ### Must be a unique generated value. keep that key safe.
+
+    [logging]
+    level: INFO
 
 `Top`__.
 
@@ -208,35 +198,13 @@ __ `FIWARE Policy Manager GE: Cloto`_
 Running
 =======
 
-**CentOS**
-
 To run fiware-cloto, just execute:
 
 .. code::
 
-    $ service fiware-cloto start
+    $ gunicorn fiware_cloto.cloto.wsgi -b $IP
 
-To stop fiware-cloto, execute:
-
-.. code::
-
-    $ service fiware-cloto stop
-
-**Ubuntu**
-
-To run fiware-cloto, just start apache:
-
-.. code::
-
-    $ service apache2 start
-
-Note: Cloto runs under apache.
-
-To stop fiware-cloto, execute:
-
-.. code::
-
-    $ service apache2 stop
+To stop fiware-cloto, you can stop gunicorn server, or kill it:
 
 `Top`__.
 
@@ -290,12 +258,20 @@ Testing
 Unit tests
 ----------
 
-To execute the unit tests, you must set the environment variable pointing to the settings_test file.
-Then you can use coverage to execute the tests and obtain the percentage of lines coveved by the tests.
+Download source code from github
 
 ::
 
-    $ export DJANGO_SETTINGS_MODULE=settings.settings_tests
+    $ git clone https://github.com/telefonicaid/fiware-cloto.git
+
+To execute the unit tests, you must set the environment variable pointing to the settings_test file.
+Then you can use coverage to execute the tests and obtain the percentage of lines coveved by the tests.
+You must execute the tests from project folder ``fiware-cloto/fiware_cloto``.
+Once you were inside the right location, execute the required commands:
+
+::
+
+    $ export DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
     $ coverage run --source=cloto,orion_wrapper,environments manage.py test
 
 `Top`__.
@@ -365,7 +341,7 @@ Change to the fiware-cloto/tests/acceptance_tests folder of the project if not a
 In the following document you will find the steps to execute automated
 tests for the Policy Manager GE:
 
-- `Policy Manager acceptance tests <cloto/tests/acceptance_tests/README.md>`_
+- `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance_tests/README.md>`_
 
 `Top`__.
 

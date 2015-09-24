@@ -1,6 +1,0 @@
-[report]
-omit =
-    cloto/tests/*
-    environments/tests/*
-    cloto/settings.py
-    cloto/settings_production.py

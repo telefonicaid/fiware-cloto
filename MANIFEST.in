@@ -1,0 +1,6 @@
+include *.txt
+include fiware_cloto/CHANGELOG.rst
+include fiware_cloto/manage.py
+recursive-include licenses *.txt
+
+global-exclude *.pyc

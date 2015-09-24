@@ -38,6 +38,7 @@ framework.
 
 """
 import os
+from django.core.management import call_command
 
 # We defer to a DJANGO_SETTINGS_MODULE already in the environment. This breaks
 # if running multiple sites in the same mod_wsgi process. To fix this, use
@@ -60,6 +61,9 @@ from django.utils import timezone
 from fiware_cloto.cloto.models import ServerInfo
 from django.conf import settings
 import logging as logger
+
+# Synchronizing database
+call_command('syncdb', interactive=False)
 
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data

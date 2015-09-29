@@ -1,6 +1,38 @@
 Changelog
 =========
 
+v1.8.0 (2015-09-29)
+-------------------
+
+New
+~~~
+
+- Server is now creating all tables when it starts. No more user
+  interaction is needed. [Guillermo Jimenez Prieto]
+
+- New installation for fiware-cloto using PIP. [Guillermo Jimenez
+  Prieto]
+
+- Improving configuration taking data from a configuration file located
+  in /etc/fiware.d/fiware-cloto.cfg. [Guillermo Jimenez Prieto]
+
+- Adding new files to the package data. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Adding more useful information to documentation. [Guillermo Jimenez
+  Prieto]
+
+- Updating documentation according the new installation using PIP.
+  [Guillermo Jimenez Prieto]
+
+- Adding parent folder to sys environment to execute unit tests without
+  errors with this new file distribution. [Guillermo Jimenez Prieto]
+
+- Moving all files into a new module folder called fiware_cloto.
+  [Guillermo Jimenez Prieto]
+
 v1.7.1 (2015-09-08)
 -------------------
 

@@ -22,7 +22,7 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__VERSION__ = "1.8.0"
+__VERSION__ = "2.0.0"
 from setuptools import setup, find_packages
 from pip.req import parse_requirements
 import os

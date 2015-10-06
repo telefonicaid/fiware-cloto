@@ -104,13 +104,28 @@ class WindowSizeTests(TestCase):
         self.general = GeneralView()
 
     @patch('fiware_cloto.cloto.manager.InfoManager.logger')
-    def test_update_window(self, mock_logging):
-        # Create an instance of a GET request.
+    @patch('fiware_cloto.cloto.manager.InfoManager.pika')
+    def test_update_window(self, mock_pika, mock_logging):
+        """Test if server updates the window size of a tenant.
+        """
         request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": 4}", "application/json")
 
-        # Test my_view() as if it were deployed at /customer/details
         response = self.general.PUT(request, "tenantId")
         self.assertEqual(response.status_code, 200)
+        self.assertTrue(mock_logging.info.called)
+        self.assertTrue(mock_pika.BlockingConnection.called)
+
+    @patch('fiware_cloto.cloto.manager.InfoManager.logger')
+    def test_update_window_fail_connection(self, mock_logging):
+        """Test if Publish a message related to the windowsize in the rabbitmq fails when there is
+        no connection to rabbit.
+        """
+        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": 4}", "application/json")
+
+        try:
+            response = self.general.PUT(request, "tenantId")
+        except Exception as ex:
+            self.assertRaises(ex)
         self.assertTrue(mock_logging.info.called)
 
     def test_not_update_window(self):

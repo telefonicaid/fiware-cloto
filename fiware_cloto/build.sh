@@ -52,8 +52,7 @@ echo $PYTHONPATH
 echo $DJANGO_SETTINGS_MODULE
 export SETTINGS_TYPE=test
 echo "no" | python manage.py syncdb
-coverage run --source=cloto,orion_wrapper,environments manage.py test
-coverage xml -o target/site/cobertura/coverage.xml
+python manage.py test
 
 if [ ! $1 = "travis_build" ];
 then

@@ -282,7 +282,7 @@ Once you were inside the right location, execute the required commands:
 ::
 
     $ export DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
-    $ coverage run --source=cloto,orion_wrapper,environments manage.py test
+    $ python manage.py test
 
 `Top`__.
 

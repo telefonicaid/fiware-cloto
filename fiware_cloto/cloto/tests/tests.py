@@ -35,6 +35,7 @@ from fiware_cloto.cloto.manager import InfoManager
 from fiware_cloto.cloto import information
 from fiware_cloto.cloto.restCloto import GeneralView
 import fiware_cloto.cloto.models as Models
+import json
 
 
 class GeneralTests(TestCase):
@@ -121,7 +122,6 @@ class WindowSizeTests(TestCase):
         request_check_final = self.factory.get('/v1.0/tenantId/')
         response_check_final = self.general.GET(request_check_final, "tenantId")
 
-        import json
         window_size_init = json.loads(response_check_init.content)["windowsize"]
         window_size_final = json.loads(response_check_final.content)["windowsize"]
 

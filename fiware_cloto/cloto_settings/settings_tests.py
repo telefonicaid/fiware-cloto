@@ -41,3 +41,14 @@ DATABASES = {
 
 # Make this unique, and don't share it with anybody.
 SECRET_KEY = 'TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj'
+
+NOSE_ARGS = [
+        '--with-coverage',  # activate coverage report
+        '--verbosity=2',   # verbose output
+        '--with-xunit',    # enable XUnit plugin
+        '--xunit-file=target/surefire-reports/TEST-nosetests.xml',  # the XUnit report file
+        '--cover-xml',     # produle XML coverage info
+        '--cover-xml-file=target/site/cobertura/coverage.xml',  # the coverage info file
+        # You may also specify the packages to be covered here
+        '--cover-package=cloto,orion_wrapper,environments'
+    ]

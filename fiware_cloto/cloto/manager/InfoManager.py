@@ -26,7 +26,6 @@ __author__ = 'gjp'
 from django.core.exceptions import ValidationError
 from django.conf import settings
 
-from pika import exceptions
 import pika
 import fiware_cloto.cloto.information as information
 from fiware_cloto.cloto.models import TenantInfo, ServerInfo
@@ -100,7 +99,6 @@ class InfoManager():
     def publish_message(self, message):
         """Publish a message related to the windowsize in the rabbitmq and
         close the connection
-
         :param str message:       The well-formatted message to send
         """
         """ Initialize the class and create a connection with a RabbitMQ server instance.

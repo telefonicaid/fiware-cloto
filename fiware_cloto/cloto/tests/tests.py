@@ -94,9 +94,10 @@ class WindowSizeTests(TestCase):
         myMock = mock()
         mockedInfo = information.information("test", "test", "test", datetime.datetime.now(), "test")
         validWindowSize = "4"
-        validWindowSizeValue = 5
+        self.validWindowSizeValue = 5
+        self.new_windowsize_value = 4
         invalidWindowSize = "notValidValue"
-        when(myMock).updateWindowSize("tenantId", validWindowSizeValue).thenReturn(mockedInfo)
+        when(myMock).updateWindowSize("tenantId", self.validWindowSizeValue).thenReturn(mockedInfo)
         when(myMock).updateWindowSize("tenantId", invalidWindowSize).thenReturn(None)
 
         when(myMock).parse("{\"windowsize\": %s}" % validWindowSize).thenReturn(mockedInfo)
@@ -108,10 +109,25 @@ class WindowSizeTests(TestCase):
     def test_update_window(self, mock_pika, mock_logging):
         """Test if server updates the window size of a tenant.
         """
-        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": 4}", "application/json")
+        request_check_init = self.factory.get('/v1.0/tenantId/')
+        response_check_init = self.general.GET(request_check_init, "tenantId")
+
+        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": " + str(self.new_windowsize_value)
+                                   + "}", "application/json")
 
         response = self.general.PUT(request, "tenantId")
         self.assertEqual(response.status_code, 200)
+
+        request_check_final = self.factory.get('/v1.0/tenantId/')
+        response_check_final = self.general.GET(request_check_final, "tenantId")
+
+        import json
+        window_size_init = json.loads(response_check_init.content)["windowsize"]
+        window_size_final = json.loads(response_check_final.content)["windowsize"]
+
+        self.assertEqual(window_size_init, self.validWindowSizeValue)
+        self.assertEqual(window_size_final, self.new_windowsize_value)
+
         self.assertTrue(mock_logging.info.called)
         self.assertTrue(mock_pika.BlockingConnection.called)
 
@@ -120,7 +136,8 @@ class WindowSizeTests(TestCase):
         """Test if Publish a message related to the windowsize in the rabbitmq fails when there is
         no connection to rabbit.
         """
-        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": 4}", "application/json")
+        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": " + str(self.new_windowsize_value)
+                                   + "}", "application/json")
 
         try:
             response = self.general.PUT(request, "tenantId")

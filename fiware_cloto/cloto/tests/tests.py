@@ -27,6 +27,7 @@ from fiware_cloto.cloto.manager import InfoManager
 __author__ = 'gjp'
 import datetime
 
+from unittest import skip
 from django.test import TestCase
 from django.test.client import RequestFactory
 from mockito import mock, when
@@ -161,6 +162,7 @@ class WindowSizeTests(TestCase):
         response = self.general.PUT(request, "tenantId")
         self.assertEqual(response.status_code, 400)
 
+    @skip
     def testPublishingConnectionNone(self):
         """ Test if method fails when tries to publish a message with AMQP connection equal to None.
         """

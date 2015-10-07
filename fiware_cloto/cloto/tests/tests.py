@@ -160,3 +160,19 @@ class WindowSizeTests(TestCase):
         # Test my_view() as if it were deployed at /customer/details
         response = self.general.PUT(request, "tenantId")
         self.assertEqual(response.status_code, 400)
+
+    def testPublishingConnectionNone(self):
+        """ Test if method fails when tries to publish a message with AMQP connection equal to None.
+        """
+        queue = InfoManager.InfoManager()
+
+        queue.connection = None
+
+        expectedvalue = "AMQP connection not properly created..."
+
+        message = "tenantId " + str(self.validWindowSizeValue)
+
+        try:
+            queue.publish_message(message)
+        except (Exception), err:
+            self.assertEqual(expectedvalue, err.message)

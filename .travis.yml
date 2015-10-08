@@ -8,7 +8,7 @@ env:
 
 script:
   - sh checkstyle.sh
-  - sudo ./fiware_cloto/build.sh travis_build
+  - sudo ./build.sh travis_build
 
 after_success:
   - coveralls

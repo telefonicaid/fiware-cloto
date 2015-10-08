@@ -1,0 +1,7 @@
+[report]
+omit =
+    fiware_cloto/cloto/tests/*
+    fiware_cloto/environments/tests/*
+    fiware_cloto/cloto_settings/settings.py
+    fiware_cloto/cloto_settings/settings_tests.py
+    fiware_cloto/cloto_settings/jenkins.py

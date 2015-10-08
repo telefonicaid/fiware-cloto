@@ -5,6 +5,10 @@ python:
 env:
   global:
     - DJANGO_SETTINGS_MODULE=fiware_cloto.cloto_settings.settings_tests
+    - COVERALLS_SERVICE_NAME=travis-ci
+    # COVERALLS_REPO_TOKEN (encrypted)
+    - secure: "Cl2WLpbSJEo8PYmjlNOv0X+AUwewZxk4NfXNwDAcpnpSvUL7NTTVkghQUkmY8gH8VKPqAi5sgpEMPRUJUQLnbXtcN4z8tP7UWOfFONVC80itS0OHauggmqSIUR2WvpeQ5tncsO8CiD+XhnlKqo/xjA/7/sXQ3w/FbyBoXmmtn0U="
+
 
 script:
   - sh checkstyle.sh

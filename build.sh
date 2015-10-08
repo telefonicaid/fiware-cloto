@@ -33,8 +33,8 @@ mkdir -m 777 /var/log/fiware-cloto
 mkdir -p target/site/cobertura
 mkdir -p target/surefire-reports
 
-pip install -r ../requirements.txt
-pip install -r ../requirements_dev.txt
+pip install -r requirements.txt
+pip install -r requirements_dev.txt
 
 #PYCLIPS installation
 wget -O pyclips.tar.gz http://downloads.sourceforge.net/project/pyclips/pyclips/pyclips-1.0/pyclips-1.0.7.348.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpyclips%2Ffiles%2Fpyclips%2Fpyclips-1.0%2F&ts=1423484225&use_mirror=softlayer-ams
@@ -45,14 +45,14 @@ python setup.py build
 python setup.py install
 cd ..
 
-export DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
-export CLOTO_SETTINGS_FILE=$(pwd)/cloto_settings/fiware-cloto.cfg
-export PYTHONPATH=$(pwd):$PYTHONPATH
+export DJANGO_SETTINGS_MODULE=fiware_cloto.cloto_settings.settings_tests
+export CLOTO_SETTINGS_FILE=$(pwd)/fiware_cloto/cloto_settings/fiware-cloto.cfg
+export PYTHONPATH=$(pwd)/fiware_cloto/:$PYTHONPATH
 echo $PYTHONPATH
 echo $DJANGO_SETTINGS_MODULE
 export SETTINGS_TYPE=test
-echo "no" | python manage.py syncdb
-python manage.py test
+echo "no" | python fiware_cloto/manage.py syncdb
+python fiware_cloto/manage.py test
 
 if [ ! $1 = "travis_build" ];
 then

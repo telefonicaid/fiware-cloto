@@ -276,13 +276,15 @@ Download source code from github
 
 To execute the unit tests, you must set the environment variable pointing to the settings_test file.
 Then you can use coverage to execute the tests and obtain the percentage of lines coveved by the tests.
-You must execute the tests from project folder ``fiware-cloto/fiware_cloto``.
+You must execute the tests from project folder ``fiware-cloto``.
 Once you were inside the right location, execute the required commands:
 
 ::
 
-    $ export DJANGO_SETTINGS_MODULE=cloto_settings.settings_tests
-    $ python manage.py test
+    $ export DJANGO_SETTINGS_MODULE=fiware_cloto.cloto_settings.settings_tests
+    $ export CLOTO_SETTINGS_FILE=$(pwd)/fiware_cloto/cloto_settings/fiware-cloto.cfg
+    $ python fiware_cloto/manage.py test
+
 
 `Top`__.
 

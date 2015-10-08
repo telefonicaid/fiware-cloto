@@ -50,5 +50,5 @@ NOSE_ARGS = [
         '--cover-xml',     # produle XML coverage info
         '--cover-xml-file=target/site/cobertura/coverage.xml',  # the coverage info file
         # You may also specify the packages to be covered here
-        '--cover-package=cloto,orion_wrapper,environments'
+        '--cover-package=fiware_cloto.cloto,fiware_cloto.orion_wrapper,fiware_cloto.environments'
     ]

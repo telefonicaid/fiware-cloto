@@ -52,6 +52,14 @@ class environment_controller():
 
             if not self.check_python_process():
                 arbiter.start()
+            else:
+                self.clean_environments()
+                arbiter.start()
+
+    def clean_environments(self):
+        cmd = "ps -awx | grep fiware_cloto/environments | awk '{print $1}' |xargs kill -9"
+        subprocess.Popen(cmd, shell=True, executable="/bin/bash", stdout=subprocess.PIPE,
+                         stderr=subprocess.PIPE).communicate()
 
     def is_started(self):
         return self.started

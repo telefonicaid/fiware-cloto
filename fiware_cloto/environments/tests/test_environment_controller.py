@@ -23,21 +23,58 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'gjp'
-from django.test import TestCase
-
+import unittest
 from fiware_cloto.environments import environment_controller
+from mock import patch, Mock
 
 
-class ClientTests(TestCase):
+WITHOUT = """
+15009 pts/1    Ss     0:00 -bash
+15094 ?        S      0:00 upstart-udev-bridge --daemon
+15097 ?        S      0:00 upstart-socket-bridge --daemon
+15100 ?        S      0:00 upstart-file-bridge --daemon
+"""
+
+WITH = """
+15009 pts/1    Ss     0:00 -bash
+15094 ?        S      0:00 upstart-udev-bridge --daemon
+15097 ?        S      0:00 upstart-socket-bridge --daemon
+15100 ?        S      0:00 upstart-file-bridge --daemon
+16424 ?        Ss     0:00 python /usr/lib/python2.7/dist-packages/fiware_cloto/environments/environmentManager.py
+
+"""
+
+
+class MockPopen(unittest.TestCase):
 
     def setUp(self):
-        """sets up the environment to work with."""
+        self.popen_patcher = patch('fiware_cloto.environments.environment_controller.Popen')
+        self.mock_popen = self.popen_patcher.start()
 
+        self.mock_rv = Mock()
+        # communicate() returns [STDOUT, STDERR]
+        self.mock_rv.communicate.return_value = [WITHOUT, None]
+        self.mock_popen.return_value = self.mock_rv
+
+    # run after each test
+    def tearDown(self):
+        self.popen_patcher.stop()
 
     def test_clean_no_environments(self):
-        """test_clean_environments should check that there are no environments to clean."""
-        try:
-            error = environment_controller.clean_environments()
-        except Exception as ex:
-            self.assertRaises(ex)
+        """test_clean_no_environments should check that there are no environments to clean."""
+        result = environment_controller.check_python_process()
+        self.assertEqual(False, result)
+
+        environment_controller.clean_environments()
+        self.assertTrue(self.mock_popen.called)
+
+    def test_clean_one_environments(self):
+        """test_clean_environments should create an environment manager and clean the environment."""
+        self.mock_rv.communicate.return_value = [WITH, None]
+        result = environment_controller.check_python_process()
+        self.assertEqual(True, result)
+        self.mock_rv.communicate.return_value = [WITHOUT, None]
+        environment_controller.clean_environments()
+        self.assertTrue(self.mock_popen.called)
+        result = environment_controller.check_python_process()
+        self.assertEqual(False, result)

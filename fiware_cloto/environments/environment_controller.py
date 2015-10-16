@@ -42,11 +42,10 @@ class environment_controller():
             arbiter = get_arbiter([{"cmd": "python "
                                        "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 
-            if not check_python_process():
-                arbiter.start()
-            else:
+            if check_python_process():
                 clean_environments()
-                arbiter.start()
+
+            arbiter.start()
 
     def is_started(self):
         return self.started
@@ -64,9 +63,9 @@ def clean_environments():
 
 def check_python_process():
         p = Popen(['ps', '-awx'], stdout=PIPE)
-        out, err = p.communicate()
+        output, error = p.communicate()
         started = False
-        for line in out.splitlines():
+        for line in output.splitlines():
             if 'environmentManager.py' in line:
                     started = True
         return started

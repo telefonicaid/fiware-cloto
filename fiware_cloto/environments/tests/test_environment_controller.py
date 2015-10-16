@@ -33,6 +33,7 @@ WITHOUT = """
 15094 ?        S      0:00 upstart-udev-bridge --daemon
 15097 ?        S      0:00 upstart-socket-bridge --daemon
 15100 ?        S      0:00 upstart-file-bridge --daemon
+44657 ttys000 Ss 0:00.00 grep fiware_cloto/environments
 """
 
 WITH = """
@@ -41,6 +42,7 @@ WITH = """
 15097 ?        S      0:00 upstart-socket-bridge --daemon
 15100 ?        S      0:00 upstart-file-bridge --daemon
 16424 ?        Ss     0:00 python /usr/lib/python2.7/dist-packages/fiware_cloto/environments/environmentManager.py
+44657 ttys000 Ss 0:00.00 grep fiware_cloto/environments
 
 """
 

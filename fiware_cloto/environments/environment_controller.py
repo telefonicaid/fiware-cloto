@@ -52,7 +52,7 @@ class environment_controller():
 
 
 def clean_environments():
-        cmd = "ps -awx | grep fiware_cloto/environments | awk '{print $1}' |xargs kill -9"
+        cmd = "ps -awx | grep [f]iware_cloto/environments | awk '{print $1}' | xargs kill -9"
         output, error = Popen(cmd, shell=True, executable="/bin/bash", stdout=PIPE,
                          stderr=PIPE).communicate()
 

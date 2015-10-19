@@ -60,7 +60,7 @@ from django.utils import timezone
 
 from fiware_cloto.cloto.models import ServerInfo
 from django.conf import settings
-import logging as logger
+from fiware_cloto.cloto.utils.log import logger
 
 # Synchronizing database
 call_command('syncdb', interactive=False)

@@ -26,7 +26,7 @@ __author__ = 'gjp'
 
 from django.conf import settings
 from circus import get_arbiter
-import subprocess
+from subprocess import Popen, PIPE
 
 
 class environment_controller():
@@ -35,23 +35,37 @@ class environment_controller():
 
     started = False
 
-    def check_python_process(self):
-        p = subprocess.Popen(['ps', '-awx'], stdout=subprocess.PIPE)
-        out, err = p.communicate()
 
-        for line in out.splitlines():
-            if 'environmentManager.py' in line:
-                self.started = True
-
-        return self.started
 
     def start_manager(self):
         if settings.SETTINGS_TYPE == 'production':
             arbiter = get_arbiter([{"cmd": "python "
                                        "" + settings.ENVIRONMENTS_MANAGER_PATH, "numprocesses": 1}], background=True)
 
-            if not self.check_python_process():
-                arbiter.start()
+            if check_python_process():
+                clean_environments()
+
+            arbiter.start()
 
     def is_started(self):
         return self.started
+
+
+def clean_environments():
+        cmd = "ps -awx | grep [f]iware_cloto/environments | awk '{print $1}' | xargs kill -9"
+        output, error = Popen(cmd, shell=True, executable="/bin/bash", stdout=PIPE,
+                         stderr=PIPE).communicate()
+
+        if error:
+                raise Exception(error)
+
+        return output
+
+def check_python_process():
+        p = Popen(['ps', '-awx'], stdout=PIPE)
+        output, error = p.communicate()
+        started = False
+        for line in output.splitlines():
+            if 'environmentManager.py' in line:
+                    started = True
+        return started

@@ -1,6 +1,49 @@
 Changelog
 =========
 
+v2.0.0 (2015-10-23)
+-------------------
+
+New
+~~~
+
+- Adding tests to check environment cleaning. [Guillermo Jimenez Prieto]
+
+- Cleaning environments before creating the new ones. [Guillermo Jimenez
+  Prieto]
+
+- New unit test to check fail connection while windowsize updating.
+  [Guillermo Jimenez Prieto]
+
+- XUnit report is now generated. [Guillermo Jimenez Prieto]
+
+- Changed the way to execute unit tests, now it is performed as django
+  recommends. [Guillermo Jimenez Prieto]
+
+- Tests: new tests to check the windowsize update. [Guillermo Jimenez
+  Prieto]
+
+- Cloto sends windowsill updates to a rabbitmq in order to notify to
+  fiware-facts. [Guillermo Jimenez Prieto]
+
+Changes
+~~~~~~~
+
+- Version is now recovered from settings file. [Guillermo Jimenez
+  Prieto]
+
+Fix
+~~~
+
+- Fixing wrong logger import in wsgi file. [Guillermo Jimenez Prieto]
+
+- Moving build to root folder. [Guillermo Jimenez Prieto]
+
+- Fixing cobertura report publishing into sonar. [Guillermo Jimenez
+  Prieto]
+
+- Fixing sonar reports. [Guillermo Jimenez Prieto]
+
 v1.8.0 (2015-09-29)
 -------------------
 

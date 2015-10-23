@@ -11,7 +11,7 @@ Feature: Policy Manager information
       When I retrieve the tenant information
       Then I get the following information:
       | doc                                          | owner          | version | windowsize |
-      | http://docs.policymanager.apiary.io | Telefonica I+D | 2.0.0     | 5          |
+      | http://docs.policymanager.apiary.io | Telefonica I+D | 2.1.0     | 5          |
 
 
     Scenario Outline: Get not existant tenant information

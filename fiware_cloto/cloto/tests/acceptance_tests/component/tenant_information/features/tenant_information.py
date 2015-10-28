@@ -87,10 +87,7 @@ def check_tenant_information(step):
                                                                                     expected_result[TENANT_OWNER],
                                                                                     TENANT_OWNER,
                                                                                     response[TENANT_OWNER])
-        response[TENANT_VERSION] = str(response[TENANT_VERSION])
         assert TENANT_VERSION in response, 'API Version not found in the response'
-
-        response[TENANT_WSIZE] = str(response[TENANT_WSIZE])
         assert TENANT_WSIZE in response, 'WindowSize value not found in the API response'
 
 

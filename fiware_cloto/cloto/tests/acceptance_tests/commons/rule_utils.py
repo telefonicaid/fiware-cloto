@@ -31,7 +31,7 @@ from nose.tools import assert_equals, assert_true
 from commons.configuration import TENANT_ID, HEADERS
 from commons.errors import HTTP_CODE_NOT_OK
 import utils as Utils
-from fiware_cloto.cloto.tests.acceptance_tests.commons.constants import RULE_ACTION_SCALE_LIST, DEFAULT_BODY, \
+from commons.constants import RULE_ACTION_SCALE_LIST, DEFAULT_BODY, \
     RANDOM, RULE_ACTION, RULE_ACTION_NAME, BODY, \
     RULE_ACTION_NAME_LIST, MEM, CPU, EMAIL, RULE_NAME, RULE_CONDITION, RULE_OPERATION, RULE_OPERAND, RULE_VALUE, \
     RULE_ID, RULE_SPECIFIC_ID, HDD, NET

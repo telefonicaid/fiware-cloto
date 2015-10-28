@@ -28,7 +28,7 @@ from collections import deque
 
 from bottle import run, Bottle, request, response
 from configuration import MOCK_IP, MOCK_PORT
-from fiware_cloto.cloto.tests.acceptance_tests.commons.constants import MOCK_NOTIFICATION, MOCK_RESET_ERRORS,\
+from commons.constants import MOCK_NOTIFICATION, MOCK_RESET_ERRORS,\
     MOCK_RESET_STATS, MOCK_RESPONSE_SAVE, MOCK_SCALE_DOWN, \
     MOCK_SCALE_UP, MOCK_STATS, MOCK_NUM_NOTIFICATIONS, MOCK_NUM_SCALE_DOWN, MOCK_NUM_SCALE_UP
 import ujson

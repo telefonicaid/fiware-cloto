@@ -25,8 +25,8 @@
 __author__ = 'arobres'
 
 
-from fiware_cloto.cloto.tests.acceptance_tests.commons.configuration import MOCK_PORT, MOCK_IP
-from fiware_cloto.cloto.tests.acceptance_tests.commons.constants import MOCK_NOTIFICATION, MOCK_RESET_ERRORS,\
+from commons.configuration import MOCK_PORT, MOCK_IP
+from commons.constants import MOCK_NOTIFICATION, MOCK_RESET_ERRORS,\
     MOCK_RESET_STATS, MOCK_RESPONSE_SAVE, MOCK_SCALE_DOWN, \
     MOCK_SCALE_UP, MOCK_STATS
 import ujson

@@ -27,7 +27,7 @@ import sqlite3
 import os
 
 from configuration import DB_PATH
-from fiware_cloto.cloto.tests.acceptance_tests.commons.constants import DB_RULE_AND_SUBSCRIPTION
+from commons.constants import DB_RULE_AND_SUBSCRIPTION
 
 
 class DBUtils(object):

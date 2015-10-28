@@ -27,7 +27,7 @@ __author__ = 'arobres'
 import pika
 
 import ujson
-from fiware_cloto.cloto.tests.acceptance_tests.commons.configuration import RABBIT_IP
+from commons.configuration import RABBIT_IP
 
 
 class Rabbit_Utils(object):

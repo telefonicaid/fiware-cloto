@@ -34,8 +34,7 @@ TENANT_WSIZE = u'windowsize'
 TENANT_DOC = u'doc'
 TENANT_VERSION = u'version'
 TENANT_KEY = u'tenantId'
-TENANT_DEFAULT_DOC = u'https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/' \
-                     u'Policy_Manager_Open_RESTful_API_Specification'
+TENANT_DEFAULT_DOC = u'http://docs.policymanager.apiary.io'
 
 CONTENT_TYPE_HEADER = u'content-type'
 DEFAULT_CONTENT_TYPE_HEADER = u'application/json'
@@ -79,6 +78,8 @@ RANDOM = u'random'
 DEFAULT = u'default'
 
 ITEM_NOT_FOUND_ERROR = u'itemNotFound'
+
+ATTRIBUTE_PROBE = u'Probe'
 
 #DB_TABLES
 

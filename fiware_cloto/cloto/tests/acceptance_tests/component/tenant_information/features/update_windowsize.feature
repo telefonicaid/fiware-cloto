@@ -16,6 +16,8 @@ Feature: Policy Manager update window size
         |   2           |
         |   10          |
 
+
+    @skip @bug @CLAUDIA-5703
     Scenario Outline: Incorrect update window size requests
 
         Given a created tenant

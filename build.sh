@@ -26,10 +26,15 @@
 # to be shown in sonar
 #
 # __author__ = 'fla'
+set -e
 
-virtualenv ENV --system-site-packages
-source ENV/bin/activate
-mkdir -m 777 /var/log/fiware-cloto
+if [ ! $1 = "travis_build" ];
+then
+    virtualenv ENV --system-site-packages
+    source ENV/bin/activate
+fi
+
+mkdir -p -m 777 /var/log/fiware-cloto
 mkdir -p target/site/cobertura
 mkdir -p target/surefire-reports
 

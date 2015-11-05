@@ -34,7 +34,7 @@ then
     source ENV/bin/activate
 fi
 
-mkdir -m 777 /var/log/fiware-cloto
+mkdir -p -m 777 /var/log/fiware-cloto
 mkdir -p target/site/cobertura
 mkdir -p target/surefire-reports
 

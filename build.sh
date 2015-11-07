@@ -28,18 +28,15 @@
 # __author__ = 'fla'
 set -e
 
-if [ ! $1 = "travis_build" ];
-then
-    virtualenv ENV --system-site-packages
-    source ENV/bin/activate
-fi
+virtualenv ENV --system-site-packages
+source ENV/bin/activate
 
 mkdir -p -m 777 /var/log/fiware-cloto
 mkdir -p target/site/cobertura
 mkdir -p target/surefire-reports
 
-sudo pip install -r requirements.txt
-sudo pip install -r requirements_dev.txt
+pip install -r requirements.txt
+pip install -r requirements_dev.txt
 
 #PYCLIPS installation
 wget -O pyclips.tar.gz http://downloads.sourceforge.net/project/pyclips/pyclips/pyclips-1.0/pyclips-1.0.7.348.tar.gz?r=http%3A%2F%2Fsourceforge.net%2Fprojects%2Fpyclips%2Ffiles%2Fpyclips%2Fpyclips-1.0%2F&ts=1423484225&use_mirror=softlayer-ams

@@ -1,9 +1,10 @@
+... _Top:
 ===============================
 FIWARE Policy Manager GE: Cloto
 ===============================
 
 
-| |Build Status| |Coverage Status| |Pypi Version| |Pypi License|
+| |Build Status| |Coverage Status| |Pypi Version| |Pypi License| |StackOverflow|
 
 .. contents:: :local:
 
@@ -25,9 +26,8 @@ to provide feedback.
 
 __ `Fiware-cloto - GitHub issues`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 GEi overall description
 =======================
@@ -48,9 +48,8 @@ own actions based on the notifications launched by Policy Manager.
 Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
 system and calculate any possible change on it based on the knowledge database defined for it.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Components
 ----------
@@ -68,9 +67,8 @@ Fiware-Facts
 
 For more information, please refer to the `documentation <doc/README.rst>`_.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Build and Install
 =================
@@ -97,9 +95,8 @@ This module also needs the installation of these other components:
 - fiware-monitoring connected to the Orion instance to provide
   information about servers (https://github.com/telefonicaid/fiware-monitoring).
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Installation
 ------------
@@ -129,9 +126,8 @@ After all you must install fiware-cloto from pypi repository executing:
 
 After finishing you must configure cloto configuration and ensure your database is created with mysql.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Configuration file - Cloto
 --------------------------
@@ -191,9 +187,8 @@ Options that user could define:
     [logging]
     level: INFO
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Running
 =======
@@ -216,9 +211,8 @@ in that folder.
 
     mkdir -m /var/log/fiware-cloto
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 API Overview
 ============
@@ -247,9 +241,8 @@ Then user could perform a subscription to that rule with a new operation.
 Please have a look at the `API Reference Documentation`_ section below and
 at the `user and programmer guide <doc/user_guide.rst>`_ for more description of the possibilities and operations.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 API Reference Documentation
 ---------------------------
@@ -258,9 +251,8 @@ API Reference Documentation
 
 __ `FIWARE Policy Manager - Apiary`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Testing
 =======
@@ -286,9 +278,8 @@ Once you were inside the right location, execute the required commands:
     $ python fiware_cloto/manage.py test
 
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 End-to-end tests
 ----------------
@@ -320,9 +311,8 @@ the response should be similar to:
 Please refer to the `Installation and administration guide
 <doc/admin_guide.rst#end-to-end-testing>`_ for details.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Acceptance tests
 ----------------
@@ -355,9 +345,8 @@ tests for the Policy Manager GE:
 
 - `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance_tests/README.md>`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Advanced topics
 ===============
@@ -367,19 +356,17 @@ Advanced topics
 - `Open RESTful API Specification <doc/open_spec.rst>`_
 - `Architecture Description <doc/architecture.rst>`_
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 Support
 =======
 
-Ask your thorough programming questions using stackoverflow and your general questions on FIWARE Q&A.
-In both cases please use the tag fiware-bosun
+Ask your thorough programming questions using `stackoverflow`_ and your general questions on `FIWARE Q&A`_.
+In both cases please use the tag *fiware-bosun*.
 
-`Top`__.
+Top_.
 
-__ `FIWARE Policy Manager GE: Cloto`_
 
 License
 =======
@@ -391,13 +378,19 @@ License
 
 .. |Build Status| image:: https://travis-ci.org/telefonicaid/fiware-cloto.svg?branch=develop
    :target: https://travis-ci.org/telefonicaid/fiware-cloto
+   :alt: Build Status
 .. |Coverage Status| image:: https://img.shields.io/coveralls/telefonicaid/fiware-cloto/develop.svg
    :target: https://coveralls.io/r/telefonicaid/fiware-cloto
+   :alt: Coverage Status
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/
+   :alt: Version
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/
-
+   :alt: License
+.. |help stackoverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
+   :target: https://stackoverflow.com/questions/tagged/fiware-bosun
+   :alt: Help, ask questions
 
 .. REFERENCES
 
@@ -406,3 +399,5 @@ License
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
 .. _Fiware-cloto - GitHub issues: https://github.com/telefonicaid/fiware-cloto/issues/new
 .. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun
+.. _stackoverflow: http://stackoverflow.com/questions/ask
+.. _`FIWARE Q&A`: https://ask.fiware.org

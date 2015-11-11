@@ -388,7 +388,7 @@ License
 .. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/
    :alt: License
-.. |help stackoverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
+.. |StackOverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
    :target: https://stackoverflow.com/questions/tagged/fiware-bosun
    :alt: Help, ask questions
 

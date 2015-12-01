@@ -1,6 +1,17 @@
 Changelog
 =========
 
+v2.1.0 (2015-11-11)
+-------------------
+
+Fix
+~~~
+
+- Fixing mkdir error if folder already exists. [Guillermo Jimenez
+  Prieto]
+
+- Fixing CI travis build when any test fails. [Guillermo Jimenez Prieto]
+
 v2.0.0 (2015-10-23)
 -------------------
 

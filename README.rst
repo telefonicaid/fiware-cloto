@@ -214,7 +214,7 @@ in that folder.
 Running with supervisor
 -----------------------
 
-Opcionally you can add a new layer to manage gunicorn proccess with a supervisor.
+Optionally you can add a new layer to manage gunicorn proccess with a supervisor.
 Just install supervisor on your system:
 
 ::
@@ -243,6 +243,16 @@ To stop fiware-cloto just execute:
 ::
 
      sudo supervisorctl stop fiware-cloto
+
+NOTE:
+Supervisor provides an “event listener” to subscribe to “event notifications”.
+The purpose of the event notification/subscription system is to provide a mechanism for
+arbitrary code to be run (e.g. send an email, make an HTTP request, etc)
+when some condition is met. That condition usually has to do with subprocess state.
+For instance, you may want to notify someone via email when a process crashes and is restarted by Supervisor.
+For more information check also the `Supervisor Documentation`__
+
+__ `Supervisor Documentation`_
 
 Top_.
 
@@ -434,3 +444,4 @@ License
 .. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun
 .. _stackoverflow: http://stackoverflow.com/questions/ask
 .. _`FIWARE Q&A`: https://ask.fiware.org
+.. _Supervisor Documentation: http://supervisord.org/events.html

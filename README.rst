@@ -211,6 +211,39 @@ in that folder.
 
     mkdir -m /var/log/fiware-cloto
 
+Running with supervisor
+-----------------------
+
+Opcionally you can add a new layer to manage gunicorn proccess with a supervisor.
+Just install supervisor on your system:
+
+::
+
+    sudo apt-get install supervisor
+
+Copy the file ``utils/cloto_start`` to ``/etc/fiware.d``.
+Make this script executable:
+
+::
+
+    sudo chmod a+x /etc/fiware.d/cloto_start
+
+Copy the file ``utils/fiware-cloto.conf`` to ``/etc/supervisor/conf.d``.
+
+Start fiware-cloto using supervisor:
+
+::
+
+    sudo supervisorctl reread
+    sudo supervisorctl update
+    sudo supervisorctl start fiware-cloto
+
+To stop fiware-cloto just execute:
+
+::
+
+     sudo supervisorctl stop fiware-cloto
+
 Top_.
 
 

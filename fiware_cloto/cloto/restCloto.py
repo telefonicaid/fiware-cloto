@@ -121,6 +121,9 @@ class GeneralView(RESTResource):
         except ValidationError as ex:
                 return HttpResponse(json.dumps({"badRequest": {"code": 400, "message":
                     ex.messages[0]}}, indent=4), status=400)
+        except ValueError as ex:
+                return HttpResponse(json.dumps({"badRequest": {"code": 400, "message":
+                    ex.message}}, indent=4), status=400)
 
 
 class GeneralRulesViewRule(RESTResource):

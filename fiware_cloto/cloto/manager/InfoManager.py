@@ -72,7 +72,7 @@ class InfoManager():
 
         self.publish_message(message)
 
-        logger.info("%s windowsize updated to %d", tenantId, newSize)
+        logger.info("%s windowsize updated to %s", tenantId, str(newSize))
         return t
 
     def setInformations(self, sInfo, tInfo):

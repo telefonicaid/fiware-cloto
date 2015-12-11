@@ -147,7 +147,8 @@ class WindowSizeTests(TestCase):
         self.assertTrue(mock_logging.info.called)
 
     def test_not_update_window(self):
-        # Create an instance of a GET request.
+        """test_not_update_window check that PUT windowsize fails with error 400 when an invalid
+        value is provided in the request"""
         request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": notValidValue}", "application/json")
 
         # Test my_view() as if it were deployed at /customer/details
@@ -155,8 +156,20 @@ class WindowSizeTests(TestCase):
         self.assertEqual(response.status_code, 400)
 
     def test_not_update_window2(self):
-        # Create an instance of a GET request.
+        """test_not_update_window2 check that PUT windowsize fails with error 400 when an invalid
+        numeric value is provided in the request"""
+
         request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": -1}", "application/json")
+
+        # Test my_view() as if it were deployed at /customer/details
+        response = self.general.PUT(request, "tenantId")
+        self.assertEqual(response.status_code, 400)
+
+    def test_not_update_window_size_with_string(self):
+        """test_not_update_window_size_with_string check that PUT windowsize fails with error 400 when an invalid
+        string is provided in the request
+        """
+        request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": \"zero\"}", "application/json")
 
         # Test my_view() as if it were deployed at /customer/details
         response = self.general.PUT(request, "tenantId")

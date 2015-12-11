@@ -147,7 +147,7 @@ class WindowSizeTests(TestCase):
         self.assertTrue(mock_logging.info.called)
 
     def test_not_update_window(self):
-        """test_not_update_window2 check that PUT windowsize fails with error 400 when an invalid
+        """test_not_update_window check that PUT windowsize fails with error 400 when an invalid
         value is provided in the request"""
         request = self.factory.put('/v1.0/tenantId/', "{\"windowsize\": notValidValue}", "application/json")
 

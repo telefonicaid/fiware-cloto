@@ -103,7 +103,7 @@ def main():
         try:
             headers = {'Content-Type': 'application/json'}
             data = '{"action": "notifyEmail", "serverId": "' + serverId\
-                   + ', "email": "' + email + '", "description": "' + description + '"}'
+                   + '", "email": "' + email + '", "description": "' + description + '"}'
             logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
 
             r = requests.post(url, data=data, headers=headers)

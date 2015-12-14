@@ -108,10 +108,10 @@ def main():
 
             r = requests.post(url, data=data, headers=headers)
             if r.status_code == 200:
-                logger.info("mail sent to %s about server %s.--- Response: %s" % (email, serverId, url, r.status_code))
+                logger.info("mail sent to %s about server %s.---url: %s, Response: %d" % (email, serverId, url, r.status_code))
             else:
                 print(2)
-                logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %s"
+                logger.info("ERROR Sending mail to %s about server %s---url: %s, Response: %d"
                             % (email, serverId, url, r.status_code))
         except Exception as ex:
             logger.error(ex.message)
@@ -126,10 +126,10 @@ def main():
                             % (url, data))
             r = requests.post(url, data=data, headers=headers)
             if r.status_code == 200:
-                logger.info(action + " message sent to %s about server %s.--- Response: %s"
+                logger.info(action + " message sent to %s about server %s.--- Response: %d"
                             % (url, serverId, r.status_code))
             else:
-                logger.error(action + " message sent to %s about server %s.--- Response: %s"
+                logger.error(action + " message sent to %s about server %s.--- Response: %d"
                              % (url, serverId, r.status_code))
         except Exception as ex:
             logger.error(ex.message)

@@ -111,7 +111,7 @@ def main():
                 logger.info("mail sent to %s about server %s.--- Response: %d" % (email, serverId, url, r.status_code))
             else:
                 print(2)
-                logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %d"
+                logger.info("ERROR Sending mail to %s about server %s.--- %s Response: %s"
                             % (email, serverId, url, r.status_code))
         except Exception as ex:
             logger.error(ex.message)

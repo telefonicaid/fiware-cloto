@@ -16,23 +16,51 @@
     <link rel="stylesheet" href="css/idea.css">
     <script src="js/highlight.pack.js"></script>
     <script>hljs.initHighlightingOnLoad();</script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.3/jquery.min.js"></script>
+    <script src="js/toc-resize.js"></script>
 
     <link rel="stylesheet" type="text/css" href="css/api-specification.css"> 
+    
+
 
     
 </head>
 <body id="respecDocument" class="h-entry">
 <div class="container">
+
+
   <div id="TOC-container">
     
-<section id="toc">
+<div id="fiware-logo-container">
+    <div id="fiware-logo"></div>
+</div>
+<nav id="toc">
 
-        <div id="fiware-logo"></div>
+        
     <ul class="toc">
 
+        
+	        
+        
+	        
+		        <li><a href="#API-content">Policy Manager API Specification</a></li>
+	        
+        
+	        
+        
+	        
+        
+	        
+        
+
+
+<li><a href="#api-summary">API Summary</a></li>
+
 
     
     
+
+
 
 
 
@@ -208,11 +236,15 @@
         <li><a href="#references">References</a></li>
     
    </ul>
-</section>
+</nav>
 
   </div>
+  
+
+
   <div id="API-content">
   
+    
 	
 
 	
@@ -242,15 +274,60 @@
 
 
 
+
+	
+	
 	
 
 	
-
+	
 	
 
 	
+	
+	
 
 	
+	
+		
+	
+	
+
+	
+	
+	
+
+
+
+
+
+
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+  
+
+  
+    
+  
+  
+
+
+
+  <div id="top-source-buttons">
+  	
+    	<a target="_blank" href="http://docs.policymanager.apiary.io/#reference">View in Apiary</a>
+    
+    
+  </div>
 
 
 
@@ -272,7 +349,8 @@
 
 	
 		<h2 id="copyright">Copyright</h2>
-		<p>This specification is licensed under the
+		<p>Copyright (c) 2015 Telefónica Investigación y Desarrollo.</p>
+<p>This specification is licensed under the
 <a href="http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specification_Legal_Notice_%28essential_patents_license%29">FIWARE Open Specification License</a>.</p>
 	
 
@@ -312,6 +390,300 @@ under the License.
 	
 
 <hr>
+  
+
+
+    
+    
+<nav class="api-summary">
+<h1 id="api-summary"> API Summary </h1>
+    <ul>
+
+
+    
+
+        <li>
+            
+                <a href="#resource_group_facts" title = "Facts">Facts</a>
+            
+            <ul>
+              
+                
+                    <li>
+                        <a href="#resource_facts-collection" title = "Resource Facts Collection">
+                        
+                            Facts Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_create-new-facts-associated-to-a-server" title ="POST - Create new facts associated to a server"><span class="actionMethod">POST</span> - Create new facts associated to a server
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+            </ul>
+        </li>
+      
+
+        <li>
+            
+                <a href="#resource_group_cloto" title = "Cloto">Cloto</a>
+            
+            <ul>
+              
+                
+                    <li>
+                        <a href="#resource_general-operations" title = "Resource General Operations">
+                        
+                            General Operations
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_get-the-information-of-the-api" title ="GET - Get the information of the API"><span class="actionMethod">GET</span> - Get the information of the API
+                                    
+                                        
+                                            [/{tenantid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_update-the-window-size" title ="PUT - Update the window size"><span class="actionMethod">PUT</span> - Update the window size
+                                    
+                                        
+                                            [/{tenantid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_servers-collection" title = "Resource Servers Collection">
+                        
+                            Servers Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_get-the-list-of-all-servers-rules" title ="GET - Get the list of all server's rules"><span class="actionMethod">GET</span> - Get the list of all server's rules
+                                    
+                                        
+                                            [/{tenantid}/servers/]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_server-collection" title = "Resource Server Collection">
+                        
+                            Server Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_get-the-list-of-all-rules-of-a-server" title ="GET - Get the list of all rules of a server"><span class="actionMethod">GET</span> - Get the list of all rules of a server
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_elasticity-rules-collection" title = "Resource Elasticity Rules Collection">
+                        
+                            Elasticity Rules Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_create-a-new-elasticity-rule" title ="POST - Create a new elasticity rule"><span class="actionMethod">POST</span> - Create a new elasticity rule
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/rules]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_elasticity-rule-collection" title = "Resource Elasticity Rule Collection">
+                        
+                            Elasticity Rule Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_update-an-elasticity-rule" title ="PUT - Update an elasticity rule"><span class="actionMethod">PUT</span> - Update an elasticity rule
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/rules/{ruleid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_delete-an-elasticity-rule" title ="DELETE - Delete an elasticity rule"><span class="actionMethod">DELETE</span> - Delete an elasticity rule
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/rules/{ruleid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_get-an-elasticity-rule" title ="GET - Get an elasticity rule"><span class="actionMethod">GET</span> - Get an elasticity rule
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/rules/{ruleid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_subscriptions-collection" title = "Resource Subscriptions Collection">
+                        
+                            Subscriptions Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_create-a-new-subscription" title ="POST - Create a new subscription"><span class="actionMethod">POST</span> - Create a new subscription
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/subscription]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+                
+                    <li>
+                        <a href="#resource_subscription-collection" title = "Resource Subscription Collection">
+                        
+                            Subscription Collection
+                        
+                        </a>
+                        <ul class="toc  ">
+                        
+                            
+                                <li>
+                                    <a href="#action_delete-a-subscription" title ="DELETE - Delete a subscription"><span class="actionMethod">DELETE</span> - Delete a subscription
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                            
+                                <li>
+                                    <a href="#action_get-a-subscription" title ="GET - Get a subscription"><span class="actionMethod">GET</span> - Get a subscription
+                                    
+                                        
+                                            [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
+                                        
+                                    
+                                    </a>
+                                </li>
+                            
+
+                        
+                        </ul>
+                    </li>
+                
+              
+            </ul>
+        </li>
+      
+
+    </ul>
+</nav>
 
     
     
@@ -360,7 +732,12 @@ under the License.
 	<p>Notes related resources of the <strong>Facts API</strong></p>
         
             <section id="resource_facts-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_facts-collection">Facts Collection [/{tenantid}/servers/{serverid}]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_facts-collection">Facts Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/{serverid}]</span>
+                 
+                 </div>
                 
                 
                 
@@ -384,13 +761,18 @@ under the License.
                         <div id="action_create-new-facts-associated-to-a-server" class="action POST">
 
                         
-    <h4 id="h-action_create-new-facts-associated-to-a-server">
-        Create new facts associated to a server -
-        POST
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}
+            <h4 id="h-action_create-new-facts-associated-to-a-server">Create new facts associated to a server </h4>
+            <span class="extra-header">
+		POST 
+                
+                    /{tenantid}/servers/{serverid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="create-new-facts-associated-to-a-server_body" class="">
@@ -432,20 +814,18 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
+				Numeric <code>id</code> of the
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Numeric `id` of the
+				Numeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -493,7 +873,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_create-new-facts-associated-to-a-server_examples">Go to example</a>
                                     </div>
@@ -526,6 +906,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -541,7 +922,12 @@ Context element contains different measures. Each measure is an attribute which 
 	<p>Notes related resources of the <strong>Cloto API</strong></p>
         
             <section id="resource_general-operations" class="resource">
-                 <div class= "header" ><h3 id="h-resource_general-operations">General Operations [/{tenantid}]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_general-operations">General Operations</h3>
+                    <span class="extra-header">[/{tenantid}]</span>
+                 
+                 </div>
                 
                 
                 
@@ -565,13 +951,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_get-the-information-of-the-api" class="action GET">
 
                         
-    <h4 id="h-action_get-the-information-of-the-api">
-        Get the information of the API -
-        GET
+    <div class="header">
         
-            /{tenantid}
+            <h4 id="h-action_get-the-information-of-the-api">Get the information of the API </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="get-the-information-of-the-api_body" class="">
@@ -584,11 +975,10 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
+				Numeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -634,7 +1024,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_get-the-information-of-the-api_examples">Go to example</a>
                                     </div>
@@ -667,6 +1057,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -674,13 +1065,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_update-the-window-size" class="action PUT">
 
                         
-    <h4 id="h-action_update-the-window-size">
-        Update the window size -
-        PUT
+    <div class="header">
         
-            /{tenantid}
+            <h4 id="h-action_update-the-window-size">Update the window size </h4>
+            <span class="extra-header">
+		PUT 
+                
+                    /{tenantid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="update-the-window-size_body" class="">
@@ -697,11 +1093,10 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
+				Numeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -751,7 +1146,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_update-the-window-size_examples">Go to example</a>
                                     </div>
@@ -784,6 +1179,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -791,7 +1187,12 @@ Context element contains different measures. Each measure is an attribute which 
             </section>
         
             <section id="resource_servers-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_servers-collection">Servers Collection [/{tenantid}/servers/]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_servers-collection">Servers Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/]</span>
+                 
+                 </div>
                 
                 
                 
@@ -815,13 +1216,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_get-the-list-of-all-servers-rules" class="action GET">
 
                         
-    <h4 id="h-action_get-the-list-of-all-server's-rules">
-        Get the list of all server's rules -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/
+            <h4 id="h-action_get-the-list-of-all-server's-rules">Get the list of all server's rules </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="get-the-list-of-all-server's-rules_body" class="">
@@ -834,11 +1240,10 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
+				Numeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -884,7 +1289,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_get-the-list-of-all-servers-rules_examples">Go to example</a>
                                     </div>
@@ -917,6 +1322,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -924,7 +1330,12 @@ Context element contains different measures. Each measure is an attribute which 
             </section>
         
             <section id="resource_server-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_server-collection">Server Collection [/{tenantid}/servers/{serverid}/]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_server-collection">Server Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/{serverid}/]</span>
+                 
+                 </div>
                 
                 
                 
@@ -948,13 +1359,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_get-the-list-of-all-rules-of-a-server" class="action GET">
 
                         
-    <h4 id="h-action_get-the-list-of-all-rules-of-a-server">
-        Get the list of all rules of a server -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/
+            <h4 id="h-action_get-the-list-of-all-rules-of-a-server">Get the list of all rules of a server </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/{serverid}/
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="get-the-list-of-all-rules-of-a-server_body" class="">
@@ -967,20 +1383,18 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1026,7 +1440,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_get-the-list-of-all-rules-of-a-server_examples">Go to example</a>
                                     </div>
@@ -1059,6 +1473,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1066,7 +1481,12 @@ Context element contains different measures. Each measure is an attribute which 
             </section>
         
             <section id="resource_elasticity-rules-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_elasticity-rules-collection">Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_elasticity-rules-collection">Elasticity Rules Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/{serverid}/rules]</span>
+                 
+                 </div>
                 
                 
                 
@@ -1090,13 +1510,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_create-a-new-elasticity-rule" class="action POST">
 
                         
-    <h4 id="h-action_create-a-new-elasticity-rule">
-        Create a new elasticity rule -
-        POST
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules
+            <h4 id="h-action_create-a-new-elasticity-rule">Create a new elasticity rule </h4>
+            <span class="extra-header">
+		POST 
+                
+                    /{tenantid}/servers/{serverid}/rules
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="create-a-new-elasticity-rule_body" class="">
@@ -1121,20 +1546,18 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1184,7 +1607,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_create-a-new-elasticity-rule_examples">Go to example</a>
                                     </div>
@@ -1217,6 +1640,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1224,7 +1648,12 @@ Context element contains different measures. Each measure is an attribute which 
             </section>
         
             <section id="resource_elasticity-rule-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_elasticity-rule-collection">Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_elasticity-rule-collection">Elasticity Rule Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/{serverid}/rules/{ruleid}]</span>
+                 
+                 </div>
                 
                 
                 
@@ -1248,13 +1677,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_update-an-elasticity-rule" class="action PUT">
 
                         
-    <h4 id="h-action_update-an-elasticity-rule">
-        Update an elasticity rule -
-        PUT
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules/{ruleid}
+            <h4 id="h-action_update-an-elasticity-rule">Update an elasticity rule </h4>
+            <span class="extra-header">
+		PUT 
+                
+                    /{tenantid}/servers/{serverid}/rules/{ruleid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="update-an-elasticity-rule_body" class="">
@@ -1279,29 +1713,26 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">ruleid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the rule following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				ruleid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the rule following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1351,7 +1782,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_update-an-elasticity-rule_examples">Go to example</a>
                                     </div>
@@ -1384,6 +1815,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1391,13 +1823,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_delete-an-elasticity-rule" class="action DELETE">
 
                         
-    <h4 id="h-action_delete-an-elasticity-rule">
-        Delete an elasticity rule -
-        DELETE
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules/{ruleid}
+            <h4 id="h-action_delete-an-elasticity-rule">Delete an elasticity rule </h4>
+            <span class="extra-header">
+		DELETE 
+                
+                    /{tenantid}/servers/{serverid}/rules/{ruleid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="delete-an-elasticity-rule_body" class="">
@@ -1410,29 +1847,26 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">ruleid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the rule following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				ruleid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the rule following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1474,7 +1908,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_delete-an-elasticity-rule_examples">Go to example</a>
                                     </div>
@@ -1507,6 +1941,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1514,13 +1949,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_get-an-elasticity-rule" class="action GET">
 
                         
-    <h4 id="h-action_get-an-elasticity-rule">
-        Get an elasticity rule -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules/{ruleid}
+            <h4 id="h-action_get-an-elasticity-rule">Get an elasticity rule </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/{serverid}/rules/{ruleid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="get-an-elasticity-rule_body" class="">
@@ -1533,29 +1973,26 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">ruleid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the rule following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				ruleid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the rule following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1601,7 +2038,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_get-an-elasticity-rule_examples">Go to example</a>
                                     </div>
@@ -1634,6 +2071,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1641,7 +2079,12 @@ Context element contains different measures. Each measure is an attribute which 
             </section>
         
             <section id="resource_subscriptions-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_subscriptions-collection">Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_subscriptions-collection">Subscriptions Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/{serverid}/subscription]</span>
+                 
+                 </div>
                 
                 
                 
@@ -1665,13 +2108,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_create-a-new-subscription" class="action POST">
 
                         
-    <h4 id="h-action_create-a-new-subscription">
-        Create a new subscription -
-        POST
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/subscription
+            <h4 id="h-action_create-a-new-subscription">Create a new subscription </h4>
+            <span class="extra-header">
+		POST 
+                
+                    /{tenantid}/servers/{serverid}/subscription
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="create-a-new-subscription_body" class="">
@@ -1693,20 +2141,18 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1756,7 +2202,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_create-a-new-subscription_examples">Go to example</a>
                                     </div>
@@ -1789,6 +2235,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1796,7 +2243,12 @@ Context element contains different measures. Each measure is an attribute which 
             </section>
         
             <section id="resource_subscription-collection" class="resource">
-                 <div class= "header" ><h3 id="h-resource_subscription-collection">Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]</h3> </div>
+                 <div class= "header" >
+                 
+                    <h3 id="h-resource_subscription-collection">Subscription Collection</h3>
+                    <span class="extra-header">[/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]</span>
+                 
+                 </div>
                 
                 
                 
@@ -1820,13 +2272,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_delete-a-subscription" class="action DELETE">
 
                         
-    <h4 id="h-action_delete-a-subscription">
-        Delete a subscription -
-        DELETE
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+            <h4 id="h-action_delete-a-subscription">Delete a subscription </h4>
+            <span class="extra-header">
+		DELETE 
+                
+                    /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="delete-a-subscription_body" class="">
@@ -1839,29 +2296,26 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">subscriptionid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the subscription following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				subscriptionid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the subscription following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -1903,7 +2357,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_delete-a-subscription_examples">Go to example</a>
                                     </div>
@@ -1936,6 +2390,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -1943,13 +2398,18 @@ Context element contains different measures. Each measure is an attribute which 
                         <div id="action_get-a-subscription" class="action GET">
 
                         
-    <h4 id="h-action_get-a-subscription">
-        Get a subscription -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+            <h4 id="h-action_get-a-subscription">Get a subscription </h4>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
         
                             <div id="get-a-subscription_body" class="">
@@ -1962,29 +2422,26 @@ Context element contains different measures. Each measure is an attribute which 
 	<dl>
 		
 			<dt>
-				tenantid (Required, text
-				)
+				<span class="parameter-name">serverid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
+				Alphanumeric <code>id</code> of the server following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				serverid (Required, text
-				)
+				<span class="parameter-name">subscriptionid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the subscription following the OpenStack ID format.
 				
 			</dd>
 		
 			<dt>
-				subscriptionid (Required, text
-				)
+				<span class="parameter-name">tenantid</span> <span class="parameter-attributes">(Required, text)</span>
 			</dt>
 			<dd>
-				Alphanumeric `id` of the subscription following the OpenStack ID format.
+				Alphanumeric <code>id</code> of the Tenant to perform action with. Has example value.
 				
 			</dd>
 		
@@ -2030,7 +2487,7 @@ Context element contains different measures. Each measure is an attribute which 
 </div>
         	                            
                                     
-                                    
+                                    <div>
                                     <div class="goExample">
                                         <a href="#action_get-a-subscription_examples">Go to example</a>
                                     </div>
@@ -2063,6 +2520,7 @@ Context element contains different measures. Each measure is an attribute which 
     </div>
 
                                     
+                                    </div>
                                 
                             </div>
                         </div>
@@ -2081,60 +2539,46 @@ Context element contains different measures. Each measure is an attribute which 
 
                 
                     <section id="resource_facts-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_facts-collection_example">Facts Collection [/{tenantid}/servers/{serverid}]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_facts-collection_example">Facts Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/{serverid}]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_create-new-facts-associated-to-a-server_examples" class="actionExample POST">
 
                                     
-    <h4 id="h-action_create-new-facts-associated-to-a-server_examples">
-        Create new facts associated to a server -
-        POST
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}
+            <h5 id="h-action_create-new-facts-associated-to-a-server_examples">Create new facts associated to a server </h5>
+            <span class="extra-header">
+		POST 
+                
+                    /{tenantid}/servers/{serverid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_create-new-facts-associated-to-a-server_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Numeric `id` of the
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -2287,51 +2731,46 @@ Context element contains different measures. Each measure is an attribute which 
 
                 
                     <section id="resource_general-operations_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_general-operations_example">General Operations [/{tenantid}]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_general-operations_example">General Operations</h4>
+                            <span class="extra-header">[/{tenantid}]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_get-the-information-of-the-api_examples" class="actionExample GET">
 
                                     
-    <h4 id="h-action_get-the-information-of-the-api_examples">
-        Get the information of the API -
-        GET
+    <div class="header">
         
-            /{tenantid}
+            <h5 id="h-action_get-the-information-of-the-api_examples">Get the information of the API </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_get-the-information-of-the-api_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -2440,35 +2879,25 @@ Context element contains different measures. Each measure is an attribute which 
                                 <div id="action_update-the-window-size_examples" class="actionExample PUT">
 
                                     
-    <h4 id="h-action_update-the-window-size_examples">
-        Update the window size -
-        PUT
+    <div class="header">
         
-            /{tenantid}
+            <h5 id="h-action_update-the-window-size_examples">Update the window size </h5>
+            <span class="extra-header">
+		PUT 
+                
+                    /{tenantid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_update-the-window-size_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -2586,51 +3015,46 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                     </section>
             
                     <section id="resource_servers-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_servers-collection_example">Servers Collection [/{tenantid}/servers/]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_servers-collection_example">Servers Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_get-the-list-of-all-servers-rules_examples" class="actionExample GET">
 
                                     
-    <h4 id="h-action_get-the-list-of-all-server's-rules_examples">
-        Get the list of all server's rules -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/
+            <h5 id="h-action_get-the-list-of-all-server's-rules_examples">Get the list of all server's rules </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_get-the-list-of-all-server's-rules_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Numeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -2766,60 +3190,46 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                     </section>
             
                     <section id="resource_server-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_server-collection_example">Server Collection [/{tenantid}/servers/{serverid}/]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_server-collection_example">Server Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/{serverid}/]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_get-the-list-of-all-rules-of-a-server_examples" class="actionExample GET">
 
                                     
-    <h4 id="h-action_get-the-list-of-all-rules-of-a-server_examples">
-        Get the list of all rules of a server -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/
+            <h5 id="h-action_get-the-list-of-all-rules-of-a-server_examples">Get the list of all rules of a server </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/{serverid}/
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_get-the-list-of-all-rules-of-a-server_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -2938,60 +3348,46 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                     </section>
             
                     <section id="resource_elasticity-rules-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_elasticity-rules-collection_example">Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_elasticity-rules-collection_example">Elasticity Rules Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/{serverid}/rules]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_create-a-new-elasticity-rule_examples" class="actionExample POST">
 
                                     
-    <h4 id="h-action_create-a-new-elasticity-rule_examples">
-        Create a new elasticity rule -
-        POST
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules
+            <h5 id="h-action_create-a-new-elasticity-rule_examples">Create a new elasticity rule </h5>
+            <span class="extra-header">
+		POST 
+                
+                    /{tenantid}/servers/{serverid}/rules
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_create-a-new-elasticity-rule_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -3112,69 +3508,46 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                     </section>
             
                     <section id="resource_elasticity-rule-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_elasticity-rule-collection_example">Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_elasticity-rule-collection_example">Elasticity Rule Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/{serverid}/rules/{ruleid}]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_update-an-elasticity-rule_examples" class="actionExample PUT">
 
                                     
-    <h4 id="h-action_update-an-elasticity-rule_examples">
-        Update an elasticity rule -
-        PUT
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules/{ruleid}
+            <h5 id="h-action_update-an-elasticity-rule_examples">Update an elasticity rule </h5>
+            <span class="extra-header">
+		PUT 
+                
+                    /{tenantid}/servers/{serverid}/rules/{ruleid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_update-an-elasticity-rule_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-			<dt>
-				ruleid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the rule following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -3296,53 +3669,25 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                                 <div id="action_delete-an-elasticity-rule_examples" class="actionExample DELETE">
 
                                     
-    <h4 id="h-action_delete-an-elasticity-rule_examples">
-        Delete an elasticity rule -
-        DELETE
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules/{ruleid}
+            <h5 id="h-action_delete-an-elasticity-rule_examples">Delete an elasticity rule </h5>
+            <span class="extra-header">
+		DELETE 
+                
+                    /{tenantid}/servers/{serverid}/rules/{ruleid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_delete-an-elasticity-rule_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-			<dt>
-				ruleid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the rule following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -3429,53 +3774,25 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                                 <div id="action_get-an-elasticity-rule_examples" class="actionExample GET">
 
                                     
-    <h4 id="h-action_get-an-elasticity-rule_examples">
-        Get an elasticity rule -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/rules/{ruleid}
+            <h5 id="h-action_get-an-elasticity-rule_examples">Get an elasticity rule </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/{serverid}/rules/{ruleid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_get-an-elasticity-rule_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-			<dt>
-				ruleid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the rule following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -3583,60 +3900,46 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                     </section>
             
                     <section id="resource_subscriptions-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_subscriptions-collection_example">Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_subscriptions-collection_example">Subscriptions Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/{serverid}/subscription]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_create-a-new-subscription_examples" class="actionExample POST">
 
                                     
-    <h4 id="h-action_create-a-new-subscription_examples">
-        Create a new subscription -
-        POST
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/subscription
+            <h5 id="h-action_create-a-new-subscription_examples">Create a new subscription </h5>
+            <span class="extra-header">
+		POST 
+                
+                    /{tenantid}/servers/{serverid}/subscription
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_create-a-new-subscription_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -3755,69 +4058,46 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                     </section>
             
                     <section id="resource_subscription-collection_example" class="resourceExample">
-                         <div class= "header" ><h4 id="h-resource_subscription-collection_example">Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]</h4></div>
-                            
-                            
-                            
+                         <div class= "header" >
+                         
+                            <h4 id="h-resource_subscription-collection_example">Subscription Collection</h4>
+                            <span class="extra-header">[/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]</span>
+                         
+                         </div>
 
                             
                             
                             
 
                             
+                            
+                            
 
+                           
 
                             
                                 <div id="action_delete-a-subscription_examples" class="actionExample DELETE">
 
                                     
-    <h4 id="h-action_delete-a-subscription_examples">
-        Delete a subscription -
-        DELETE
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+            <h5 id="h-action_delete-a-subscription_examples">Delete a subscription </h5>
+            <span class="extra-header">
+		DELETE 
+                
+                    /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_delete-a-subscription_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-			<dt>
-				subscriptionid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the subscription following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -3904,53 +4184,25 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
                                 <div id="action_get-a-subscription_examples" class="actionExample GET">
 
                                     
-    <h4 id="h-action_get-a-subscription_examples">
-        Get a subscription -
-        GET
+    <div class="header">
         
-            /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+            <h5 id="h-action_get-a-subscription_examples">Get a subscription </h5>
+            <span class="extra-header">
+		GET 
+                
+                    /{tenantid}/servers/{serverid}/subscription/{subscriptionid}
+                
+            </span>
         
-    </h4>
+
+    </div>
 
                 
                                     <div id="action_get-a-subscription_body" class=""> 
                                         
                                         
                                         
-                                        
-
-	<span class="parameters-title">Parameters</span>
-	<dl>
-		
-			<dt>
-				tenantid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the Tenant to perform action with. Has example value.
-				
-			</dd>
-		
-			<dt>
-				serverid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the server following the OpenStack ID format.
-				
-			</dd>
-		
-			<dt>
-				subscriptionid (Required, text
-				)
-			</dt>
-			<dd>
-				Alphanumeric `id` of the subscription following the OpenStack ID format.
-				
-			</dd>
-		
-	</dl>
-         
+                                                 
                                         
                                             
                                             
@@ -4090,4 +4342,5 @@ X-Auth-Token: 1da5e7629654321e3c123456b89b1cct</code></pre>
   </div>
 </div>
 </body>
+
 </html>

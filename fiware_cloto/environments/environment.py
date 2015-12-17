@@ -104,7 +104,7 @@ def main():
             headers = {'Content-Type': 'application/json'}
             data = '{"action": "notifyEmail", "serverId": "' + serverId\
                    + '", "email": "' + email + '", "description": "' + description + '"}'
-            logger.info("Preparing eMail to %s: %s--- Response: " % (url, data))
+            logger.info("Preparing eMail to %s: %s" % (url, data))
 
             r = requests.post(url, data=data, headers=headers)
             if r.status_code == 200:
@@ -122,7 +122,7 @@ def main():
         try:
             headers = {'Content-Type': 'application/json'}
             data = '{"action": "' + action + '", "serverId": "' + serverId + '"}'
-            logger.info(action + " message sent to %s : %s"
+            logger.info(action + " Preparing message to %s : %s"
                             % (url, data))
             r = requests.post(url, data=data, headers=headers)
             if r.status_code == 200:

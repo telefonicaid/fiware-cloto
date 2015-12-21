@@ -24,11 +24,11 @@ installed the following software of framework in the machine:
    -  MySQL 5.6.14 or above
       `4 <http://dev.mysql.com/downloads/mysql/>`__
 
-.. -  Facts engine dependencies:
-..
-..    -  Python 2.7.6
-..       `5 <http://www.python.org/download/releases/2.7.6/>`__.
-..    -  Redis 2.8.8 `6 <http://redis.io/download>`__
+-  Facts engine dependencies:
+
+   -  Python 2.7.6
+      `5 <http://www.python.org/download/releases/2.7.6/>`__.
+   -  Redis 2.8.8 `6 <http://redis.io/download>`__
 
 Rule engine installation
 ------------------------
@@ -52,6 +52,7 @@ http://sourceforge.net/projects/pyclips/files/pyclips/pyclips-1.0
 To install pyClips execute this following commands:
 
 ::
+
   $ tar -xvf pyclips-1.0.X.Y.tar.gz
   $ cd pyclips
   $ python setup.py build
@@ -82,6 +83,7 @@ http://dev.mysql.com/downloads/mysql/
 You will need four packages:
 
 ::
+
   mysql-server
   mysql-client
   mysql-shared

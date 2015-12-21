@@ -51,10 +51,11 @@ http://sourceforge.net/projects/pyclips/files/pyclips/pyclips-1.0
 
 To install pyClips execute this following commands:
 
-| ``   $ tar -xvf pyclips-1.0.X.Y.tar.gz``
-| ``   $ cd pyclips``
-| ``   $ python setup.py build``
-| ``   $ su -c "python setup.py install"``
+::
+  $ tar -xvf pyclips-1.0.X.Y.tar.gz
+  $ cd pyclips
+  $ python setup.py build
+  $ su -c "python setup.py install"
 
 Maybe you need to execute these commands using sudo.
 
@@ -80,10 +81,11 @@ http://dev.mysql.com/downloads/mysql/
 
 You will need four packages:
 
-| ``mysql-server``
-| ``mysql-client``
-| ``mysql-shared``
-| ``mysql-devel``
+::
+  mysql-server
+  mysql-client
+  mysql-shared
+  mysql-devel
 
 After installation, you should create a user, create database called
 'cloto' and give all privileges to the user for this database. The name of
@@ -539,22 +541,23 @@ inside the code of the rule engine server:
 
     $ mysql -u user -p
 
-Where user is the administration user defined for cloto database
- The previous command should ask you for the password and after that show you:
+Where user is the administration user defined for cloto database. The previous
+command should ask you for the password and after that show you:
 
 ::
-    Welcome to the MySQL monitor.  Commands end with ; or \g.
-    Your MySQL connection id is 155286
-    Server version: 5.6.14 MySQL Community Server (GPL)
 
-    Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+  Welcome to the MySQL monitor.  Commands end with ; or \g.
+  Your MySQL connection id is 155286
+  Server version: 5.6.14 MySQL Community Server (GPL)
 
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
+  Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
 
-    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    mysql>
+  Oracle is a registered trademark of Oracle Corporation and/or its
+  affiliates. Other names may be trademarks of their respective
+  owners.
+
+  Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+  mysql>
 
 In order to show the different tables contained in this database, we
 should execute the following commands with the result that we show here:

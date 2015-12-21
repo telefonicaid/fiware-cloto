@@ -147,7 +147,8 @@ Options that user could define:
 
 ::
 
-    [openstack]         # OPENSTACK information about KEYSTONE to validate tokens received
+    [openstack]
+    # OPENSTACK information about KEYSTONE to validate tokens received
     OPENSTACK_URL: http://cloud.lab.fi-ware.org:4731/v2.0
     ADM_USER:
     ADM_PASS:
@@ -164,12 +165,14 @@ Options that user could define:
 
     [context_broker]
     CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
-    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0        # Public IP of fiware-facts module
+    # Public IP of fiware-facts module
+    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0
     NOTIFICATION_TYPE: ONTIMEINTERVAL
     NOTIFICATION_TIME: PT5S
 
     [rabbitmq]
-    RABBITMQ_URL: localhost     #URL Where RabbitMQ is listening (no port needed, it uses default port)
+    # URL Where RabbitMQ is listening (no port needed, it uses default port)
+    RABBITMQ_URL: localhost
 
     [mysql]
     DB_CHARSET: utf8
@@ -182,7 +185,8 @@ Options that user could define:
     DEBUG: False
     DATABASE_ENGINE: django.db.backends.mysql
     ALLOWED_HOSTS: ['127.0.0.1', 'localhost']
-    SECRET_KEY: TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj         ### Must be a unique generated value. keep that key safe.
+    ### Must be a unique generated value. keep that key safe.
+    SECRET_KEY: TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj
 
     [logging]
     level: INFO
@@ -267,7 +271,12 @@ For example, this operation allows to create a specific rule associate to a serv
 
 ::
 
-    curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4' -X POST http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/32c23ac4-230d-42b6-81f2-db9bd7e5b790/rules/ -d '{"action": {"actionName": "notify-scale", "operation": "scaleUp"}, "name": "ScaleUpRule", "condition": { "cpu": { "value": 98, "operand": "greater" }, "mem": { "value": 95, "operand": "greater equal"}}}'
+    curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4' -X POST
+    http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers
+    /32c23ac4-230d-42b6-81f2-db9bd7e5b790/rules/
+    -d '{"action": {"actionName": "notify-scale", "operation": "scaleUp"},
+    "name": "ScaleUpRule", "condition": { "cpu": { "value": 98, "operand": "greater" },
+    "mem": { "value": 95, "operand": "greater equal"}}}'
 
 
 The result of this operation is a JSON with the Id of the server affected and the ruleId of the created rule:
@@ -345,7 +354,8 @@ the response should be similar to:
 
     {
         "owner": "Telefonica I+D",
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification",
+        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/
+                                                    Policy_Manager_Open_RESTful_API_Specification",
         "runningfrom": "15/08/14 10:12:45",
         "version": "1.7.0",
         "windowsize": 2

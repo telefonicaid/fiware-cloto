@@ -57,8 +57,9 @@ operations.
 
 ::
 
-    curl -d '{"auth": {"tenantName": $TENANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
-    -H "Content-type: application/json" -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
+    curl -d '{"auth": {"tenantName": $TENANT, "passwordCredentials":{"username": $USERNAME,
+    "password": $PASSWORD}}}' -H "Content-type: application/json"
+    -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
 
 Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The IP address
@@ -90,7 +91,8 @@ information about the window size and its meaning.
 
 ::
 
-    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d' -X GET http://130.206.81.71:8000/v1.0/c907498615b7456a9513500fe24101e0
+    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
+    -X GET http://130.206.81.71:8000/v1.0/c907498615b7456a9513500fe24101e0
 
 This operation will return the information regarding the tenant details
 of the execution of the Policy Manager
@@ -103,7 +105,8 @@ of the execution of the Policy Manager
     < Content-Type: text/html; charset=utf-8
     {
         "owner": "Telefonica I+D", 
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager", 
+        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/
+                                                    FIWARE.OpenSpecification.Details.Cloud.PolicyManager",
         "runningfrom": "14/04/09 07:45:22", 
         "version": 1.0, 
         "windowsize": 5
@@ -115,7 +118,12 @@ This operation allows to create a specific rule associate to a server:
 
 ::
 
-    curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4' -X POST http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/32c23ac4-230d-42b6-81f2-db9bd7e5b790/rules/ -d '{"action": {"actionName": "notify-scale", "operation": "scaleUp"}, "name": "ScaleUpRule", "condition": { "cpu": { "value": 98, "operand": "greater" }, "mem": { "value": 95, "operand": "greater equal"}}}'
+    curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4'
+    -X POST http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers
+    /32c23ac4-230d-42b6-81f2-db9bd7e5b790/rules/
+    -d '{"action": {"actionName": "notify-scale", "operation": "scaleUp"}, "name": "ScaleUpRule",
+    "condition": { "cpu": { "value": 98, "operand": "greater" },
+    "mem": { "value": 95, "operand": "greater equal"}}}'
 
 The result of this operation is the following content:
 
@@ -137,7 +145,10 @@ to evaluate the rule to be processed.
 
 ::
 
-    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d' -X POST http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/32c23ac4-230d-42b6-81f2-db9bd7e5b790/subscription -d '{ "ruleId": "ruleid", "url": "URL to notify any action" }'
+    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
+    -X POST http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers
+    /32c23ac4-230d-42b6-81f2-db9bd7e5b790/subscription
+    -d '{ "ruleId": "ruleid", "url": "URL to notify any action" }'
 
 An the expected result is the following.
 
@@ -162,7 +173,9 @@ it has the following appearance:
 
 ::
 
-    curl -v -H "Content-Type: application/json" -X POST http://127.0.0.1:5000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/serverI1 -d '{
+    curl -v -H "Content-Type: application/json"
+    -X POST http://127.0.0.1:5000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/serverI1
+    -d '{
     "contextResponses": [
         {
             "contextElement": {
@@ -235,7 +248,9 @@ operation:
 
 ::
 
-    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d' -X DELETE http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers/serverI1/subscription/SubscriptionId
+    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
+    -X DELETE http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers
+    /serverI1/subscription/SubscriptionId
 
 ::
 

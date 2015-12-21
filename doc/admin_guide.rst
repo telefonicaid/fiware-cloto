@@ -24,11 +24,11 @@ installed the following software of framework in the machine:
    -  MySQL 5.6.14 or above
       `4 <http://dev.mysql.com/downloads/mysql/>`__
 
-.. -  Facts engine dependencies:
-..
-..    -  Python 2.7.6
-..       `5 <http://www.python.org/download/releases/2.7.6/>`__.
-..    -  Redis 2.8.8 `6 <http://redis.io/download>`__
+-  Facts engine dependencies:
+
+   -  Python 2.7.6
+      `5 <http://www.python.org/download/releases/2.7.6/>`__.
+   -  Redis 2.8.8 `6 <http://redis.io/download>`__
 
 Rule engine installation
 ------------------------
@@ -51,10 +51,12 @@ http://sourceforge.net/projects/pyclips/files/pyclips/pyclips-1.0
 
 To install pyClips execute this following commands:
 
-| ``   $ tar -xvf pyclips-1.0.X.Y.tar.gz``
-| ``   $ cd pyclips``
-| ``   $ python setup.py build``
-| ``   $ su -c "python setup.py install"``
+::
+
+  $ tar -xvf pyclips-1.0.X.Y.tar.gz
+  $ cd pyclips
+  $ python setup.py build
+  $ su -c "python setup.py install"
 
 Maybe you need to execute these commands using sudo.
 
@@ -80,10 +82,12 @@ http://dev.mysql.com/downloads/mysql/
 
 You will need four packages:
 
-| ``mysql-server``
-| ``mysql-client``
-| ``mysql-shared``
-| ``mysql-devel``
+::
+
+  mysql-server
+  mysql-client
+  mysql-shared
+  mysql-devel
 
 After installation, you should create a user, create database called
 'cloto' and give all privileges to the user for this database. The name of
@@ -129,7 +133,8 @@ You should copy this file into default folder and complete all empty keys.
 
 ::
 
-    [openstack]         # OPENSTACK information about KEYSTONE to validate tokens received
+    [openstack]
+    # OPENSTACK information about KEYSTONE to validate tokens received
     OPENSTACK_URL: http://cloud.lab.fi-ware.org:4731/v2.0
     ADM_USER:
     ADM_PASS:
@@ -146,12 +151,14 @@ You should copy this file into default folder and complete all empty keys.
 
     [context_broker]
     CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
-    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0        # Public IP of fiware-facts module
+    # Public IP of fiware-facts module
+    NOTIFICATION_URL: http://127.0.0.1:5000/v1.0
     NOTIFICATION_TYPE: ONTIMEINTERVAL
     NOTIFICATION_TIME: PT5S
 
     [rabbitmq]
-    RABBITMQ_URL: localhost     #URL Where RabbitMQ is listening (no port needed, it uses default port)
+    # URL Where RabbitMQ is listening (no port needed, it uses default port)
+    RABBITMQ_URL: localhost
 
     [mysql]
     DB_CHARSET: utf8
@@ -164,7 +171,8 @@ You should copy this file into default folder and complete all empty keys.
     DEBUG: False
     DATABASE_ENGINE: django.db.backends.mysql
     ALLOWED_HOSTS: ['127.0.0.1', 'localhost']
-    SECRET_KEY: TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj         ### Must be a unique generated value. keep that key safe.
+    ### Must be a unique generated value. keep that key safe.
+    SECRET_KEY: TestingKey+faeogfjksrjgpjaspigjiopsjgvopjsopgvj
 
     [logging]
     level: INFO
@@ -326,7 +334,8 @@ of the file:
 
 ::
 
-    gunicorn facts.server:app -b $IP:5000 --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
+    gunicorn facts.server:app -b $IP:5000
+    --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
 NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
 ``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
@@ -342,7 +351,8 @@ When you execute the server you can see some information about the server:
     2015-09-24 16:30:10,846 INFO policymanager.facts Port: 5000
     2015-09-24 16:30:10,846 INFO policymanager.facts PID: 19472
 
-    2015-09-24 16:30:10,846 INFO policymanager.facts https://github.com/telefonicaid/fiware-facts
+    2015-09-24 16:30:10,846 INFO policymanager.facts
+                                              https://github.com/telefonicaid/fiware-facts
 
 
 
@@ -376,8 +386,10 @@ curl sentence.
 
 ::
 
-    curl -d '{"auth": {"tenantName": $TENANT, "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
-    -H "Content-type: application/json" -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
+    curl -d '{"auth": {"tenantName": $TENANT,
+    "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
+    -H "Content-type: application/json" -H "Accept: application/xml"
+    http://130.206.80.100:35357/v2.0/tokens
 
 Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The IP address
@@ -406,7 +418,8 @@ of the processes together with the queue size.
 
 ::
 
-    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d' -X GET http://130.206.81.71:8000/v1.0/c907498615b7456a9513500fe24101e0
+    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
+    -X GET http://130.206.81.71:8000/v1.0/c907498615b7456a9513500fe24101e0
 
 This operation will return the information regarding the tenant details
 of the execution of the Policy Manager
@@ -419,7 +432,8 @@ of the execution of the Policy Manager
     < Content-Type: text/html; charset=utf-8
     {
         "owner": "Telefonica I+D", 
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager", 
+        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/
+                                     FIWARE.OpenSpecification.Details.Cloud.PolicyManager",
         "runningfrom": "14/04/09 07:45:22", 
         "version": 1.0, 
         "windowsize": 5
@@ -446,7 +460,8 @@ It should show something similar to the following:
 
     UID   PID  PPID   C   STIME     TTY       TIME   CMD
     501  5287   343   0  9:42PM ttys001    0:02.49   ./redis-server *:6379
-    501  5604   353   0  9:40AM ttys002    0:00.20 /Library/Frameworks/Python.framework/Versions/2.7/Resources/Python.app/Contents/MacOS/Python facts.py
+    501  5604   353   0  9:40AM ttys002    0:00.20 /Library/Frameworks/Python.framework/
+    Versions/2.7/Resources/Python.app/Contents/MacOS/Python facts.py
 
 Where you can see the Redis server, and the run process to launch the
 Python program.
@@ -462,12 +477,16 @@ It should show something similar to the following:
 ::
 
     UID        PID  PPID  C    SZ   RSS PSR STIME TTY          TIME CMD
-    root      1584     1  0 15:31 ?        00:00:00 /bin/sh /etc/rc3.d/S80rabbitmq-server start
-    root      1587  1584  0 15:31 ?        00:00:00 /bin/bash -c ulimit -S -c 0 >/dev/null 2>&1 ; /usr/sbin/rabbitmq-server
+    root      1584     1  0 15:31 ?        00:00:00 /bin/sh /etc/rc3.d/
+    S80rabbitmq-server start
+    root      1587  1584  0 15:31 ?        00:00:00 /bin/bash -c ulimit -S -c 0
+    >/dev/null 2>&1 ; /usr/sbin/rabbitmq-server
     root      1589  1587  0 15:31 ?        00:00:00 /bin/sh /usr/sbin/rabbitmq-server
-    root      1603  1589  0 15:31 ?        00:00:00 su rabbitmq -s /bin/sh -c /usr/lib/rabbitmq/bin/rabbitmq-server 
+    root      1603  1589  0 15:31 ?        00:00:00 su rabbitmq -s /bin/sh -c
+    /usr/lib/rabbitmq/bin/rabbitmq-server
     root      2038  2011  0 15:32 ?        00:00:01 python cloto/environmentManager.py
-    root      2039  2011  1 15:32 ?        00:00:38 /usr/bin/python manage.py runserver 172.30.1.119:8000
+    root      2039  2011  1 15:32 ?        00:00:38 /usr/bin/python manage.py
+    runserver 172.30.1.119:8000
 
 where we can see the rabbitmq process, the run process to launch the
 Python program and the clips program.
@@ -494,9 +513,12 @@ similar to the following:
     COMMAND    PID USER    FD  TYPE             DEVICE SIZE/OFF NODE NAME
     redis-ser 5287  fla    4u  IPv6 0x8a557b63682bb0ef      0t0  TCP *:6379 (LISTEN)
     redis-ser 5287  fla    5u  IPv4 0x8a557b636a696637      0t0  TCP *:6379 (LISTEN)
-    redis-ser 5287  fla    6u  IPv6 0x8a557b63682b9fef      0t0  TCP localhost:6379->localhost:56046 (ESTABLISHED)
-    Python    5604  fla    7u  IPv6 0x8a557b63682bacaf      0t0  TCP localhost:56046->localhost:6379 (ESTABLISHED)
-    Python    5604  fla    9u  IPv4 0x8a557b6369c90637      0t0  TCP *:commplex-main (LISTEN)
+    redis-ser 5287  fla    6u  IPv6 0x8a557b63682b9fef      0t0  TCP localhost:6379->
+    localhost:56046 (ESTABLISHED)
+    Python    5604  fla    7u  IPv6 0x8a557b63682bacaf      0t0  TCP localhost:56046->
+    localhost:6379 (ESTABLISHED)
+    Python    5604  fla    9u  IPv4 0x8a557b6369c90637      0t0  TCP *:commplex-main
+    (LISTEN)
 
 In case of rule engine, the result will we the following:
 
@@ -504,8 +526,10 @@ In case of rule engine, the result will we the following:
 
     COMMAND    PID USER    FD  TYPE             DEVICE SIZE/OFF NODE NAME
     python    2039       root    3u  IPv4  13290      0t0  UDP *:12027 
-    python    2039       root    4u  IPv4  13347      0t0  TCP policymanager.novalocal:irdmi (LISTEN)
-    python    2044       root    3u  IPv6  13354      0t0  TCP localhost:38391->localhost:amqp (ESTABLISHED)
+    python    2039       root    4u  IPv4  13347      0t0  TCP policymanager.novalocal
+    :irdmi (LISTEN)
+    python    2044       root    3u  IPv6  13354      0t0  TCP localhost:38391->localhost
+    :amqp (ESTABLISHED)
 
 Databases
 ---------
@@ -519,22 +543,23 @@ inside the code of the rule engine server:
 
     $ mysql -u user -p
 
-Where user is the administration user defined for cloto database
- The previous command should ask you for the password and after that show you:
+Where user is the administration user defined for cloto database. The previous
+command should ask you for the password and after that show you:
 
 ::
-    Welcome to the MySQL monitor.  Commands end with ; or \g.
-    Your MySQL connection id is 155286
-    Server version: 5.6.14 MySQL Community Server (GPL)
 
-    Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+  Welcome to the MySQL monitor.  Commands end with ; or \g.
+  Your MySQL connection id is 155286
+  Server version: 5.6.14 MySQL Community Server (GPL)
 
-    Oracle is a registered trademark of Oracle Corporation and/or its
-    affiliates. Other names may be trademarks of their respective
-    owners.
+  Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
 
-    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-    mysql>
+  Oracle is a registered trademark of Oracle Corporation and/or its
+  affiliates. Other names may be trademarks of their respective
+  owners.
+
+  Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+  mysql>
 
 In order to show the different tables contained in this database, we
 should execute the following commands with the result that we show here:
@@ -575,11 +600,13 @@ It should return with the following information:
 
 ::
 
-    +----+----------------+---------+---------------------+---------------------------------------------------------------------------------------------------------------------------------+
-    | id | owner          | version | runningfrom         | doc                                                                                                                             |
-    +----+----------------+---------+---------------------+---------------------------------------------------------------------------------------------------------------------------------+
-    |  1 | Telefonica I+D |       1 | 2014-10-02 14:04:41 | https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager |
-    +----+----------------+---------+---------------------+---------------------------------------------------------------------------------------------------------------------------------+
+    +----+----------------+---------+---------------------+--------+
+    | id | owner          | version | runningfrom         | doc    |
+    +----+----------------+---------+---------------------+--------+
+    |  1 | Telefonica I+D |       1 | 2014-10-02 14:04:41 | {file} |
+    +----+----------------+---------+---------------------+--------+
+
+Where {file} is the path to the OpenSpecification file whose value is https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager
 
 Diagnosis Procedures
 ====================
@@ -629,7 +656,11 @@ organization with the following curl commands:
 
 ::
 
-    root@fiware:~# curl -d '{"auth": {"tenantName": "<MY_ORG_NAME>", "passwordCredentials":{"username": "<MY_USERNAME>", "password": "<MY_PASS>"}}}' -H "Content-type: application/json" -H "Accept: application/xml"  http://<KEYSTONE_HOST>:<KEYSTONE_PORT>/v2.0/tokens
+    root@fiware:~# curl
+    -d '{"auth": {"tenantName": "<MY_ORG_NAME>",
+    "passwordCredentials":{"username": "<MY_USERNAME>", "password": "<MY_PASS>"}}}'
+    -H "Content-type: application/json" -H "Accept: application/xml"
+    http://<KEYSTONE_HOST>:<KEYSTONE_PORT>/v2.0/tokens
 
 The will be the name of my Organization/Tenant/Project predefined in the
 IdM GE (aka Keystone). The and variables will be the user name and
@@ -662,7 +693,8 @@ the following curl commands:
 
 ::
 
-    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d' -X GET "http://<Rule Engine HOST>:8000/v1.0/c8da25c7a373473f8e8945f5b0da8217"
+    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
+    -X GET "http://<Rule Engine HOST>:8000/v1.0/c8da25c7a373473f8e8945f5b0da8217"
 
 The variable will be the IP direction in which we have installed the
 Rule engine API functionality. This request should return the valid info
@@ -672,7 +704,8 @@ for this tenant in the following json response structure:
 
     {
         "owner": "Telefonica I+D", 
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager", 
+        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php
+                                    /FIWARE.OpenSpecification.Details.Cloud.PolicyManager",
         "runningfrom": "14/04/11 12:32:29", 
         "version": "1.0",
         "windowsize": 5
@@ -690,51 +723,73 @@ between:
 -  High usage, in which we send 100 concurrent accesses to the Claudia
    and OpenStack API.
 
-|
-
 The results were obtained with a top command execution over the following machine configuration:
 
-|
-| {\| style="background:#cccc99;color:black;width:50%;" border="1"
-cellpadding="3" cellspacing="0" align="center" \|+ Machine Info ! !!
-Rule Engine Node !! Facts Engine Node \|- style="background:white;
-color:black" align="center" ! Type Machine \| Virtual Machine \| Virtual
-Machine \|- style="background:#f0f0f0; color:black" align="center" ! CPU
-\| 1 core @ 2,4Ghz \| Intel(R) Xeon(R) CPU X5650 Dual Core @ 2.67GHz \|-
-style="background:white; color:black" align="center" ! RAM \| 2GB \| 2GB
-\|- style="background:white; color:black" align="center" ! HDD \| 20GB
-\| 20GB \|- style="background:white; color:black" align="center" !
-Operating System \| CentOS 6.3 \| CentOS 6.3 \|}
+.. list-table:: Machine Info
+   :header-rows: 1
+   :widths: 10 10 10
+   :stub-columns: 1
 
-|
+   *  -  Machine
+      -  Rule Engine Node
+      -  Facts Engine Node
+   *  -  Type Machine
+      -  Virtual Machine
+      -  Virtual Machine
+   *  -  CPU
+      -  1 core @ 2,4Ghz
+      -  Intel(R) Xeon(R) CPU X5650 Dual Core @ 2.67GHz
+   *  -  RAM
+      -  2GB
+      -  2GB
+   *  -  HDD
+      -  20GB
+      -  20GB
+   *  -  Operating System
+      -  CentOS 6.3
+      -  CentOS 6.3
 
 The results of requirements both RAM, CPU and I/O to HDD in case of
 Rule engine node is shown in the following table:
 
-| 
-| {\| style="background:#cccc99;color:black;width:50%;" border="1"
-cellpadding="3" cellspacing="0" align="center" \|+ Resource Consumption
-(in JBoss node) ! !! Low Usage !! High Usage \|-
-style="background:white; color:black" align="center" ! RAM \| 1,2GB ~
-70% \| 1,4GB ~ 83,5% \|- style="background:#f0f0f0; color:black"
-align="center" ! CPU \| 1,3% of a 2400MHz \| 95% of a 2400MHZ \|-
-style="background:white; color:black" align="center" ! I/O HDD \| 6GB \|
-6GB \|}
+.. list-table:: Resource Consumption (in JBoss node)
+   :header-rows: 1
+   :widths: 10 10 10
+   :stub-columns: 1
 
-| 
+   *  -  Characteristic
+      -  Low Usage
+      -  High Usage
+   *  -  RAM
+      -  1,2GB ~ 70%
+      -  1,4GB ~ 83,5%
+   *  -  CPU
+      -  1,3% of a 2400MHz
+      -  95% of a 2400MHZ
+   *  -  I/O HDD
+      -  6GB
+      -  6GB
 
 And the results of requirements both RAM, CPU and I/O to HDD in case
 of Tomcat node is shown in the following table:
 
-| 
-| {\| style="background:#cccc99;color:black;width:50%;" border="1"
-cellpadding="3" cellspacing="0" align="center" \|+ Resource Consumption
-(in Tomcat node) ! !! Low Usage !! High Usage \|-
-style="background:white; color:black" align="center" ! RAM \| 1,2GB ~
-63% \| 1,5GB ~ 78% \|- style="background:#f0f0f0; color:black"
-align="center" ! CPU \| 0,8% of a 2400MHz \| 90% of a 2400MHZ \|-
-style="background:white; color:black" align="center" ! I/O HDD \| 6GB \|
-6GB \|}
+.. list-table:: Resource Consumption (in Tomcat node)
+   :header-rows: 1
+   :widths: 10 10 10
+   :stub-columns: 1
+
+   *  -  Characteristic
+      -  Low Usage
+      -  High Usage
+   *  -  RAM
+      -  1,2GB ~ 63%
+      -  1,5GB ~ 78%
+   *  -  CPU
+      -  0,8% of a 2400MHz
+      -  90% of a 2400MHZ
+   *  -  I/O HDD
+      -  6GB
+      -  6GB
 
 I/O flows
 ---------

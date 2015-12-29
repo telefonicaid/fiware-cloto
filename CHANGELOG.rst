@@ -1,6 +1,43 @@
 Changelog
 =========
 
+v2.2.0 (2015-12-22)
+-------------------
+
+New
+~~~
+
+- Adding new test to cover the bug fixed. [Guillermo Jimenez Prieto]
+
+- Adding new test to cover the bug fixed. [Guillermo Jimenez Prieto]
+
+- Adding information and utils to run fiware cloto with supervisor.
+  [Guillermo Jimenez Prieto]
+
+Changes
+~~~~~~~
+
+- Removing skip tag from acceptance scenario after fixing the bug
+  CLAUDIA-5703. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Fixing email notification. [Guillermo Jimenez Prieto]
+
+- Fixed string response code. [Guillermo Jimenez Prieto]
+
+- Fixed string response code. [Guillermo Jimenez Prieto]
+
+- Fixed json notification when email notification is launched.
+  [Guillermo Jimenez Prieto]
+
+- Fixing logger info when some valid numeric string is updating a
+  windowsize. [Guillermo Jimenez Prieto]
+
+- Fixing exception block to catch error when some string is updating a
+  windowsize. [Guillermo Jimenez Prieto]
+
 v2.1.0 (2015-11-11)
 -------------------
 

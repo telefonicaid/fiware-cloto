@@ -58,7 +58,7 @@ class RESTResource(object):
                 if settings.AUTH_API == AUTH_API_V2:
                     from keystoneclient.v2_0 import client as keystone_client
                 elif settings.AUTH_API == AUTH_API_V3:
-                    from keystoneclient.v2_0 import client as keystone_client
+                    from keystoneclient.v3 import client as keystone_client
                 a.session = session
                 a.myClient = keystone_client
                 adm_token = a.get_auth_token(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,

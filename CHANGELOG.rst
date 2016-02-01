@@ -1,6 +1,14 @@
 Changelog
 =========
 
+v2.3.0 (2015-12-29)
+-------------------
+
+Fix
+~~~
+
+- Fixing keystone client import using v3. [Guillermo Jimenez Prieto]
+
 v2.2.0 (2015-12-23)
 -------------------
 

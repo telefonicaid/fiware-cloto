@@ -57,7 +57,10 @@ class WSGITest(TestCase):
             [('Content-Type', 'text/html; charset=utf-8')])
         self.assertEqual(
             bytes(response),
-            b"Content-Type: text/html; charset=utf-8\r\n\r\nIt Works")
+            b'Content-Type: text/html; charset=utf-8\r\n\r\n{\n   '
+            b' "badRequest": {\n       '
+            b' "message": "Server Database does not contain information server", \n '
+            b'       "code": 500\n    }\n}')
 
 
 class GetInternalWSGIApplicationTest(unittest.TestCase):

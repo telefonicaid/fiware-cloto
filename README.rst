@@ -335,8 +335,25 @@ Top_.
 
 End-to-end tests
 ----------------
+There are two ways to check that fiware-cloto is up and running:
 
-In order to check that fiware-cloto is up and running, you can execute a GET request similar to:
+The first one doesn't implies authentication and you will get the server details:
+
+::
+
+    curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
+
+Response should be similar to:
+::
+
+    {
+        "owner": "Telefonica I+D",
+        "doc": "http://docs.policymanager.apiary.io",
+        "runningfrom": "16/02/03 16:16:27",
+        "version": "2.3.0"
+    }
+
+The second one need authentication. You can execute a GET request similar to:
 
 ::
 
@@ -354,10 +371,9 @@ the response should be similar to:
 
     {
         "owner": "Telefonica I+D",
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/
-                                                    Policy_Manager_Open_RESTful_API_Specification",
-        "runningfrom": "15/08/14 10:12:45",
-        "version": "1.7.0",
+        "doc": "http://docs.policymanager.apiary.io",
+        "runningfrom": "16/02/03 16:16:27",
+        "version": "2.3.0"
         "windowsize": 2
     }
 

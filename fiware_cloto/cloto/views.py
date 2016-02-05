@@ -24,11 +24,19 @@
 #
 from django.views.decorators.csrf import csrf_exempt
 from django.http import HttpResponse
+from fiware_cloto.cloto.manager import InfoManager
+from django.core.exceptions import ObjectDoesNotExist
+import json
 
 
 @csrf_exempt
-def test(request):
-    return HttpResponse("It Works")
+def info(request):
+    try:
+        info = InfoManager.InfoManager().get_information()
+        return HttpResponse(json.dumps(info.getVars(), indent=4))
+    except ObjectDoesNotExist:
+        return HttpResponse(json.dumps({"badRequest": {"code": 500, "message":
+                            "Server Database does not contain information server"}}, indent=4), status=500)
 
 
 def fail(request, reason="csrf fails"):

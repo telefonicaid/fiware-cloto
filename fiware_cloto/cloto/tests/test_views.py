@@ -28,7 +28,7 @@ from django.test import TestCase
 
 class MyTests(TestCase):
     def test_views(self):
-        response = self.client.get("/helloworld")
+        response = self.client.get("/info")
         self.assertEqual(response.status_code, 200)
 
     def test_views_fail(self):

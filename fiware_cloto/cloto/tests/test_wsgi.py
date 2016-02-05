@@ -41,7 +41,7 @@ class WSGITest(TestCase):
         """
         application = get_wsgi_application()
         environ = RequestFactory()._base_environ(
-            PATH_INFO="/helloworld",
+            PATH_INFO="/info",
             CONTENT_TYPE="text/html; charset=utf-8",
             REQUEST_METHOD="GET"
             )

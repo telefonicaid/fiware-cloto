@@ -51,7 +51,7 @@ class WSGITest(TestCase):
             response_data["status"] = status
             response_data["headers"] = headers
         response = application(environ, start_response)
-        self.assertEqual(response_data["status"], "200 OK")
+        self.assertEqual(response_data["status"], "500 INTERNAL SERVER ERROR")
         self.assertEqual(
             response_data["headers"],
             [('Content-Type', 'text/html; charset=utf-8')])

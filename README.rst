@@ -337,7 +337,7 @@ End-to-end tests
 ----------------
 There are two ways to check that fiware-cloto is up and running:
 
-The first one doesn't implies authentication and you will get the server details:
+The first one does not need authentication and you will get the server details:
 
 ::
 

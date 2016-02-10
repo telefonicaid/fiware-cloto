@@ -22,8 +22,8 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-VERSION = u'2.4.0'
 from setuptools import setup, find_packages
+from fiware_cloto.cloto_settings.settings import VERSION
 from pip.req import parse_requirements
 import os
 

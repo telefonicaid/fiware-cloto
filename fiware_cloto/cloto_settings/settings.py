@@ -28,7 +28,6 @@ from sys import platform as _platform
 import platform
 import fiware_cloto as fiware_cloto
 import os.path
-config = SafeConfigParser()
 
 """
 Default configuration.
@@ -42,6 +41,84 @@ Optionally, user can specify the file location manually using an Environment var
 name = 'fiware-cloto'
 
 cfg_dir = "/etc/fiware.d"
+
+cfg_defaults_openstack = {
+    'OPENSTACK_URL': 'http://cloud.lab.fi-ware.org:4731/v2.0',
+    'ADM_USER': '',
+    'ADM_PASS': '',
+    'ADM_TENANT_ID': '',
+    'ADM_TENANT_NAME': '',
+    'USER_DOMAIN_NAME': 'Default',
+    'AUTH_API': 'v2.0'
+}
+
+cfg_defaults_policy_manager = {
+    'SETTINGS_TYPE': 'production',
+    'DEFAULT_WINDOW_SIZE': 5,
+    'MAX_WINDOW_SIZE': 10,
+    'LOGGING_PATH': '/var/log/fiware-cloto'
+}
+
+cfg_defaults_context_broker = {
+    'CONTEXT_BROKER_URL': 'http://130.206.81.44:1026/NGSI10',
+    'NOTIFICATION_URL': 'http://127.0.0.1:5000/v1.0',
+    'NOTIFICATION_TYPE': 'ONTIMEINTERVAL',
+    'NOTIFICATION_TIME': 'PT5S'
+}
+
+cfg_defaults_rabbitmq = {
+    'RABBITMQ_URL': 'localhost',
+}
+
+cfg_defaults_mysql = {
+    'DB_CHARSET': 'utf8',
+    'DB_HOST': 'localhost',
+    'DB_NAME': 'cloto',
+    'DB_USER': '',
+    'DB_PASSWD': ''
+}
+
+cfg_defaults_django = {
+    'DEBUG': 'False',
+    'DATABASE_ENGINE': 'django.db.backends.mysql',
+    'ALLOWED_HOSTS': "['127.0.0.1', 'localhost']",
+    'SECRET_KEY': ''
+}
+
+cfg_defaults_logging = {
+    'level': 'INFO'
+}
+
+config = SafeConfigParser()
+
+config.add_section('openstack')
+config.add_section('policy_manager')
+config.add_section('context_broker')
+config.add_section('rabbitmq')
+config.add_section('mysql')
+config.add_section('django')
+config.add_section('logging')
+
+for key, value in cfg_defaults_openstack.items():
+    config.set('openstack', key, str(value))
+
+for key, value in cfg_defaults_policy_manager.items():
+    config.set('policy_manager', key, str(value))
+
+for key, value in cfg_defaults_context_broker.items():
+    config.set('context_broker', key, str(value))
+
+for key, value in cfg_defaults_rabbitmq.items():
+    config.set('rabbitmq', key, str(value))
+
+for key, value in cfg_defaults_mysql.items():
+    config.set('mysql', key, str(value))
+
+for key, value in cfg_defaults_django.items():
+    config.set('django', key, str(value))
+
+for key, value in cfg_defaults_logging.items():
+    config.set('logging', key, str(value))
 
 if os.environ.get("CLOTO_SETTINGS_FILE"):
     cfg_filename = os.environ.get("CLOTO_SETTINGS_FILE")

@@ -30,7 +30,8 @@ class information():
 
     def __init__(self, owner=None, windowsize=None, version=None, runningfrom=None, doc=None):
         self.owner = owner
-        self.windowsize = windowsize
+        if windowsize:
+            self.windowsize = windowsize
         self.version = version
         if runningfrom != None:
             self.runningfrom = runningfrom.strftime("%y/%m/%d %H:%M:%S")

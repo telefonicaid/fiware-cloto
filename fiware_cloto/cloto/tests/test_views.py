@@ -27,9 +27,12 @@ from django.test import TestCase
 
 
 class MyTests(TestCase):
-    def test_views(self):
-        response = self.client.get("/helloworld")
-        self.assertEqual(response.status_code, 200)
+    def test_views_fail_without_server_info(self):
+        """ This test should return a 500 error if there is no information about server created in the
+        data base
+        """
+        response = self.client.get("/info")
+        self.assertEqual(response.status_code, 500)
 
     def test_views_fail(self):
         response = self.client.post("/fail", data={})

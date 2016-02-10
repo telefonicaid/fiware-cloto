@@ -26,10 +26,10 @@ from django.conf.urls import patterns, url
 
 from restCloto import ServerRulesView, GeneralView, \
     ServersGeneralView, ServerView, GeneralRulesView, GeneralRulesViewRule, ServerSubscriptionView, ServerRuleView
-from fiware_cloto.cloto.views import test, fail
+from fiware_cloto.cloto.views import info, fail
 
 urlpatterns = patterns('',
-    url(r'^helloworld$', test),
+    url(r'^info', info),
     url(r'^fail$', fail),
     url(r'^v1.0/(?P<tenantId>[-\w]+)/$', GeneralView()),
 

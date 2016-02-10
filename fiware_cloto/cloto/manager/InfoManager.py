@@ -48,17 +48,21 @@ class InfoManager():
         """Returns model of Information about a tenant."""
         return TenantInfo
 
-    def get_information(self, tenantId):
+    def get_information(self, tenantId=None):
         """Returns information about the server and tenant's windowsize."""
         serverInfo = self.get_server_information()
-        tenantInfo = self.get_tenant_information()
         s_query = serverInfo.objects.get(id__exact='1')
-        t_query = tenantInfo.objects.get(tenantId__exact=tenantId)
         owner = s_query.__getattribute__("owner")
-        windowsize = t_query.__getattribute__("windowsize")
         version = s_query.__getattribute__("version")
         runningfrom = s_query.__getattribute__("runningfrom")
         doc = s_query.__getattribute__("doc")
+        if tenantId:
+            tenantInfo = self.get_tenant_information()
+            t_query = tenantInfo.objects.get(tenantId__exact=tenantId)
+            windowsize = t_query.__getattribute__("windowsize")
+        else:
+            windowsize = None
+
         return information.information(owner, windowsize, version, runningfrom, doc)
 
     def updateWindowSize(self, tenantId, newSize):

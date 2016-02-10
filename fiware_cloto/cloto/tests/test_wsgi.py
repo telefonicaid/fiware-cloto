@@ -41,7 +41,7 @@ class WSGITest(TestCase):
         """
         application = get_wsgi_application()
         environ = RequestFactory()._base_environ(
-            PATH_INFO="/helloworld",
+            PATH_INFO="/info",
             CONTENT_TYPE="text/html; charset=utf-8",
             REQUEST_METHOD="GET"
             )
@@ -51,13 +51,16 @@ class WSGITest(TestCase):
             response_data["status"] = status
             response_data["headers"] = headers
         response = application(environ, start_response)
-        self.assertEqual(response_data["status"], "200 OK")
+        self.assertEqual(response_data["status"], "500 INTERNAL SERVER ERROR")
         self.assertEqual(
             response_data["headers"],
             [('Content-Type', 'text/html; charset=utf-8')])
         self.assertEqual(
             bytes(response),
-            b"Content-Type: text/html; charset=utf-8\r\n\r\nIt Works")
+            b'Content-Type: text/html; charset=utf-8\r\n\r\n{\n   '
+            b' "badRequest": {\n       '
+            b' "message": "Server Database does not contain information server", \n '
+            b'       "code": 500\n    }\n}')
 
 
 class GetInternalWSGIApplicationTest(unittest.TestCase):

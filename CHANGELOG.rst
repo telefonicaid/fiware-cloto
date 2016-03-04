@@ -1,6 +1,27 @@
 Changelog
 =========
 
+v2.4.0 (2016-02-10)
+-------------------
+
+New
+~~~
+
+- New resource to show server information without authentication.
+  [Guillermo Jimenez Prieto]
+
+Changes
+~~~~~~~
+
+- Adding version constant to setup.py instead of an imported Version to
+  prevent failures during pip installation. [Guillermo Jimenez Prieto]
+
+Fix
+~~~
+
+- Adding default values to configuration if configuration file does not
+  exists or is not provided. [Guillermo Jimenez Prieto]
+
 v2.3.0 (2015-12-29)
 -------------------
 

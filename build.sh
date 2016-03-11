@@ -56,7 +56,8 @@ export PYTHONPATH=$(pwd)/fiware_cloto/:$PYTHONPATH
 echo $PYTHONPATH
 echo $DJANGO_SETTINGS_MODULE
 export SETTINGS_TYPE=test
-echo "no" | python fiware_cloto/manage.py syncdb
+python fiware_cloto/manage.py makemigrations cloto
+python fiware_cloto/manage.py migrate
 python fiware_cloto/manage.py test
 
 if [ ! $1 = "travis_build" ];

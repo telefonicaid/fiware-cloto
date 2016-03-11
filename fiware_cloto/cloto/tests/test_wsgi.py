@@ -28,7 +28,7 @@ from django.core.wsgi import get_wsgi_application
 from django.test import TestCase
 from django.test.client import RequestFactory
 from django.test.utils import override_settings
-from django.utils import six, unittest
+from django.utils import six
 
 
 class WSGITest(TestCase):
@@ -51,7 +51,7 @@ class WSGITest(TestCase):
             response_data["status"] = status
             response_data["headers"] = headers
         response = application(environ, start_response)
-        self.assertEqual(response_data["status"], "500 INTERNAL SERVER ERROR")
+        self.assertEqual(response_data["status"], "500 Internal Server Error")
         self.assertEqual(
             response_data["headers"],
             [('Content-Type', 'text/html; charset=utf-8')])
@@ -63,7 +63,7 @@ class WSGITest(TestCase):
             b'       "code": 500\n    }\n}')
 
 
-class GetInternalWSGIApplicationTest(unittest.TestCase):
+class GetInternalWSGIApplicationTest(TestCase):
 
     @override_settings(WSGI_APPLICATION="fiware_cloto.cloto.wsgi.application")
     def test_success(self):
@@ -100,14 +100,14 @@ class GetInternalWSGIApplicationTest(unittest.TestCase):
     def test_bad_module(self):
         with six.assertRaisesRegex(self,
             ImproperlyConfigured,
-            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist.app' could not be loaded;"
-            r" could not import module 'fiware_cloto.cloto.wsgi.noexist': No module named noexist"):
+            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist.app' could not be loaded; Error importing module: "
+            r"'No module named noexist'"):
             get_internal_wsgi_application()
 
     @override_settings(WSGI_APPLICATION="fiware_cloto.cloto.wsgi.noexist")
     def test_bad_name(self):
         with six.assertRaisesRegex(self,
             ImproperlyConfigured,
-            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist' could not be loaded; can't find 'noexist' in "
-            r"module 'fiware_cloto.cloto.wsgi': 'module' object has no attribute 'noexist'"):
+            r"WSGI application 'fiware_cloto.cloto.wsgi.noexist' could not be loaded; Error importing module:"
+            r" 'Module \"fiware_cloto.cloto.wsgi\" does not define a \"noexist\" attribute/class'"):
             get_internal_wsgi_application()

@@ -56,14 +56,9 @@ application = get_wsgi_application()
 import datetime
 
 from django.utils import timezone
-
-
 from fiware_cloto.cloto.models import ServerInfo
 from django.conf import settings
 from fiware_cloto.cloto.utils.log import logger
-
-# Synchronizing database
-call_command('syncdb', interactive=False)
 
 runningfrom = datetime.datetime.now(tz=timezone.get_default_timezone())
 # Creating initial data
@@ -73,7 +68,6 @@ try:
     s.save()
 except Exception as ex:
     logger.error("Error saving initial server data into DB while server was starting: %s", ex)
-
 
 # Starting environments Controller
 controller = environment_controller.environment_controller()

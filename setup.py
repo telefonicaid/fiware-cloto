@@ -26,8 +26,25 @@ from setuptools import setup, find_packages
 from fiware_cloto.cloto_settings.settings import VERSION
 from pip.req import parse_requirements
 import os
+from distutils.command.install import install as _install
 
-os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fiware_cloto.cloto_settings.settings_tests")
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "fiware_cloto.cloto_settings.settings")
+
+
+def _post_install(dir):
+    import django
+    django.setup()
+    from django.core.management import call_command
+
+    call_command('makemigrations', 'cloto', verbosity=3, interactive=False)
+    call_command('migrate', verbosity=3, interactive=False)
+
+
+class install(_install):
+    def run(self):
+        _install.run(self)
+        self.execute(_post_install, (self.install_lib,),
+                     msg="Running post install task")
 
 # parse_requirements() returns generator of pip.req.InstallRequirement objects
 install_reqs = parse_requirements("requirements.txt", session=False)
@@ -53,4 +70,5 @@ setup(
   keywords=['fiware', 'policy', 'manager', 'cloud'],
   classifiers=[
         "License :: OSI Approved :: Apache Software License", ],
+  cmdclass={'install': install},
 )

@@ -5,3 +5,4 @@ omit =
     fiware_cloto/cloto_settings/settings.py
     fiware_cloto/cloto_settings/settings_tests.py
     fiware_cloto/cloto_settings/jenkins.py
+    fiware_cloto/cloto/migrations/*

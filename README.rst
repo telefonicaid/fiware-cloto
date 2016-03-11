@@ -98,8 +98,8 @@ This module also needs the installation of these other components:
 Top_.
 
 
-Installation
-------------
+Pre-Installation
+----------------
 
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
 Ensure your mysql path is in your path. If not, you can add executing (change ``/usr/local/`` with your mysql folder):
@@ -118,13 +118,8 @@ Examples:
     centos$ sudo yum install mysql-devel
     ubuntu$ sudo apt-get install mysql-devel
 
-After all you must install fiware-cloto from pypi repository executing:
+At this you must configure cloto configuration and ensure your database is created with mysql.
 
-.. code::
-
-    $ sudo pip install fiware-cloto
-
-After finishing you must configure cloto configuration and ensure your database is created with mysql.
 
 Top_.
 
@@ -192,6 +187,16 @@ Options that user could define:
     level: INFO
 
 Top_.
+
+
+Installation
+------------
+
+After all you must install fiware-cloto from pypi repository executing:
+
+.. code::
+
+    $ sudo pip install fiware-cloto
 
 
 Running

@@ -4,7 +4,7 @@ FIWARE Policy Manager GE: Cloto
 ===============================
 
 
-| |Build Status| |Coverage Status| |Pypi Version| |Pypi License| |StackOverflow|
+|Build Status| |Coverage Status| |Pypi Version| |StackOverflow| |License Badge| |Documentation Badge|
 
 .. contents:: :local:
 
@@ -454,12 +454,14 @@ License
 .. |Pypi Version| image:: https://badge.fury.io/py/fiware-cloto.svg
    :target: https://pypi.python.org/pypi/fiware-cloto/
    :alt: Version
-.. |Pypi License| image:: https://img.shields.io/pypi/l/fiware-cloto.svg
-   :target: https://pypi.python.org/pypi/fiware-cloto/
-   :alt: License
-.. |StackOverflow| image:: http://b.repl.ca/v1/help-stackoverflow-orange.png
+.. |StackOverflow| image:: https://img.shields.io/badge/support-sof-yellowgreen.svg
    :target: https://stackoverflow.com/questions/tagged/fiware-bosun
    :alt: Help, ask questions
+.. |License Badge| image:: https://img.shields.io/badge/license-AGPL-blue.svg
+   :target: https://opensource.org/licenses/AGPL-3.0
+.. |Documentation Badge| image:: https://readthedocs.org/projects/fiware-cloto/badge/?version=latest
+   :target: http://fiware-cloto.readthedocs.org/en/latest/?badge=latest
+   :alt: License
 
 .. REFERENCES
 

@@ -102,7 +102,8 @@ Pre-Installation
 ----------------
 
 Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
-Ensure your mysql path is in your path. If not, you can add executing (change ``/usr/local/`` with your mysql folder):
+MYSQL installation directory should be added to PATH environment variable. You can add
+it executing (change ``/usr/local/`` with your mysql folder):
 
 .. code::
 

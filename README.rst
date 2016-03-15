@@ -4,7 +4,7 @@ FIWARE Policy Manager GE: Cloto
 ===============================
 
 
-|Build Status| |Coverage Status| |Pypi Version| |StackOverflow| |License Badge| |Documentation Badge|
+|License Badge| |Documentation Badge| |StackOverflow| |Build Status| |Coverage Status| |Pypi Version|
 
 .. contents:: :local:
 

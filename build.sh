@@ -58,8 +58,8 @@ echo $DJANGO_SETTINGS_MODULE
 export SETTINGS_TYPE=test
 python fiware_cloto/manage.py makemigrations cloto
 python fiware_cloto/manage.py migrate
-python fiware_cloto/manage.py test
-#coverage run --source=fiware_cloto.cloto,fiware_cloto.orion_wrapper,fiware_cloto.environments fiware_cloto/manage.py test
+#python fiware_cloto/manage.py test
+coverage run --source=fiware_cloto.cloto,fiware_cloto.orion_wrapper,fiware_cloto.environments fiware_cloto/manage.py test
 coverage report -m
 
 

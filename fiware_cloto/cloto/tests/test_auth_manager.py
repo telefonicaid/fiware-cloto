@@ -22,7 +22,6 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-from fiware_cloto.cloto.manager import AuthorizationManager
 
 __author__ = 'gjp'
 from django.test import TestCase
@@ -37,6 +36,7 @@ from fiware_cloto.cloto.manager import AuthorizationManager
 from fiware_cloto.cloto.constants import ACCEPT_HEADER, JSON_TYPE, X_AUTH_TOKEN_HEADER, TOKENS_PATH_V2,\
      TOKENS_PATH_V3, X_SUBJECT_TOKEN_HEADER, AUTH_API_V2, AUTH_API_V3, HTTP_RESPONSE_CODE_OK,\
     HTTP_RESPONSE_CODE_UNAUTHORIZED
+from django.utils import timezone
 
 
 class MySession(MagicMock):
@@ -45,8 +45,7 @@ class MySession(MagicMock):
     def Session(self, auth, timeout):
         # Mock of the Keystone session generator
         session_mocked = mock()
-
-        if auth.auth_url != "http://130.206.80.61:35357/v2.0":
+        if auth.auth_url != "http://130.206.80.61:35357/v2.0" and auth.auth_url != "http://130.206.80.61:35357/v3":
             raise ConnectionRefused("Unable to establish connection to %s", auth.auth_url)
         if auth.password == "realpassword" or auth.password == None:
             authToken = "77d254b3caba4fb29747958138136ffa"
@@ -61,24 +60,27 @@ class MySession(MagicMock):
 
 class AuthorizationManagerTests(TestCase):
     def setUp(self):
+        self.user = "user"
         self.token = "ff01eb8a8d69418c95f0009dda9bc1852"
+        self.token_not_expired = "aa01eb8a8d69418c95f0009dda9bc0000"
         self.token_other_tenant = "gg01eb8a8d69418c95f0009dda9bc1852"
         self.token_not_found = "0001eb8a8d69418c95f0009dda9bc1852"
         self.token_not_authorized = "bbbbbbba8d69418c95f0009dda9bc1852"
         self.fakeToken = "fffffffffffffffffffffffffffffffff"
         self.authToken = "77d254b3caba4fb29747958138136ffa"
         self.url = "http://130.206.80.61:35357/v2.0"
+        self.url_v3 = "http://130.206.80.61:35357/v3"
         self.url_noResponse = "http://127.0.0.1:35357/v2.0"
         self.url_server_error = "http://serverWithErrors.com:35357/v2.0"
         self.tenantId = "6571e3422ad84f7d828ce2f30373b3d4"
-        self.a = AuthorizationManager.AuthorizationManager()
+        self.a = AuthorizationManager.AuthorizationManager(self.url, AUTH_API_V2)
         self.mockedClient = client
         self.auth = mock()
         self.tokenM = mock()
         self.session_mocked = mock()
         self.session_client = MySession()
         manager = mock()
-        requestsMock = mock()
+        self.requestsMock = mock()
         response = Response()
         response.status_code = HTTP_RESPONSE_CODE_OK
         response._content = '{"access":{"token":{"expires":"2015-07-09T15:16:07Z",' \
@@ -92,13 +94,29 @@ class AuthorizationManagerTests(TestCase):
             '"user":{"username":"user","roles_links":[],"id":"user",' \
             '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
 
+        response_not_expired = Response()
+        response_not_expired.status_code = HTTP_RESPONSE_CODE_OK
+        response_not_expired._content = '{"access":{"token":{"expires":"2115-07-09T15:16:07Z",' \
+            '"id":{"token":"aa01eb8a8d69418c95f0009dda9bc0000",' \
+            '"tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
+            '"access_token":' \
+            '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
+            '"expires":"2114-09-13T07:23:51.000Z"}' \
+            ',"tenant":{"description":"Tenant from IDM","enabled":true,' \
+            '"id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
+            '"user":{"username":"user","roles_links":[],"id":"user",' \
+            '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+
         response_v3 = Response()
         response_v3.status_code = HTTP_RESPONSE_CODE_OK
         response_v3._content = '{"token": {"methods": ["password"], "roles": ' \
                                '[{"id": "ff01eb8a8d69418c95f0009dda9bc1852",' \
                                ' "name": "owner"}], "expires_at": "2015-05-26T13:01:49.632762Z", ' \
                                '"project": {"domain": {"id": "default", "name": "Default"},' \
-                               ' "id": "6571e3422ad84f7d828ce2f30373b3d4", "name": "user@mail.com"}}}'
+                               ' "id": "6571e3422ad84f7d828ce2f30373b3d4", "name": "user@mail.com"},' \
+                               '"user": {"domain": {"id": "default","name": "Default"},"id": "geonexus", ' \
+                               '"name": "geonexus@gmail.com"},' \
+                               '"audit_ids": ["XREoG4obSW69erG3fVjvjQ"], "issued_at": "2016-03-08T10:06:04.653858Z" }}'
 
         response_v3_fail = Response()
         response_v3_fail.status_code = HTTP_RESPONSE_CODE_UNAUTHORIZED
@@ -107,20 +125,22 @@ class AuthorizationManagerTests(TestCase):
 
         response2 = Response()
         response2.status_code = HTTP_RESPONSE_CODE_OK
-        response2._content = '{"access":{"token":{"expires":"2015-07-09T15:16:07Z",' \
+        response2._content = '{"access":{"token":{"expires":"2115-07-09T15:16:07Z",' \
             '"id":{"token":"gg01eb8a8d69418c95f0009dda9bc1852",' \
             '"tenant":"1111e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
             '"access_token":' \
             '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
-            '"expires":"2014-09-13T07:23:51.000Z"}' \
+            '"expires":"2114-09-13T07:23:51.000Z"}' \
             ',"tenant":{"description":"Different Tenant from IDM","enabled":true,' \
             '"id":"1111e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
             '"user":{"username":"user","roles_links":[],"id":"user",' \
             '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
 
         response_not_found = Response()
-        response_not_found.status_code = HTTP_RESPONSE_CODE_OK
+        response_not_found.status_code = HTTP_RESPONSE_CODE_UNAUTHORIZED
         response_not_found._content = 'User token not found'
+        response_not_found._content = '{"unauthorized": {"message": {"error": {"message": "Could not find token: '\
+                                      + self.token_not_found + '", "code": 404, "title": "Not Found"}}, "code": 401}}'
 
         response_not_authorized = Response()
         response_not_authorized.status_code = HTTP_RESPONSE_CODE_OK
@@ -140,6 +160,8 @@ class AuthorizationManagerTests(TestCase):
             .thenReturn(verification_expected_fail)
         when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url)\
             .thenReturn(self.auth)
+        when(self.mockedClient).Client(username="admin", password="realpassword", auth_url=self.url_v3)\
+            .thenReturn(self.auth)
         when(self.mockedClient).Client(token=self.authToken, endpoint=self.url).thenReturn(self.auth)
         when(self.mockedClient)\
             .Client(token=self.authToken, endpoint=self.url_noResponse).thenRaise(InternalServerError())
@@ -156,124 +178,189 @@ class AuthorizationManagerTests(TestCase):
         headers_v3_fake = {ACCEPT_HEADER: JSON_TYPE, X_AUTH_TOKEN_HEADER: self.fakeToken,
                            X_SUBJECT_TOKEN_HEADER: self.token}
 
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token, headers=headers)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token, headers=headers)\
             .thenReturn(response)
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V3, headers=headers_v3)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_not_expired, headers=headers)\
+            .thenReturn(response_not_expired)
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V3, headers=headers_v3)\
             .thenReturn(response_v3)
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V3, headers=headers_v3_fake)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V3, headers=headers_v3_fake)\
             .thenReturn(response_v3_fail)
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_other_tenant, headers=headers)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_other_tenant, headers=headers)\
             .thenReturn(response2)
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_not_found, headers=headers)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_not_found, headers=headers)\
             .thenReturn(response_not_found)
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_not_authorized, headers=headers)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.token_not_authorized, headers=headers)\
             .thenReturn(response_not_authorized)
-        when(requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.fakeToken, headers=headers)\
+        when(self.requestsMock).get(self.url + "/" + TOKENS_PATH_V2 + self.fakeToken, headers=headers)\
             .thenRaise(Unauthorized())
-        when(requestsMock).get(self.url_noResponse + "/" + TOKENS_PATH_V2 + self.fakeToken, headers=headers)\
+        when(self.requestsMock).get(self.url_noResponse + "/" + TOKENS_PATH_V2 + self.fakeToken, headers=headers)\
             .thenRaise(InternalServerError())
-        when(requestsMock).get(self.url_server_error + "/" + TOKENS_PATH_V2 + self.token, headers=headers)\
+        when(self.requestsMock).get(self.url_server_error + "/" + TOKENS_PATH_V2 + self.token, headers=headers)\
             .thenRaise(Exception())
-        self.a.client = requestsMock
+        self.a.client = self.requestsMock
         self.a.myClient = self.mockedClient
         self.a.session = self.session_client
 
     def test_generate_adminToken(self):
 
-        result = self.a.get_auth_token("admin", "realpassword", "tenantId", AUTH_API_V2,
-                                         self.url, tenant_name="tenantName")
+        result = self.a.get_auth_token("admin", "realpassword", "tenantId",
+                                         tenant_name="tenantName")
 
         self.assertEqual(result, self.authToken)
 
     def test_generate_adminToken_exception(self):
         try:
-            self.a.get_auth_token("admin", "fake", "tenantId", AUTH_API_V2, self.url, tenant_name="tenantName")
+            self.a.get_auth_token("admin", "fake", "tenantId", tenant_name="tenantName")
         except AuthorizationFailure as ex:
             self.assertRaises(ex)
 
     def test_generate_adminToken_exception_2(self):
         try:
-            self.a.get_auth_token("admin", "realpassword", "tenantId", AUTH_API_V2,
-                                    self.url_server_error, tenant_name="tenantName")
+            self.a.identity_url = self.url_server_error
+            self.a.get_auth_token("admin", "realpassword", "tenantId",
+                                    tenant_name="tenantName")
         except ConnectionRefused as ex:
             self.assertRaises(ex)
 
     def test_check_token(self):
-        result = self.a.checkToken(self.authToken, self.token, self.tenantId, self.url, AUTH_API_V2)
-        self.assertEqual(result, None)
+        result = self.a.checkToken(self.authToken, self.token, self.tenantId)
+        self.assertEqual(result, self.token)
+
+    def test_check_already_exists(self):
+        createdAt = timezone.now()
+        # Token.objects.create(id=self.token, expires=createdAt + timezone.timedelta(hours=24) , username=self.user,
+        #                            tenant=self.tenantId, createdAt=createdAt)
+        result1 = self.a.checkToken(self.authToken, self.token, self.tenantId)
+
+        result2 = self.a.checkToken(self.authToken, self.token, self.tenantId)
+        self.assertEqual(result1, self.token)
+        self.assertEqual(result2, self.token)
+
+    def test_check_already_exists_and_not_expired(self):
+        result1 = self.a.checkToken(self.authToken, self.token_not_expired, self.tenantId)
+        result2 = self.a.checkToken(self.authToken, self.token_not_expired, self.tenantId)
+        self.assertEqual(result1, self.token_not_expired)
+        self.assertEqual(result2, self.token_not_expired)
 
     def test_check_token_exception_1(self):
         try:
-            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url, AUTH_API_V2)
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
         except Unauthorized as ex:
             self.assertRaises(ex)
 
     def test_check_token_exception_2(self):
         try:
-            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url_noResponse,
-                                       AUTH_API_V2)
+            self.a.identity_url = self.url_noResponse
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
         except AuthorizationFailure as ex:
             self.assertRaises(ex)
 
     def test_check_token_exception_3(self):
         try:
-            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url_server_error,
-                                       AUTH_API_V2)
+            self.a.identity_url = self.url_server_error
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
         except Exception as ex:
             self.assertRaises(ex)
 
     def test_check_token_exception_4(self):
         try:
-            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId, self.url, AUTH_API_V2)
+            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
         except Exception as ex:
             self.assertRaises(ex)
 
     def test_check_empty_token(self):
         try:
-            result = self.a.checkToken(self.authToken, "", self.tenantId, self.url, AUTH_API_V2)
+            result = self.a.checkToken(self.authToken, "", self.tenantId)
         except Exception as ex:
             self.assertRaises(ex)
 
     def test_check_token_other_tenant(self):
         try:
-            result = self.a.checkToken(self.authToken, self.token_other_tenant, self.tenantId, self.url,
-                                       AUTH_API_V2)
+            result = self.a.checkToken(self.authToken, self.token_other_tenant, self.tenantId)
         except Unauthorized as ex:
             self.assertRaises(ex)
 
     def test_check_token_not_found(self):
         try:
-            result = self.a.checkToken(self.authToken, self.token_not_found, self.tenantId, self.url, AUTH_API_V2)
+            self.a.auth_token = self.authToken
+            result = self.a.checkToken(self.authToken, self.token_not_found, self.tenantId)
+        except AuthorizationFailure as ex:
+            self.assertRaises(ex)
+
+    def test_check_token_not_found_and_cached(self):
+        try:
+            self.a.auth_token = self.authToken
+            token_db = self.a.user_tokens.setdefault(self.token_not_found, {'id': self.token_not_found,
+                                                        'expires': timezone.now().__str__(),
+                                                         'username': self.user,
+                                                         'tenant': self.tenantId,
+                                                         'createdAt': timezone.now()})
+            self.a.user_tokens[self.token_not_found] = token_db
+            self.assertIsNotNone(self.a.get_token_from_memory(self.token_not_found))
+            result = self.a.checkToken(self.authToken, self.token_not_found, self.tenantId)
         except AuthorizationFailure as ex:
             self.assertRaises(ex)
 
     def test_check_token_not_authorized(self):
         try:
-            result = self.a.checkToken(self.authToken, self.token_not_authorized, self.tenantId, self.url,
-                                       AUTH_API_V2)
+            self.a.auth_token = self.authToken
+            result = self.a.checkToken(self.authToken, self.token_not_authorized, self.tenantId)
         except AuthorizationFailure as ex:
             self.assertRaises(ex)
 
     def test_generate_adminToken_v3(self):
-
-        result = self.a.get_auth_token("admin", "realpassword", "tenantId",
-                                         AUTH_API_V3, self.url,  user_domain_name="Default")
-
+        auth_manager_v3 = AuthorizationManager.AuthorizationManager(self.url_v3, AUTH_API_V3)
+        auth_manager_v3.auth_token = None
+        auth_manager_v3.client = self.requestsMock
+        auth_manager_v3.myClient = self.mockedClient
+        auth_manager_v3.session = self.session_client
+        result = auth_manager_v3.get_auth_token("admin", "realpassword", "tenantId",
+                                         user_domain_name="Default")
         self.assertEqual(result, self.authToken)
+        self.assertEqual(auth_manager_v3.auth_token, self.authToken)
 
     def test_generate_adminToken_v_unsupported(self):
+        auth_manager = AuthorizationManager.AuthorizationManager(self.url_v3, AUTH_API_V3)
+        auth_manager.auth_token = None
+        auth_manager.api_version = "v1"
         try:
-            result = self.a.get_auth_token("admin", "realpassword", "tenantId",
-                                             "v4.0", self.url,  user_domain_name="Default")
+            result = auth_manager.get_auth_token("admin", "realpassword", "tenantId",
+                                                 user_domain_name="Default")
         except ImportError as ex:
             self.assertRaises(ex)
 
-    def test_check_token_v3(self):
-        result = self.a.checkToken(self.authToken, self.token, self.tenantId, self.url, AUTH_API_V3)
-        self.assertEqual(result, None)
-
     def test_check_token_v3_fail(self):
         try:
-            self.a.checkToken(self.fakeToken, self.token, self.tenantId, self.url, AUTH_API_V3)
+            self.a.auth_token = self.fakeToken
+            self.a.api_version = AUTH_API_V3
+            self.a.checkToken(self.fakeToken, self.token, self.tenantId)
         except AuthorizationFailure as ex:
+            self.assertRaises(ex)
+            self.assertIsNone(self.a.auth_token)
+
+    def test_init_auth_Manager_with_v3(self):
+        auth_manager = AuthorizationManager.AuthorizationManager(self.url, AUTH_API_V3)
+        self.assertEqual(auth_manager.api_version, AUTH_API_V3)
+
+    def test_check_token_v3(self):
+        self.a.api_version = AUTH_API_V3
+        self.a.user_tokens.clear()
+        result = self.a.checkToken(self.authToken, self.token, self.tenantId)
+        self.assertEqual(result, self.token)
+
+    def test_check_token_v3_two_times(self):
+        self.a.api_version = AUTH_API_V3
+        self.a.user_tokens.clear()
+
+        result1 = self.a.checkToken(self.authToken, self.token, self.tenantId)
+        result2 = self.a.checkToken(self.authToken, self.token, self.tenantId)
+
+        self.assertEqual(result1, self.token)
+        self.assertEqual(result2, self.token)
+
+    def test_init_auth_Manager_with_v_unsupported(self):
+        try:
+            auth_manager = AuthorizationManager.AuthorizationManager(self.url, "v1")
+        except ValueError as ex:
             self.assertRaises(ex)

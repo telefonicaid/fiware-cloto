@@ -33,8 +33,8 @@ from fiware_cloto.cloto.constants import HTTP_RESPONSE_CODE_UNAUTHORIZED, AUTH_A
 from fiware_cloto.cloto.manager import RuleManager, AuthorizationManager, InfoManager
 from fiware_cloto.cloto.models import TenantInfo
 from fiware_cloto.cloto.utils.log import logger
-from keystoneclient.exceptions import Conflict
-from keystoneclient import session
+from keystoneclient.exceptions import Conflict, AuthorizationFailure
+
 import datetime
 from json import JSONEncoder
 from django.conf import settings
@@ -47,27 +47,37 @@ class RESTResource(object):
     # Possible methods; subclasses could override this.
     methods = ['GET', 'POST', 'PUT', 'DELETE']
     info = None
+    a = AuthorizationManager.AuthorizationManager(settings.OPENSTACK_URL, settings.AUTH_API)
 
     def __call__(self, request, *args, **kwargs):
         """Starting point of the API Agent. All REST requests should enter through this method.
         """
         callback = getattr(self, request.method, None)
         if callback:
+
             try:
-                a = AuthorizationManager.AuthorizationManager()
-                if settings.AUTH_API == AUTH_API_V2:
-                    from keystoneclient.v2_0 import client as keystone_client
-                elif settings.AUTH_API == AUTH_API_V3:
-                    from keystoneclient.v3 import client as keystone_client
-                a.session = session
-                a.myClient = keystone_client
-                adm_token = a.get_auth_token(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
-                                                  settings.AUTH_API, settings.OPENSTACK_URL,
+                if self.a.auth_token is None:
+                    self.a.get_auth_token(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
+                                                  settings.OPENSTACK_URL,
                                                   tenant_name=settings.ADM_TENANT_NAME,
                                              user_domain_name=settings.USER_DOMAIN_NAME)
-                a.checkToken(adm_token, request.META['HTTP_X_AUTH_TOKEN'],
+                self.a.checkToken(self.a.auth_token, request.META['HTTP_X_AUTH_TOKEN'],
                              kwargs.get("tenantId"), settings.OPENSTACK_URL, settings.AUTH_API)
                 return callback(request, *args, **kwargs)
+            except AuthorizationFailure as excep:
+                if self.a.auth_token == None:
+                    self.a.get_auth_token(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
+                                                  settings.OPENSTACK_URL,
+                                                  tenant_name=settings.ADM_TENANT_NAME,
+                                             user_domain_name=settings.USER_DOMAIN_NAME)
+                    self.a.checkToken(self.a.auth_token, request.META['HTTP_X_AUTH_TOKEN'],
+                             kwargs.get("tenantId"), settings.OPENSTACK_URL, settings.AUTH_API)
+                    return callback(request, *args, **kwargs)
+                else:
+                    return HttpResponse(json.dumps(
+                        {"unauthorized": {"code": HTTP_RESPONSE_CODE_UNAUTHORIZED, "message": str(excep)}}, indent=4),
+                        status=HTTP_RESPONSE_CODE_UNAUTHORIZED)
+
             except Exception as excep:
                 return HttpResponse(json.dumps(
                     {"unauthorized": {"code": HTTP_RESPONSE_CODE_UNAUTHORIZED, "message": str(excep)}}, indent=4),

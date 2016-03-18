@@ -58,11 +58,10 @@ class RESTResource(object):
             try:
                 if self.a.auth_token is None:
                     self.a.get_auth_token(settings.ADM_USER, settings.ADM_PASS, settings.ADM_TENANT_ID,
-                                                  settings.OPENSTACK_URL,
                                                   tenant_name=settings.ADM_TENANT_NAME,
                                              user_domain_name=settings.USER_DOMAIN_NAME)
                 self.a.checkToken(self.a.auth_token, request.META['HTTP_X_AUTH_TOKEN'],
-                             kwargs.get("tenantId"), settings.OPENSTACK_URL, settings.AUTH_API)
+                             kwargs.get("tenantId"))
                 return callback(request, *args, **kwargs)
             except AuthorizationFailure as excep:
                 if self.a.auth_token == None:
@@ -71,7 +70,7 @@ class RESTResource(object):
                                                   tenant_name=settings.ADM_TENANT_NAME,
                                              user_domain_name=settings.USER_DOMAIN_NAME)
                     self.a.checkToken(self.a.auth_token, request.META['HTTP_X_AUTH_TOKEN'],
-                             kwargs.get("tenantId"), settings.OPENSTACK_URL, settings.AUTH_API)
+                             kwargs.get("tenantId"))
                     return callback(request, *args, **kwargs)
                 else:
                     return HttpResponse(json.dumps(

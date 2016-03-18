@@ -203,6 +203,8 @@ class AuthorizationManagerTests(TestCase):
         self.a.session = self.session_client
 
     def test_generate_adminToken(self):
+        """ Test if I get a valid authorization token providing valid user and password.
+        """
 
         result = self.a.get_auth_token("admin", "realpassword", "tenantId",
                                          tenant_name="tenantName")
@@ -210,12 +212,18 @@ class AuthorizationManagerTests(TestCase):
         self.assertEqual(result, self.authToken)
 
     def test_generate_adminToken_exception(self):
+        """ Test if I get an AuthorizationFailure exception while asking for an authorization token
+        providing a valid user with fake password.
+        """
         try:
             self.a.get_auth_token("admin", "fake", "tenantId", tenant_name="tenantName")
         except AuthorizationFailure as ex:
             self.assertRaises(ex)
 
     def test_generate_adminToken_exception_2(self):
+        """ Test if I get a ConnectionRefused exception while asking for an authorization token
+        providing valid user and password.
+        """
         try:
             self.a.identity_url = self.url_server_error
             self.a.get_auth_token("admin", "realpassword", "tenantId",
@@ -224,32 +232,41 @@ class AuthorizationManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_check_token(self):
+        """ Test if I do not get any Exception while checking if a real user token is valid.
+        """
         result = self.a.checkToken(self.authToken, self.token, self.tenantId)
         self.assertEqual(result, self.token)
 
     def test_check_already_exists(self):
-        createdAt = timezone.now()
-        # Token.objects.create(id=self.token, expires=createdAt + timezone.timedelta(hours=24) , username=self.user,
-        #                            tenant=self.tenantId, createdAt=createdAt)
+        """ Test if I do not get any Exception while checking if a real user token is valid for two times.
+        This test checks the token stored in memory during the second time. This time the token is expired.
+        """
         result1 = self.a.checkToken(self.authToken, self.token, self.tenantId)
-
         result2 = self.a.checkToken(self.authToken, self.token, self.tenantId)
         self.assertEqual(result1, self.token)
         self.assertEqual(result2, self.token)
 
     def test_check_already_exists_and_not_expired(self):
+        """ Test if I do not get any Exception while checking if a real user token is valid for two times.
+        This test checks the token stored in memory during the second time. This time the token is not expired.
+        """
         result1 = self.a.checkToken(self.authToken, self.token_not_expired, self.tenantId)
         result2 = self.a.checkToken(self.authToken, self.token_not_expired, self.tenantId)
         self.assertEqual(result1, self.token_not_expired)
         self.assertEqual(result2, self.token_not_expired)
 
     def test_check_token_exception_1(self):
+        """ Test if I get an Unauthorized exception while checking if a fake user token is valid.
+        """
         try:
             result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
         except Unauthorized as ex:
             self.assertRaises(ex)
 
     def test_check_token_exception_2(self):
+        """ Test if I get an AuthorizationFailure exception while checking if a fake user token is valid but keystone
+        is not responding.
+        """
         try:
             self.a.identity_url = self.url_noResponse
             result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
@@ -257,31 +274,35 @@ class AuthorizationManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_check_token_exception_3(self):
+        """ Test if I get an exception while checking if a fake user token is valid but keystone
+        returns a server error.
+        """
         try:
             self.a.identity_url = self.url_server_error
             result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
         except Exception as ex:
             self.assertRaises(ex)
 
-    def test_check_token_exception_4(self):
-        try:
-            result = self.a.checkToken(self.authToken, self.fakeToken, self.tenantId)
-        except Exception as ex:
-            self.assertRaises(ex)
-
     def test_check_empty_token(self):
+        """ Test if I get an exception while checking if is valid an empty user token.
+        """
         try:
             result = self.a.checkToken(self.authToken, "", self.tenantId)
         except Exception as ex:
             self.assertRaises(ex)
 
     def test_check_token_other_tenant(self):
+        """ Test if I get an exception while checking if is valid a user token to access to a different tenant.
+        """
         try:
             result = self.a.checkToken(self.authToken, self.token_other_tenant, self.tenantId)
         except Unauthorized as ex:
             self.assertRaises(ex)
 
     def test_check_token_not_found(self):
+        """ Test if I get an AuthorizationFailure exception while checking if is valid a user token
+        to access to a different tenant.
+        """
         try:
             self.a.auth_token = self.authToken
             result = self.a.checkToken(self.authToken, self.token_not_found, self.tenantId)
@@ -289,6 +310,9 @@ class AuthorizationManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_check_token_not_found_and_cached(self):
+        """ Test if I get an AuthorizationFailure exception while checking if is valid a not fount user token
+        in keystone but was stored in memory.
+        """
         try:
             self.a.auth_token = self.authToken
             token_db = self.a.user_tokens.setdefault(self.token_not_found, {'id': self.token_not_found,
@@ -303,6 +327,8 @@ class AuthorizationManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_check_token_not_authorized(self):
+        """ Test if I get an AuthorizationFailure exception while checking if is valid a non-authorized token.
+        """
         try:
             self.a.auth_token = self.authToken
             result = self.a.checkToken(self.authToken, self.token_not_authorized, self.tenantId)
@@ -310,6 +336,8 @@ class AuthorizationManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_generate_adminToken_v3(self):
+        """ Test if I can generate an admin token using an AuthorizationManager with V3.
+        """
         auth_manager_v3 = AuthorizationManager.AuthorizationManager(self.url_v3, AUTH_API_V3)
         auth_manager_v3.auth_token = None
         auth_manager_v3.client = self.requestsMock
@@ -321,6 +349,9 @@ class AuthorizationManagerTests(TestCase):
         self.assertEqual(auth_manager_v3.auth_token, self.authToken)
 
     def test_generate_adminToken_v_unsupported(self):
+        """ Test if I get an exception when I try generate an admin token using an AuthorizationManager with any
+        non-supported API version.
+        """
         auth_manager = AuthorizationManager.AuthorizationManager(self.url_v3, AUTH_API_V3)
         auth_manager.auth_token = None
         auth_manager.api_version = "v1"
@@ -331,6 +362,8 @@ class AuthorizationManagerTests(TestCase):
             self.assertRaises(ex)
 
     def test_check_token_v3_fail(self):
+        """ Test if I get an AuthorizationFailure exception while checking if a fake user token is valid using V3.
+        """
         try:
             self.a.auth_token = self.fakeToken
             self.a.api_version = AUTH_API_V3
@@ -340,16 +373,23 @@ class AuthorizationManagerTests(TestCase):
             self.assertIsNone(self.a.auth_token)
 
     def test_init_auth_Manager_with_v3(self):
+        """ Test if I can initialize an instance of AuthorizationManager using V3.
+        """
         auth_manager = AuthorizationManager.AuthorizationManager(self.url, AUTH_API_V3)
         self.assertEqual(auth_manager.api_version, AUTH_API_V3)
 
     def test_check_token_v3(self):
+        """ Test if I do not get any Exception while checking if a real user token is valid using V3.
+        """
         self.a.api_version = AUTH_API_V3
         self.a.user_tokens.clear()
         result = self.a.checkToken(self.authToken, self.token, self.tenantId)
         self.assertEqual(result, self.token)
 
     def test_check_token_v3_two_times(self):
+        """ Test if I do not get any Exception while checking if a real user token is valid for two times using V3.
+        This test checks the token stored in memory during the second time. This time the token is expired.
+        """
         self.a.api_version = AUTH_API_V3
         self.a.user_tokens.clear()
 
@@ -360,6 +400,9 @@ class AuthorizationManagerTests(TestCase):
         self.assertEqual(result2, self.token)
 
     def test_init_auth_Manager_with_v_unsupported(self):
+        """ Test if I get an exception when I try to initialize an instance of AuthorizationManager using an
+        unsupported API version.
+        """
         try:
             auth_manager = AuthorizationManager.AuthorizationManager(self.url, "v1")
         except ValueError as ex:

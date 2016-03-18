@@ -28,6 +28,7 @@ __author__ = 'gjp'
 from django.test import TestCase, Client
 from mockito import mock, when
 from keystoneclient.v2_0 import client
+from keystoneclient.exceptions import AuthorizationFailure
 
 from fiware_cloto.cloto.manager import AuthorizationManager
 
@@ -44,12 +45,22 @@ class ClientTests(TestCase):
         self.auth.__setattr__("auth_token", self.authToken)
         when(self.auth.stub("tokens")).authenticate(token="1234").thenReturn(True)
         when(AuthorizationManager.AuthorizationManager)\
-            .checkToken(self.authToken, "1234", "tenantId", self.url).thenReturn(True)
+            .checkToken(None, "1234", "tenantId").thenReturn(True)
+        when(AuthorizationManager.AuthorizationManager)\
+            .checkToken(None, "12345", "tenantId").thenRaise(AuthorizationFailure())
         when(AuthorizationManager.AuthorizationManager).\
-            get_auth_token("admin", "openstack", self.url).thenReturn(self.authToken)
+            get_auth_token("admin", "openstack").thenReturn(self.authToken)
 
     def test_servers_view_url(self):
         response = self.c.get('/v1.0/tenantId/servers/', **{'HTTP_X_AUTH_TOKEN': '1234'})
 
     def test_server_rules_view_url(self):
         response = self.c.get('/v1.0/tenantId/servers/rules', **{'HTTP_X_AUTH_TOKEN': '1234'})
+
+    def test_tenant_info_view_url_fail(self):
+        """ Test if using an invalid token to access tenant_info resource returns an AuthorizationFailure Exception.
+        """
+        try:
+            response = self.c.get('/v1.0/tenantId', **{'HTTP_X_AUTH_TOKEN': '12345'})
+        except AuthorizationFailure as ex:
+            self.assertRaises(ex)

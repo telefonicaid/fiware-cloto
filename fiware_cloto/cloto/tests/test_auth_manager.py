@@ -96,27 +96,65 @@ class AuthorizationManagerTests(TestCase):
 
         response_not_expired = Response()
         response_not_expired.status_code = HTTP_RESPONSE_CODE_OK
-        response_not_expired._content = '''{"access":{"token":{"expires":"2115-07-09T15:16:07Z",
-            "id":{"token":"aa01eb8a8d69418c95f0009dda9bc0000",
-            "tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",
-            "access_token":
-            "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",
-            "expires":"2114-09-13T07:23:51.000Z"}
-            ,"tenant":{"description":"Tenant from IDM","enabled":true,
-            "id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},
-            "user":{"username":"user","roles_links":[],"id":"user",
-            "roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'''
+        response_not_expired._content = '''
+        {"access": {
+            "token": {
+                    "expires":"2115-07-09T15:16:07Z",
+                    "id": {
+                        "token":"aa01eb8a8d69418c95f0009dda9bc0000",
+                        "tenant":"6571e3422ad84f7d828ce2f30373b3d4",
+                        "name":"user@mail.com",
+                        "access_token": "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW",
+                        "expires":"2114-09-13T07:23:51.000Z"
+                    },
+                    "tenant":{
+                        "description":"Tenant from IDM","enabled":true,
+                        "id":"6571e3422ad84f7d828ce2f30373b3d4",
+                        "name":"user"
+                    }
+                },
+                "user": {
+                    "username":"user",
+                    "roles_links":[],
+                    "id":"user",
+                    "roles":[{
+                        "id":"8db87ccbca3b4d1ba4814c3bb0d63aab",
+                        "name":"Member"
+                    }],
+                    "name":"user"
+                }
+            }
+        }'''
 
         response_v3 = Response()
         response_v3.status_code = HTTP_RESPONSE_CODE_OK
-        response_v3._content = '''{"token": {"methods": ["password"], "roles":
-                               [{"id": "ff01eb8a8d69418c95f0009dda9bc1852",
-                               "name": "owner"}], "expires_at": "2015-05-26T13:01:49.632762Z",
-                               "project": {"domain": {"id": "default", "name": "Default"},
-                               "id": "6571e3422ad84f7d828ce2f30373b3d4", "name": "user@mail.com"},
-                               "user": {"domain": {"id": "default","name": "Default"},"id": "geonexus",
-                               "name": "geonexus@gmail.com"},
-                               "audit_ids": ["XREoG4obSW69erG3fVjvjQ"], "issued_at": "2016-03-08T10:06:04.653858Z" }}'''
+        response_v3._content = '''
+        {
+            "token": {
+                "methods": ["password"],
+                "roles": [{
+                    "id": "ff01eb8a8d69418c95f0009dda9bc1852",
+                    "name": "owner"
+                }],
+                "expires_at": "2015-05-26T13:01:49.632762Z",
+                "project": {
+                    "domain": {
+                        "id": "default", "name": "Default"
+                    },
+                    "id": "6571e3422ad84f7d828ce2f30373b3d4",
+                    "name": "user@mail.com"
+                },
+                "user": {
+                    "domain": {
+                        "id": "default","name": "Default"
+                    },
+                    "id": "user",
+                    "name": "user@mail.com"
+                },
+                "audit_ids": ["XREoG4obSW69erG3fVjvjQ"],
+                "issued_at": "2016-03-08T10:06:04.653858Z"
+            }
+        }'''
 
         response_v3_fail = Response()
         response_v3_fail.status_code = HTTP_RESPONSE_CODE_UNAUTHORIZED
@@ -125,16 +163,37 @@ class AuthorizationManagerTests(TestCase):
 
         response2 = Response()
         response2.status_code = HTTP_RESPONSE_CODE_OK
-        response2._content = '''{"access":{"token":{"expires":"2115-07-09T15:16:07Z",
-            "id":{"token":"gg01eb8a8d69418c95f0009dda9bc1852",
-            "tenant":"1111e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",
-            "access_token":
-            "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",
-            "expires":"2114-09-13T07:23:51.000Z"}
-            ,"tenant":{"description":"Different Tenant from IDM","enabled":true,
-            "id":"1111e3422ad84f7d828ce2f30373b3d4","name":"user"}},
-            "user":{"username":"user","roles_links":[],"id":"user",
-            "roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'''
+        response2._content = '''
+        {
+            "access":{
+                "token": {
+                    "expires":"2115-07-09T15:16:07Z",
+                    "id": {
+                        "token": "gg01eb8a8d69418c95f0009dda9bc1852",
+                        "tenant": "1111e3422ad84f7d828ce2f30373b3d4",
+                        "name": "user@mail.com",
+                        "access_token": "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW",
+                        "expires": "2114-09-13T07:23:51.000Z"
+                    },
+                    "tenant": {
+                        "description": "Different Tenant from IDM",
+                        "enabled": true,
+                        "id":"1111e3422ad84f7d828ce2f30373b3d4",
+                        "name":"user"
+                    }
+                },
+                "user": {
+                    "username": "user",
+                    "roles_links": [],
+                    "id": "user",
+                    "roles": [{
+                        "id": "8db87ccbca3b4d1ba4814c3bb0d63aab",
+                        "name": "Member"
+                    }],
+                    "name":"user"
+                }
+            }
+        }'''
 
         response_not_found = Response()
         response_not_found.status_code = HTTP_RESPONSE_CODE_UNAUTHORIZED

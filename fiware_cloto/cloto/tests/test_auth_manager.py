@@ -45,7 +45,7 @@ class MySession(MagicMock):
     def Session(self, auth, timeout):
         # Mock of the Keystone session generator
         session_mocked = mock()
-        if auth.auth_url != "http://130.206.80.61:35357/v2.0" and auth.auth_url != "http://130.206.80.61:35357/v3":
+        if auth.auth_url != "http://hosturl:35357/v2.0" and auth.auth_url != "http://hosturl:35357/v3":
             raise ConnectionRefused("Unable to establish connection to %s", auth.auth_url)
         if auth.password == "realpassword" or auth.password == None:
             authToken = "77d254b3caba4fb29747958138136ffa"
@@ -68,8 +68,8 @@ class AuthorizationManagerTests(TestCase):
         self.token_not_authorized = "bbbbbbba8d69418c95f0009dda9bc1852"
         self.fakeToken = "fffffffffffffffffffffffffffffffff"
         self.authToken = "77d254b3caba4fb29747958138136ffa"
-        self.url = "http://130.206.80.61:35357/v2.0"
-        self.url_v3 = "http://130.206.80.61:35357/v3"
+        self.url = "http://hosturl:35357/v2.0"
+        self.url_v3 = "http://hosturl:35357/v3"
         self.url_noResponse = "http://127.0.0.1:35357/v2.0"
         self.url_server_error = "http://serverWithErrors.com:35357/v2.0"
         self.tenantId = "6571e3422ad84f7d828ce2f30373b3d4"
@@ -83,58 +83,58 @@ class AuthorizationManagerTests(TestCase):
         self.requestsMock = mock()
         response = Response()
         response.status_code = HTTP_RESPONSE_CODE_OK
-        response._content = '{"access":{"token":{"expires":"2015-07-09T15:16:07Z",' \
-            '"id":{"token":"ff01eb8a8d69418c95f0009dda9bc1852",' \
-            '"tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
-            '"access_token":' \
-            '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
-            '"expires":"2014-09-13T07:23:51.000Z"}' \
-            ',"tenant":{"description":"Tenant from IDM","enabled":true,' \
-            '"id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
-            '"user":{"username":"user","roles_links":[],"id":"user",' \
-            '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+        response._content = '''{"access":{"token":{"expires":"2015-07-09T15:16:07Z",
+            "id":{"token":"ff01eb8a8d69418c95f0009dda9bc1852",
+            "tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",
+            "access_token":
+            "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",
+            "expires":"2014-09-13T07:23:51.000Z"},
+            "tenant":{"description":"Tenant from IDM","enabled":true,
+            "id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},
+            "user":{"username":"user","roles_links":[],"id":"user",
+            "roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'''
 
         response_not_expired = Response()
         response_not_expired.status_code = HTTP_RESPONSE_CODE_OK
-        response_not_expired._content = '{"access":{"token":{"expires":"2115-07-09T15:16:07Z",' \
-            '"id":{"token":"aa01eb8a8d69418c95f0009dda9bc0000",' \
-            '"tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
-            '"access_token":' \
-            '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
-            '"expires":"2114-09-13T07:23:51.000Z"}' \
-            ',"tenant":{"description":"Tenant from IDM","enabled":true,' \
-            '"id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
-            '"user":{"username":"user","roles_links":[],"id":"user",' \
-            '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+        response_not_expired._content = '''{"access":{"token":{"expires":"2115-07-09T15:16:07Z",
+            "id":{"token":"aa01eb8a8d69418c95f0009dda9bc0000",
+            "tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",
+            "access_token":
+            "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",
+            "expires":"2114-09-13T07:23:51.000Z"}
+            ,"tenant":{"description":"Tenant from IDM","enabled":true,
+            "id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},
+            "user":{"username":"user","roles_links":[],"id":"user",
+            "roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'''
 
         response_v3 = Response()
         response_v3.status_code = HTTP_RESPONSE_CODE_OK
-        response_v3._content = '{"token": {"methods": ["password"], "roles": ' \
-                               '[{"id": "ff01eb8a8d69418c95f0009dda9bc1852",' \
-                               ' "name": "owner"}], "expires_at": "2015-05-26T13:01:49.632762Z", ' \
-                               '"project": {"domain": {"id": "default", "name": "Default"},' \
-                               ' "id": "6571e3422ad84f7d828ce2f30373b3d4", "name": "user@mail.com"},' \
-                               '"user": {"domain": {"id": "default","name": "Default"},"id": "geonexus", ' \
-                               '"name": "geonexus@gmail.com"},' \
-                               '"audit_ids": ["XREoG4obSW69erG3fVjvjQ"], "issued_at": "2016-03-08T10:06:04.653858Z" }}'
+        response_v3._content = '''{"token": {"methods": ["password"], "roles":
+                               [{"id": "ff01eb8a8d69418c95f0009dda9bc1852",
+                               "name": "owner"}], "expires_at": "2015-05-26T13:01:49.632762Z",
+                               "project": {"domain": {"id": "default", "name": "Default"},
+                               "id": "6571e3422ad84f7d828ce2f30373b3d4", "name": "user@mail.com"},
+                               "user": {"domain": {"id": "default","name": "Default"},"id": "geonexus",
+                               "name": "geonexus@gmail.com"},
+                               "audit_ids": ["XREoG4obSW69erG3fVjvjQ"], "issued_at": "2016-03-08T10:06:04.653858Z" }}'''
 
         response_v3_fail = Response()
         response_v3_fail.status_code = HTTP_RESPONSE_CODE_UNAUTHORIZED
-        response_v3_fail._content = '{"error": {"message": "The request you have made requires authentication.",' \
-                                    ' "code": 401, "title": "Unauthorized"}}'
+        response_v3_fail._content = '''{"error": {"message": "The request you have made requires authentication.",
+                                    "code": 401, "title": "Unauthorized"}}'''
 
         response2 = Response()
         response2.status_code = HTTP_RESPONSE_CODE_OK
-        response2._content = '{"access":{"token":{"expires":"2115-07-09T15:16:07Z",' \
-            '"id":{"token":"gg01eb8a8d69418c95f0009dda9bc1852",' \
-            '"tenant":"1111e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",' \
-            '"access_token":' \
-            '"4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",' \
-            '"expires":"2114-09-13T07:23:51.000Z"}' \
-            ',"tenant":{"description":"Different Tenant from IDM","enabled":true,' \
-            '"id":"1111e3422ad84f7d828ce2f30373b3d4","name":"user"}},' \
-            '"user":{"username":"user","roles_links":[],"id":"user",' \
-            '"roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'
+        response2._content = '''{"access":{"token":{"expires":"2115-07-09T15:16:07Z",
+            "id":{"token":"gg01eb8a8d69418c95f0009dda9bc1852",
+            "tenant":"1111e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",
+            "access_token":
+            "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",
+            "expires":"2114-09-13T07:23:51.000Z"}
+            ,"tenant":{"description":"Different Tenant from IDM","enabled":true,
+            "id":"1111e3422ad84f7d828ce2f30373b3d4","name":"user"}},
+            "user":{"username":"user","roles_links":[],"id":"user",
+            "roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'''
 
         response_not_found = Response()
         response_not_found.status_code = HTTP_RESPONSE_CODE_UNAUTHORIZED

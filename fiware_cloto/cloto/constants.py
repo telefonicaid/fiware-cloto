@@ -35,11 +35,12 @@ X_AUTH_TOKEN_HEADER = u'X-Auth-Token'
 X_SUBJECT_TOKEN_HEADER = u'X-Subject-Token'
 TOKENS_PATH_V2 = u'tokens/'
 TOKENS_PATH_V3 = u'auth/tokens/'
+AUTH_TOKEN_ERROR_MESSAGE = 'The request you have made requires authentication'
 
 #MODEL CONSTANTS
 SERVERID = u'serverId'
 
-# NOTIFICATION CONSTANS
+# NOTIFICATION CONSTANTS
 OPERATIONS = ["scaleUp", "scaleDown"]
 OPERANDS = ["greater", "less", "greater equal", "less equal"]
 

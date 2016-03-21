@@ -31,7 +31,7 @@ from fiware_cloto.cloto.constants import DOC_LENGTH, ID_LENGTH, NAME_LENGTH, TEX
 class ServerInfo(models.Model):
     """This class models information about Cloto Server.
     """
-    id = models.IntegerField(primary_key=True, max_length=1)
+    id = models.IntegerField(primary_key=True)
     owner = models.CharField(max_length=NAME_LENGTH)
     version = models.CharField(max_length=VERSION_LENGTH)
     runningfrom = models.DateTimeField()
@@ -121,6 +121,16 @@ class ListRuleModel():
 
 
 class TokenModel():
+    """
+    Define a Token model (not stored in DB).
+    """
+    username = None
     tenant = None
     id = None
     expires = None
+
+    def __init__(self, username, id, expires, tenant=None):
+        self.username = username
+        self.id = id
+        self.expires = expires
+        self.tenant = tenant

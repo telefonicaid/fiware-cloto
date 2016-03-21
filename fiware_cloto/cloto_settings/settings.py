@@ -151,6 +151,7 @@ USER_DOMAIN_NAME = config.get('openstack', 'USER_DOMAIN_NAME')
 AUTH_API = config.get('openstack', 'AUTH_API')
 
 # POLICY MANAGER CONFIGURATION
+SECURITY_LEVEL = config.get('policy_manager', 'SECURITY_LEVEL')
 SETTINGS_TYPE = config.get('policy_manager', 'SETTINGS_TYPE')
 INSTALLATION_PATH = os.path.dirname(fiware_cloto.__file__)
 ENVIRONMENTS_MANAGER_PATH = INSTALLATION_PATH + u'/environments/environmentManager.py'
@@ -350,4 +351,16 @@ LOGGING = {
 
         }
     }
+}
+
+SECURITY_LEVEL_SECONDS_V3 = {
+    'HIGH': '0',
+    'MEDIUM': '1800',
+    'LOW': '3600'
+}
+
+SECURITY_LEVEL_SECONDS_V2 = {
+    'HIGH': '0',
+    'MEDIUM': '21600',
+    'LOW': '84600'
 }

@@ -83,22 +83,44 @@ class AuthorizationManagerTests(TestCase):
         self.requestsMock = mock()
         response = Response()
         response.status_code = HTTP_RESPONSE_CODE_OK
-        response._content = '''{"access":{"token":{"expires":"2015-07-09T15:16:07Z",
-            "id":{"token":"ff01eb8a8d69418c95f0009dda9bc1852",
-            "tenant":"6571e3422ad84f7d828ce2f30373b3d4","name":"user@mail.com",
-            "access_token":
-            "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW-Lg0K_hWVmbb2ROYxnuy53jQ",
-            "expires":"2014-09-13T07:23:51.000Z"},
-            "tenant":{"description":"Tenant from IDM","enabled":true,
-            "id":"6571e3422ad84f7d828ce2f30373b3d4","name":"user"}},
-            "user":{"username":"user","roles_links":[],"id":"user",
-            "roles":[{"id":"8db87ccbca3b4d1ba4814c3bb0d63aab","name":"Member"}],"name":"user"}}}'''
+        response._content = '''
+        {
+            "access": {
+                "token": {
+                    "expires": "2015-07-09T15:16:07Z",
+                    "id": {
+                        "token": "ff01eb8a8d69418c95f0009dda9bc1852",
+                        "tenant": "6571e3422ad84f7d828ce2f30373b3d4",
+                        "name": "user@mail.com",
+                        "access_token": "4HMIFCQOlswp1hZmPG-BmP6cXQWyqvIYV0WrvoKptV59O4r3_VpIJwwFx-JgJW",
+                        "expires": "2014-09-13T07:23:51.000Z"
+                    },
+                    "tenant": {
+                        "description": "Tenant from IDM",
+                        "enabled": true,
+                        "id": "6571e3422ad84f7d828ce2f30373b3d4",
+                        "name": "user"
+                    }
+                },
+                "user": {
+                    "username": "user",
+                    "roles_links": [],
+                    "id": "user",
+                    "roles": [{
+                        "id": "8db87ccbca3b4d1ba4814c3bb0d63aab",
+                        "name": "Member"
+                    }],
+                    "name": "user"
+                }
+            }
+        }'''
 
         response_not_expired = Response()
         response_not_expired.status_code = HTTP_RESPONSE_CODE_OK
         response_not_expired._content = '''
-        {"access": {
-            "token": {
+        {
+            "access": {
+                "token": {
                     "expires":"2115-07-09T15:16:07Z",
                     "id": {
                         "token":"aa01eb8a8d69418c95f0009dda9bc0000",

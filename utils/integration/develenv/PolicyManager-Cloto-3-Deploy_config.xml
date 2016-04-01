@@ -19,7 +19,7 @@
         <hudson.model.StringParameterDefinition>
           <name>HOST</name>
           <description></description>
-          <defaultValue>130.206.81.209</defaultValue>
+          <defaultValue>PublicIP</defaultValue>
         </hudson.model.StringParameterDefinition>
         <hudson.model.StringParameterDefinition>
           <name>DIST_PATH</name>

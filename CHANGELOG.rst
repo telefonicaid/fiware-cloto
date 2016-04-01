@@ -1,6 +1,43 @@
 Changelog
 =========
 
+v2.5.0 (2016-04-01)
+-------------------
+
+New
+~~~
+
+- Add Jenkins config files to utils directory. [Guillermo Jimenez
+  Prieto]
+
+- Add new tests related to restCloto authentication. [Guillermo Jimenez
+  Prieto]
+
+- Add new SECURITY LEVEL to define when user tokens should be checked
+  against keystone. [Guillermo Jimenez Prieto]
+
+- User Tokens are now stored in memory to decrease the number of
+  requests to keystone. [Guillermo Jimenez Prieto]
+
+- Remove migrations from coverage report. [Guillermo Jimenez Prieto]
+
+Changes
+~~~~~~~
+
+- Refactor and new tests to check tokens stored in memory. [Guillermo
+  Jimenez Prieto]
+
+- Update Readme file with a better explanation about MYSQL PATH.
+  [Guillermo Jimenez Prieto]
+
+- Fix coverage report using coverage util. [Guillermo Jimenez Prieto]
+
+- Update Readme with new installation order according to new django
+  version. [Guillermo Jimenez Prieto]
+
+- Update  django version to improve security system. [Guillermo Jimenez
+  Prieto]
+
 v2.4.0 (2016-02-10)
 -------------------
 

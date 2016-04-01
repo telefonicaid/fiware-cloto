@@ -262,18 +262,22 @@ First of all, every interaction need Authentication sequence before
 starting. Authentication sequence follows like this: |Authentication
 sequence|
 
-#. The Policy Manager requests a new administration Token from IdM in
+#. If Policy Manager have requested an administration Token before it will use
+   this token to validate the future token received from the Cloud Portal.
+#. If an existing administration token has expired or it is the first initialization,
+   the Policy Manager requests a new administration Token from IdM in
    order to validate the future token received from the Cloud Portal
    through **generate\_adminToken()** interface.
-#. The IdM returns a valid administration token that will be used to
-   check the *Token* received from the Cloud Portal requested message
-   through the **checkToken(Token)** interface.
-#. The IdM could return 2 options:
 
-   #. If the *Token* is valid, the IdM returns the information related
-      to this token.
-   #. If the *Token* is invalid, the IdM returns the message of
-      unauthorized token.
+   #. The IdM returns a valid administration token that will be used to
+      check the *Token* received from the Cloud Portal requested message
+      through the **checkToken(Token)** interface.
+   #. The IdM could return 2 options:
+
+      #. If the *Token* is valid, the IdM returns the information related
+         to this token.
+      #. If the *Token* is invalid, the IdM returns the message of
+         unauthorized token.
 
 The next interactions gets information about the Policy Manager server:
 

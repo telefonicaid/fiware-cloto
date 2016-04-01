@@ -144,6 +144,7 @@ You should copy this file into default folder and complete all empty keys.
     AUTH_API: v2.0
 
     [policy_manager]
+    SECURITY_LEVEL: LOW
     SETTINGS_TYPE: production
     DEFAULT_WINDOW_SIZE: 5
     MAX_WINDOW_SIZE: 10
@@ -193,6 +194,23 @@ in that folder.
 ::
 
     mkdir -m /var/log/fiware-cloto
+
+In 2.5.0 release we added a new parameter called ``SECURITY_LEVEL``.
+This parameter could have three values: ``[HIGH | MEDIUM | LOW]``
+Depending of API version it will store user tokens in memory assuming that a token will be valid for a time period.
+After this expiration time, token is going to be verified with against keystone.
+
+::
+
+    Using v3:
+     LOW: user token should be verified after 1h
+     MEDIUM: User token should be verified after 30min
+     HIGH: user token should be verified after each request
+
+    Using v2.0:
+     LOW: user tokens should be verified after 24h
+     MEDIUM: user token should be verified after 6h
+     HIGH: user token should be verified after each request
 
 3. Starting the server
 

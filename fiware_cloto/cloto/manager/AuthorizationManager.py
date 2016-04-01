@@ -136,7 +136,7 @@ class AuthorizationManager():
 
                 logger.debug("Token {0} is present in memory, should be checked at {1}".format(token, time_to_review))
                 expires = dateparse.parse_datetime(token_db['expires'])
-                if timezone.now() > expires or timezone.now() > time_to_review:
+                if timezone.now() > expires or timezone.now() > time_to_review or tenant_id is not token_db["tenant"]:
                     logger.debug("Token %s should be checked against keystone.", token)
                 else:
                     return token

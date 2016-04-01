@@ -1,0 +1,92 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description>&lt;ul style=&quot;list-style-image: url(/../jenkins/favicon.ico);&quot;&gt;&#xd;
+  &lt;li&gt;&#xd;
+    Task to execute acceptance tests against the experimentation environment&#xd;
+    (status: &lt;img src=&quot;/../jenkins/job/PolicyManager-Cloto-4-Acceptance/badge/icon&quot;&gt;).&#xd;
+    &#xd;
+  &lt;/li&gt;&#xd;
+&lt;/ul&gt;&#xd;
+&lt;ul style=&quot;list-style-image: url(https://github.com/favicon.ico);&quot;&gt;&#xd;
+  &lt;li&gt;&#xd;
+    &lt;a href=&quot;https://github.com/telefonicaid/fiware-cloto&quot;&gt;Sources&lt;/a&gt;&#xd;
+  &lt;/li&gt;&#xd;
+&lt;/ul&gt;&#xd;
+&lt;ul style=&quot;list-style-image: url(/../jenkins/plugin/build-flow-plugin/images/16x16/flow.png);&quot;&gt;&#xd;
+  &lt;li&gt;&#xd;
+    &lt;a href=&quot;/../jenkins/job/PolicyManager-Cloto&quot;&gt;Flow&lt;/a&gt;&#xd;
+  &lt;/li&gt;&#xd;
+&lt;/ul&gt;</description>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.googlecode.GoogleCodeProjectProperty plugin="googlecode@1.7"/>
+    <hudson.plugins.buildblocker.BuildBlockerProperty plugin="build-blocker-plugin@1.4.1">
+      <useBuildBlocker>false</useBuildBlocker>
+    </hudson.plugins.buildblocker.BuildBlockerProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.ChoiceParameterDefinition>
+          <name>ENVIRONMENT</name>
+          <description></description>
+          <choices class="java.util.Arrays$ArrayList">
+            <a class="string-array">
+              <string>dev</string>
+            </a>
+          </choices>
+        </hudson.model.ChoiceParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <hudson.plugins.disk__usage.DiskUsageProperty plugin="disk-usage@0.25"/>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <customWorkspace>/var/develenv/jenkins/jobs/PolicyManager-Cloto-1-Build/workspace/</customWorkspace>
+  <builders>
+    <hudson.tasks.Shell>
+      <command># Clean previous reports and virtualenv
+rm -rf ${VENV_HOME}/${JOB_NAME}
+rm -rf testreport
+
+# Go to acceptance test project
+cd ${ACCEPTANCE_TEST_PROJECT_PATH}
+
+
+# Copy configuration ( $ENVIRONMENT )
+cp -f ${JENKINS_JOB_RESOURCES_PATH}/${ENVIRONMENT}-cloto-configuration.py ./commons/configuration.py
+
+# Activate the Virtualenv
+virtualenv ${VENV_HOME}/${JOB_NAME}
+source ${VENV_HOME}/${JOB_NAME}/bin/activate
+
+# Install python dependencies
+pip install -r requirements.txt --allow-all-external
+
+# Execute Acceptance tests:
+lettuce_tools --tags=-skip</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers>
+    <hudson.tasks.junit.JUnitResultArchiver plugin="junit@1.1">
+      <testResults>$ACCEPTANCE_TEST_PROJECT_PATH/testreport/*.xml</testResults>
+      <keepLongStdio>false</keepLongStdio>
+      <testDataPublishers/>
+      <healthScaleFactor>1.0</healthScaleFactor>
+    </hudson.tasks.junit.JUnitResultArchiver>
+  </publishers>
+  <buildWrappers>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.0">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+    <hudson.plugins.setenv.SetEnvBuildWrapper plugin="setenv@1.1">
+      <localVarText>VENV_HOME=$JENKINS_HOME/venv
+ACCEPTANCE_TEST_PROJECT_PATH=fiware_cloto/cloto/tests/acceptance_tests
+JENKINS_JOB_RESOURCES_PATH=/home/develenv/fiware_cloud_job_resources/PolicyManager-Acceptance</localVarText>
+    </hudson.plugins.setenv.SetEnvBuildWrapper>
+  </buildWrappers>
+</project>

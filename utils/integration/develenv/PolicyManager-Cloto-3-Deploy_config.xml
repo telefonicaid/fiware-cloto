@@ -1,0 +1,84 @@
+<?xml version='1.0' encoding='UTF-8'?>
+<project>
+  <actions/>
+  <description></description>
+  <logRotator class="hudson.tasks.LogRotator">
+    <daysToKeep>7</daysToKeep>
+    <numToKeep>7</numToKeep>
+    <artifactDaysToKeep>-1</artifactDaysToKeep>
+    <artifactNumToKeep>-1</artifactNumToKeep>
+  </logRotator>
+  <keepDependencies>false</keepDependencies>
+  <properties>
+    <hudson.plugins.googlecode.GoogleCodeProjectProperty plugin="googlecode@1.7"/>
+    <hudson.plugins.buildblocker.BuildBlockerProperty plugin="build-blocker-plugin@1.4.1">
+      <useBuildBlocker>false</useBuildBlocker>
+    </hudson.plugins.buildblocker.BuildBlockerProperty>
+    <hudson.model.ParametersDefinitionProperty>
+      <parameterDefinitions>
+        <hudson.model.StringParameterDefinition>
+          <name>HOST</name>
+          <description></description>
+          <defaultValue>PublicIP</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>DIST_PATH</name>
+          <description></description>
+          <defaultValue>/etc/fiware.d</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>BRANCH</name>
+          <description></description>
+          <defaultValue>develop</defaultValue>
+        </hudson.model.StringParameterDefinition>
+        <hudson.model.StringParameterDefinition>
+          <name>WORKSPACE</name>
+          <description></description>
+          <defaultValue>$JENKINS_HOME/jobs/PolicyManager-Cloto-1-Build/workspace</defaultValue>
+        </hudson.model.StringParameterDefinition>
+      </parameterDefinitions>
+    </hudson.model.ParametersDefinitionProperty>
+    <hudson.plugins.disk__usage.DiskUsageProperty plugin="disk-usage@0.25"/>
+  </properties>
+  <scm class="hudson.scm.NullSCM"/>
+  <canRoam>true</canRoam>
+  <disabled>false</disabled>
+  <blockBuildWhenDownstreamBuilding>false</blockBuildWhenDownstreamBuilding>
+  <blockBuildWhenUpstreamBuilding>false</blockBuildWhenUpstreamBuilding>
+  <triggers/>
+  <concurrentBuild>false</concurrentBuild>
+  <builders>
+    <hudson.tasks.Shell>
+      <command>cd $WORKSPACE
+
+# KILLING PREVIOUS GUNICORN
+ssh -i ~/.ssh/fiware_cloud_rsa root@$HOST &quot;sh $DIST_PATH/cloto_stop.sh&quot;
+
+# GENERATE TARBALL
+export CLOTO_SETTINGS_FILE=fiware_cloto/cloto_settings/fiware-cloto.cfg
+python setup.py sdist
+
+#
+VERSION=$(awk -F&quot;&apos;&quot; &apos;/VERSION/ {print $2}&apos; fiware_cloto/cloto_settings/settings.py)
+scp -i ~/.ssh/fiware_cloud_rsa dist/fiware-cloto-$VERSION.tar.gz root@$HOST:/root
+
+# PIP INSTALL from PolicyManager repository ($BRANCH branch)
+scp -i ~/.ssh/fiware_cloud_rsa ${JENKINS_JOB_RESOURCES_PATH}/fiware-cloto.cfg root@$HOST:$DIST_PATH/fiware-cloto.cfg
+ssh -i ~/.ssh/fiware_cloud_rsa root@$HOST &quot;sudo pip install --upgrade fiware-cloto-$VERSION.tar.gz&quot;
+ssh -i ~/.ssh/fiware_cloud_rsa root@$HOST &quot;nohup sh $DIST_PATH/cloto_start.sh &gt; /dev/null &amp;&quot;
+echo &quot;Fiware-Cloto is running&quot;
+
+#CLEAN DIST
+rm -rf dist</command>
+    </hudson.tasks.Shell>
+  </builders>
+  <publishers/>
+  <buildWrappers>
+    <hudson.plugins.ansicolor.AnsiColorBuildWrapper plugin="ansicolor@0.4.0">
+      <colorMapName>xterm</colorMapName>
+    </hudson.plugins.ansicolor.AnsiColorBuildWrapper>
+    <hudson.plugins.setenv.SetEnvBuildWrapper plugin="setenv@1.1">
+      <localVarText>JENKINS_JOB_RESOURCES_PATH=/home/develenv/fiware_cloud_job_resources/PolicyManager-Deploy</localVarText>
+    </hudson.plugins.setenv.SetEnvBuildWrapper>
+  </buildWrappers>
+</project>

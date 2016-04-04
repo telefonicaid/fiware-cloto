@@ -1,14 +1,21 @@
 mysql:
-   image: mysql:latest
+   image: mysql
    container_name: mysql
    environment:
      MYSQL_DATABASE: cloto
      MYSQL_USER: mysql
      MYSQL_PASSWORD: mysql
      MYSQL_ROOT_PASSWORD: supersecret
+   ports:
+    - 3306:3306
 rabbit:
    image: rabbitmq:3
    container_name: rabbit
+   ports:
+    - 5672:5672
+    - 4369:4369
+    - 5671:5671
+    - 25672:25672
 fiwarecloto:
   image: fiware-cloto
   ports:

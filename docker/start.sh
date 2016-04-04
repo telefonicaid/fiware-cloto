@@ -8,4 +8,3 @@ python setup.py sdist
 pip install dist/fiware-cloto-2.6.0.tar.gz
 cd /
 gunicorn fiware_cloto.cloto.wsgi -b 0.0.0.0
-sleep 100000

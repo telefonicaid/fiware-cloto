@@ -31,7 +31,7 @@ set -e
 if [ ! $1 = "travis_build" ];
 then
     virtualenv ENV --system-site-packages
-    source ENV/bin/activate
+    . ENV/bin/activate
 fi
 
 mkdir -p -m 777 /var/log/fiware-cloto

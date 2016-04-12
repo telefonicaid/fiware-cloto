@@ -1,3 +1,4 @@
+
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
@@ -24,19 +25,20 @@
 #
 __author__ = 'arobres'
 
+
 REST_PATH = '../../../../manage.py'
-POLICY_MANAGER_IP = 'localhost'
+POLICY_MANAGER_IP = '127.0.0.1'
 POLICY_MANAGER_PORT = 8000
-FACTS_IP = 'localhost'
+FACTS_IP = '127.0.0.1'
 FACTS_PORT = 5000
-RABBIT_IP = 'rabbitmq'
+RABBIT_IP = '127.0.0.1'
 
 AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
-KEYSTONE_URL = 'http://cloud.lab.fiware.org:4731/v2.0/tokens'
-TENANT_ID = '00000000000000000000000000000081'
-TENANT_NAME = 'henar cloud'
-USER = 'henar@tid.es'
-PASSWORD = 'vallelado'
+KEYSTONE_URL = ''
+TENANT_ID = ''
+TENANT_NAME = 'test'
+USER = ''
+PASSWORD = ''
 CONTENT_TYPE = 'application/json'
 HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
 DB_PATH = '../../../../cloto.db'

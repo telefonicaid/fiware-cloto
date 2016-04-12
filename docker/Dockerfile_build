@@ -14,5 +14,5 @@ RUN pip install -r requirements.txt
 RUN pip install MySQL-python
 RUN pip install virtualenv
 COPY fiware-cloto.cfg /etc/fiware.d/fiware-cloto.cfg
-COPY start_build.sh start_build.sh
-CMD ./start_build.sh
+COPY sonar-project.properties sonar-project.properties
+CMD ./build.sh jenkins_build

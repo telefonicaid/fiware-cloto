@@ -1,0 +1,18 @@
+FROM ubuntu
+RUN apt-get update
+RUN sudo apt-get -y install  python-dev \
+   libpq-dev libmysqlclient-dev libpq-dev \
+   git wget curl libffi-dev zip python-mysqldb mysql-server\
+   supervisor python-clips build-essential gcc
+RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
+RUN python get-pip.py 
+RUN git clone https://github.com/telefonicaid/fiware-cloto /opt/fiware-cloto
+WORKDIR /opt/fiware-cloto
+RUN sudo mkdir /etc/fiware.d/
+RUN sudo mkdir /var/log/fiware-cloto
+RUN pip install -r requirements.txt
+RUN pip install MySQL-python
+RUN pip install virtualenv
+COPY fiware-cloto.cfg /etc/fiware.d/fiware-cloto.cfg
+COPY start_build.sh start_build.sh
+CMD ./start_build.sh

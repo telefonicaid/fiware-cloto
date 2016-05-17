@@ -6,8 +6,8 @@ Feature: Retrieve Elasticity Rule
   @basic
   Scenario Outline: Retrieve a created rule
 
-    Given a created rule in the in the "<server_id>"
-    When I retrieve the rule in "<server_id>"
+    Given a created rule in the server with id "<server_id>"
+    When I request the rule from the server with id "<server_id>"
     Then I obtain the Rule data
 
     Examples:
@@ -18,9 +18,9 @@ Feature: Retrieve Elasticity Rule
 
   Scenario Outline: Retrieve a non existent rule
 
-    Given a created rule in the in the "<server_id>"
-    When I retrieve "<another_rule_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    When I request other rule with id "<another_rule_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -30,9 +30,9 @@ Feature: Retrieve Elasticity Rule
 
   Scenario Outline: Retrieve a existent rule in other server
 
-    Given a created rule in the in the "<server_id>"
-    When I retrieve the rule in "<another_server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    When I request the rule from other server with id "<another_server_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -43,10 +43,10 @@ Feature: Retrieve Elasticity Rule
   @security
   Scenario Outline: Retrieve a rule with incorrect token
 
-    Given a created rule in the in the "<server_id>"
-    And incorrect "<token>"
-    When I retrieve the rule in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    And an incorrect token with value "<token>"
+    When I request the rule from the server with id "<server_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 

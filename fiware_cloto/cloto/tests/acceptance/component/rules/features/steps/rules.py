@@ -84,7 +84,8 @@ def set_non_existent_tenant_and_server(context, tenant_id, server_id):
     context.server_id = server_id
 
 
-@step(u'I retrieve the rule in "([^"]*)"')
+@step(u'I request the rule from the server with id "([^"]*)"')
+@step(u'I request the rule from other server with id "([^"]*)"')
 def retrieve_rule(context, server_id):
 
     context.server_id = server_id
@@ -101,7 +102,7 @@ def assert_rule_information(context):
     Rule_Utils.assert_rule_information(response=response, rule_id=context.rule_id, body=context.rule_body)
 
 
-@step(u'I retrieve "([^"]*)"')
+@step(u'I request other rule with id "([^"]*)"')
 def retrieve_specific_rule(context, rule_id):
 
     context.req = api_utils.retrieve_rule(tenant_id=context.tenant_id, server_id=context.server_id, rule_id=rule_id,
@@ -152,6 +153,7 @@ def update_rule(context, updated_name, updated_condition, updated_action, server
 def assert_rule_is_updated(context):
 
     assert context.req.ok, context.req.content
+
     response = Utils.assert_json_format(context.req)
     Rule_Utils.assert_rule_information(response=response, rule_id=context.rule_id, name=context.rule_name,
                                        cpu=context.cpu, mem=context.mem, hdd=context.hdd, net=context.net,
@@ -361,7 +363,7 @@ def created_rule(context, server_id):
     context.rule_id = req.json()[RULE_ID]
 
 
-@step(u'the created scale rule in the in the "([^"]*)" with the following parameters')
+@step(u'the created scale rule in the server with id "([^"]*)" with the following parameters')
 def given_the_created_scale_rule_in_the_in_the_group1_with_the_following_parameters(context, server_id):
 
     context.cpu = None
@@ -370,7 +372,7 @@ def given_the_created_scale_rule_in_the_in_the_group1_with_the_following_paramet
     context.net = None
     context.server_id = server_id
 
-    for examples in step.hashes:
+    for examples in context.table.rows:
         rule_body = Rule_Utils.create_scale_specific_rule(operation=examples['operation'],
                                                           name=examples['name'],
                                                           cpu_value=examples['cpu_value'],
@@ -404,7 +406,7 @@ def when_i_update_the_rule_with_group1_and_group2(context, new_name, new_action,
                                         headers=context.headers, rule_id=context.rule_id)
 
 
-@step(u'the created notify rule in the in the "([^"]*)" with the following parameters')
+@step(u'the created notify rule in the server with id "([^"]*)" with the following parameters')
 def given_the_created_notify_rule_in_the_in_the_group1_with_the_following_parameters(context, server_id):
     context.cpu = None
     context.mem = None
@@ -412,7 +414,7 @@ def given_the_created_notify_rule_in_the_in_the_group1_with_the_following_parame
     context.net = None
     context.server_id = server_id
 
-    for examples in step.hashes:
+    for examples in context.table.rows:
         rule_body = Rule_Utils.create_notify_specific_rule(body=examples['body'],
                                                            email=examples['email'],
                                                            name=examples['name'],

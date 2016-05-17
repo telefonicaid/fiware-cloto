@@ -6,7 +6,7 @@ Feature: Get the list of all servers
   @basic
   Scenario Outline: retrieve a server list with several servers in tenant with rules
 
-    Given a "<server_number>" of servers in a tenant with rules created
+    Given a number of servers equat to "<server_number>" in a tenant with rules created
     When I retrieve the server list
     Then I obtain the server list
 
@@ -20,7 +20,7 @@ Feature: Get the list of all servers
 
   Scenario Outline: retrieve a server list with one server without rules
 
-    Given a created "<server_id>" without rules
+    Given a created server with server id "<server_id>" without rules
     When I retrieve the server list
     Then I obtain the server list without rules
 
@@ -32,10 +32,10 @@ Feature: Get the list of all servers
   @security
   Scenario Outline: Retrieve a server list with incorrect credentials
 
-    Given a "<server_number>" of servers in a tenant with rules created
-    And incorrect "<token>"
+    Given a number of servers equat to "<server_number>" in a tenant with rules created
+    And an incorrect token with value "<token>"
     When I retrieve the server list
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 

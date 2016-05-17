@@ -242,7 +242,7 @@ def then_i_obtain_zero_results(context):
     assert_equals(response[SERVERS], [])
 
 
-@step(u'a "([^"]*)" of servers in a tenant with rules created')
+@step(u'a number of servers equat to "([^"]*)" in a tenant with rules created')
 def given_a_group1_of_servers_in_a_tenant(context, number_servers):
 
     context.number_servers = int(number_servers)
@@ -267,6 +267,7 @@ def given_a_group1_of_servers_in_a_tenant(context, number_servers):
 
 
 @step(u'I obtain the server list')
+@step(u'I obtain the server list without rules')
 def then_i_obtain_the_server_list(context):
 
     assert_true(context.req.ok, HTTP_CODE_NOT_OK.format(context.req.status_code, context.req.content))

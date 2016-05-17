@@ -38,6 +38,7 @@ behave.use_step_matcher("re")
 
 
 @step(u'a created server with serverid "([^"]*)" inside a tenant')
+@step(u'a created server with server id "([^"]*)" inside a tenant')
 def set_tenant_and_server_id(context, server_id):
 
     context.server_id = server_id
@@ -165,7 +166,7 @@ def update_non_existent_rule(context, another_rule):
                                         rule_id=another_rule, headers=context.headers)
 
 
-@step(u'I get the rules list from "([^"]*)"')
+@step(u'I get the rules list from server with server id "([^"]*)"')
 def when_i_get_the_rules_list_from_group1(context, server_id):
 
     context.server_id = server_id
@@ -188,7 +189,8 @@ def then_i_obtain_all_the_rules_of_the_server(context):
     Utils.delete_all_rules_from_tenant()
 
 
-@step(u'"([^"]*)" of rules created in "([^"]*)"')
+@step(u'"([^"]*)" rules created in a server with server id "([^"]*)"')
+@step(u'"([^"]*)" rule created in a server with server id "([^"]*)"')
 def given_group1_of_rules_created_in_group2(context, number_rules, server_id):
 
     context.server_id = server_id
@@ -211,7 +213,7 @@ def then_i_obtain_zero_rules(context):
     assert_equals(len(response[RULES]), 0)
 
 
-@step(u'a created "([^"]*)" without rules')
+@step(u'a created server with server id "([^"]*)" without rules')
 def given_a_created_group1_without_rules(context, server_id):
 
     context.server_id = server_id

@@ -1,12 +1,12 @@
 Feature: As a user
-  I want list all the rules of specific server
+  I want to list all the rules of specific server
   In order to manage the rules of a server
 
   @basic
   Scenario Outline: List server with only one rule
 
-    Given "<number>" of rules created in "<server_id>"
-    When I get the rules list from "<server_id>"
+    Given "<number>" rule created in a server with server id "<server_id>"
+    When I get the rules list from server with server id "<server_id>"
     Then I obtain all the rules of the server
 
     Examples:
@@ -16,8 +16,8 @@ Feature: As a user
 
 
   Scenario Outline: List server with several rules
-    Given "<number>" of rules created in "<server_id>"
-    When I get the rules list from "<server_id>"
+    Given "<number>" rules created in a server with server id "<server_id>"
+    When I get the rules list from server with server id "<server_id>"
     Then I obtain all the rules of the server
 
     Examples:
@@ -29,8 +29,8 @@ Feature: As a user
 
   Scenario Outline: List server without rules created
 
-    Given a created "<server_id>" without rules
-    When I get the rules list from "<server_id>"
+    Given a created server with server id "<server_id>" without rules
+    When I get the rules list from server with server id "<server_id>"
     Then I obtain zero rules
 
     Examples:
@@ -40,9 +40,9 @@ Feature: As a user
 
   Scenario Outline: List rules from non existent server
 
-    Given a created "<server_id>" inside tenant
-    When I get the rules list from "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created server with server id "<server_id>" inside a tenant
+    When I get the rules list from server with server id "<server_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -52,10 +52,10 @@ Feature: As a user
   @security
   Scenario Outline: List rules with incorrect token
 
-    Given a created rule in the in the "<server_id>"
-    And incorrect "<token>"
-    When I get the rules list from "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    And an incorrect token with value "<token>"
+    When I get the rules list from server with server id "<server_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 

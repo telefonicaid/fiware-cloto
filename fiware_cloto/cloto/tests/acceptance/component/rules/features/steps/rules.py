@@ -107,7 +107,8 @@ def retrieve_specific_rule(context, rule_id):
                                           headers=context.headers)
 
 
-@step(u'I delete the rule in "([^"]*)"')
+@step(u'I delete the rule in the server with id "([^"]*)"')
+@step(u'I delete the rule in other server with id "([^"]*)"')
 def delete_rule(context, server_id):
 
     context.req = api_utils.delete_rule(tenant_id=context.tenant_id, server_id=server_id, rule_id=context.rule_id,
@@ -125,7 +126,7 @@ def assert_rule_is_deleted(context):
     assert_equals(req.status_code, 404, ERROR_CODE_ERROR.format(req.status_code, 404))
 
 
-@step(u'I delete "([^"]*)"')
+@step(u'I delete other rule with id "([^"]*)"')
 def delete_specific_rule(context, rule_id):
 
     context.req = api_utils.delete_rule(tenant_id=context.tenant_id, server_id=context.server_id, rule_id=rule_id,
@@ -342,7 +343,7 @@ def and_the_group1_replaced_to_none(context, key, to_replace):
                                                            replace_to=to_replace)
 
 
-@step(u'a created rule in the in the "([^"]*)"')
+@step(u'a created rule in the server with id "([^"]*)"')
 def created_rule(context, server_id):
 
     context.server_id = server_id

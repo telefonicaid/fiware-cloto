@@ -28,7 +28,7 @@ Feature: Policy Manager information
     Scenario Outline: Get tenant information with incorrect token authentication
 
       Given a created tenant
-      And incorrect "<token>"
+      And an incorrect token with value "<token>"
       When I retrieve the tenant information
       Then I obtain an "<Error_code>" and the "<FaultElement>"
 

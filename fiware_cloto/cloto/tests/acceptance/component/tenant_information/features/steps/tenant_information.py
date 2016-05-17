@@ -54,14 +54,14 @@ def retrieve_tenant_information(context):
     context.req = api_utils.retrieve_information(tenant_id=context.tenant_id, headers=context.headers)
 
 
-@step(u'I get the following information:')
+@step(u'I get the following information')
 def check_tenant_information(context):
 
     assert context.req.ok, 'Invalid HTTP status code. Status Code obtained is: {}'.format(context.req.status_code)
 
     response = Utils.assert_json_format(context.req)
 
-    for expected_result in step.hashes:
+    for expected_result in context.table.rows:
 
         assert response[TENANT_DOC] == TENANT_DEFAULT_DOC, 'Expected {} is: {} \n Obtained {} is: ' \
                                                            '{}'.format(TENANT_DOC, TENANT_DEFAULT_DOC,

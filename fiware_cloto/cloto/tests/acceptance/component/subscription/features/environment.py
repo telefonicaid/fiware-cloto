@@ -35,5 +35,3 @@ def before_feature(context, feature):
 def before_scenario(context, scenario):
     #Set default headers with correct token before every scenario
     context.headers = HEADERS
-
-

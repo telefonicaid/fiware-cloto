@@ -64,4 +64,3 @@ class ClientTests(TestCase):
             response = self.c.get('/v1.0/tenantId', **{'HTTP_X_AUTH_TOKEN': '12345'})
         except AuthorizationFailure as ex:
             self.assertRaises(ex)
-            

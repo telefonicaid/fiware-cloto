@@ -108,7 +108,8 @@ def main():
 
             r = requests.post(url, data=data, headers=headers)
             if r.status_code == 200:
-                logger.info("mail sent to %s about server %s.---url: %s, Response: %d" % (email, serverId, url, r.status_code))
+                logger.info("mail sent to %s about server %s.---url: %s, Response: %d"
+                            % (email, serverId, url, r.status_code))
             else:
                 print(2)
                 logger.info("ERROR Sending mail to %s about server %s---url: %s, Response: %d"

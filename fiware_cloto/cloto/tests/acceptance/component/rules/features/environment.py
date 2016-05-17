@@ -24,6 +24,7 @@
 #
 from commons.configuration import HEADERS, TENANT_ID
 import commons.authentication as Auth
+import commons.utils as Utils
 
 
 def before_feature(context, feature):
@@ -35,3 +36,5 @@ def before_feature(context, feature):
 def before_scenario(context, scenario):
     # Set default headers with correct token before every scenario
     context.headers = HEADERS
+    Utils.delete_all_rules_from_tenant()
+    context.rules = []

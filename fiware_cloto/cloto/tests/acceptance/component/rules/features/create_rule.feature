@@ -6,12 +6,12 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for scale_up or scale_down
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a scale rule with "<name>" and "<action>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a scale rule with name "<name>" and action "<action>"
     Then the rule is saved in Policy Manager
 
     Examples:
@@ -23,12 +23,12 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for notify mail
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a notify rule with "<name>", "<body>" and "<email>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a notify rule with name "<name>", body "<body>" and email "<email>"
     Then the rule is saved in Policy Manager
 
     Examples:
@@ -39,13 +39,13 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for scale without some value
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a scale rule with "<name>" and "<action>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a scale rule with name "<name>" and action "<action>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    | Error_code  | FaultElement  |
@@ -59,13 +59,13 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for notify without some value
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a notify rule with "<name>", "<body>" and "<email>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a notify rule with name "<name>", body "<body>" and email "<email>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | body  | email         | Error_code  | FaultElement  |
@@ -75,11 +75,11 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for scale without some parameter
 
-    Given a created "<server_id>" inside tenant
+    Given a created server with serverid "<server_id>" inside a tenant
     And some rule prepared with all data
     And the "<parameter>" deleted
     When I create an incorrect rule
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | parameter   | Error_code  | FaultElement  |
@@ -96,11 +96,11 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for scale without None as value
 
-    Given a created "<server_id>" inside tenant
+    Given a created server with serverid "<server_id>" inside a tenant
     And some rule prepared with all data
-    And the "<parameter>" replaced to "None"
+    And the parameter "<parameter>" replaced to "None"
     When I create an incorrect rule
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | parameter   | Error_code  | FaultElement  |
@@ -116,11 +116,11 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule with incorrect actionName
 
-    Given a created "<server_id>" inside tenant
+    Given a created server with serverid "<server_id>" inside a tenant
     And some rule prepared with all data
-    And the "<parameter>" replaced to "<new_value>"
+    And the parameter "<parameter>" replaced to "<new_value>"
     When I create an incorrect rule
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | parameter   | Error_code  | FaultElement  | new_value   |
@@ -135,13 +135,13 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for scale with incorrect parameters
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a scale rule with "<name>" and "<action>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a scale rule with name "<name>" and action "<action>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | action    | Error_code  | FaultElement  |
@@ -180,13 +180,13 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a new specific rule for notify with incorrect parameters
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a notify rule with "<name>", "<body>" and "<email>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a notify rule with name "<name>", body "<body>" and email "<email>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
     | server_id | name    | cpu_value | cpu_operand | mem_value | mem_operand   | hdd_value | hdd_operand   | net_value | net_operand   | body  | email         | Error_code  | FaultElement  |
@@ -196,13 +196,13 @@ Feature: Create Elasticity Rule
 
   Scenario Outline: Create a rule in not existent tenant_id and / or server_id
 
-    Given a non created "<tenant_id>" and "<server_id>"
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    When I create a scale rule with "<name>" and "<action>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a non created tenant with id "<tenant_id>" and server with id "<server_id>"
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    When I create a scale rule with name "<name>" and action "<action>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -214,14 +214,14 @@ Feature: Create Elasticity Rule
   @security
   Scenario Outline: Create a rule with incorrect token
 
-    Given a created "<server_id>" inside tenant
-    And parameter "cpu" with "<cpu_value>" and "<cpu_operand>"
-    And parameter "mem" with "<mem_value>" and "<mem_operand>"
-    And parameter "hdd" with "<hdd_value>" and "<hdd_operand>"
-    And parameter "net" with "<net_value>" and "<net_operand>"
-    And incorrect "<token>"
-    When I create a scale rule with "<name>" and "<action>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created server with serverid "<server_id>" inside a tenant
+    And parameter "cpu" with value "<cpu_value>" and operand "<cpu_operand>"
+    And parameter "mem" with value "<mem_value>" and operand "<mem_operand>"
+    And parameter "hdd" with value "<hdd_value>" and operand "<hdd_operand>"
+    And parameter "net" with value "<net_value>" and operand "<net_operand>"
+    And an incorrect token with value "<token>"
+    When I create a scale rule with name "<name>" and action "<action>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 

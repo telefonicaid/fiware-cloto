@@ -22,25 +22,18 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'arobres'
+from commons.configuration import HEADERS, TENANT_ID
+import commons.authentication as Auth
 
 
-REST_PATH = '../../../../manage.py'
-POLICY_MANAGER_IP = '127.0.0.1'
-POLICY_MANAGER_PORT = 8000
-FACTS_IP = '127.0.0.1'
-FACTS_PORT = 5000
-RABBIT_IP = '127.0.0.1'
+def before_feature(context, feature):
+    # Set Token Id of the feature
+    token_id, context.tenant_id = Auth.get_token()
+    HEADERS['X-Auth-Token'] = token_id
 
-AUTH_TOKEN_OLD = 'cd3672e1891144e68a5ab5f2e2f88e92'
-KEYSTONE_URL = ''
-TENANT_ID = ''
-TENANT_NAME = 'test'
-USER = ''
-PASSWORD = ''
-CONTENT_TYPE = 'application/json'
-HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
-DB_PATH = '../../../../cloto.db'
-MOCK_IP = u'127.0.0.1'
-MOCK_PORT = 8080
-MOCK_PATH = u'commons/server_mock.py'
+
+def before_scenario(context, scenario):
+    #Set default headers with correct token before every scenario
+    context.headers = HEADERS
+
+

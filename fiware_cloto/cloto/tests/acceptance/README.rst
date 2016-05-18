@@ -10,23 +10,26 @@ Content of the acceptance tests
 
 The acceptance tests are divided into 3 different groups:
 
-- rules, contain the core of the acceptance tests to manage the operation related to rules management over 
-the component. The features that are included in this set are the following:
+- rules, contain the core of the acceptance tests to manage the operation related to rules management over the component. The features that are included in this set are the following:
+
+.. code::
     create_rule.feature
     delete_rule.feature
     list_rules_server.feature
     list_servers.feature
     retrieve_rule.feature
 
-- subscription, contain the operation related to management of subscriptions to a new server. This is 
-compound with the following features:
+- subscription, contain the operation related to management of subscriptions to a new server. This is compound with the following features:
+
+.. code::
     create_subscription.feature
     delete_subscription.feature
     retrieve_subscription.feature
     update_rule.feature
 
-- tenant_information, keep the different operations related to the management of tenant information and 
-window management.  This is compound with the following features:
+- tenant_information, keep the different operations related to the management of tenant information and window management.  This is compound with the following features:
+
+.. code::
     retrieve_tenant_information.feature
     update_windowsize.feature
 
@@ -74,8 +77,7 @@ To start deployment the docker, you have to follow the following steps
     $ export ADM_PASSWORD=<admin password>
     $ export USER_PASSWORD=<user password>
 
-- Create the proper docker image if you do not yet it. You can find the docker file Dockerfile_cloto in 
-the `docker` folder
+- Create the proper docker image if you do not yet it. You can find the docker file Dockerfile_cloto in the `docker` folder
 
 .. code::
     $ docker build -t fiware-cloto -f Dockerfile_cloto .
@@ -96,7 +98,8 @@ Environment preparation
 
 - Install the requirements for the acceptance tests in the virtual environment:
 
-     pip install -r requirements.txt --allow-all-external.
+.. code::
+     $ pip install -r requirements.txt --allow-all-external.
 
 
 - Configure file in `fiware_cloto/cloto/tests/acceptance/commons/configuration.py` 
@@ -108,5 +111,6 @@ Tests execution
 - Change to the `fiware_cloto/cloto/tests/acceptance` folder of the project if not already on it.
 
 - Run behave with appropriate params (see available ones with the -h option), by default you can launch them just executing
-     
-     behave
+
+.. code::
+     $ behave

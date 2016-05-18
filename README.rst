@@ -419,7 +419,7 @@ Change to the fiware_cloto/cloto/tests/acceptance folder of the project if not a
 In the following document you will find the steps to execute automated
 tests for the Policy Manager GE:
 
-- `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance/README.md>`_
+- `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance/README.rst>`_
 
 Top_.
 

@@ -13,6 +13,7 @@ The acceptance tests are divided into 3 different groups:
 - rules, contain the core of the acceptance tests to manage the operation related to rules management over the component. The features that are included in this set are the following:
 
 .. code::
+
     create_rule.feature
     delete_rule.feature
     list_rules_server.feature
@@ -22,6 +23,7 @@ The acceptance tests are divided into 3 different groups:
 - subscription, contain the operation related to management of subscriptions to a new server. This is compound with the following features:
 
 .. code::
+
     create_subscription.feature
     delete_subscription.feature
     retrieve_subscription.feature
@@ -30,11 +32,14 @@ The acceptance tests are divided into 3 different groups:
 - tenant_information, keep the different operations related to the management of tenant information and window management.  This is compound with the following features:
 
 .. code::
+
     retrieve_tenant_information.feature
     update_windowsize.feature
 
 
 You can find them under `fiware_cloto/cloto/tests/acceptance/component/features` folder.
+
+Top_.
 
 How to Run the Acceptance Tests
 ===============================
@@ -49,6 +54,8 @@ Requirements
 - virtualenv installed (pip install virtalenv)
 
 - Git installed (yum install git-core / apt-get install git)
+
+Top_.
 
 Environment execution
 ---------------------
@@ -80,13 +87,17 @@ To start deployment the docker, you have to follow the following steps
 - Create the proper docker image if you do not yet it. You can find the docker file Dockerfile_cloto in the `docker` folder
 
 .. code::
+
     $ docker build -t fiware-cloto -f Dockerfile_cloto .
 
 - Finally, launch the docker compose of the Cloto component:
 
-.. code::    
+.. code:: 
+
     $ docker-compose -f docker-compose-develop.yml up -d
-    
+
+Top_.
+
 Environment preparation
 -----------------------
 
@@ -99,11 +110,14 @@ Environment preparation
 - Install the requirements for the acceptance tests in the virtual environment:
 
 .. code::
+
      $ pip install -r requirements.txt --allow-all-external.
 
 
 - Configure file in `fiware_cloto/cloto/tests/acceptance/commons/configuration.py` 
   adding the keystone url, and a valid user, password and tenant ID.
+
+Top_.
 
 Tests execution
 ---------------
@@ -113,4 +127,7 @@ Tests execution
 - Run behave with appropriate params (see available ones with the -h option), by default you can launch them just executing
 
 .. code::
+
      $ behave
+
+Top_.

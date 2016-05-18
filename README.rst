@@ -406,20 +406,20 @@ Environment preparation:
 - Activate the virtual environment (source ENV/bin/activate)
 - Change to the test/acceptance folder of the project
 - Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
-- Configure file in fiware-cloto/tests/acceptance_tests/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+- Configure file in fiware_cloto/cloto/tests/acceptance/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
 
 Tests execution
 
-Change to the fiware-cloto/tests/acceptance_tests folder of the project if not already on it and execute:
+Change to the fiware_cloto/cloto/tests/acceptance folder of the project if not already on it and execute:
 
 ::
 
-       $ lettuce_tools
+       $ behave
 
 In the following document you will find the steps to execute automated
 tests for the Policy Manager GE:
 
-- `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance_tests/README.md>`_
+- `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance/README.md>`_
 
 Top_.
 

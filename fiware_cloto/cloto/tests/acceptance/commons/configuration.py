@@ -23,3 +23,24 @@
 # contact with opensource@tid.es
 #
 __author__ = 'arobres'
+
+
+REST_PATH = '../../../../manage.py'
+POLICY_MANAGER_IP = 'fiwarecloto'
+POLICY_MANAGER_PORT = 8000
+FACTS_IP = 'fiwarecloto'
+FACTS_PORT = 5000
+RABBIT_IP = 'rabbitmq'
+
+AUTH_TOKEN_OLD = ''
+KEYSTONE_URL = ''
+TENANT_ID = ''
+TENANT_NAME = ''
+USER = ''
+PASSWORD = ''
+CONTENT_TYPE = 'application/json'
+HEADERS = {'content-type': CONTENT_TYPE, 'X-Auth-Token': ''}
+DB_PATH = '../../../../cloto.db'
+MOCK_IP = u'127.0.0.1'
+MOCK_PORT = 8080
+MOCK_PATH = u'commons/server_mock.py'

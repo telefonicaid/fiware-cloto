@@ -6,8 +6,8 @@ Feature: Policy Manager update window size
     @basic
     Scenario Outline: Update window size
         Given a created tenant
-        When I update the "<windowsize>"
-        Then the "<windowsize>" is update in Policy Manager
+        When I update the window size to "<windowsize>"
+        Then the window size is updated in Policy Manager with value "<windowsize>"
 
         Examples:
 
@@ -20,7 +20,7 @@ Feature: Policy Manager update window size
     Scenario Outline: Incorrect update window size requests
 
         Given a created tenant
-        When I update the "<windowsize>"
+        When I update the window size to "<windowsize>"
         Then I obtain an "<Error_code>" and the "<FaultElement>"
 
         Examples:
@@ -37,9 +37,9 @@ Feature: Policy Manager update window size
         |   '1'         |   400         |   badRequest      |
 
 
-    Scenario: Update window size from not existent tenant information
+    Scenario Outline: Update window size from not existent tenant information
         Given the tenant "<tenant_id>"
-        When I update the "<windowsize>"
+        When I update the window size to "<windowsize>"
         Then I obtain an "<Error_code>" and the "<FaultElement>"
 
         Examples:
@@ -51,8 +51,8 @@ Feature: Policy Manager update window size
     Scenario Outline: Update window size with incorrect token authentication
 
         Given a created tenant
-        And incorrect "<token>"
-        When I update the "<windowsize>"
+        And an incorrect token with value "<token>"
+        When I update the window size to "<windowsize>"
         Then I obtain an "<Error_code>" and the "<FaultElement>"
 
         Examples:

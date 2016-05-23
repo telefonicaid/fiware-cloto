@@ -8,4 +8,4 @@ virtualenv venv
 . venv/bin/activate
 pip install -r requirements.txt
 while ! nc -z fiwarecloto 8000; do sleep 8; done
-lettuce_tools --tags=-skip
+behave

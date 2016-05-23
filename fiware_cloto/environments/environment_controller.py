@@ -35,8 +35,6 @@ class environment_controller():
 
     started = False
 
-
-
     def start_manager(self):
         if settings.SETTINGS_TYPE == 'production':
             arbiter = get_arbiter([{"cmd": "python "
@@ -60,6 +58,7 @@ def clean_environments():
                 raise Exception(error)
 
         return output
+
 
 def check_python_process():
         p = Popen(['ps', '-awx'], stdout=PIPE)

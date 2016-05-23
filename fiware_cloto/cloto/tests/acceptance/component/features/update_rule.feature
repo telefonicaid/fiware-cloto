@@ -6,13 +6,13 @@ Feature: Update Elasticity Rule
   @basic
   Scenario Outline: Update a scale rule with all parameters
 
-    Given the created scale rule in the in the "<server_id>" with the following parameters
+    Given the created scale rule in the server with id "<server_id>" with the following parameters
       | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | scaleUp   | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
     Then the rule is updated in Policy Manager
 
@@ -34,13 +34,13 @@ Feature: Update Elasticity Rule
   @basic
   Scenario Outline: Update a notify rule with all parameters
 
-    Given the created notify rule in the in the "<server_id>" with the following parameters
+    Given the created notify rule in the server with id "<server_id>" with the following parameters
       | body    | email       | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | hello!  | aaa@aaa.es  | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the notify rule with "<new_name>", "<new_body>" and "<new_email>" in "<server_id>"
     Then the rule is updated in Policy Manager
 
@@ -55,15 +55,15 @@ Feature: Update Elasticity Rule
   @basic
   Scenario Outline: Update a scale rule with some parameters with empty strings
 
-    Given the created scale rule in the in the "<server_id>" with the following parameters
+    Given the created scale rule in the server with id "<server_id>" with the following parameters
       | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | scaleUp   | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -81,15 +81,15 @@ Feature: Update Elasticity Rule
 
   Scenario Outline: Update a notify rule with some parameters with empty strings
 
-    Given the created notify rule in the in the "<server_id>" with the following parameters
+    Given the created notify rule in the server with id "<server_id>" with the following parameters
       | body    | email       | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | hello!  | aaa@aaa.es  | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the notify rule with "<new_name>", "<new_body>" and "<new_email>" in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -102,15 +102,15 @@ Feature: Update Elasticity Rule
   @basic
   Scenario Outline: Update a scale rule with incorrect parameters
 
-    Given the created scale rule in the in the "<server_id>" with the following parameters
+    Given the created scale rule in the server with id "<server_id>" with the following parameters
       | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | scaleUp   | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -163,15 +163,15 @@ Feature: Update Elasticity Rule
 
   Scenario Outline: Update a notify rule with incorrect parameters
 
-    Given the created notify rule in the in the "<server_id>" with the following parameters
+    Given the created notify rule in the server with id "<server_id>" with the following parameters
       | body    | email       | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | hello!  | aaa@aaa.es  | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the notify rule with "<new_name>", "<new_body>" and "<new_email>" in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -186,11 +186,11 @@ Feature: Update Elasticity Rule
 
   Scenario Outline: Update a non existent rule
 
-    Given the created scale rule in the in the "<server_id>" with the following parameters
+    Given the created scale rule in the server with id "<server_id>" with the following parameters
       | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | scaleUp   | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
     When I update "<another_rule_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -200,15 +200,15 @@ Feature: Update Elasticity Rule
 
   Scenario Outline: Update a existent rule in other server
 
-    Given the created scale rule in the in the "<server_id>" with the following parameters
+    Given the created scale rule in the server with id "<server_id>" with the following parameters
       | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | scaleUp   | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the scalability rule with "<new_name>" and "<new_action>" in "<another_server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -220,16 +220,16 @@ Feature: Update Elasticity Rule
   @security
   Scenario Outline: Update a rule with incorrect token
 
-    Given the created scale rule in the in the "<server_id>" with the following parameters
+    Given the created scale rule in the server with id "<server_id>" with the following parameters
       | operation | name    | cpu_value | cpu_operand | mem_value | mem_operand | hdd_value | hdd_operand | net_value | net_operand |
       | scaleUp   | test    | 0         | less        | 0         | less        | 0         | less        | 0         | less        |
-    And incorrect "<token>"
-    And parameter "cpu" with "<new_cpu_value>" and "<new_cpu_operand>"
-    And parameter "mem" with "<new_mem_value>" and "<new_mem_operand>"
-    And parameter "hdd" with "<new_hdd_value>" and "<new_hdd_operand>"
-    And parameter "net" with "<new_net_value>" and "<new_net_operand>"
+    And an incorrect token with value "<token>"
+    And parameter "cpu" with value "<new_cpu_value>" and operand "<new_cpu_operand>"
+    And parameter "mem" with value "<new_mem_value>" and operand "<new_mem_operand>"
+    And parameter "hdd" with value "<new_hdd_value>" and operand "<new_hdd_operand>"
+    And parameter "net" with value "<new_net_value>" and operand "<new_net_operand>"
     When I update the scalability rule with "<new_name>" and "<new_action>" in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 

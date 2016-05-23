@@ -1,7 +1,7 @@
 #!/usr/bin/env python
 # -*- encoding: utf-8 -*-
 #
-# Copyright 2014 Telefónica Investigación y Desarrollo, S.A.U
+# Copyright 2014-2016 Telefónica Investigación y Desarrollo, S.A.U
 #
 # This file is part of FI-WARE project.
 #
@@ -22,4 +22,19 @@
 # For those usages not covered by the Apache version 2.0 License please
 # contact with opensource@tid.es
 #
-__author__ = 'arobres'
+from commons.configuration import HEADERS, TENANT_ID
+import commons.authentication as Auth
+import commons.utils as Utils
+
+
+def before_feature(context, feature):
+    # Set Token Id of the feature
+    token_id, context.tenant_id = Auth.get_token()
+    HEADERS['X-Auth-Token'] = token_id
+
+
+def before_scenario(context, scenario):
+    # Set default headers with correct token before every scenario
+    context.headers = HEADERS
+    Utils.delete_all_rules_from_tenant()
+    context.rules = []

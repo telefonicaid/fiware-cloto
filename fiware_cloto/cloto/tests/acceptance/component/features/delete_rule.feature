@@ -6,8 +6,8 @@ Feature: Delete Elasticity Rule
   @basic
   Scenario Outline: Delete a created rule
 
-    Given a created rule in the in the "<server_id>"
-    When I delete the rule in "<server_id>"
+    Given a created rule in the server with id "<server_id>"
+    When I delete the rule in the server with id "<server_id>"
     Then the rule is deleted
 
     Examples:
@@ -18,9 +18,9 @@ Feature: Delete Elasticity Rule
 
   Scenario Outline: Delete a non existent rule
 
-    Given a created rule in the in the "<server_id>"
-    When I delete "<another_rule_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    When I delete other rule with id "<another_rule_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -30,9 +30,9 @@ Feature: Delete Elasticity Rule
 
   Scenario Outline: Delete a existent rule in other server
 
-    Given a created rule in the in the "<server_id>"
-    When I delete the rule in "<another_server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    When I delete the rule in other server with id "<another_server_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 
@@ -43,10 +43,10 @@ Feature: Delete Elasticity Rule
   @security
   Scenario Outline: Delete a rule with incorrect token
 
-    Given a created rule in the in the "<server_id>"
-    And incorrect "<token>"
-    When I delete the rule in "<server_id>"
-    Then I obtain an "<Error_code>" and the "<FaultElement>"
+    Given a created rule in the server with id "<server_id>"
+    And an incorrect token with value "<token>"
+    When I delete the rule in the server with id "<server_id>"
+    Then I obtain an error code "<Error_code>" and the fault element "<FaultElement>"
 
     Examples:
 

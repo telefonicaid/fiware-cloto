@@ -29,6 +29,7 @@ fiwarecloto:
    - ADM_TENANT_NAME
    - ADM_TENANT_ID
    - KEYSTONE_IP
+   - OS_USER_DOMAIN_NAME
 fiware-cloto-aceptance:
   image: fiware-cloto-acceptance
   links:

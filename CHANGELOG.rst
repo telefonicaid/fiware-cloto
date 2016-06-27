@@ -1,6 +1,27 @@
 Changelog
 =========
 
+v2.6.0 (2016-06-27)
+-------------------
+New
+~~~
+
+- Create docker files. [Henar Muñoz]
+
+Changes
+~~~~~~~
+
+- Migrate E2E tests to behave tool. [Fernando Lopez]
+- Refactoring utils content. [Henar Muñoz]
+- Update property file. [Henar Muñoz]
+- Update documentation. [Fernando Lopez]
+
+Fix
+~~~
+
+- Add automatic version renumbering. [Fernando Lopez]
+- Remove explicit IP in the component. [Guillermo Jimenez Prieto]
+
 v2.5.0 (2016-04-01)
 -------------------
 

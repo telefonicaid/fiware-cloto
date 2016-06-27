@@ -53,6 +53,7 @@ cfg_defaults_openstack = {
 }
 
 cfg_defaults_policy_manager = {
+    'SECURITY_LEVEL': 'LOW',
     'SETTINGS_TYPE': 'production',
     'DEFAULT_WINDOW_SIZE': 5,
     'MAX_WINDOW_SIZE': 10,

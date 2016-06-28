@@ -53,6 +53,7 @@ cfg_defaults_openstack = {
 }
 
 cfg_defaults_policy_manager = {
+    'SECURITY_LEVEL': 'LOW',
     'SETTINGS_TYPE': 'production',
     'DEFAULT_WINDOW_SIZE': 5,
     'MAX_WINDOW_SIZE': 10,
@@ -162,7 +163,7 @@ RABBITMQ_URL = config.get('rabbitmq', 'RABBITMQ_URL')
 DEFAULT_WINDOW_SIZE = config.get('policy_manager', 'DEFAULT_WINDOW_SIZE')
 OWNER = u'Telefonica I+D'
 API_INFO_URL = u'http://docs.policymanager.apiary.io'
-VERSION = u'2.6.0'
+VERSION = u'2.7.0'
 MAX_WINDOW_SIZE = config.get('policy_manager', 'MAX_WINDOW_SIZE')
 LOGGING_PATH = config.get('policy_manager', 'LOGGING_PATH')
 LOGGING_LEVEL = config.get('logging', 'level')

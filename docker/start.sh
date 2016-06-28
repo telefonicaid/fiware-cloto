@@ -6,7 +6,6 @@ sed -i -e "s/{ADM_USERNAME}/${ADM_USERNAME}/" /etc/fiware.d/fiware-cloto.cfg
 sed -i -e "s/{OS_USER_DOMAIN_NAME}/${OS_USER_DOMAIN_NAME}/" /etc/fiware.d/fiware-cloto.cfg
 
 while ! nc -z mysql 3306; do sleep 8; done
-python setup.py sdist
-pip install dist/fiware-cloto-2.6.0.tar.gz
+python setup.py install
 cd /
 gunicorn fiware_cloto.cloto.wsgi -b 0.0.0.0

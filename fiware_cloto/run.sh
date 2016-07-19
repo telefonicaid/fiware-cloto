@@ -26,5 +26,5 @@
 #
 # __author__ = 'gjp'
 
-localIp=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+localIp=`ifconfig | awk '/^[^ -].*: / {if (match($0,/vbox/)) pr=0;  else pr=1} ; /inet (addr:)?([0-9]*\.){3}[0-9]*/ {if (pr) print $2}' | grep -v '127.0.0.1'`
 gunicorn fiware_cloto.cloto.wsgi -b $localIp &

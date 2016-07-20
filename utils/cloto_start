@@ -26,14 +26,14 @@
 #
 # __author__ = 'gjp'
 
-NAME="fiware_cloto"                                  # Name of the application
-SOCKFILE=/var/run/gunicorn.sock  # we will communicte using this unix socket
-USER=root                                        # the user to run as
-GROUP=root                                     # the group to run as
-NUM_WORKERS=3                                     # how many worker processes should Gunicorn spawn
-DJANGO_SETTINGS_MODULE=fiware_cloto.cloto_settings.settings             # which settings file should Django use
-DJANGO_WSGI_MODULE=fiware_cloto.cloto.wsgi                     # WSGI module name
-LOCAL_IP=`ifconfig | grep -Eo 'inet (addr:)?([0-9]*\.){3}[0-9]*' | grep -Eo '([0-9]*\.){3}[0-9]*' | grep -v '127.0.0.1'`
+NAME="fiware_cloto"              # Name of the application
+SOCKFILE=/var/run/gunicorn.sock  # we will communicate using this unix socket
+USER=root                        # the user to run as
+GROUP=root                       # the group to run as
+NUM_WORKERS=3                    # how many worker processes should Gunicorn spawn
+DJANGO_SETTINGS_MODULE=fiware_cloto.cloto_settings.settings   # which settings file should Django use
+DJANGO_WSGI_MODULE=fiware_cloto.cloto.wsgi                    # WSGI module name
+LOCAL_IP=`ifconfig | awk '/^[^ -].*: / {if (match($0,/vbox/)) pr=0;  else pr=1} ; /inet (addr:)?([0-9]*\.){3}[0-9]*/ {if (pr) print $2}' | grep -v '127.0.0.1'`
 
 echo "Starting $NAME as `whoami`"
 

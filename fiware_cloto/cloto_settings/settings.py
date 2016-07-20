@@ -61,7 +61,7 @@ cfg_defaults_policy_manager = {
 }
 
 cfg_defaults_context_broker = {
-    'CONTEXT_BROKER_URL': 'http://130.206.81.44:1026/NGSI10',
+    'CONTEXT_BROKER_URL': 'http://130.206.115.92:1026/v1',
     'NOTIFICATION_URL': 'http://127.0.0.1:5000/v1.0',
     'NOTIFICATION_TYPE': 'ONTIMEINTERVAL',
     'NOTIFICATION_TIME': 'PT5S'

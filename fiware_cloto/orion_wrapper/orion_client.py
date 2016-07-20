@@ -24,7 +24,7 @@
 #
 __author__ = 'gjp'
 import json
-import logging as logger
+from fiware_cloto.cloto.utils.log import logger
 
 import requests
 from django.conf import settings

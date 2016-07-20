@@ -151,7 +151,7 @@ You should copy this file into default folder and complete all empty keys.
     LOGGING_PATH: /var/log/fiware-cloto
 
     [context_broker]
-    CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
+    CONTEXT_BROKER_URL: http://130.206.115.92:1026/v1
     # Public IP of fiware-facts module
     NOTIFICATION_URL: http://127.0.0.1:5000/v1.0
     NOTIFICATION_TYPE: ONTIMEINTERVAL
@@ -226,7 +226,8 @@ with ``127.0.0.1`` fiware-cloto won't be accessible from outside.
 To stop fiware-cloto, you can stop gunicorn server, or kill it
 
 NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
-``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt (standard stderr). If you want
+to store the log into a file just write ``--log-file=<log file name>``.
 
 
 Facts installation
@@ -356,7 +357,8 @@ of the file:
     --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
 NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
-``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt (standard stderr). If you want
+to store the log into a file just write ``--log-file=<log file name>``.
 
 
 When you execute the server you can see some information about the server:

@@ -57,10 +57,6 @@ class orion_client():
                             '{"type": "' + settings.NOTIFICATION_TYPE + '",' \
                             '"condValues": ["' + settings.NOTIFICATION_TIME + '"]}]}'
 
-        logger.info("contextBrokerSubscription: data %s" % (data))
-        logger.info("contextBrokerSubscription: headers %s" % (headers))
-        logger.info("contextBrokerSubscription: url %s" % (settings.CONTEXT_BROKER_URL))
-
         r = self.client.post(settings.CONTEXT_BROKER_URL + "/subscribeContext", data, headers=headers)
 
         if r.status_code == 200:

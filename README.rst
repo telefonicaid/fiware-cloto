@@ -91,7 +91,7 @@ To install this module you have to install some components:
 This module also needs the installation of these other components:
 
 - Fiware-facts module installed (https://github.com/telefonicaid/fiware-facts)
-- A running instance of Orion Context Broker (https://github.com/telefonicaid/fiware-orion)
+- A running instance of Orion Context Broker v0.28 (https://github.com/telefonicaid/fiware-orion/releases/tag/0.28.0)
 - fiware-monitoring connected to the Orion instance to provide
   information about servers (https://github.com/telefonicaid/fiware-monitoring).
 
@@ -161,7 +161,7 @@ Options that user could define:
     LOGGING_PATH: /var/log/fiware-cloto
 
     [context_broker]
-    CONTEXT_BROKER_URL: http://130.206.81.44:1026/NGSI10
+    CONTEXT_BROKER_URL: http://130.206.115.92:1026/v1
     # Public IP of fiware-facts module
     NOTIFICATION_URL: http://127.0.0.1:5000/v1.0
     NOTIFICATION_TYPE: ONTIMEINTERVAL
@@ -213,7 +213,8 @@ To run fiware-cloto, just execute:
 To stop fiware-cloto, you can stop gunicorn server, or kill it
 
 NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
-``--log-file=-`` at the end of the command. This option will show the logs in your prompt.
+``--log-file=-`` at the end of the command. This option will show the logs in your prompt (standard stderr). If
+you prefer to write them into a file, just write ``--log-file=<log file name>``.
 
 Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
 in that folder.

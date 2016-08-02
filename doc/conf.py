@@ -41,6 +41,7 @@ html_favicon = '_static/favicon.ico'
 project = u'FIWARE-Bosun: Cloto'
 copyright = u'2016, Telefónica I+D'
 version = u''
+release = u''
 
 # The “title” for HTML documentation
 html_title = u'FIWARE-Bosun: Cloto'

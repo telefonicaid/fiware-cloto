@@ -34,6 +34,9 @@ source_suffix = '.rst'
 # The master toctree document.
 master_doc = 'index'
 
+# Icon for tabs, windows and bookmarks
+html_favicon = './img/favicon.ico'
+
 # General information about the project.
-project = u'FIWARE Policy Manager GE: Bosun - Cloto'
+project = u'FIWARE Bosun - Cloto'
 copyright = u'2016, Telefónica I+D'

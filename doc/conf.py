@@ -35,7 +35,7 @@ source_suffix = '.rst'
 master_doc = 'index'
 
 # Icon for tabs, windows and bookmarks
-html_favicon = './img/favicon.ico'
+html_favicon = './resources/favicon.ico'
 
 # General information about the project.
 project = u'FIWARE Bosun - Cloto'

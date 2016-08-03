@@ -40,8 +40,14 @@ html_favicon = '_static/favicon.ico'
 # General information about the project.
 project = u'FIWARE-Bosun: Cloto'
 copyright = u'2016, Telefónica I+D'
-version = u''
-release = u''
+version = ''
+release = ''
 
 # The “title” for HTML documentation
 html_title = u'FIWARE-Bosun: Cloto'
+html_short_title = u'FIWARE-Bosun: Cloto'
+
+html_sidebars = {
+   '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
+   'using/windows': ['windowssidebar.html', 'searchbox.html'],
+}

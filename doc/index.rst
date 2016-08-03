@@ -1,6 +1,6 @@
-============================
-Welcome to Policy Manager GE
-============================
+====================================
+Welcome to Policy Manager GE - Cloto
+====================================
 
 Introduction
 ============
@@ -33,7 +33,7 @@ This documentation offers deeper information on Policy Manager.
    :maxdepth: 1
 
    README
-   doc/user_guide
-   doc/admin_guide
-   doc/architecture
-   doc/open_spec
+   user_guide
+   admin_guide
+   architecture
+   open_spec

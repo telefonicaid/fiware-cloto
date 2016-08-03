@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 
 import os
+import sphinx_rtd_theme
 
 # The paths that contain custom static files (such as style sheets).
 html_static_path = ['_static']
@@ -10,8 +11,6 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 # Only import and set the theme if we're building docs locally; otherwise,
 # readthedocs.org uses their theme by default, so no need to specify it.
-import sphinx_rtd_theme
-
 html_theme = 'sphinx_rtd_theme'
 html_style = None
 html_theme_options = {}
@@ -54,9 +53,6 @@ release = ''
 # The “title” for HTML documentation
 html_title = u'FIWARE-Bosun: Cloto'
 html_short_title = u'FIWARE-Bosun: Cloto'
-'''
-html_sidebars = {
-   '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
-   'using/windows': ['windowssidebar.html', 'searchbox.html'],
-}
-'''
+
+# The div class version option
+theme_display_version = False

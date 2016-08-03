@@ -56,3 +56,5 @@ html_short_title = u'FIWARE-Bosun: Cloto'
 
 # The div class version option
 theme_display_version = False
+
+current_version = None

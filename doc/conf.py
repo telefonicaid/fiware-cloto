@@ -23,13 +23,6 @@ if not on_rtd:
         app.add_stylesheet('mystyle.css')
 else:
     # Override default css to get a larger width for ReadTheDoc build
-#    html_context = {
-#        'css_files': [
-#            'https://media.readthedocs.org/css/sphinx_rtd_theme.css',
-#            'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
-#            '_static/mystyle.css'
-#        ],
-#    }
     html_context = {
         'css_files': [
             'https://www.fiware.org/style/fiware_readthedocs.css',
@@ -70,7 +63,7 @@ html_sidebars = {
 context = {
     'using_theme': True,
     'html_theme': html_theme,
-    'current_version': "",
+    'current_version': "feature-claudia-6224_ReadTheDocs_problems",
     'MEDIA_URL': "https://media.readthedocs.org/",
     'PRODUCTION_DOMAIN': "readthedocs.org",
     'versions': [
@@ -104,7 +97,7 @@ context = {
     'github_user': 'telefonicaid',
     'github_repo': 'fiware-cloto',
     'github_version': 'feature-claudia-6224_ReadTheDocs_problems',
-    'display_github': True,
+    'display_github': False,
     'bitbucket_user': 'None',
     'bitbucket_repo': 'None',
     'bitbucket_version': 'feature-claudia-6224_ReadTheDocs_problems',
@@ -121,3 +114,5 @@ context = {
 }
 
 # Habría que saber el commit...
+# Habría que saber el número de versiones que hay
+# downloads también se tiene que fijar en función de la versión que creemos

@@ -54,7 +54,8 @@ release = ''
 html_title = u'FIWARE-Bosun: Cloto'
 html_short_title = u'FIWARE-Bosun: Cloto'
 
-# The div class version option
-theme_display_version = False
-
-current_version = None
+# Custom sidebar templates
+html_sidebars = {
+   '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
+   'using/windows': ['windowssidebar.html', 'searchbox.html'],
+}

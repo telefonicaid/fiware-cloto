@@ -53,7 +53,7 @@ html_sidebars = {
 }
 
 context = {
-    'using_theme': using_rtd_theme,
+    'using_theme': True,
     'html_theme': html_theme,
     'current_version': "",
     'MEDIA_URL': "https://media.readthedocs.org/",

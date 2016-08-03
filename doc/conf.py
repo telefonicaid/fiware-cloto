@@ -33,8 +33,10 @@ else:
     html_context = {
         'css_files': [
             'https://www.fiware.org/style/fiware_readthedocs.css',
-            'https://fiware-orion.readthedocs.io/en/develop/css/theme.css',
+            'https://www.fiware.org/style/monokai_sublime_.css',
+            'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
             'https://fiware-orion.readthedocs.io/en/develop/css/theme_extra.css',
+            'https://fiware-orion.readthedocs.io/en/develop/css/theme.css'
         ],
     }
 

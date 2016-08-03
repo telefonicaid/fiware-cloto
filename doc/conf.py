@@ -23,11 +23,18 @@ if not on_rtd:
         app.add_stylesheet('mystyle.css')
 else:
     # Override default css to get a larger width for ReadTheDoc build
+#    html_context = {
+#        'css_files': [
+#            'https://media.readthedocs.org/css/sphinx_rtd_theme.css',
+#            'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
+#            '_static/mystyle.css'
+#        ],
+#    }
     html_context = {
         'css_files': [
-            'https://media.readthedocs.org/css/sphinx_rtd_theme.css',
-            'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
-            '_static/mystyle.css'
+            'https://www.fiware.org/style/fiware_readthedocs.css',
+            'https://fiware-orion.readthedocs.io/en/develop/css/theme.css',
+            'https://fiware-orion.readthedocs.io/en/develop/css/theme_extra.css',
         ],
     }
 
@@ -107,3 +114,5 @@ context = {
     'commit': '14419c12',
 
 }
+
+# Habría que saber el commit...

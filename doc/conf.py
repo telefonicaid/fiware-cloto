@@ -59,7 +59,7 @@ html_sidebars = {
    '**': ['globaltoc.html', 'sourcelink.html', 'searchbox.html'],
    'using/windows': ['windowssidebar.html', 'searchbox.html'],
 }
-
+'''
 context = {
     'using_theme': True,
     'html_theme': html_theme,
@@ -97,7 +97,7 @@ context = {
     'github_user': 'telefonicaid',
     'github_repo': 'fiware-cloto',
     'github_version': 'feature-claudia-6224_ReadTheDocs_problems',
-    'display_github': False,
+    'display_github': True,
     'bitbucket_user': 'None',
     'bitbucket_repo': 'None',
     'bitbucket_version': 'feature-claudia-6224_ReadTheDocs_problems',
@@ -116,3 +116,4 @@ context = {
 # Habría que saber el commit...
 # Habría que saber el número de versiones que hay
 # downloads también se tiene que fijar en función de la versión que creemos
+'''

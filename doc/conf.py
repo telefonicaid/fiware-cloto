@@ -36,7 +36,10 @@ else:
             'https://www.fiware.org/style/monokai_sublime_.css',
             'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
             'https://fiware-orion.readthedocs.io/en/develop/css/theme_extra.css',
-            'https://fiware-orion.readthedocs.io/en/develop/css/theme.css'
+            'https://fiware-orion.readthedocs.io/en/develop/css/theme.css',
+            'https://fiware-orion.readthedocs.io/en/develop/css/highlight.css',
+            'https://fonts.googleapis.com/css?family=Lato:400,700|Roboto+Slab:400,700|Inconsolata:400,700',
+            'https://media.readthedocs.org//css/badge_only.css'
         ],
     }
 

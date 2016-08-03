@@ -10,11 +10,14 @@ on_rtd = os.environ.get('READTHEDOCS', None) == 'True'
 
 # Only import and set the theme if we're building docs locally; otherwise,
 # readthedocs.org uses their theme by default, so no need to specify it.
-if not on_rtd:
-    import sphinx_rtd_theme
-    html_theme = 'sphinx_rtd_theme'
-    html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+import sphinx_rtd_theme
 
+html_theme = 'sphinx_rtd_theme'
+html_style = None
+html_theme_options = {}
+html_theme_path = [sphinx_rtd_theme.get_html_theme_path()]
+
+if not on_rtd:
     # Override default css to get a larger width for local build
     def setup(app):
         app.add_stylesheet('mystyle.css')

@@ -1,5 +1,5 @@
-FIWARE Policy Manager - User and Programmers Guide
-__________________________________________________
+User & Programmers Guide
+________________________
 
 
 Introduction

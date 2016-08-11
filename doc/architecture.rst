@@ -1,5 +1,6 @@
-FIWARE Policy Manager - Architecture Description
-________________________________________________
+Architecture Description
+________________________
+
 
 .. raw:: mediawiki
 

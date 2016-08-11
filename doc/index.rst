@@ -43,6 +43,9 @@ cover more advanced topics:
 
 __ `FIWARE Cloto GitHub README`_
 
+
+.. title:: Home
+
 .. toctree::
    :maxdepth: 1
 
@@ -50,7 +53,6 @@ __ `FIWARE Cloto GitHub README`_
    admin_guide
    architecture
    open_spec
-
 
 .. REFERENCES
 

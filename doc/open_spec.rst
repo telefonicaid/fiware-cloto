@@ -1,5 +1,6 @@
-FIWARE Policy Manager - Open RESTful API Specification
-______________________________________________________
+Open RESTful API Specification
+______________________________
+
 
 Introduction to the PMI Policy API
 ==================================

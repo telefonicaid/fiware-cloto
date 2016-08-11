@@ -23,6 +23,8 @@ else:
     html_context = {
         'css_files': [
             'https://www.fiware.org/style/fiware_readthedocs.css',
+            'https://media.readthedocs.org/css/sphinx_rtd_theme.css',
+            'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
             '_static/mystyle.css'
         ],
     }

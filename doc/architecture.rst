@@ -18,7 +18,7 @@ defined policies or rules.
 
 The Policy Manager GE provides the basic management of cloud resources
 based on rules, as well as management of the corresponding resources
-within the FI-WARE Cloud Instance like actions based on physical
+within the FIWARE Cloud Instance like actions based on physical
 monitoring or infrastructure, security monitoring of resources and
 services or whatever that could be defined by a facts, actions and
 rules.

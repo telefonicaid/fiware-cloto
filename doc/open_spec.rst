@@ -1,12 +1,13 @@
-FIWARE Policy Manager - Open RESTful API Specification
-______________________________________________________
+Open RESTful API Specification
+______________________________
+
 
 Introduction to the PMI Policy API
 ==================================
 
-Please check the
-`FI-WARE Open Specifications Legal Notice <https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specifications_Legal_Notice>`__
-to understand the rights to use FI-WARE Open Specifications.
+Please check the `FIWARE Open Specifications Legal Notice
+<https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specifications_Legal_Notice>`_
+to understand the rights to use FIWARE Open Specifications.
 
 PMI Policy API
 --------------
@@ -14,7 +15,7 @@ PMI Policy API
 The PMI Policy API is a RESTful, resource-oriented API accessed via
 HTTP/HTTPS that uses JSON-based representations for information
 interchange that provide functionalities to the Policy Manager GE. This
-document describes the FI-WARE-specific features extension, which allows
+document describes the FIWARE-specific features extension, which allows
 cloud user to extend the basic functionalities offered by Policy Manager
 GE in order to cope with elasticity management.
 
@@ -28,13 +29,13 @@ the latter, this specification indicates the interface to be provided in
 order to create policies and actions associated the facts received from
 cloud resources (currently associated to servers but not only oriented
 to them). To use this information, the reader should first have a
-general understanding of the `Policy Manager Generic
-Enabler <https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.ArchitectureDescription.Cloud.PolicyManager>`__
+general understanding of the `Policy Manager Generic Enabler
+<https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.ArchitectureDescription.Cloud.PolicyManager>`_
 and also be familiar with:
 
 -  RESTful web services
--  `HTTP/1.1 (RFC2616) <http://www.ietf.org/rfc/rfc2616.txt>`__
--  `JSON <http://www.ietf.org/rfc/rfc4627.txt?number=4627>`__ data
+-  `HTTP/1.1 (RFC2616) <http://www.ietf.org/rfc/rfc2616.txt>`_
+-  `JSON <http://www.ietf.org/rfc/rfc4627.txt?number=4627>`_ data
    serialization formats.
 
 |
@@ -49,7 +50,7 @@ below:
 +-----------------+-------------------------------------------+
 | Revision Date   | Changes Summary                           |
 +=================+===========================================+
-| Oct 17, 2012    | -  First version of the PMI Policy API.   |
+| Oct 17, 2012    | First version of the PMI Policy API.      |
 +-----------------+-------------------------------------------+
 
 | 
@@ -69,17 +70,18 @@ concepts. The following list summarizes these special notations.
 -  The variables are represented between brackets, e.g. {id} and in
    italic font. When the reader find it, can change it by any value.
 
-| For a description of some terms used along this document, see `1 <https://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/FIWARE.ArchitectureDescription.Cloud.SM#Main_conceptsFIWARE.ArchitectureDescription.Cloud.SM>`__.
+For a description of some terms used along this document, see `[1]
+<https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting_Architecture>`_.
 
 Additional Resources
 --------------------
 
 You can download the most current version of this document from the
-FI-WARE API specification selecting **PDF Version** from the Toolbox
+FIWARE API specification selecting **PDF Version** from the Toolbox
 menu (left side), which will generate the file to download it. For more
 details about the **Policy Manager** that this API is based upon, please
-refer to `FI-WARE Cloud
-Hosting <https://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting>`__.
+refer to `FIWARE Cloud Hosting
+<https://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting>`_.
 
 General PMI Policy API Information
 ==================================
@@ -206,8 +208,8 @@ Links and References
 
 Resources often lead to refer to other resources. In those cases, we
 have to provide an ID or an URL to a remote resource. see `OpenStack
-Compute Developer
-Guide <http://docs.openstack.org/api/openstack-compute/2/content/LinksReferences.html>`__
+Compute Developer Guide
+<http://docs.openstack.org/api/openstack-compute/2/content/LinksReferences.html>`_
 on their application to infrastructural resources.
 
 Limits
@@ -251,8 +253,8 @@ API Operations
 ==============
 
 In this section we go in depth for each operation. These operations were
-described in the `Policy Manager Architectural
-description <https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.ArchitectureDescription.Cloud.PolicyManager>`__.
+described in the `Policy Manager Architectural description
+<https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.ArchitectureDescription.Cloud.PolicyManager>`_.
 The FI-WARE programmer guide will also provide examples of how to use
 this API. The specify operations of this extensions are related to the
 management of scalability rules.
@@ -274,8 +276,7 @@ Get the information of the API
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation does not require a request body and lists the information
 of the current version of the API. The following examples show a JSON
@@ -321,8 +322,7 @@ Update the window size
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This call updates the window size of the service in order to change the
 stabilization window size to be applied to the monitoring data received
@@ -370,8 +370,7 @@ Get the list of all servers' rules
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 Returns a list of servers with their rules. There is no body in the
 request and the response is the following one:
@@ -440,8 +439,7 @@ Get the list of all rules of a server
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation returns the list of elasticity rules associated with a
 server identified with its *{serverId}*. This operation does not require
@@ -494,14 +492,13 @@ Update the context of a server
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation updates the context related to a specific server,
 identified with its *serverId*. The context information contains the
 description of the CPU, Memory, Disk and/or Network usages. This message
-follows the `NGSI-10 information
-model <http://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/NGSI-9/NGSI-10_information_model>`__
+follows the `NGSI-10 information model
+<http://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/NGSI-9/NGSI-10_information_model>`_
 but using JSON format and the response has no body.
 
 Request:
@@ -593,8 +590,7 @@ Create a new elasticity rule
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation creates a new elasticity rules associated to a server,
 which is identified by {serverId}. The request specifies the rule to be
@@ -650,8 +646,7 @@ Update an elasticity rule
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation allows to update the rule condition, the action or both
 or a specific server identified by its {serverId} and a specific rule
@@ -662,7 +657,7 @@ Request:
 
 ::
 
-    {
+     {
         "name": <NAME>,
         "condition": <CONDITION_DESCRIPTION>,
         "action": <ACTION_ON_SERVER>
@@ -681,7 +676,7 @@ Response:
 
 ::
 
-    {
+     {
         "name": <NAME>,
         "condition": <CONDITION_DESCRIPTION>,
         "action": <ACTION_ON_SERVER>
@@ -699,8 +694,7 @@ Delete an elasticity rule
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation deletes a specific rule, identified by its {ruleId},
 within a server, identified by its {serverId}. This operation does not
@@ -719,8 +713,7 @@ Get an elasticity rule
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation gets a specific rule, identified by its {ruleId}, within
 a server, identified by its {serverId}. This operation does not require
@@ -763,8 +756,7 @@ Create a new subscription
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation creates a new subcription rules associated to a rule,
 which is identified by {ruleId}. The request specifies the rule to be
@@ -814,8 +806,7 @@ Delete a subscription
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation deletes a subscription, identified by its
 {subscriptionId}, within a server, identified by its {serverId}. This
@@ -835,8 +826,7 @@ Get a subscription
 Normal Response Code(s): 200 (Ok)
 
 Error Response Code(s): identityFault (400, 500, …), badRequest (400),
-unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable
-(503)
+unauthorized (401), forbidden (403), badMethod (405), serviceUnavailable (503)
 
 This operation gets a subscription, identified by its {subscriptionId},
 within a server, identified by its {serverId}. This operation does not
@@ -919,6 +909,7 @@ Supported operators are:
 
 Actions
 -------
+
 There are two types of actions:
 
 - notify-scale: with two different options
@@ -945,6 +936,7 @@ There are two types of actions:
 
 
 These actions send a meessage with the following format:
+
 ::
 
     {"action": <ACTION_NAME>,
@@ -953,8 +945,9 @@ These actions send a meessage with the following format:
 Where:
 
 -  **ACTION_NAME** is the name of the action (scaleUp or Scale Down).
--  **SERVER_ID** is the key whose value specifies the server ID that fulfills the condition, following the OpenStack ID
-   format. An example of it is the id 52415800-8b69-11e0-9b19-734f6af67565.
+-  **SERVER_ID** is the key whose value specifies the server ID that fulfills
+   the condition, following the OpenStack ID format. An example of it is the
+   id 52415800-8b69-11e0-9b19-734f6af67565.
 
 - notify-email
 
@@ -976,11 +969,12 @@ This action send a meessage with the following format:
 
 Where:
 
--  **SERVER_ID** is the key whose value specifies the server ID that fulfills the contidion, following the OpenStack ID
-   format. An example of it is the id
-   52415800-8b69-11e0-9b19-734f6af67565.
+-  **SERVER_ID** is the key whose value specifies the server ID that fulfills
+   the contidion, following the OpenStack ID format. An example of it is the
+   id 52415800-8b69-11e0-9b19-734f6af67565.
 -  **EMAIL** is the email address where the message should be sent.
--  **DESCRIPTION** is the body of the email which contains the detail that the creator of the rule wanted to inform.
+-  **DESCRIPTION** is the body of the email which contains the detail that the
+   creator of the rule wanted to inform.
 
 Example Rule
 ------------

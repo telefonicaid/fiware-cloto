@@ -1,5 +1,6 @@
-FIWARE Policy Manager - Installation and Administration Guide
-_____________________________________________________________
+Installation & Administration Guide
+___________________________________
+
 
 Policy Manager Installation
 ===========================
@@ -17,18 +18,15 @@ installed the following software of framework in the machine:
 
 -  Rule engine dependencies:
 
-   -  Python 2.7.6
-      `1 <http://www.python.org/download/releases/2.7.6/>`__.
-   -  PyClips 1.0 `2 <http://sourceforge.net/projects/pyclips/files/>`__
-   -  RabbitMQ 3.3.0 `3 <http://www.rabbitmq.com/download.html>`__
-   -  MySQL 5.6.14 or above
-      `4 <http://dev.mysql.com/downloads/mysql/>`__
+   -  Python 2.7.6 `[1] <http://www.python.org/download/releases/2.7.6/>`_
+   -  PyClips 1.0 `[2] <http://sourceforge.net/projects/pyclips/files/>`_
+   -  RabbitMQ 3.3.0 `[3] <http://www.rabbitmq.com/download.html>`_
+   -  MySQL 5.6.14 or above `[4] <http://dev.mysql.com/downloads/mysql/>`_
 
 -  Facts engine dependencies:
 
-   -  Python 2.7.6
-      `5 <http://www.python.org/download/releases/2.7.6/>`__.
-   -  Redis 2.8.8 `6 <http://redis.io/download>`__
+   -  Python 2.7.6 `[1] <http://www.python.org/download/releases/2.7.6/>`_
+   -  Redis 2.8.8 `[5] <http://redis.io/download>`_
 
 Rule engine installation
 ------------------------
@@ -49,14 +47,14 @@ Step 2: Install pyclips
 Download pyclips from
 http://sourceforge.net/projects/pyclips/files/pyclips/pyclips-1.0
 
-To install pyClips execute this following commands:
+To install pyclips execute this following commands:
 
 ::
 
-  $ tar -xvf pyclips-1.0.X.Y.tar.gz
-  $ cd pyclips
-  $ python setup.py build
-  $ su -c "python setup.py install"
+    $ tar -xvf pyclips-1.0.X.Y.tar.gz
+    $ cd pyclips
+    $ python setup.py build
+    $ su -c "python setup.py install"
 
 Maybe you need to execute these commands using sudo.
 
@@ -84,10 +82,10 @@ You will need four packages:
 
 ::
 
-  mysql-server
-  mysql-client
-  mysql-shared
-  mysql-devel
+    mysql-server
+    mysql-client
+    mysql-shared
+    mysql-devel
 
 After installation, you should create a user, create database called
 'cloto' and give all privileges to the user for this database. The name of
@@ -96,7 +94,6 @@ of fiware-facts and fiware-cloto.
 
 To add a user to the server, please follow official documentation:
 http://dev.mysql.com/doc/refman/5.5/en/adding-users.html
-
 
 
 Step 5: Download and execute the Rule Engine server
@@ -122,13 +119,15 @@ It should show something like the following:
 
 2. Configuring Rule engine
 
-Before starting the rule engine, you should edit settings file and add it to the default folder
-located in /etc/fiware.d/fiware-cloto.cfg
+Before starting the rule engine, you should edit settings file and add it to the
+default folder located in ``/etc/fiware.d/fiware-cloto.cfg``
 
-In addition, user could have a copy of this file in other location and pass its location to the server in running
-execution defining an environment variable called CLOTO_SETTINGS_FILE.
+In addition, user could have a copy of this file in other location and pass its
+location to the server in running execution defining an environment variable
+called CLOTO_SETTINGS_FILE.
 
-You can find the reference file inside `cloto_settings <../fiware_cloto/cloto_settings/fiware-cloto.cfg>`_.
+You can find the reference file `here
+<https://github.com/telefonicaid/fiware-cloto/blob/master/fiware_cloto/cloto_settings/fiware-cloto.cfg>`_.
 You should copy this file into default folder and complete all empty keys.
 
 ::
@@ -188,8 +187,8 @@ domain name, etc. An example could be like this:
     ALLOWED_HOSTS: ['127.0.0.1', 'localhost', 'policymanager.host.com','80.71.123.2’]
 
 
-Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
-in that folder.
+Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/``
+(by default), with the right permissions to write in that folder.
 
 ::
 
@@ -197,8 +196,9 @@ in that folder.
 
 In 2.5.0 release we added a new parameter called ``SECURITY_LEVEL``.
 This parameter could have three values: ``[HIGH | MEDIUM | LOW]``
-Depending of API version it will store user tokens in memory assuming that a token will be valid for a time period.
-After this expiration time, token is going to be verified with against keystone.
+Depending of API version it will store user tokens in memory assuming that a
+token will be valid for a time period. After this expiration time, token is
+going to be verified with against keystone.
 
 ::
 
@@ -220,13 +220,15 @@ To run fiware-cloto, just execute:
 
     $ gunicorn fiware_cloto.cloto.wsgi -b $IP
 
-Where $IP is a valid network interface assigned with a public address. If you execute the command
-with ``127.0.0.1`` fiware-cloto won't be accessible from outside.
+Where $IP is a valid network interface assigned with a public address. If you
+execute the command with ``127.0.0.1`` fiware-cloto won't be accessible from
+outside.
 
 To stop fiware-cloto, you can stop gunicorn server, or kill it
 
-NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
-``--log-file=-`` at the end of the command. This option will show the logs in your prompt (standard stderr). If you want
+NOTE: if you want to see gunicorn log if something is going wrong, you could
+execute the command before adding ``--log-file=-`` at the end of the command.
+This option will show the logs in your prompt (standard stderr). If you want
 to store the log into a file just write ``--log-file=<log file name>``.
 
 
@@ -235,7 +237,9 @@ Facts installation
 
 Step 1: Install python
 ~~~~~~~~~~~~~~~~~~~~~~
+
 The process will be the same that be see in the previous section.
+
 
 Step 2: Install Redis
 ~~~~~~~~~~~~~~~~~~~~~
@@ -244,17 +248,17 @@ Download, extract and compile Redis with:
 
 ::
 
-     $ wget http://download.redis.io/releases/redis-2.8.8.tar.gz
-     $ tar xzf redis-2.8.8.tar.gz
-     $ cd redis-2.8.8
-     $ make
+    $ wget http://download.redis.io/releases/redis-2.8.8.tar.gz
+    $ tar xzf redis-2.8.8.tar.gz
+    $ cd redis-2.8.8
+    $ make
 
 The binaries that are now compiled are available in the src directory.
 Run Redis with:
 
 ::
 
-     $ src/redis-server
+    $ src/redis-server
 
 It execute the redis server on port 6379.
 
@@ -270,8 +274,10 @@ You can interact with Redis using the built-in client:
 
 Step 3: Install MySQL
 ~~~~~~~~~~~~~~~~~~~~~
-The process is the same as process seen in the previous section.
-If fiware-facts is being installed in the same system as fiware-cloto, you could omit this step.
+
+The process is the same as process seen in the previous section. If fiware-facts
+is being installed in the same system as fiware-cloto, you could omit this step.
+
 
 Step 4: Download and execute the facts engine server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -299,18 +305,18 @@ It should shown the following information when it is executed:
 
 2. Configuring fiware-facts
 
-The configuration used by the fiware-facts component is read from the configuration file.
-This file is located here:
+The configuration used by fiware-facts component is read from the configuration
+file located at ``/etc/fiware.d/fiware-facts.cfg``
 
-``/etc/fiware.d/fiware-facts.cfg``
+MySQL cloto configuration must be filled before starting fiware-facts component,
+user and password are empty by default. You can copy the default configuration
+file ``facts_conf/fiware_facts.cfg`` to the folder defined for your OS, and
+complete data about cloto MySQL configuration (user and password).
 
 
-MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
-You can copy the `default configuration file <facts_conf/fiware_facts.cfg>`_ to the folder defined for your OS, and
-complete data about cloto MYSQL configuration (user and password).
-
-In addition, user could have a copy of this file in other location and pass its location to the server in running
-execution defining an environment variable called FACTS_SETTINGS_FILE.
+In addition, user could have a copy of this file in other location and pass its
+location to the server in running execution defining an environment variable
+called FACTS_SETTINGS_FILE.
 
 Options that user could define:
 ::
@@ -331,8 +337,8 @@ Options that user could define:
     [logger_root]
      level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
 
-Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/`` (by default), with the right permissions to write
-in that folder.
+Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/``
+(by default), with the right permissions to write in that folder.
 
 ::
 
@@ -346,18 +352,20 @@ Execute command:
 
     gunicorn facts.server:app -b $IP:5000
 
-Where $IP should be the IP assigned to the network interface that should be listening (ej. 192.168.1.33)
+Where $IP should be the IP assigned to the network interface that should be
+listening (ej. 192.168.1.33)
 
-You can also execute the server with a different settings file providing an environment variable with the location
-of the file:
+You can also execute the server with a different settings file providing an
+environment variable with the location of the file:
 
 ::
 
     gunicorn facts.server:app -b $IP:5000
     --env FACTS_SETTINGS_FILE=/home/user/fiware-facts.cfg
 
-NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
-``--log-file=-`` at the end of the command. This option will show the logs in your prompt (standard stderr). If you want
+NOTE: if you want to see gunicorn log if something is going wrong, you could
+execute the command before adding ``--log-file=-`` at the end of the command.
+This option will show the logs in your prompt (standard stderr). If you want
 to store the log into a file just write ``--log-file=<log file name>``.
 
 
@@ -459,9 +467,7 @@ of the execution of the Policy Manager
         "windowsize": 5
     }
 
-For more details to use this GE, please refer to the `Policy Manager -
-User and Programmers
-Guide <Policy_Manager_-_User_and_Programmers_Guide>`__.
+For more details to use this GE, please refer to the User & Programmers Guide.
 
 List of Running Processes
 -------------------------
@@ -568,18 +574,18 @@ command should ask you for the password and after that show you:
 
 ::
 
-  Welcome to the MySQL monitor.  Commands end with ; or \g.
-  Your MySQL connection id is 155286
-  Server version: 5.6.14 MySQL Community Server (GPL)
+    Welcome to the MySQL monitor.  Commands end with ; or \g.
+    Your MySQL connection id is 155286
+    Server version: 5.6.14 MySQL Community Server (GPL)
 
-  Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
+    Copyright (c) 2000, 2013, Oracle and/or its affiliates. All rights reserved.
 
-  Oracle is a registered trademark of Oracle Corporation and/or its
-  affiliates. Other names may be trademarks of their respective
-  owners.
+    Oracle is a registered trademark of Oracle Corporation and/or its
+    affiliates. Other names may be trademarks of their respective
+    owners.
 
-  Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
-  mysql>
+    Type 'help;' or '\h' for help. Type '\c' to clear the current input statement.
+    mysql>
 
 In order to show the different tables contained in this database, we
 should execute the following commands with the result that we show here:
@@ -626,7 +632,8 @@ It should return with the following information:
     |  1 | Telefonica I+D |       1 | 2014-10-02 14:04:41 | {file} |
     +----+----------------+---------+---------------------+--------+
 
-Where {file} is the path to the OpenSpecification file whose value is https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager
+Where {file} is the path to the OpenSpecification file whose value is
+https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager
 
 Diagnosis Procedures
 ====================

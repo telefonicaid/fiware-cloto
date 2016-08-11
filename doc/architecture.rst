@@ -1,21 +1,12 @@
-FIWARE Policy Manager - Architecture Description
-________________________________________________
+Architecture Description
+________________________
 
-.. raw:: mediawiki
-
-   {{TOCright}}
-
-Copyright
-=========
-
-Copyright © 2012 by `Telefónica I+D <Telefónica I+D>`__. All Rights
-Reserved.
 
 Legal Notice
 ============
 
-Please check the following `Legal
-Notice <FI-WARE Open Specification Legal Notice (implicit patents license)>`__
+Please check the following `Legal Notice
+<https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specification_Legal_Notice_%28implicit_patents_license%29>`_
 to understand the rights to use these specifications.
 
 Overview
@@ -27,13 +18,13 @@ defined policies or rules.
 
 The Policy Manager GE provides the basic management of cloud resources
 based on rules, as well as management of the corresponding resources
-within the FI-WARE Cloud Instance like actions based on physical
+within the FIWARE Cloud Instance like actions based on physical
 monitoring or infrastructure, security monitoring of resources and
 services or whatever that could be defined by a facts, actions and
 rules.
 
 The baseline for the Policy Manager GE is
-`PyCLIPS <http://pyclips.sourceforge.net/web/>`__, which is a module to
+`PyCLIPS <http://pyclips.sourceforge.net/web/>`_, which is a module to
 interface CLIPS expert system and python language. The reason to take
 PyCLIPS is to extend the OpenStack ecosystem with a expert system
 written in the same language that the rest of the OpenStack services.
@@ -58,7 +49,7 @@ any producer of information that monitors the different resources of the
 cloud system. Context Broker GE, like publish/subscribe/notify system,
 interacts with the Policy Manager GE to suscribe to the information
 (facts) of Virtual Machines or whatever in order to get updated usage
-status of resources (ej. cpu, memory, or disk) or resources that we want
+status of resources (e.g. cpu, memory, or disk) or resources that we want
 to monitor. These facts are used by the inference engine to deduce new
 facts based on the rules or infer new actions to take by third parties.
 
@@ -156,8 +147,8 @@ The Policy Manager GE is currently composed of two main interfaces:
    context data) related to a virtual server.
 -  **Context Broker Manager Interface (NGSI)** is invoked in order to
    subscribe the Policy Manager to a specific monitoring resource. See
-   `NGSI-10 Open RESTful Api
-   Specification <https://forge.fi-ware.eu/plugins/mediawiki/wiki/data/index.php/FI-WARE_NGSI-10_Open_RESTful_API_Specification_ES>`__
+   `NGSI-10 Open RESTful API Specification
+   <https://forge.fi-ware.eu/plugins/mediawiki/wiki/data/index.php/FI-WARE_NGSI-10_Open_RESTful_API_Specification_ES>`_
    for more details.
 
 Architecture Components
@@ -264,9 +255,9 @@ sequence|
 
 #. If Policy Manager have requested an administration Token before it will use
    this token to validate the future token received from the Cloud Portal.
-#. If an existing administration token has expired or it is the first initialization,
-   the Policy Manager requests a new administration Token from IdM in
-   order to validate the future token received from the Cloud Portal
+#. If an existing administration token has expired or it is the first
+   initialization, the Policy Manager requests a new administration Token
+   from IdM in order to validate the future token received from the Cloud Portal
    through **generate\_adminToken()** interface.
 
    #. The IdM returns a valid administration token that will be used to
@@ -456,8 +447,8 @@ Resolution of Technical Issues
 ------------------------------
 
 When applied to Policy Manager GE, the general design principles
-outlined at `Cloud Hosting
-Architecture <http://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting_Architecture>`__
+outlined at `Cloud Hosting Architecture
+<http://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting_Architecture>`_
 can be translated into the following key design goals:
 
 -  Rapid Elasticity, capabilities can be quickly elastically provisioned
@@ -478,9 +469,8 @@ can be translated into the following key design goals:
 -  Confidentiality, Policy Manager does not allow the access to facts,
    rules and actions associated to a specitic tenant.
 
-Regarding the general design principles not covered at `Cloud Hosting
-Architecture <http://forge.fi-ware.eu/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting_Architecture>`__,
-they can be translated into the following key design goals:
+Regarding the general design principles not covered by the Cloud Hosting
+Architecture, they can be translated into the following key design goals:
 
 -  REST based interfaces, for rules and facts.
 -  The Policy Manager GE keeps stored all rules provisioned for each

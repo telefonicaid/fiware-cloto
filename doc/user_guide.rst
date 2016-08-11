@@ -14,9 +14,8 @@ Background and Detail
 ---------------------
 
 This User and Programmers Guide relates to the Policy Manager GE which
-is part of the `Cloud Hosting Chapter <Cloud_Hosting_Architecture>`__.
-Please find more information about this Generic Enabler in the following
-`Open Specification <FIWARE.OpenSpecification.Cloud.PolicyManager>`__.
+is part of the `Cloud Hosting Chapter`_. Please find more information
+about this Generic Enabler in the following `Open Specification`_.
 
 User Guide
 ==========
@@ -34,14 +33,12 @@ can handle HTTP traffic, are possible clients.
 Accessing Policy Manager from the CLI
 -------------------------------------
 
-To invoke the REST API use the curl program. Curl
-`1 <http://curl.haxx.se/>`__ is a client to get documents/files from or
-send documents to a server, using any of the supported protocols (HTTP,
-HTTPS, FTP, GOPHER, DICT, TELNET, LDAP or FILE) and therefore is also
-usable for Policy Manager API. Use the curl command line tool or use
-libcurl from within your own programs in C. Curl is free and open
-software that compiles and runs under a wide variety of operating
-systems.
+To invoke the REST API use the curl program. Curl `[1] <http://curl.haxx.se/>`_
+is a client to get documents/files from or send documents to a server, using any
+of the supported protocols (HTTP, HTTPS, FTP, LDAP, FILE, etc.) and therefore is
+also suitable for Policy Manager API. Use either the curl command line tool or
+libcurl from within your own programs in C. Curl is free and open software
+that compiles and runs under a wide variety of operating systems.
 
 In order to make a probe of the different functionalities related to the
 Policy Manager, we make a list of several operations to make a probe of
@@ -259,15 +256,20 @@ operation:
     < Server: WSGIServer/0.1 Python/2.6.6
     < Content-Type: text/html; charset=utf-8
 
-Accessing Policy Manager from a Browser
+	
+Accessing Policy Manager from a browser
 ---------------------------------------
 
-To send http commands to Policy Manager using browser, use:
+To send HTTP requests to Policy Manager using a browser, you may use:
 
--  Chrome browser
-   `2 <http://www.google.es/chrome?platform=linux&hl=en-GB>`__ with the
-   Simple REST Client plugin
-   `3 <https://chrome.google.com/webstore/detail/fhjcajmcbmldlhcimfajhfbgofnpcjmb>`__
--  Firefox RESTClient add-ons
-   `4 <https://addons.mozilla.org/en-US/firefox/addon/restclient/>`__.
+- Chrome browser `[2] <http://www.google.es/chrome?platform=linux&hl=en-GB>`_
+  with the Simple REST Client plugin `[3]
+  <https://chrome.google.com/webstore/detail/fhjcajmcbmldlhcimfajhfbgofnpcjmb>`_
+- Firefox RESTClient add-on `[4]
+  <https://addons.mozilla.org/en-US/firefox/addon/restclient/>`_.
 
+
+.. REFERENCES
+
+.. _Cloud Hosting Chapter: https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/Cloud_Hosting_Architecture
+.. _Open Specification: https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE.OpenSpecification.Cloud.PolicyManager

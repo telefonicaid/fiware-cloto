@@ -8,10 +8,8 @@ RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 RUN python get-pip.py 
 RUN git clone https://github.com/telefonicaid/fiware-cloto /opt/fiware-cloto
 WORKDIR /opt/fiware-cloto
-RUN mkdir /etc/fiware.d/
-RUN mkdir /var/log/fiware-cloto
-RUN pip install -r requirements.txt
-RUN pip install MySQL-python
+RUN mkdir /etc/fiware.d/; mkdir /var/log/fiware-cloto
+RUN pip install -r requirements.txt; pip install MySQL-python
 COPY fiware-cloto.cfg /etc/fiware.d/fiware-cloto.cfg
 RUN cp utils/cloto_start /etc/fiware.d/
 RUN chmod a+x /etc/fiware.d/cloto_start

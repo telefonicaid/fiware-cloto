@@ -470,8 +470,8 @@ License
 .. |Documentation Badge| image:: https://readthedocs.org/projects/fiware-cloto/badge/?version=latest
    :target: http://fiware-cloto.readthedocs.org/en/latest/?badge=latest
    :alt: License
-.. |Docker badge| image:: https://img.shields.io/docker/pulls/fiware/bosun-cloto.svg)
-   :targe: https://hub.docker.com/r/fiware/bosun-cloto
+.. |Docker badge| image:: https://img.shields.io/docker/pulls/fiware/bosun-cloto.svg
+   :target: https://hub.docker.com/r/fiware/bosun-cloto
    :alt: Docker Pulls
 
 .. REFERENCES

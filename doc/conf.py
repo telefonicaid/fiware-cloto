@@ -22,31 +22,31 @@ else:
     # Override default css to get a larger width for ReadTheDoc build
     html_context = {
         'css_files': [
-            'https://www.fiware.org/style/fiware_readthedocs.css',
             'https://media.readthedocs.org/css/sphinx_rtd_theme.css',
             'https://media.readthedocs.org/css/readthedocs-doc-embed.css',
             '_static/mystyle.css'
         ],
     }
 
-# The suffix of source filenames.
+# The suffix of source filenames
 source_suffix = '.rst'
 
-# The master toctree document.
+# The master toctree document
 master_doc = 'index'
 
-# General information about the project.
-project = u'FIWARE-Bosun: Cloto'
+# General information about the project
+title = u'FIWARE-Bosun'
+subtitle = u'Cloto'
 copyright = u'2016, Telefónica I+D'
+project = u':\n '.join([title, subtitle])
 version = ''
 release = ''
 
-# Icon for tabs, windows and bookmarks
+# HTML configuration
+html_title = title + ': ' + subtitle
 html_favicon = '_static/favicon.ico'
-
-# The “title” for HTML documentation
-html_title = u'FIWARE-Bosun: Cloto'
-html_short_title = u'FIWARE-Bosun: Cloto'
+html_show_sphinx = True
+html_show_copyright = False
 
 # Custom sidebar templates
 html_sidebars = {

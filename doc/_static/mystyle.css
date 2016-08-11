@@ -1,1 +1,6 @@
-@import url("https://fiware.org/style/fiware_readthedocs.css");
+@import url("https://www.fiware.org/style/fiware_readthedocs.css");
+
+/* Allow multiline project names in side navigation bar */
+.wy-side-nav-search a.icon-home {
+    white-space: pre;
+}

@@ -1,8 +1,8 @@
 .. _Top:
+
 ===============================
 FIWARE Policy Manager GE: Cloto
 ===============================
-
 
 |License Badge| |Documentation Badge| |StackOverflow| |Build Status| |Coverage Status| |Docker badge| |Pypi Version|
 
@@ -11,9 +11,10 @@ FIWARE Policy Manager GE: Cloto
 Introduction
 ============
 
-This is the code repository for **FIWARE Policy Manager GE - Cloto**, a server that provides an API-REST to
-create rules associated to servers, subscribe servers to Context Broker to get information about resources
-consumption of that servers and launch actions described in rules when conditions are given.
+This is the code repository for **FIWARE Policy Manager GE - Cloto**, a server
+that provides a REST API to create rules associated to servers, subscribe
+servers to Context Broker to get information about resources consumption of
+those servers and launch actions described in rules when conditions are met.
 
 This project is part of FIWARE_.
 Check also the `FIWARE Catalogue entry for Policy Manager`__
@@ -24,29 +25,34 @@ Any feedback on this documentation is highly welcome, including bugs, typos or
 things you think should be included but aren't. You can use `github issues`__
 to provide feedback.
 
-__ `Fiware-cloto - GitHub issues`_
+__ `FIWARE Cloto - GitHub issues`_
 
 Top_.
 
 
 GEi overall description
 =======================
+
 Bosun GEri is the reference implementation of Policy Manager GE.
 
-Bosun GEri offers decision-making ability, independently of the type of resource (physical/virtual resources,
-network, service, etc.)  being able to solve complex problems within the Cloud field by reasoning about the knowledge
-base, represented by facts and rules.
-Bosun GEri provides the basic management of cloud resources based on rules, as well as management of the corresponding
-resources within FIWARE Cloud instances based on infrastructure physical monitoring, resources and services
-security monitoring or whatever that could be defined by facts, actions and rules.
+Bosun offers decision-making ability, independently of the type of resource
+(physical/virtual resources, network, service, etc.) being able to solve
+complex problems within the Cloud field by reasoning about the knowledge
+base, represented by facts and rules. Bosun GEri provides the basic management
+of cloud resources based on rules, as well as management of the corresponding
+resources within FIWARE Cloud instances based on infrastructure physical
+monitoring, resources and services security monitoring or whatever that
+could be defined by facts, actions and rules.
 
-The baseline for the Bosun GEri is PyCLIPS, which is a module to interact with CLIPS expert system implemented in
-python language. The reason to take PyCLIPS is to extend the OpenStack ecosystem with an expert system, written in
-the same language as the rest of the OpenStack services.
-Besides, It provides notification service to your own HTTP server where you can define your
+The baseline for the Bosun GEri is PyCLIPS, which is a module to interact with
+CLIPS expert system implemented in Python language. The reason to take PyCLIPS
+is to extend the OpenStack ecosystem with an expert system, written in the same
+language as the rest of the OpenStack services. Besides, It provides
+notification service to your own HTTP server where you can define your
 own actions based on the notifications launched by Policy Manager.
-Last but not least, Bosun is integrated with the Monitoring GEri in order to recover the information of the (virtual)
-system and calculate any possible change on it based on the knowledge database defined for it.
+Last but not least, Bosun is integrated with the Monitoring GEri in order
+to recover the information of the (virtual) system and calculate any possible
+change on it based on the knowledge database defined for it.
 
 Top_.
 
@@ -55,17 +61,18 @@ Components
 ----------
 
 Fiware-Cloto
-    Fiware-cloto is part of FIWARE Policy Manager. It provides an API-REST to create rules associated to servers,
-    subscribe servers to Context Broker to get information about resources consumption of that servers and launch actions
-    described in rules when conditions are given.
+    Fiware-Cloto is part of FIWARE Policy Manager. It provides a REST API to
+    create rules associated to servers, subscribe servers to Context Broker to
+    get information about resources consumption of that servers and launch
+    actions described in rules when conditions are met.
 
 Fiware-Facts
-    Server to process the incoming facts from the
-    `Orion Context Broker <https://github.com/telefonicaid/fiware-orion>`__
-    and publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto. The facts are the result of the server
-    resources consumption.
+    Server to process the incoming facts from `Orion Context Broker`_ and
+    publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto.
+    The facts are the result of the server resources consumption.
 
 For more information, please refer to the `documentation <doc/README.rst>`_.
+
 
 Top_.
 
@@ -91,9 +98,10 @@ To install this module you have to install some components:
 This module also needs the installation of these other components:
 
 - Fiware-facts module installed (https://github.com/telefonicaid/fiware-facts)
-- A running instance of Orion Context Broker v0.28 (https://github.com/telefonicaid/fiware-orion/releases/tag/0.28.0)
-- fiware-monitoring connected to the Orion instance to provide
-  information about servers (https://github.com/telefonicaid/fiware-monitoring).
+- A running instance of Orion Context Broker v0.28
+  (https://github.com/telefonicaid/fiware-orion/releases/tag/0.28.0)
+- Fiware-monitoring connected to the Orion instance to provide information
+  about servers (https://github.com/telefonicaid/fiware-monitoring).
 
 Top_.
 
@@ -101,16 +109,18 @@ Top_.
 Pre-Installation
 ----------------
 
-Once you have all prerequisites installed, you must create a DB named cloto in your MySQL server.
-MYSQL installation directory should be added to PATH environment variable. You can add
-it executing (change ``/usr/local/`` with your mysql folder):
+Once you have all prerequisites installed, you must create a database named
+``cloto`` in your MySQL server. MySQL installation directory should be added
+to PATH environment variable. You can add it executing (change ``/usr/local/``
+with your mysql folder):
 
 .. code::
 
     $ export PATH=$PATH:/usr/local/mysql/bin
 
-In addition, be sure you have installed mysql-devel package for development of MySQL applications.
-You should be able to install it from yum or apt-get package managers.
+In addition, be sure you have installed mysql-devel package for development
+of MySQL applications. You should be able to install it from yum or apt-get
+package managers.
 
 Examples:
 
@@ -119,25 +129,27 @@ Examples:
     centos$ sudo yum install mysql-devel
     ubuntu$ sudo apt-get install mysql-devel
 
-At this you must configure cloto configuration and ensure your database is created with mysql.
-
+At this you must configure cloto configuration and ensure your database is
+created with mysql.
 
 Top_.
 
 
-Configuration file - Cloto
---------------------------
-The configuration used by the fiware-cloto component is read from the configuration file.
-This file is located here:
+Configuration file
+------------------
 
-``/etc/fiware.d/fiware-cloto.cfg``
+The configuration used by the fiware-cloto component is read from the file
+located at ``/etc/fiware.d/fiware-cloto.cfg``.
 
-MYSQL cloto configuration must be filled before starting fiware-facts component, user and password are empty by default.
-You can copy the `default configuration file <fiware_cloto/cloto_settings/fiware-cloto.cfg>`_ to the folder defined for your OS, and
-complete data about cloto MYSQL configuration (user and password) and all openstack configuration.
+MySQL cloto configuration must be filled before starting fiware-facts component,
+user and password are empty by default. You can copy the `default configuration
+file <fiware_cloto/cloto_settings/fiware-cloto.cfg>`_ to the folder defined for
+your OS, and complete data about cloto MySQL configuration (user and password)
+and all OpenStack configuration.
 
-In addition, user could have a copy of this file in other location and pass its location to the server in running
-execution defining an environment variable called CLOTO_SETTINGS_FILE.
+In addition, user could have a copy of this file in other location and pass its
+location to the server in running execution defining an environment variable
+called CLOTO_SETTINGS_FILE.
 
 Options that user could define:
 
@@ -212,59 +224,59 @@ To run fiware-cloto, just execute:
 
 To stop fiware-cloto, you can stop gunicorn server, or kill it
 
-NOTE: if you want to see gunicorn log if something is going wrong, you could execute the command before adding
-``--log-file=-`` at the end of the command. This option will show the logs in your prompt (standard stderr). If
-you prefer to write them into a file, just write ``--log-file=<log file name>``.
+NOTE: if you want to see gunicorn log if something is going wrong, you could
+execute the command before adding ``--log-file=-`` at the end of the command.
+This option will show the logs in your prompt (standard stderr). If you prefer
+to write them into a file, just write ``--log-file=<log file name>``.
 
-Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/`` (by default), with the right permissions to write
-in that folder.
+Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/``
+(by default), with the right permissions to write in that folder.
 
-::
+.. code::
 
-    mkdir -m /var/log/fiware-cloto
+    $ sudo mkdir -m /var/log/fiware-cloto
+
 
 Running with supervisor
 -----------------------
 
-Optionally you can add a new layer to manage gunicorn proccess with a supervisor.
+Optionally you can add a new layer to manage gunicorn process with a supervisor.
 Just install supervisor on your system:
 
-::
+.. code::
 
-    sudo apt-get install supervisor
+    $ sudo apt-get install supervisor
 
 Copy the file ``utils/cloto_start`` to ``/etc/fiware.d``.
 Make this script executable:
 
-::
+.. code::
 
-    sudo chmod a+x /etc/fiware.d/cloto_start
+    $ sudo chmod a+x /etc/fiware.d/cloto_start
 
 Copy the file ``utils/fiware-cloto.conf`` to ``/etc/supervisor/conf.d``.
 
 Start fiware-cloto using supervisor:
 
-::
+.. code::
 
-    sudo supervisorctl reread
-    sudo supervisorctl update
-    sudo supervisorctl start fiware-cloto
+    $ sudo supervisorctl reread
+    $ sudo supervisorctl update
+    $ sudo supervisorctl start fiware-cloto
 
 To stop fiware-cloto just execute:
 
-::
+.. code::
 
-     sudo supervisorctl stop fiware-cloto
+    $ sudo supervisorctl stop fiware-cloto
 
-NOTE:
-Supervisor provides an “event listener” to subscribe to “event notifications”.
-The purpose of the event notification/subscription system is to provide a mechanism for
-arbitrary code to be run (e.g. send an email, make an HTTP request, etc)
-when some condition is met. That condition usually has to do with subprocess state.
-For instance, you may want to notify someone via email when a process crashes and is restarted by Supervisor.
-For more information check also the `Supervisor Documentation`__
-
-__ `Supervisor Documentation`_
+NOTE: Supervisor provides an “event listener” to subscribe to
+“event notifications”. The purpose of the event notification/subscription
+system is to provide a mechanism for arbitrary code to be run (e.g. send an
+email, make an HTTP request, etc) when some condition is satisfied. That
+condition usually has to do with subprocess state. For instance, you may
+want to notify someone via email when a process crashes and is restarted
+by Supervisor. For more information check also the `Supervisor Documentation`_.
 
 Top_.
 
@@ -272,14 +284,16 @@ Top_.
 API Overview
 ============
 
-To create a new rule for a server, user should send the rule as body of a POST request to the cloto server, with the
-condition and action that should be performed.
+To create a new rule for a server, user should send the rule as body of a POST
+request to the Cloto server, with the condition and action that should be
+performed.
 
-For example, this operation allows to create a specific rule associate to a server:
+For example, this operation allows to create a specific rule associate to a
+server:
 
-::
+.. code::
 
-    curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4' -X POST
+    $ curl -v -H 'X-Auth-Token: 86e096cd4de5490296fd647e21b7f0b4' -X POST
     http://130.206.81.71:8000/v1.0/6571e3422ad84f7d828ce2f30373b3d4/servers
     /32c23ac4-230d-42b6-81f2-db9bd7e5b790/rules/
     -d '{"action": {"actionName": "notify-scale", "operation": "scaleUp"},
@@ -287,7 +301,8 @@ For example, this operation allows to create a specific rule associate to a serv
     "mem": { "value": 95, "operand": "greater equal"}}}'
 
 
-The result of this operation is a JSON with the Id of the server affected and the ruleId of the created rule:
+The result of this operation is a JSON with the Id of the server affected and
+the ruleId of the created rule:
 
 ::
 
@@ -299,7 +314,8 @@ The result of this operation is a JSON with the Id of the server affected and th
 Then user could perform a subscription to that rule with a new operation.
 
 Please have a look at the `API Reference Documentation`_ section below and
-at the `user and programmer guide <doc/user_guide.rst>`_ for more description of the possibilities and operations.
+at the `user and programmer guide <doc/user_guide.rst>`_ for more description
+of the possibilities and operations.
 
 Top_.
 
@@ -322,19 +338,20 @@ Unit tests
 
 Download source code from github
 
-::
+.. code::
 
     $ git clone https://github.com/telefonicaid/fiware-cloto.git
 
-To execute the unit tests, you must set the environment variable pointing to the settings_test file.
-Then you can use coverage to execute the tests and obtain the percentage of lines coveved by the tests.
-You must execute the tests from project folder ``fiware-cloto``.
-Once you were inside the right location, execute the required commands:
+To execute the unit tests, you must set the environment variable pointing to the
+settings_test file. Then you can use coverage to execute the tests and obtain
+the percentage of lines coveved by the tests. You must execute the tests from
+project folder ``fiware-cloto``. Once you were inside the right location,
+execute the required commands:
 
-::
+.. code::
 
     $ export DJANGO_SETTINGS_MODULE=fiware_cloto.cloto_settings.settings_tests
-    $ export CLOTO_SETTINGS_FILE=$(pwd)/fiware_cloto/cloto_settings/fiware-cloto.cfg
+    $ export CLOTO_SETTINGS_FILE=$PWD/fiware_cloto/cloto_settings/fiware-cloto.cfg
     $ python fiware_cloto/manage.py test
 
 
@@ -343,15 +360,17 @@ Top_.
 
 End-to-end tests
 ----------------
+
 There are two ways to check that fiware-cloto is up and running:
 
 The first one does not need authentication and you will get the server details:
 
-::
+.. code::
 
-    curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
+    $ curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
 
 Response should be similar to:
+
 ::
 
     {
@@ -363,17 +382,20 @@ Response should be similar to:
 
 The second one need authentication. You can execute a GET request similar to:
 
-::
+.. code::
 
-    curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
+    $ curl -v -H 'X-Auth-Token: $AUTH_TOKEN' http://$HOST:8000/v1.0/$TENANT_ID/
 
 Where:
 
-- **$AUTH_TOKEN**: is a valid token owned by the user. You can request this token from keystone.
-- **$HOST**: is the url/IP of the machine where fiware facts is installed, for example: (policymanager-host.org, 127.0.0.1, etc)
-- **$TENANT_ID**: is a tenantId of the user, for example: 6571e3422ad84f7d828ce2f30373b3d4
+- **$AUTH_TOKEN**: is a valid token owned by the user. You can request this
+  token from keystone.
+- **$HOST**: is the url/IP of the machine where fiware facts is installed,
+  for example: (policymanager-host.org, 127.0.0.1, etc)
+- **$TENANT_ID**: is a tenantId of the user, for example:
+  6571e3422ad84f7d828ce2f30373b3d4
 
-the response should be similar to:
+The response should be similar to:
 
 ::
 
@@ -406,21 +428,25 @@ Environment preparation:
 - Create a virtual environment somewhere, e.g. in ENV (virtualenv ENV)
 - Activate the virtual environment (source ENV/bin/activate)
 - Change to the test/acceptance folder of the project
-- Install the requirements for the acceptance tests in the virtual environment (pip install -r requirements.txt --allow-all-external).
-- Configure file in fiware_cloto/cloto/tests/acceptance/commons/configuration.py adding the keystone url, and a valid, user, password and tenant ID.
+- Install the requirements for the acceptance tests in the virtual environment
+  (pip install -r requirements.txt --allow-all-external).
+- Configure file in fiware_cloto/cloto/tests/acceptance/commons/configuration.py
+  adding the keystone url, and a valid, user, password and tenant ID.
 
 Tests execution
 
-Change to the fiware_cloto/cloto/tests/acceptance folder of the project if not already on it and execute:
+Change to the fiware_cloto/cloto/tests/acceptance folder of the project if not
+already on it and execute:
 
-::
+.. code::
 
-       $ behave
+    $ behave
 
 In the following document you will find the steps to execute automated
 tests for the Policy Manager GE:
 
-- `Policy Manager acceptance tests <fiware_cloto/cloto/tests/acceptance/README.rst>`_
+- `Policy Manager acceptance tests
+  <fiware_cloto/cloto/tests/acceptance/README.rst>`_
 
 Top_.
 
@@ -439,8 +465,8 @@ Top_.
 Support
 =======
 
-Ask your thorough programming questions using `stackoverflow`_ and your general questions on `FIWARE Q&A`_.
-In both cases please use the tag *fiware-bosun*.
+Ask your thorough programming questions using stackoverflow_ and your general
+questions on `FIWARE Q&A`_. In both cases please use the tag *fiware-bosun*.
 
 Top_.
 
@@ -448,7 +474,7 @@ Top_.
 License
 =======
 
-\(c) 2013-2014 Telefónica I+D, Apache License 2.0
+\(c) 2013-2016 Telefónica I+D, Apache License 2.0
 
 
 .. IMAGES
@@ -477,10 +503,11 @@ License
 .. REFERENCES
 
 .. _FIWARE: https://www.fiware.org/
+.. _FIWARE Q&A: https://ask.fiware.org
 .. _FIWARE Ops: https://www.fiware.org/fiware-operations/
+.. _FIWARE Cloto - GitHub issues: https://github.com/telefonicaid/fiware-cloto/issues/new
 .. _FIWARE Policy Manager - Apiary: https://jsapi.apiary.io/apis/policymanager/reference.html
-.. _Fiware-cloto - GitHub issues: https://github.com/telefonicaid/fiware-cloto/issues/new
 .. _FIWARE Policy Manager - Catalogue: http://catalogue.fiware.org/enablers/policy-manager-bosun
+.. _Orion Context Broker: http://catalogue.fiware.org/enablers/publishsubscribe-context-broker-orion-context-broker
 .. _stackoverflow: http://stackoverflow.com/questions/ask
-.. _`FIWARE Q&A`: https://ask.fiware.org
 .. _Supervisor Documentation: http://supervisord.org/events.html

@@ -1,6 +1,24 @@
 Changelog
 =========
 
+v2.7.0 (2016-08-12)
+-------------------
+
+New
+~~~
+
+- Use Orion v1 API
+
+Changes
+~~~~~~~
+
+- Update docker files
+- Update documentation
+
+Fix
+~~~
+- Fix problem in settings file
+
 v2.6.0 (2016-06-27)
 -------------------
 New

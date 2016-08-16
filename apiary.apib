@@ -168,7 +168,7 @@ Attributes:
             "windowsize": <windows_size>
         }
 
-## Servers Collection [/v1.0/{{tenantid}/servers/]
+## Servers Collection [/v1.0/{tenantid}/servers/]
 ### Get the list of all server's rules [GET]
 This operation returns a list of servers with their rules.
 + Parameters
@@ -478,22 +478,22 @@ This operation gets a specific rule.
 
 + Response 200 (application/json)
         {
-            "rules":
-            [
-                    {
-                    "name": <NAME>,
-                    "condition": <CONDITION_DESCRIPTION>,
-                    "action": <ACTION_ON_SERVER>,
-                    "ruleId": "<RULE_ID>"
-                },
-                {
-                     "name": <NAME2>,
-                     "condition": <CONDITION_DESCRIPTION>,
-                     "action": <ACTION_ON_SERVER>,
-                     "ruleId": "<RULE_ID>"
-                }
-            ]
+        "rules": [
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>,
+                "ruleId": "<RULE_ID>"
+            },
+            {
+                "name": <NAME2>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>,
+                "ruleId": "<RULE_ID>"
+            }
+          ]
         }
+
 
 ## Tenant elasticity Rule Collection [/v1.0/{tenantid}/rules/{ruleid}]
 ### Update an elasticity rule [PUT]

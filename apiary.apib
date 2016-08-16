@@ -1,24 +1,13 @@
 FORMAT: 1A
 TITLE: Policy Manager API Specification
-DATE: 19 August 2015
+DATE: 16 August 2016
 VERSION: v1.0
 APIARY_PROJECT: policymanager
+HOST: policymanager.lab.fiware.org
+SPEC_URL: http://telefonicaid.github.io/fiware-cloto/
+GITHUB_SOURCE: https://github.com/telefonicaid/fiware-cloto
 
 # Policy Manager
-
-<!--
-Copyright 2015 Telefónica I+D
-All Rights Reserved.
-Licensed under the Apache License, Version 2.0 (the "License"); you may
-not use this file except in compliance with the License. You may obtain
-a copy of the License at
-        http://www.apache.org/licenses/LICENSE-2.0
-Unless required by applicable law or agreed to in writing, software
-distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
-WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
-License for the specific language governing permissions and limitations
-under the License.
--->
 
 The PMI Scalability API is a RESTful, resource-oriented API accessed via HTTP/HTTPS that uses JSON-based representations for information interchange that provide functionalities to the Policy Manager GE. This document describes the FI-WARE-specific features extension, which allows cloud user to extend the basic functionalities offered by Policy Manager GE in order to cope with elasticity management.
 
@@ -33,6 +22,21 @@ Copyright (c) 2015 Telefónica Investigación y Desarrollo.
 
 This specification is licensed under the
 [FIWARE Open Specification License (implicit patents license)](http://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specification_Legal_Notice_(implicit_patents_license)).
+
+## License
+<!--
+Copyright 2015 Telefónica I+D
+All Rights Reserved.
+Licensed under the Apache License, Version 2.0 (the "License"); you may
+not use this file except in compliance with the License. You may obtain
+a copy of the License at
+        http://www.apache.org/licenses/LICENSE-2.0
+Unless required by applicable law or agreed to in writing, software
+distributed under the License is distributed on an "AS IS" BASIS, WITHOUT
+WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied. See the
+License for the specific language governing permissions and limitations
+under the License.
+-->
 
 ## Status
 
@@ -114,7 +118,7 @@ Finally, Context element is involved into a context response, which also contain
 # Group Cloto
 Notes related resources of the **Cloto API**
 
-## General Operations [/{tenantid}]
+## General Operations [/v1.0/{tenantid}]
 ### Get the information of the API [GET]
 This operation lists the information of the current version of the API.
 + Parameters
@@ -164,7 +168,7 @@ Attributes:
             "windowsize": <windows_size>
         }
 
-## Servers Collection [/{tenantid}/servers/]
+## Servers Collection [/v1.0/{tenantid}/servers/]
 ### Get the list of all server's rules [GET]
 This operation returns a list of servers with their rules.
 + Parameters
@@ -213,7 +217,7 @@ This operation returns a list of servers with their rules.
           ]
         }
 
-## Server Collection [/{tenantid}/servers/{serverid}/]
+## Server Collection [/v1.0/{tenantid}/servers/{serverid}/]
 ### Get the list of all rules of a server [GET]
 This operation returns the list of elasticity rules associated.
 + Parameters
@@ -246,7 +250,7 @@ This operation returns the list of elasticity rules associated.
             ]
         }
 
-## Elasticity Rules Collection [/{tenantid}/servers/{serverid}/rules]
+## Elasticity Rules Collection [/v1.0/{tenantid}/servers/{serverid}/rules]
 ### Create a new elasticity rule [POST]
 This operation creates a new elasticity rules associated to a server
 
@@ -281,7 +285,7 @@ Attributes:
             "ruleId": <RULE_ID>
         }
     
-## Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]
+## Elasticity Rule Collection [/v1.0/{tenantid}/servers/{serverid}/rules/{ruleid}]
 ### Update an elasticity rule [PUT]
 This operation allows to update the rule condition, the action or both or a specific server
 
@@ -356,7 +360,7 @@ This operation gets a specific rule.
             "ruleId": "<RULE_ID>"      
         }
 
-## Subscriptions Collection [/{tenantid}/servers/{serverid}/subscription]
+## Subscriptions Collection [/v1.0/{tenantid}/servers/{serverid}/subscription]
 ### Create a new subscription [POST]
 This operation creates a new subcription associated to a rule
 
@@ -388,7 +392,7 @@ Attributes:
             "subscriptionId": <SUBSCRIPTION_ID>
         }
 
-## Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
+## Subscription Collection [/v1.0/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
 ### Delete a subscription [DELETE]
 This operation deletes a subscription.
 + Parameters
@@ -424,4 +428,141 @@ This operation gets a subscription.
             "url": <URL_TO_NOTIFY>,
             "serverId": <SERVER_ID>,
             "ruleId": "<RULE_ID>"      
+        }
+
+
+## Tenant elasticity Rules Collection [/v1.0/{tenantid}/rules]
+### Create a new elasticity rule [POST]
+This operation creates a new elasticity rules associated to a server
+
+Attributes:
+
+* `name`: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).
+* `condition`: Condition is a JSON description with the attributes representing server measures with a value and an operator.
+* `action`: It is a JSON description with the action to be performed if condition is taken place.
+
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+
++ Request (application/json)
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
++ Response 200 (application/json)
+
+        {
+            "serverId": <serverId>,
+            "ruleId": <RULE_ID>
+        }
+
+### Get elasticity rules [GET]
+This operation gets a specific rule.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+        {
+        "rules": [
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>,
+                "ruleId": "<RULE_ID>"
+            },
+            {
+                "name": <NAME2>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>,
+                "ruleId": "<RULE_ID>"
+            }
+          ]
+        }
+
+
+## Tenant elasticity Rule Collection [/v1.0/{tenantid}/rules/{ruleid}]
+### Update an elasticity rule [PUT]
+This operation allows to update the rule condition, the action or both or a specific server
+
+Attributes:
+
+* `name`: The value of the windowsize to be updated (must be an integer between 1 and the max_window_size value defined in the settings file).
+* `condition`: Condition is a JSON description with the attributes representing server measures with a value and an operator.
+* `action`: It is a JSON description with the action to be performed if condition is taken place.
+
+
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + ruleid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the rule following the OpenStack ID format.
+
++ Request (application/json)
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
++ Response 200 (application/json)
+
+        {
+            "name": <NAME>,
+            "condition": <CONDITION_DESCRIPTION>,
+            "action": <ACTION_ON_SERVER>
+        }
+
+### Delete an elasticity rule [DELETE]
+This operation deletes a specific rule.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + ruleid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the rule following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 ()
+
+### Get an elasticity rule [GET]
+This operation gets a specific rule.
++ Parameters
+    + tenantid (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` of the Tenant to perform action with. Has example value.
+    + ruleid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` of the rule following the OpenStack ID format.
+
++ Request ()
+
+    + Header
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+
+        {
+            "name": <NAME>,
+            "condition": <CONDITION_DESCRIPTION>,
+            "action": <ACTION_ON_SERVER>,
+            "ruleId": "<RULE_ID>"
         }

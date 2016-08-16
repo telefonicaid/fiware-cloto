@@ -8,5 +8,4 @@ virtualenv venv
 . venv/bin/activate
 pip install -r requirements.txt
 while ! nc -z fiwarecloto 8000; do sleep 8; done
-sleep 12000
 behave component/features --tags ~@skip --junit --junit-directory testreport

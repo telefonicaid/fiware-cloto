@@ -118,7 +118,7 @@ Finally, Context element is involved into a context response, which also contain
 # Group Cloto
 Notes related resources of the **Cloto API**
 
-## General Operations [/v1/{tenantid}]
+## General Operations [/v1.0/{tenantid}]
 ### Get the information of the API [GET]
 This operation lists the information of the current version of the API.
 + Parameters
@@ -168,7 +168,7 @@ Attributes:
             "windowsize": <windows_size>
         }
 
-## Servers Collection [/v1/{tenantid}/servers/]
+## Servers Collection [/v1.0/{{tenantid}/servers/]
 ### Get the list of all server's rules [GET]
 This operation returns a list of servers with their rules.
 + Parameters
@@ -217,7 +217,7 @@ This operation returns a list of servers with their rules.
           ]
         }
 
-## Server Collection [/v1/{tenantid}/servers/{serverid}/]
+## Server Collection [/v1.0/{tenantid}/servers/{serverid}/]
 ### Get the list of all rules of a server [GET]
 This operation returns the list of elasticity rules associated.
 + Parameters
@@ -250,7 +250,7 @@ This operation returns the list of elasticity rules associated.
             ]
         }
 
-## Elasticity Rules Collection [/v1/{tenantid}/servers/{serverid}/rules]
+## Elasticity Rules Collection [/v1.0/{tenantid}/servers/{serverid}/rules]
 ### Create a new elasticity rule [POST]
 This operation creates a new elasticity rules associated to a server
 
@@ -285,7 +285,7 @@ Attributes:
             "ruleId": <RULE_ID>
         }
     
-## Elasticity Rule Collection [/{tenantid}/servers/{serverid}/rules/{ruleid}]
+## Elasticity Rule Collection [/v1.0/{tenantid}/servers/{serverid}/rules/{ruleid}]
 ### Update an elasticity rule [PUT]
 This operation allows to update the rule condition, the action or both or a specific server
 
@@ -360,7 +360,7 @@ This operation gets a specific rule.
             "ruleId": "<RULE_ID>"      
         }
 
-## Subscriptions Collection [/v1/{tenantid}/servers/{serverid}/subscription]
+## Subscriptions Collection [/v1.0/{tenantid}/servers/{serverid}/subscription]
 ### Create a new subscription [POST]
 This operation creates a new subcription associated to a rule
 
@@ -392,7 +392,7 @@ Attributes:
             "subscriptionId": <SUBSCRIPTION_ID>
         }
 
-## Subscription Collection [/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
+## Subscription Collection [/v1.0/{tenantid}/servers/{serverid}/subscription/{subscriptionid}]
 ### Delete a subscription [DELETE]
 This operation deletes a subscription.
 + Parameters
@@ -431,7 +431,7 @@ This operation gets a subscription.
         }
 
 
-## Tenant elasticity Rules Collection [/v1/{tenantid}/rules]
+## Tenant elasticity Rules Collection [/v1.0/{tenantid}/rules]
 ### Create a new elasticity rule [POST]
 This operation creates a new elasticity rules associated to a server
 
@@ -495,7 +495,7 @@ This operation gets a specific rule.
             ]
         }
 
-## Tenant elasticity Rule Collection [/{tenantid}/rules/{ruleid}]
+## Tenant elasticity Rule Collection [/v1.0/{tenantid}/rules/{ruleid}]
 ### Update an elasticity rule [PUT]
 This operation allows to update the rule condition, the action or both or a specific server
 

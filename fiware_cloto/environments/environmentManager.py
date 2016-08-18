@@ -61,9 +61,9 @@ def main():
                                  user=DB_USER, passwd=DB_PASSWD, db=DB_NAME)
             elif execution_type == "test":
                 import sqlite3 as lite
-                conn = lite.connect(INSTALLATION_PATH + 'cloto.db')
+                conn = lite.connect("{0}{1}.db".format(INSTALLATION_PATH, DB_NAME))
             cursor = conn.cursor()
-            cursor.execute('SELECT * FROM cloto.cloto_tenantinfo')
+            cursor.execute('SELECT * FROM {0}.cloto_tenantinfo'.format(DB_NAME))
             data = cursor.fetchall()
             if tenants.__len__() < data.__len__():
                 for tenant in data:

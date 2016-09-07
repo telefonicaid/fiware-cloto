@@ -26,7 +26,6 @@ in order to cope with policies management.
 
 ## Status
 
-Final version aligned with FIWARE Release 4.4.
 This specification is the September 2016 release candidate of the PMI API specification 
 corresponding to Release 5.4 of FIWARE. By "release candidate" we mean that only Minor 
 Changes are expected to the API described by this document. In particular, Minor Changes 
@@ -85,9 +84,8 @@ parts and the compliance level (or roles/profiles) corresponding to them.
 
 ## Conventions
 
-PMI version 1.5 uses lower camel case (lowerCamelCase) syntax for naming properties 
-and related artifacts used by the API. When  referring to URIs, as part of HATEOAS 
-patterns, and to mark them appropriately, the suffix `_url` is added.
+PMI version 1.0 uses lower camel case (lowerCamelCase) syntax for naming properties 
+and related artifacts used by the API.
 
 
 # Specification
@@ -99,8 +97,9 @@ The PMI API defines:
 * A **rule** represents the policy or rule that will be used to infers new facts or 
 actions based on the facts notified by the Publish/Subscribe Context Broker GE. Usually, 
 rules are compound of conditions and actions
-* A **condition** is some type of conditional statement of the form: x > 85% [AND y > 64.5%].
-* A **fact**. represents the measurement of the cloud resources and will be used to 
+* A **condition** is some type of conditional statement of the form: x > 85% [AND y > 64.5%]. 
+Several conditions can be connected using AND logical operator.
+* A **fact** represents the measurement of the cloud resources and will be used to 
 infer new facts or actions. It is the base of the reasoning process.
 * An **action** represents the triggered message inferred by the rule engine based on 
 the execution of certain conditions defined in a rule or rules set. This message is 
@@ -109,7 +108,7 @@ notified to the third parties in order to launch the proper action.
 
 ## Authentication
 
-Each HTTP request against the '''PMI''' requires the inclusion of specific authentication 
+Each HTTP request against the **PMI** requires the inclusion of specific authentication 
 credentials following the same architecture of the other OpenStack projects. The specific 
 implementation of this API supports OAuth v2.0 authentication schemes and will be determined 
 by the specific provider that implements this GE and Interface. To authenticate access to 
@@ -186,7 +185,7 @@ APIs, see [http://developer.openstack.org/api-ref.html](OpenStack API Reference)
 
 ## Representation Format
 
-The '''PMI API''' resources are represented by hypertext that allows each resource 
+The **PMI API** resources are represented by hypertext that allows each resource 
 to reference other related resources. More concisely, JSON format are used for 
 resource representation and URLs are used for referencing other resources by default. 
 The request format is specified using the Content-Type header and is required for 
@@ -234,7 +233,7 @@ HTTP transport, this is made using the mechanisms described by HTTP protocol
 specification as defined by IETF RFC-2616.
 
 PMI API does not enforce any determined URL pattern to identify its resources. Anyway 
-the SM Policy API follows the HATEOAS principle (Hypermedia As The Engine Of 
+the PMI API follows the HATEOAS principle (Hypermedia As The Engine Of 
 Application State). This means that resource representation contains the URLs of 
 the related resources (e.g., book representation contains hyperlinks to its chapters; 
 chapter representation contains hyperlinks to its pages...). API consumer obtains 
@@ -260,7 +259,7 @@ on their application to infrastructural resources.
 
 Rules are described using JSON, and contain information about CPU and Memory usage, 
 in first instance. The rule is compound of three parts, name, conditions and actions. 
-In this case, the name will be "AlertCPU" and the condition defined expects all 
+In this case, the name will be "AlertCPU" and the defined condition expects all 
 server with cpu usage greater than 98.3 and memory load greater or equal to 95.
 
 Actions will create an HTTP POST notification to an url specified on every subscription 
@@ -305,7 +304,7 @@ object's <metric> property. These metrics are only `cpu`, `mem`, `hdd`, `net`.
 is specified by the object's `value` property, whose value is a floating number 
 representing the percentaje of utilization of this metric in the cloud service.
 * The logical operator used to check the entity value is specified by the 
-object's `operand` property. PMI API v1.5 allows values "greater", "less", 
+object's `operand` property. PMI API v1.0 allows values "greater", "less", 
 "greater equal", "less equal" for this property.
 
 An example of a rule definition can be found in the following code:
@@ -330,38 +329,39 @@ An action is represented by a JSON object with the following syntax:
 * The action id is specified by the object's `actionName` property, whose value is 
 a string containing the action's name. Depending of the `actionName` we have predefined 
 different properties:
-** If the object's `actionName` property has value `notify-email`, we have the email and 
+    * If the object's `actionName` property has value `notify-email`, we have the email and 
 body which are represented by the object's `email` and `body` properties, whose values 
-are the string containing the email address to send the enail and the message of this 
+are the string containing the email address to send the email and the message of this 
 email. This is a possible example:
-```
-    "action": {
-          "actionName": "notify-email",
-          "email": "foo@fighters",
-          "body": "You have a problem with your instance, please check it."
-    }
-```
 
-* If the object's `actionName` property has value `notify-scale`, we have action 
+    ```
+        "action": {
+              "actionName": "notify-email",
+            "email": "foo@fighters",
+            "body": "You have a problem with your instance, please check it."
+        }
+    ```
+
+    * If the object's `actionName` property has value `notify-scale`, we have action 
 operation. The action operation is specified by the object's `operation` property, 
-whole value is a string containing the action's operation. PMI API v1.5 allows values 
+whole value is a string containing the action's operation. PMI API v1.0 allows values 
 "scaleUp", "scaleDown" for this property. This messages is sent back to the url that 
 is specified in the subscription process described bellow. This is a possible example:
 
-```
-    "action": {
-          "actionName": "notify-scale",
-          "operation": "scaleUp"
-    }
-```
+    ```
+        "action": {
+              "actionName": "notify-scale",
+            "operation": "scaleUp"
+        }
+    ```
 
-* Any other possible value of the object's `actionName` property will have the same 
+    * Any other possible value of the object's `actionName` property will have the same 
 behaviour described in the previous case.
 
 ## Error Responses
 
 Every HTTP request has a status code. 2xx codes signify the PMI API was a success. 
-However, that is often not the response that be obtained. All the errors message are 
+However, sometimes is not the response that be obtained. All the errors message are 
 sent in JSON format with the following attributes:
 
 * A `message`. A descriptive text of the error that was reported by the PMI API.
@@ -379,7 +379,7 @@ An example of an error message could be:
   }
 ```
 
-The possible values that we have in the attributes are described bellow. Keep in mind that we give them in the format `title` (`code`). <description>:
+The possible values that we have in the attributes are described bellow. Keep in mind that we give them in the format `title` (`code`). `<description>`:
 
 * `Bad Request` (`400`). The PMI API failed to parse the request as expected. One of 
 the following errors occurred:
@@ -419,7 +419,7 @@ This operation updates the context related to a specific server, identified with
 Memory, Disk and/or Network usages. This message follows the NGSI-10 information model 
 but using JSON format. 
 
-Request attributes
+Request attributes:
 
 Context element contains different measures. Each measure is an attribute which contains:
 
@@ -436,19 +436,20 @@ Context Broker.
 ID. (false, true)
 * `type`: The type of the context element (this component uses "host").
 
-Finally, Context element is involved into a context response, which also contains 
+Finally, Context element is involved into a context response, which also contains: 
 
 * `statusCode`: with the result of the context broker query.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok
+Response in JSON: 
+* Succesful operation uses 200 Ok
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" for
 more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of 
-    the Tenant to perform action with. Has example value.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Numeric `id` of the 
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the Server to perform action with, following the OpenStack ID format.
 
 + Request (application/json)
 
@@ -493,8 +494,8 @@ more details.
 + Response 200 (application/json)
 
     + Attributes (object)
-        + id: 3 - Identifier of the received fact.
-        + title: "no error." - Brief description message of the operation.
+        + id: `3` (required, number) - Identifier of the received fact.
+        + title: "no error." (required, string) - Brief description message of the operation.
        
     + Body
     
@@ -513,14 +514,14 @@ the specification of the `X-Auth-Token` Header. See "Authentication" subsection 
 This operation lists the information of the current version of the API. This operation does not 
 require a request body.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok
+Response in JSON: 
+* Succesful operation uses 200 Ok
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" for
 more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric identifier of the
-    tenant or project to perform action with.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
 
 + Request ()
 
@@ -532,17 +533,17 @@ more details.
 
     + Attributes (object)
     
-        + owner: "TELEFONICA I+D" - It is the key whose value is the 
+        + owner: `TELEFONICA I+D` (required, string) - It is the key whose value is the 
         company name that develops this API.   
-        + windowsize: 5 - It is the key that represents the window 
+        + windowsize: 5 (required, number) - It is the key that represents the window 
         size to stabilize the values of the measures probes to checking rules and triggering actions. 
         This value is very important due to allow resolving false positives that could launch the 
         action to scaling up and down a server.
-        + version: "1.5" - It is the key whose value is the version of 
+        + version: `1.0` (required, string) - It is the key whose value is the version of 
         the API currently in execution.
-        + runningfrom: "2013-10-04 20:32:17" - It is the key whose value is the 
+        + runningfrom: `2013-10-04 20:32:17` (required, string) - It is the key whose value is the 
         date of the last launch of the service. This value takes the ISO 8601.
-        + doc: "https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification" - 
+        + doc: `https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/Policy_Manager_Open_RESTful_API_Specification` (required, string) - 
         It is the key whose value is the link to this API specification. 
 
     + Body
@@ -559,19 +560,19 @@ more details.
 This call updates the window size of the service in order to change the stabilization 
 window size to be applied to the monitoring data received from the Monitoring GE.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok
+Response in JSON: 
+* Succesful operation uses 200 Ok
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" for
 more details.
 
 + Parameters
-    + tenantId (required, string, `d3fdddc6324c439780a6fd963a9fa148`) - Numeric `id` of 
-    the Tenant to perform action with.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
 
 + Request (application/json)
 
     + Attributes (object)
-        + windowsize (required, number) - The value of the windowsize to be updated 
+        + windowsize: 5 (required, number) - The value of the windowsize to be updated 
         (must be an integer between 1 and the `max_window_size` value defined in the settings file).
 
     + Headers
@@ -581,30 +582,231 @@ more details.
     + Body
 
             {
-                "windowsize": <windows_size>
+                "windowsize": <window_size>
             }  
 
 + Response 200 (application/json)
     + Attributes
-        + windowsize: The value of the windowsize updated.
+        + windowsize: 5 (required, number) - The value of the windowsize updated.
 
-        + Body
+    + Body
+
             {
                 "windowsize": <windows_size>
+            }
+
+## Tenant Generic Rules Collection [/v1.0/{tenantId}/rules]
+### Create a new rule [POST]
+This operation creates a new rule (General Rule) associated to a tenant or 
+project identified by *tenantId*.
+
+Response in JSON: 
+* Succesful operation uses 200 Ok and the subscription data.
+* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
+for more details.
+
++ Parameters
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+
++ Request (application/json)
+    + Attributes
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
+
+    + Headers
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
++ Response 200 (application/json)
+    + Attributes
+        + ruleId: `52415800-8b69-11e0-9b19-734f6f006e54` (required, string) - It is the key that represents the id of the rule, following the OpenStack Id format.  
+
+    + Body
+    
+            {
+                "ruleId": <RULE_ID>
+            }
+
+### Get rules [GET]
+This operation gets a Genaral Rule associated to a tenant or project identified 
+by *tenantId*. This operation does not require any request body and the response 
+body is in JSON format.
+
+Response in JSON: 
+* Succesful operation uses 200 Ok and the subscription data.
+* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
+for more details.
+
++ Parameters
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+
++ Request ()
+
+    + Headers
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+    + Attributes
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
+        + ruleId: `See "Rules" section for more details.` (required, string) - The identifier of the rule, following the OpenStack ID format.
+
+    + Body
+    
+            {
+                "rules": [
+                    {
+                        "name": <NAME>,
+                        "condition": <CONDITION_DESCRIPTION>,
+                        "action": <ACTION_ON_SERVER>,
+                        "ruleId": "<RULE_ID>"
+                    },
+                    {
+                        "name": <NAME2>,
+                        "condition": <CONDITION_DESCRIPTION>,
+                        "action": <ACTION_ON_SERVER>,
+                        "ruleId": "<RULE_ID>"
+                    }
+                ]
+            }
+
+
+## Tenant Generic Rule Collection [/v1.0/{tenantId}/rules/{ruleId}]
+### Update a rule [PUT]
+This operation allows to update a General Rule condition, the action or both identified by its *ruleId* of a 
+specific tenant or project identified by its *tenantId*.
+
+Response in JSON: 
+* Succesful operation uses 200 Ok and the data that was updated.
+* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
+for more details.
+
++ Parameters
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + ruleId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the rule, following the OpenStack ID format.
+
++ Request (application/json)
+    + Attributes (object)
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
+
+    + Headers
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
+    + Body
+    
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
++ Response 200 (application/json)
+    + Attributes (object)
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule that was updated. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server that was updated.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server that was updated.
+
+    + Body
+
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>
+            }
+
+### Delete a rule [DELETE]
+This operation deletes a specific generic rule identified by its *ruleId* 
+and associated to a tenant or project identified by its *tenantId*. It does 
+require neither a request or response body.
+
+Response:
+* Succesful operation uses 200 Ok with no data.
+* Errors use a non-2xx and optionally an error payload in JSON format. See subsection "Error Responses" 
+for more details.
+
++ Parameters
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + ruleId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the rule, following the OpenStack ID format.
+
++ Request ()
+
+    + Headers
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 ()
+
+### Get a rule [GET]
+This operation gets a specific generic rule identified by its *ruleId* 
+and associated to the tenant or project identified by its *tenantId*. 
+This operation does not require a request body and the response is in 
+JSON format.
+
+Response in JSON: 
+* Succesful operation uses 200 Ok and the data requested.
+* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
+for more details.
+
++ Parameters
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + ruleId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the rule, following the OpenStack ID format.
+
++ Request ()
+
+    + Headers
+
+            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
+
++ Response 200 (application/json)
+    + Attributes
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
+        + ruleId: `See "Rules" section for more details.` (required, string) - The identifier of the rule, following the OpenStack ID format.
+
+    + Body
+    
+            {
+                "name": <NAME>,
+                "condition": <CONDITION_DESCRIPTION>,
+                "action": <ACTION_ON_SERVER>,
+                "ruleId": "<RULE_ID>"
             }
 
 ## Servers Collection [/v1.0/{tenantId}/servers/]
 ### Get the list of all servers' rules [GET]
 This operation returns a list of servers with their rules. There is no body in the request.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok
+Response in JSON: 
+* Succesful operation uses 200 Ok
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" for
 more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Numeric `id` of 
-    the Tenant to perform action with.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
 
 + Request ()
 
@@ -614,7 +816,7 @@ more details.
 
 + Response 200 (application/json)
     + Attributes (object)
-        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` - The identifier of a specific server following the OpenStack ID format.
+        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` - The identifier of a specific server, following the OpenStack ID format.
         + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
         + action: See "Rules" section for more details. - The action to take over the server. See "Rules" section for more details.
         + ruleId: `52459800-ej34-91e0-0c19-634f6f006e54` - The identifier of the rule, following the OpenStack Id format.
@@ -658,20 +860,20 @@ more details.
 
 ## Server Collection [/v1.0/{tenantId}/servers/{serverId}/]
 ### Get the list of all rules of a server [GET]
-This operation returns the rules list associated with a server identified with its 
-`tenantId` and `serverId`. This operation does not require a body and the response 
+This operation returns the rule or rules list associated with a server identified with its 
+*tenantId* and *serverId*. This operation does not require a body and the response 
 is in JSON format.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok
+Response in JSON: 
+* Succesful operation uses 200 Ok
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" for
 more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the server, following the OpenStack ID format.
 
 + Request ()
 
@@ -681,7 +883,7 @@ more details.
 
 + Response 200 (application/json)
     + Attributes
-        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` - The identifier of a specific server following the OpenStack ID format.
+        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` - The identifier of a specific server, following the OpenStack ID format.
         + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
         + action: See "Rules" section for more details. - The action to take over the server.
         + ruleId: `52459800-ej34-91e0-0c19-634f6f006e54` - The identifier of the rule, following the OpenStack Id format.
@@ -706,29 +908,29 @@ more details.
                 ]
             }
 
-## Rules Collection [/v1.0/{tenantId}/servers/{serverId}/rules]
+## Specific Rules Collection [/v1.0/{tenantId}/servers/{serverId}/rules]
 ### Create a new rule [POST]
-This operation creates a new rules associated to a server, which is identified 
-by {serverId}. The request specifies the rule to be created and the action associated 
-to it.
+This operation creates a new rule or rules associated to a server, which is identified 
+by its *serverId* and its *tenantId*. The request specifies the rule to be 
+created and the action associated to it.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok and the identifier of the new rule and the serverId in 
-which it is inserted the new rule.
+Response in JSON: 
+* Succesful operation uses 200 Ok and the identifier of the new rule and the server in 
+which is inserted the new rule.
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
 for more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the server, following the OpenStack ID format.
 
 + Request (application/json)
     + Attributes
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
 
     + Headers
 
@@ -744,8 +946,8 @@ for more details.
 
 + Response 200 (application/json)
     + Attributes (object)
-        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` - It is the key whose value specifies the serverId in the URI, following the OpenStack ID format.
-        + ruleId:  `52415800-8b69-11e0-9b19-734f6f006e54` - It iss the key that represents the id of the rule, following the OpenStack Id format. 
+        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` (required, string) - It is the key whose value specifies the serverId in the URI, following the OpenStack ID format.
+        + ruleId:  `52415800-8b69-11e0-9b19-734f6f006e54` (required, string) - It iss the key that represents the id of the rule, following the OpenStack Id format. 
 
     + Body
     
@@ -754,42 +956,31 @@ for more details.
                 "ruleId": <RULE_ID>
             }
     
-## Rule Collection [/v1.0/{tenantId}/servers/{serverId}/rules/{ruleId}]
+## Specific Rule Collection [/v1.0/{tenantId}/servers/{serverId}/rules/{ruleId}]
 ### Update a rule [PUT]
-This operation allows to update the rule condition, the action or both or a specific 
-server identified by its {serverId} and a specific rule identified by its {ruleId}. 
+This operation allows to update the rule or rules conditions, the action or both or a specific 
+server identified by its *serverId* and *tenantId* a specific rule identified by its *ruleId*. 
 This operation requires a request content and we obtain the response with the updated
 data.
 
-Response in JSON 
-* Succesful opeation uses 200 Ok and the data that was updated.
+Response in JSON: 
+* Succesful operation uses 200 Ok and the data that was updated.
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
 for more details.
 
-
-Attributes:
-
-* `name`: The value of the windowsize to be updated (must be an integer between 1 and 
-the max_window_size value defined in the settings file).
-* `condition`: Condition is a JSON description with the attributes representing server 
-measures with a value and an operator. 
-* `action`: It is a JSON description with the action to be performed if condition is 
-taken place.
-
-
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
-    + ruleId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the rule following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the server, following the OpenStack ID format.
+    + ruleId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the rule, following the OpenStack ID format.
 
 + Request (application/json)
     + Attributes
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
 
     + Headers
 
@@ -805,9 +996,9 @@ taken place.
 
 + Response 200 (application/json)
     + Attributes (object)
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
 
     + Body
     
@@ -818,21 +1009,21 @@ taken place.
             }
 
 ### Delete a rule [DELETE]
-This operation deletes a specific rule identified by its {ruleId}, within a server, 
-identified by its {serverId}. This operation does not require a request body.
+This operation deletes a specific rule identified by its *ruleId*, within a server, 
+identified by its *serverId* and *tenantId*. This operation does not require a request body.
 
-Response
-* Succesful opeation uses 200 Ok.
+Response:
+* Succesful operation uses 200 Ok.
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
 for more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
-    + ruleId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the rule following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier
+    of the server, following the OpenStack ID format.
+    + ruleId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the rule, following the OpenStack ID format.
 
 + Request ()
 
@@ -843,22 +1034,22 @@ for more details.
 + Response 200 ()
 
 ### Get a rule [GET]
-This operation gets a specific rule, identified by its {ruleId}, within a server, 
-identified by its {serverId}. This operation does not require a request body and 
+This operation gets a specific rule, identified by its *ruleId*, within a server, 
+identified by its *serverId* and *tenantId*. This operation does not require a request body and 
 response body is in JSON format. 
 
-Response in JSON 
-* Succesful opeation uses 200 Ok and the rule data.
+Response in JSON: 
+* Succesful operation uses 200 Ok and the rule data.
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
 for more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
-    + ruleId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the rule following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the server, following the OpenStack ID format.
+    + ruleId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the rule, following the OpenStack ID format.
 
 + Request ()
 
@@ -868,10 +1059,10 @@ for more details.
 
 + Response 200 (application/json)
     + Attributes
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
-        + ruleId: See "Rules" section for more details. - The identifier of the rule following the OpenStack ID format.
+        + name: `scale-up` (required, string) - It is the key whose value represents the name of the rule. 
+        + condition: `See "Rules" section for more details.` (required, string) - It is the key whose value is the description of the rule associated to this server.
+        + action: `See "Rules" section for more details.` (required, string) - The action to take over the server.
+        + ruleId: `See "Rules" section for more details.` (required, string) - The identifier of the rule, following the OpenStack ID format.
 
     + Body
     
@@ -885,24 +1076,24 @@ for more details.
 ## Subscriptions Collection [/v1.0/{tenantId}/servers/{serverId}/subscription]
 ### Create a new subscription [POST]
 This operation creates a new subcription associated to a rule which is identified 
-by {ruleId}. The request specifies the rule to be activated and the action associated 
-to it. 
+by *ruleId* associated to a server identified by its *serverId* and *tenantId*. 
+The request specifies the rule to be activated and the action associated to it. 
 
-Response in JSON 
-* Succesful opeation uses 200 Ok and the identifier of the subscription in the Publish/Subscribe Context Broker.
+Response in JSON: 
+* Succesful operation uses 200 Ok and the identifier of the subscription in the Publish/Subscribe Context Broker.
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
 for more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the server, following the OpenStack ID format.
 
 + Request (application/json)
     + Attributes (object)
-        + ruleId: `52415800-8b69-11e0-9b19-734f6f006e54` - It is the key that represents the id of the rule, following the OpenStack Id format.
-        + url: `http://localhost:1234` - It is the key whose value is the notification url of the action when the rule is fired.
+        + ruleId: `52415800-8b69-11e0-9b19-734f6f006e54` (required, string) - It is the key that represents the id of the rule, following the OpenStack Id format.
+        + url: `http://localhost:1234` (required, string) - It is the key whose value is the notification url of the action when the rule is fired.
 
     + Headers
 
@@ -917,7 +1108,7 @@ for more details.
 
 + Response 200 (application/json)
     + Attributes
-        + subscriptionId: `52415800-8b69-11e0-9b19-734f6f006e54` - It is the key that represents the id of the subscription, following the OpenStack Id format. 
+        + subscriptionId: `52415800-8b69-11e0-9b19-734f6f006e54` (required, string) - It is the key that represents the identifier of the subscription, following the OpenStack Id format. 
 
     + Body
 
@@ -925,25 +1116,25 @@ for more details.
                 "subscriptionId": <SUBSCRIPTION_ID>
             }
 
-## Subscription Collection [/v1.0/{tenantId}/servers/{serverId}/subscription/{subscriptionid}]
+## Subscription Collection [/v1.0/{tenantId}/servers/{serverId}/subscription/{subscriptionId}]
 ### Delete a subscription [DELETE]
-This operation deletes a subscription, identified by its {subscriptionId}, within a server, 
-identified by its {serverId}. This operation does not require a request body and response 
-body. The response is a 200 Ok if it was deleted without any problem or error message in 
-other case. 
+This operation deletes a subscription, identified by its *subscriptionId*, within a server, 
+identified by its *serverId* and *tenantId*. This operation requires neither a request body 
+or response body. The response is a 200 Ok if it was deleted without any problem or error 
+message in other case. 
 
-Response
-* Succesful opeation uses 200 Ok and no data.
+Response:
+* Succesful operation uses 200 Ok and no data.
 * Errors use a non-2xx and optionally an error payload in JSON format. See subsection "Error Responses" 
 for more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the server following the OpenStack ID format.
-    + subscriptionid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric 
-    `id` of the subscription following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric identifier 
+    of the server, following the OpenStack ID format.
+    + subscriptionId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric 
+    identifier of the subscription, following the OpenStack ID format.
 
 + Request ()
 
@@ -954,22 +1145,22 @@ for more details.
 + Response 200 ()
 
 ### Get a subscription [GET]
-This operation gets a subscription, identified by its {subscriptionId}, within a server, 
-identified by its {serverId}. This operation does not require a request body and response 
-body is in JSON format. 
+This operation gets a subscription, identified by its *subscriptionId*, within a server, 
+identified by its *serverId* and *tenantId*. This operation does not require a request 
+body and response body is in JSON format. 
 
-Response in JSON 
-* Succesful opeation uses 200 Ok and the subscription data.
+Response in JSON: 
+* Succesful operation uses 200 Ok and the subscription data.
 * Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
 for more details.
 
 + Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + serverId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric 
-    `id` of the server following the OpenStack ID format.
-    + subscriptionid (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric 
-    `id` of the subscription following the OpenStack ID format.
+    + tenantId (required, String, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric identifier 
+    of the Tenant to perform action with, following the OpenStack ID format.
+    + serverId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric 
+    identifier of the server, following the OpenStack ID format.
+    + subscriptionId (required, string, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric 
+    identifier of the subscription, following the OpenStack ID format.
 
 + Request ()
 
@@ -979,10 +1170,10 @@ for more details.
 
 + Response 200 (application/json)
     + Attributes (object)
-        + subscriptionId: `52415800-8b69-11e0-9b19-734f6f006e54` - It is the key that represents the id of the subscription, following the OpenStack Id format.
-        + url: `http://localhost:1234` - It is the key whose value is the URL to notify the action when the rule is fired.
-        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` - It is the key whose value specifies the server ID in the URL, following the OpenStack ID format.
-        + ruleId: `52415800-8b69-11e0-9b19-734f6f006e54` - It is the key that represents the id of the rule, following the OpenStack Id format.     
+        + subscriptionId: `52415800-8b69-11e0-9b19-734f6f006e54` (required, string) - It is the key that represents the id of the subscription, following the OpenStack Id format.
+        + url: `http://localhost:1234` (required, string) - It is the key whose value is the URL to notify the action when the rule is fired.
+        + serverId: `52415800-8b69-11e0-9b19-734f6af67565` (required, string) - It is the key whose value specifies the server ID in the URL, following the OpenStack ID format.
+        + ruleId: `52415800-8b69-11e0-9b19-734f6f006e54` (required, string) - It is the key that represents the id of the rule, following the OpenStack Id format.     
 
     + Body
     
@@ -991,198 +1182,4 @@ for more details.
                 "url": <URL_TO_NOTIFY>,
                 "serverId": <SERVER_ID>,
                 "ruleId": "<RULE_ID>"      
-            }
-
-
-## Tenant Rules Collection [/v1.0/{tenantId}/rules]
-### Create a new rule [POST]
-This operation creates a new rule (General Rule) associated to a tenant or project.
-
-Response in JSON 
-* Succesful opeation uses 200 Ok and the subscription data.
-* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
-for more details.
-
-+ Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with.
-
-+ Request (application/json)
-    + Attributes
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
-
-    + Headers
-
-            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
-
-    + Body
-
-            {
-                "name": <NAME>,
-                "condition": <CONDITION_DESCRIPTION>,
-                "action": <ACTION_ON_SERVER>
-            }
-
-+ Response 200 (application/json)
-    + Attributes
-        + ruleId: `52415800-8b69-11e0-9b19-734f6f006e54` - It is the key that represents the id of the rule, following the OpenStack Id format.  
-
-    + Body
-    
-            {
-                "ruleId": <RULE_ID>
-            }
-
-### Get rules [GET]
-This operation gets a Genaral Rule associated to a tenant or project. This operation 
-does not required any request body and the response body is in JSON format.
-
-Response in JSON 
-* Succesful opeation uses 200 Ok and the subscription data.
-* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
-for more details.
-
-+ Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-
-+ Request ()
-
-    + Headers
-
-            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
-
-+ Response 200 (application/json)
-    + Attributes
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
-        + ruleId: See "Rules" section for more details. - The identifier of the rule following the OpenStack ID format.
-
-    + Body
-    
-            {
-                "rules": [
-                    {
-                        "name": <NAME>,
-                        "condition": <CONDITION_DESCRIPTION>,
-                        "action": <ACTION_ON_SERVER>,
-                        "ruleId": "<RULE_ID>"
-                    },
-                    {
-                        "name": <NAME2>,
-                        "condition": <CONDITION_DESCRIPTION>,
-                        "action": <ACTION_ON_SERVER>,
-                        "ruleId": "<RULE_ID>"
-                    }
-                ]
-            }
-
-
-## Tenant Rule Collection [/v1.0/{tenantId}/rules/{ruleId}]
-### Update an rule [PUT]
-This operation allows to update a General Rule condition, the action or both or a 
-specific tenant or project.
-
-Response in JSON 
-* Succesful opeation uses 200 Ok and the data that was updated.
-* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
-for more details.
-
-+ Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + ruleId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the rule following the OpenStack ID format.
-
-+ Request (application/json)
-    + Attributes (object)
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
-
-    + Headers
-
-            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
-
-    + Body
-    
-            {
-                "name": <NAME>,
-                "condition": <CONDITION_DESCRIPTION>,
-                "action": <ACTION_ON_SERVER>
-            }
-
-+ Response 200 (application/json)
-    + Attributes (object)
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
-
-    + Body
-
-            {
-                "name": <NAME>,
-                "condition": <CONDITION_DESCRIPTION>,
-                "action": <ACTION_ON_SERVER>
-            }
-
-### Delete an rule [DELETE]
-This operation deletes a specific rule. It does require neither a request or response body.
-
-Response
-* Succesful opeation uses 200 Ok with no data.
-* Errors use a non-2xx and optionally an error payload in JSON format. See subsection "Error Responses" 
-for more details.
-
-+ Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + ruleId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the rule following the OpenStack ID format.
-
-+ Request ()
-
-    + Headers
-
-            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
-
-+ Response 200 ()
-
-### Get a rule [GET]
-This operation gets a specific generic rule. This operation does not require a request body and the response is in JSON format.
-
-Response in JSON 
-* Succesful opeation uses 200 Ok and the data that was updated.
-* Errors use a non-2xx and optionally an error payload. See subsection "Error Responses" 
-for more details.
-
-+ Parameters
-    + tenantId (required, text, `d3fdddc6324c439780a6fd963a9fa148`) ... Alphanumeric `id` 
-    of the Tenant to perform action with. Has example value.
-    + ruleId (required, text, `52415800-8b69-11e0-9b19-734f6af67565`) ... Alphanumeric `id` 
-    of the rule following the OpenStack ID format.
-
-+ Request ()
-
-    + Headers
-
-            X-Auth-Token: 1da5e7629654321e3c123456b89b1cct
-
-+ Response 200 (application/json)
-    + Attributes
-        + name: scale-up - It is the key whose value represents the name of the rule. 
-        + condition: See "Rules" section for more details. - It is the key whose value is the description of the rule associated to this server.
-        + action: See "Rules" section for more details. - The action to take over the server.
-        + ruleId: See "Rules" section for more details. - The identifier of the rule following the OpenStack ID format.
-
-    + Body
-    
-            {
-                "name": <NAME>,
-                "condition": <CONDITION_DESCRIPTION>,
-                "action": <ACTION_ON_SERVER>,
-                "ruleId": "<RULE_ID>"
             }

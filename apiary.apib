@@ -69,11 +69,12 @@ For the former, this document provides a full specification of how to interopera
 with Cloud Platforms that implements PMI API. For the latter, this specification 
 indicates the interface to be provided in order to create rules with conditions 
 and actions associated the facts received from cloud services. To use this information, 
-the reader should first have a general understanding of the [http://wiki.fiware.org/FIWARE.OpenSpecification.Cloud.PolicyManager Policy Manager Generic Enabler] and also be familiar with:
+the reader should first have a general understanding of the [Policy Manager Generic Enabler](http://wiki.fiware.org/FIWARE.OpenSpecification.Cloud.PolicyManager)
+and also be familiar with:
 
 * RESTful web services
-* [http://www.ietf.org/rfc/rfc2616.txt HTTP/1.1 (RFC2616)]
-* [http://www.ietf.org/rfc/rfc4627.txt?number=4627 JSON] data serialization formats.
+* [RFC2616](http://www.ietf.org/rfc/rfc2616.txt HTTP/1.1).
+* [JSON data serialization formats](http://www.ietf.org/rfc/rfc4627.txt?number=4627).
 
 ## Conformance
 
@@ -118,7 +119,7 @@ credentials to OpenStack Identity to get an authentication token.
 Credentials are usually a combination of your user name and password, and optionally, the 
 name or ID of the tenant from your FIWARE Lab account. Ask your cloud administrator for your 
 user name (OS_USERNAME), password (OS_PASSWORD), and tenant (OS_PROJECT_NAME) if you do not 
-remember it or sing up your own account in FIWARE Lab account [https://account.lab.fiware.org/sign_up/] 
+remember it or sing up your own account in [FIWARE Lab account service](https://account.lab.fiware.org/sign_up/)
 so that you can generate authentication tokens.
 
 When you send PMI API requests, you include the token in the `X-Auth-Token` header. Please, 
@@ -128,7 +129,7 @@ become invalid for other security reasons. The workflow that you have to follow 
 * Request an authentication token from the Identity Manager endpoint that your cloud 
 administrator gave you. Send a payload of credentials in the request as shown in Authenticate. 
 If the request succeeds, the server returns an authentication token. Please refer to 
-[https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE.OpenSpecification.Security.IdentityManagement](FIWARE Identity Management GE) 
+[FIWARE Identity Management GE](https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE.OpenSpecification.Security.IdentityManagement) 
 for more details. First, export your tenant name to the OS_PROJECT_NAME environment variable, 
 your user name to the OS_USERNAME environment variable, your password to the OS_PASSWORD 
 environment variable and the url of the Identity Management to OS_AUTH_URL environment variable 
@@ -252,7 +253,7 @@ from its instance ID.
 ## Links and References
 
 Resources often lead to refer to other resources. In those cases, we have to provide 
-an ID or an URL to a remote resource. see [http://docs.openstack.org/api/openstack-compute/2/content/LinksReferences.html OpenStack Compute Developer Guide] 
+an ID or an URL to a remote resource. see [OpenStack Compute Developer Guide](http://docs.openstack.org/api/openstack-compute/2/content/LinksReferences.html) 
 on their application to infrastructural resources.
 
 ## Rules

@@ -1,7 +1,8 @@
 FORMAT: 1A
 TITLE: Policy Manager API Specification
-DATE: 2 September 2016
+DATE: 8 September 2016
 VERSION: v1.0
+PREVIOUS_VERSION: v1.0
 APIARY_PROJECT: policymanager
 HOST: policymanager.lab.fiware.org
 SPEC_URL: http://telefonicaid.github.io/fiware-cloto/
@@ -135,12 +136,12 @@ your user name to the OS_USERNAME environment variable, your password to the OS_
 environment variable and the url of the Identity Management to OS_AUTH_URL environment variable 
 and then execute:
 
-```
-$ curl -s -X POST $OS_AUTH_URL/tokens \
-  -H "Content-Type: application/json" \
-  -d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' \
-  | python -m json.tool
-```
+    ```
+    $ curl -s -X POST $OS_AUTH_URL/tokens \
+    -H "Content-Type: application/json" \
+    -d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' \
+    | python -m json.tool
+    ```
 
 Note: In the FIWARE Lab environment the url of the Identity Management GEi is http://cloud.lab.fi-ware.org:5000/v2.0/
 

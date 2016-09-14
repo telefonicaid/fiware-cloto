@@ -23,9 +23,8 @@
 # contact with opensource@tid.es
 #
 # Django cloto_settings for fiware_cloto project.
+
 from ConfigParser import SafeConfigParser
-from sys import platform as _platform
-import platform
 import fiware_cloto as fiware_cloto
 import os.path
 
@@ -123,7 +122,6 @@ for key, value in cfg_defaults_logging.items():
 
 if os.environ.get("CLOTO_SETTINGS_FILE"):
     cfg_filename = os.environ.get("CLOTO_SETTINGS_FILE")
-
 else:
     cfg_filename = os.path.join(cfg_dir, '%s.cfg' % name)
 

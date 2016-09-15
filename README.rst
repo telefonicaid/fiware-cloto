@@ -100,7 +100,7 @@ Software dependencies:
 This module also needs the installation of these other components:
 
 - Fiware-facts module installed (https://github.com/telefonicaid/fiware-facts)
-- A running instance of Orion Context Broker v0.28 or above
+- A running instance of Orion Context Broker v0.28
   (https://github.com/telefonicaid/fiware-orion/releases/tag/0.28.0)
 - Fiware-monitoring connected to the Orion instance to provide information
   about servers (https://github.com/telefonicaid/fiware-monitoring).

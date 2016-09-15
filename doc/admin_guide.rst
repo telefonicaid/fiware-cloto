@@ -19,48 +19,28 @@ installed the following software of framework in the machine:
 -  Rule engine dependencies:
 
    -  Python 2.7.6 `[1] <http://www.python.org/download/releases/2.7.6/>`_
-   -  PyClips 1.0 `[2] <http://sourceforge.net/projects/pyclips/files/>`_
-   -  RabbitMQ 3.3.0 `[3] <http://www.rabbitmq.com/download.html>`_
-   -  MySQL 5.6.14 or above `[4] <http://dev.mysql.com/downloads/mysql/>`_
+   -  RabbitMQ 3.3.0 `[2] <http://www.rabbitmq.com/download.html>`_
+   -  MySQL 5.6.14 or above `[3] <http://dev.mysql.com/downloads/mysql/>`_
 
 -  Facts engine dependencies:
 
    -  Python 2.7.6 `[1] <http://www.python.org/download/releases/2.7.6/>`_
-   -  Redis 2.8.8 `[5] <http://redis.io/download>`_
+   -  Redis 2.8.8 `[4] <http://redis.io/download>`_
 
 Rule engine installation
 ------------------------
 
-There is no need to configure any special options in django server. Run
+There is no need to configure any special options in Django server. Run
 as default mode.
 
-Step 1: Install python
+Step 1: Install Python
 ~~~~~~~~~~~~~~~~~~~~~~
 
-If you do not have python installed by default, please, follow
+If you do not have Python installed by default, please, follow
 instructions for your Operating System in the official page:
 https://www.python.org/download/releases/2.7.6/
 
-Step 2: Install pyclips
-~~~~~~~~~~~~~~~~~~~~~~~
-
-Download pyclips from
-http://sourceforge.net/projects/pyclips/files/pyclips/pyclips-1.0
-
-To install pyclips execute this following commands:
-
-::
-
-    $ tar -xvf pyclips-1.0.X.Y.tar.gz
-    $ cd pyclips
-    $ python setup.py build
-    $ su -c "python setup.py install"
-
-Maybe you need to execute these commands using sudo.
-
-If everything was OK, you should not receive any error.
-
-Step 3: Install RabbitMQ
+Step 2: Install RabbitMQ
 ~~~~~~~~~~~~~~~~~~~~~~~~
 
 To install RabbitMQ Server, it is better to refer official installation
@@ -71,7 +51,7 @@ After installation, you should start RabbitMQ. Note that you only need
 one instance of RabbitMQ and It could be installed in a different server
 than fiware-facts or Rule Engine.
 
-Step 4: Install MySQL
+Step 3: Install MySQL
 ~~~~~~~~~~~~~~~~~~~~~
 
 To install MySQL Server, it is better to refer official installation
@@ -96,7 +76,7 @@ To add a user to the server, please follow official documentation:
 http://dev.mysql.com/doc/refman/5.5/en/adding-users.html
 
 
-Step 5: Download and execute the Rule Engine server
+Step 4: Download and execute the Rule Engine server
 ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 1. Installing fiware-cloto
@@ -187,12 +167,8 @@ domain name, etc. An example could be like this:
     ALLOWED_HOSTS: ['127.0.0.1', 'localhost', 'policymanager.host.com','80.71.123.2’]
 
 
-Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/``
-(by default), with the right permissions to write in that folder.
-
-::
-
-    mkdir -m /var/log/fiware-cloto
+Finally, ensure that folder for logs (``/var/log/fiware-cloto/`` by default)
+has the right permissions and owner.
 
 In 2.5.0 release we added a new parameter called ``SECURITY_LEVEL``.
 This parameter could have three values: ``[HIGH | MEDIUM | LOW]``
@@ -218,18 +194,17 @@ To run fiware-cloto, just execute:
 
 .. code::
 
-    $ gunicorn fiware_cloto.cloto.wsgi -b $IP
+    $ gunicorn fiware_cloto.cloto.wsgi -b BIND_ADDRESS
 
-Where $IP is a valid network interface assigned with a public address. If you
-execute the command with ``127.0.0.1`` fiware-cloto won't be accessible from
-outside.
+Where BIND_ADDRESS is a valid network interface assigned with a public address.
+If you execute the command with ``127.0.0.1`` fiware-cloto won't be accessible
+from outside.
 
 To stop fiware-cloto, you can stop gunicorn server, or kill it
 
-NOTE: if you want to see gunicorn log if something is going wrong, you could
-execute the command before adding ``--log-file=-`` at the end of the command.
-This option will show the logs in your prompt (standard stderr). If you want
-to store the log into a file just write ``--log-file=<log file name>``.
+NOTE: to enable writing gunicorn log messages to console, please add the option
+``--log-file=-``; otherwise, if you prefer to write them into a file, just add
+``--log-file=<log file name>``.
 
 
 Facts installation

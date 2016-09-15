@@ -83,16 +83,18 @@ Build and Install
 Requirements
 ------------
 
-- Operating systems: CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the
-  reference operating system.
+Operating systems:
 
-To install this module you have to install some components:
+- CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the reference
+  operating system.
+
+Software dependencies:
 
 - Python 2.7
 - PyClips 1.0 (http://sourceforge.net/projects/pyclips/files/)
 - RabbitMQ Server 3.3.0 or above (http://www.rabbitmq.com/download.html)
-- pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
 - MySQL 5.6.14 or above (http://dev.mysql.com/downloads/mysql/)
+- pip 7.0.0 or above (https://pip.pypa.io/en/stable/installing/)
 - gcc-c++ and gcc libraries
 
 This module also needs the installation of these other components:
@@ -109,28 +111,16 @@ Top_.
 Pre-Installation
 ----------------
 
-Once you have all prerequisites installed, you must create a database named
-``cloto`` in your MySQL server. MySQL installation directory should be added
-to PATH environment variable. You can add it executing (change ``/usr/local/``
-with your mysql folder):
+You must create a database named ``cloto`` in your MySQL server before
+installing this component.
 
-.. code::
-
-    $ export PATH=$PATH:/usr/local/mysql/bin
-
-In addition, be sure you have installed mysql-devel package for development
-of MySQL applications. You should be able to install it from yum or apt-get
-package managers.
-
-Examples:
+In addition, be sure you have installed MySQL development libraries and tools
+(using package managers such as yum or apt-get):
 
 .. code::
 
     centos$ sudo yum install mysql-devel
-    ubuntu$ sudo apt-get install mysql-devel
-
-At this you must configure cloto configuration and ensure your database is
-created with mysql.
+    ubuntu$ sudo apt-get install mysql-client libmysqlclient-dev
 
 Top_.
 
@@ -138,20 +128,16 @@ Top_.
 Configuration file
 ------------------
 
-The configuration used by the fiware-cloto component is read from the file
-located at ``/etc/fiware.d/fiware-cloto.cfg``.
+The configuration used by this component is read from the file located at
+``/etc/fiware.d/fiware-cloto.cfg``, unless otherwise specified by environment
+variable ``CLOTO_SETTINGS_FILE``.
 
-MySQL cloto configuration must be filled before starting fiware-facts component,
-user and password are empty by default. You can copy the `default configuration
-file <fiware_cloto/cloto_settings/fiware-cloto.cfg>`_ to the folder defined for
-your OS, and complete data about cloto MySQL configuration (user and password)
-and all OpenStack configuration.
+MySQL settings of this configuration must be adjusted before starting the
+fiware-facts component (for instance, user and password are empty by default):
+please check section ``[mysql]``.
 
-In addition, user could have a copy of this file in other location and pass its
-location to the server in running execution defining an environment variable
-called CLOTO_SETTINGS_FILE.
-
-Options that user could define:
+A sample configuration file may include the following (see default `here
+<fiware_cloto/cloto_settings/fiware-cloto.cfg>`_):
 
 ::
 
@@ -206,7 +192,8 @@ Top_.
 Installation
 ------------
 
-After all you must install fiware-cloto from pypi repository executing:
+Once pre-installation requirements are satisfied, please install fiware-cloto
+package from PyPI repository:
 
 .. code::
 
@@ -220,21 +207,14 @@ To run fiware-cloto, just execute:
 
 .. code::
 
-    $ gunicorn fiware_cloto.cloto.wsgi -b $IP
+    $ gunicorn fiware_cloto.cloto.wsgi -b BIND_ADDRESS
 
 To stop fiware-cloto, you can stop gunicorn server, or kill it
 
-NOTE: if you want to see gunicorn log if something is going wrong, you could
-execute the command before adding ``--log-file=-`` at the end of the command.
-This option will show the logs in your prompt (standard stderr). If you prefer
-to write them into a file, just write ``--log-file=<log file name>``.
-
-Finally, ensure that you create a folder for logs ``/var/log/fiware-cloto/``
-(by default), with the right permissions to write in that folder.
-
-.. code::
-
-    $ sudo mkdir -m /var/log/fiware-cloto
+NOTE: to enable writing gunicorn log messages to console, please add the option
+``--log-file=-``; otherwise, if you prefer to write them into a file, just add
+``--log-file=<log file name>``. By default, logs will be written in the folder
+``/var/log/fiware-cloto/``: please ensure its permissions and owner are valid.
 
 
 Running with supervisor
@@ -245,18 +225,18 @@ Just install supervisor on your system:
 
 .. code::
 
-    $ sudo apt-get install supervisor
+    centos$ sudo yum install supervisor
+    ubuntu$ sudo apt-get install supervisor
 
-Copy the file ``utils/cloto_start`` to ``/etc/fiware.d``.
-Make this script executable:
+Copy the file `utils/cloto_start <utils/cloto_start>`_ to ``/etc/fiware.d`` and
+ensure it has execution permissions:
 
 .. code::
 
     $ sudo chmod a+x /etc/fiware.d/cloto_start
 
-Copy the file ``utils/fiware-cloto.conf`` to ``/etc/supervisor/conf.d``.
-
-Start fiware-cloto using supervisor:
+Then copy the file `utils/fiware-cloto.conf <utils/fiware-cloto.conf>`_ to
+``/etc/supervisor/conf.d`` and start fiware-cloto using supervisor:
 
 .. code::
 
@@ -270,8 +250,8 @@ To stop fiware-cloto just execute:
 
     $ sudo supervisorctl stop fiware-cloto
 
-NOTE: Supervisor provides an “event listener” to subscribe to
-“event notifications”. The purpose of the event notification/subscription
+NOTE: Supervisor provides an "event listener" to subscribe to the so-called
+"event notifications". The purpose of the event notification/subscription
 system is to provide a mechanism for arbitrary code to be run (e.g. send an
 email, make an HTTP request, etc) when some condition is satisfied. That
 condition usually has to do with subprocess state. For instance, you may
@@ -418,8 +398,8 @@ Acceptance tests
 
 Requirements
 
-- Python 2.7 or newer
-- pip installed (http://docs.python-guide.org/en/latest/starting/install/linux/)
+- Python 2.7
+- pip 7.0.0 or above (https://pip.pypa.io/en/stable/installing/)
 - virtualenv installed (pip install virtalenv)
 - Git installed (yum install git-core / apt-get install git)
 

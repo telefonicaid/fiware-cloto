@@ -10,6 +10,10 @@ in a machine, including its requirements and possible troubleshooting
 that we could find during the installation. We have to talk about two
 applications deployed in a Django server.
 
+Please go to GitHub's `README <https://github.com/telefonicaid/fiware-cloto/blob/master/README.rst>`_ for more
+documentation.
+
+
 Requirements
 ------------
 

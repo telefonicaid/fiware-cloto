@@ -9,6 +9,10 @@ Please check the `FIWARE Open Specifications Legal Notice
 <https://forge.fi-ware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specifications_Legal_Notice>`_
 to understand the rights to use FIWARE Open Specifications.
 
+Please go to GitHub's `README <https://github.com/telefonicaid/fiware-cloto/blob/master/README.rst>`_ for more
+documentation.
+
+
 PMI Policy API
 --------------
 
@@ -1020,4 +1024,5 @@ This is the rule as is expected to:
                }
        }
     }
+
 

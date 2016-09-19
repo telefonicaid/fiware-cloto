@@ -10,6 +10,9 @@ Enabler. The online documents are being continuously updated and
 improved, and so will be the most appropriate place to get the most up
 to date information on using this interface.
 
+Please go to GitHub's `README <https://github.com/telefonicaid/fiware-cloto/blob/master/README.rst>`_ for more
+documentation.
+
 Background and Detail
 ---------------------
 

@@ -9,6 +9,9 @@ Please check the following `Legal Notice
 <https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FI-WARE_Open_Specification_Legal_Notice_%28implicit_patents_license%29>`_
 to understand the rights to use these specifications.
 
+Please go to GitHub's `README <https://github.com/telefonicaid/fiware-cloto/blob/master/README.rst>`_ for more
+documentation.
+
 Overview
 ========
 
@@ -65,7 +68,7 @@ facts based on the rules or infer new actions to take by third parties.
 
    </center>
 
-| 
+|
 
 Target Usage
 ------------

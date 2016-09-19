@@ -71,7 +71,7 @@ Fiware-Facts
     publish the result into a RabbitMQ queue to be analysed by Fiware-Cloto.
     The facts are the result of the server resources consumption.
 
-For more information, please refer to the `documentation <doc/README.rst>`_.
+For more information, please refer to the `documentation <doc/index.rst>`_.
 
 
 Top_.
@@ -387,8 +387,8 @@ The response should be similar to:
         "windowsize": 2
     }
 
-Please refer to the `Installation and administration guide
-<doc/admin_guide.rst#end-to-end-testing>`_ for details.
+Please refer to the `Installation and administration guide <doc/admin_guide.rst>`_
+for details.
 
 Top_.
 

@@ -297,6 +297,11 @@ Please have a look at the `API Reference Documentation`_ section below and
 at the `user and programmer guide <doc/user_guide.rst>`_ for more description
 of the possibilities and operations.
 
+Note: Please keep in mind that the server (whose serverId in the previous example is
+32c23ac4-230d-42b6-81f2-db9bd7e5b790 and tenantID is 6571e3422ad84f7d828ce2f30373b3d4)
+has to be created in FIWARE Lab. Policy Manager does not take care about this instance
+creation.
+
 Top_.
 
 

@@ -135,12 +135,12 @@ your user name to the OS_USERNAME environment variable, your password to the OS_
 environment variable and the url of the Identity Management to OS_AUTH_URL environment variable 
 and then execute:
 
-    ```
-    $ curl -s -X POST $OS_AUTH_URL/tokens \
-    -H "Content-Type: application/json" \
-    -d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' \
-    | python -m json.tool
-    ```
+```
+$ curl -s -X POST $OS_AUTH_URL/tokens \
+-H "Content-Type: application/json" \
+-d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' \
+| python -m json.tool
+```
 
 Note: In the FIWARE Lab environment the url of the Identity Management GEi is http://cloud.lab.fi-ware.org:5000/v2.0/
 
@@ -311,6 +311,7 @@ object's `operand` property. PMI API v1.0 allows values "greater", "less",
 "greater equal", "less equal" for this property.
 
 An example of a rule definition can be found in the following code:
+
 ```
 "condition": {
     "cpu": {
@@ -332,33 +333,34 @@ An action is represented by a JSON object with the following syntax:
 * The action id is specified by the object's `actionName` property, whose value is 
 a string containing the action's name. Depending of the `actionName` we have predefined 
 different properties:
-    * If the object's `actionName` property has value `notify-email`, we have the email and 
+
+* If the object's `actionName` property has value `notify-email`, we have the email and 
 body which are represented by the object's `email` and `body` properties, whose values 
 are the string containing the email address to send the email and the message of this 
 email. This is a possible example:
 
-    ```
-        "action": {
-              "actionName": "notify-email",
-            "email": "foo@fighters",
-            "body": "You have a problem with your instance, please check it."
-        }
-    ```
+```
+"action": {
+    "actionName": "notify-email",
+    "email": "foo@fighters",
+    "body": "You have a problem with your instance, please check it."
+}
+```
 
-    * If the object's `actionName` property has value `notify-scale`, we have action 
-operation. The action operation is specified by the object's `operation` property, 
-whole value is a string containing the action's operation. PMI API v1.0 allows values 
-"scaleUp", "scaleDown" for this property. This messages is sent back to the url that 
-is specified in the subscription process described bellow. This is a possible example:
+* If the object's `actionName` property has value `notify-scale`, we have action operation. 
+The action operation is specified by the object's `operation` property, whole value is a 
+string containing the action's operation. PMI API v1.0 allows values "scaleUp", "scaleDown" 
+for this property. This messages is sent back to the url that is specified in the subscription 
+process described bellow. This is a possible example:
 
-    ```
-        "action": {
-              "actionName": "notify-scale",
-            "operation": "scaleUp"
-        }
-    ```
+```
+"action": {
+    "actionName": "notify-scale",
+    "operation": "scaleUp"
+}
+```
 
-    * Any other possible value of the object's `actionName` property will have the same 
+* Any other possible value of the object's `actionName` property will have the same 
 behaviour described in the previous case.
 
 ## Error Responses

@@ -505,7 +505,7 @@
 	
 
 	<dt class="versionLabel">Latest version:</dt> 
-	<dd class="versionValue"> <a href="http://telefonicaid.github.io/fiware-cloto/api/v1.0">http://telefonicaid.github.io/fiware-cloto/api/v1.0</a> </dd>
+	<dd class="versionValue"> <a href="http://telefonicaid.github.io/fiware-cloto/api/latest">http://telefonicaid.github.io/fiware-cloto/api/latest</a> </dd>
 
 	</dl>
 
@@ -1202,21 +1202,21 @@ so that you can generate authentication tokens.</p>
 keep in mind that a token is valid for a limited time before it expires. A token can also 
 become invalid for other security reasons. The workflow that you have to follow is:</p>
 <ul>
-<li>
-<p>Request an authentication token from the Identity Manager endpoint that your cloud 
+<li>Request an authentication token from the Identity Manager endpoint that your cloud 
 administrator gave you. Send a payload of credentials in the request as shown in Authenticate. 
 If the request succeeds, the server returns an authentication token. Please refer to 
 <a href="https://forge.fiware.org/plugins/mediawiki/wiki/fiware/index.php/FIWARE.OpenSpecification.Security.IdentityManagement">FIWARE Identity Management GE</a> 
 for more details. First, export your tenant name to the OS_PROJECT_NAME environment variable, 
 your user name to the OS_USERNAME environment variable, your password to the OS_PASSWORD 
 environment variable and the url of the Identity Management to OS_AUTH_URL environment variable 
-and then execute:</p>
-<p><code>$ curl -s -X POST $OS_AUTH_URL/tokens \
--H "Content-Type: application/json" \
--d '{"auth": {"tenantName": "'"$OS_PROJECT_NAME"'", "passwordCredentials": {"username": "'"$OS_USERNAME"'", "password": "'"$OS_PASSWORD"'"}}}' \
-| python -m json.tool</code></p>
-</li>
+and then execute:</li>
 </ul>
+<pre><code>$ curl -s -X POST $OS_AUTH_URL/tokens \
+-H &quot;Content-Type: application/json&quot; \
+-d '{&quot;auth&quot;: {&quot;tenantName&quot;: &quot;'&quot;$OS_PROJECT_NAME&quot;'&quot;, &quot;passwordCredentials&quot;: {&quot;username&quot;: &quot;'&quot;$OS_USERNAME&quot;'&quot;, &quot;password&quot;: &quot;'&quot;$OS_PASSWORD&quot;'&quot;}}}' \
+| python -m json.tool
+</code></pre>
+
 <p>Note: In the FIWARE Lab environment the url of the Identity Management GEi is <a href="http://cloud.lab.fi-ware.org:5000/v2.0/">http://cloud.lab.fi-ware.org:5000/v2.0/</a></p>
 <p>If the request succeeds, it returns the OK (200) response code followed by a response 
 body that contains a token in the form <code>"id":"token"</code> and an expiration date and time 
@@ -1423,40 +1423,44 @@ object's <code>operand</code> property. PMI API v1.0 allows values "greater", "l
 
 
 <h3 id="actions"> Actions</h3>
-<p>Actions are the messages that we send to the user of the rule when a rule is triggered. 
+<p>Actions are the messages that we send to the user of the rule when a rule is triggered.
 An action is represented by a JSON object with the following syntax:</p>
 <ul>
 <li>
-<p>The action id is specified by the object's <code>actionName</code> property, whose value is 
-a string containing the action's name. Depending of the <code>actionName</code> we have predefined 
+<p>The action id is specified by the object's <code>actionName</code> property, whose value is
+a string containing the action's name. Depending of the <code>actionName</code> we have predefined
 different properties:</p>
-<ul>
-<li>If the object's <code>actionName</code> property has value <code>notify-email</code>, we have the email and 
+</li>
+<li>
+<p>If the object's <code>actionName</code> property has value <code>notify-email</code>, we have the email and 
 body which are represented by the object's <code>email</code> and <code>body</code> properties, whose values 
 are the string containing the email address to send the email and the message of this 
-email. This is a possible example:</li>
+email. This is a possible example:</p>
+</li>
 </ul>
-<p><code>"action": {
-          "actionName": "notify-email",
-        "email": "foo@fighters",
-        "body": "You have a problem with your instance, please check it."
-    }</code></p>
+<pre><code>&quot;action&quot;: {
+    &quot;actionName&quot;: &quot;notify-email&quot;,
+    &quot;email&quot;: &quot;foo@fighters&quot;,
+    &quot;body&quot;: &quot;You have a problem with your instance, please check it.&quot;
+}
+</code></pre>
+
 <ul>
-<li>If the object's <code>actionName</code> property has value <code>notify-scale</code>, we have action 
-operation. The action operation is specified by the object's <code>operation</code> property, 
-whole value is a string containing the action's operation. PMI API v1.0 allows values 
-"scaleUp", "scaleDown" for this property. This messages is sent back to the url that 
-is specified in the subscription process described bellow. This is a possible example:</li>
+<li>If the object's <code>actionName</code> property has value <code>notify-scale</code>, we have action operation. 
+The action operation is specified by the object's <code>operation</code> property, whole value is a 
+string containing the action's operation. PMI API v1.0 allows values "scaleUp", "scaleDown" 
+for this property. This messages is sent back to the url that is specified in the subscription 
+process described bellow. This is a possible example:</li>
 </ul>
-<p><code>"action": {
-          "actionName": "notify-scale",
-        "operation": "scaleUp"
-    }</code></p>
+<pre><code>&quot;action&quot;: {
+    &quot;actionName&quot;: &quot;notify-scale&quot;,
+    &quot;operation&quot;: &quot;scaleUp&quot;
+}
+</code></pre>
+
 <ul>
 <li>Any other possible value of the object's <code>actionName</code> property will have the same 
 behaviour described in the previous case.</li>
-</ul>
-</li>
 </ul>
 
 

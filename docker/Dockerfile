@@ -1,4 +1,5 @@
 FROM ubuntu
+ENV CLOTO_SETTINGS_FILE /etc/fiware.d/fiware-cloto.cfg
 RUN apt-get update
 RUN apt-get -y install  python-dev \
    libpq-dev libmysqlclient-dev libpq-dev \

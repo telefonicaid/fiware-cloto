@@ -1,6 +1,7 @@
 Open RESTful API Specification
 ______________________________
 
+.. contents:: :local:
 
 Introduction to the PMI Policy API
 ==================================

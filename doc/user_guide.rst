@@ -1,6 +1,7 @@
 User & Programmers Guide
 ________________________
 
+.. contents:: :local:
 
 Introduction
 ============

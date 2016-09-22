@@ -1,6 +1,7 @@
 Installation & Administration Guide
 ___________________________________
 
+.. contents:: :local:
 
 Policy Manager Installation
 ===========================

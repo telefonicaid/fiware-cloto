@@ -434,7 +434,7 @@ curl sentence.
     curl -d '{"auth": {"tenantName": $TENANT,
     "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
     -H "Content-type: application/json" -H "Accept: application/xml"
-    http://<idm.serveer>:<idm.port)/v2.0/tokens
+    http://<idm.server>:<idm.port)/v2.0/tokens
 
 Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The <idm.server> and <idm.port>
@@ -519,8 +519,7 @@ It should show something similar to the following:
     1     0  0 07:45 ?          00:00:00 /bin/sh -e /usr/lib/rabbitmq/bin/rabbitmq-server
     1     0  0 07:45 ?          00:00:14 mysqld
 
-where we can see the rabbitmq and mysql process, the run process to launch the
-Python program and the clips program.
+where we can see the rabbitmq, mysql and gunicorn process.
 
 Network interfaces Up & Open
 ----------------------------
@@ -761,7 +760,7 @@ for this tenant in the following json response structure:
         "doc": "http://docs.policymanager.apiary.io",
         "runningfrom": "14/04/11 12:32:29", 
         "version": "1.0",
-        "windowsize": 5
+        "windowsize": 10
     }
 
 Resource consumption

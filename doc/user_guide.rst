@@ -109,7 +109,7 @@ of the execution of the Policy Manager
         "doc": "http://docs.policymanager.apiary.io",
         "runningfrom": "14/04/09 07:45:22", 
         "version": 1.0, 
-        "windowsize": 5
+        "windowsize": 10
     }
 
 **3. Create a rule for a server**

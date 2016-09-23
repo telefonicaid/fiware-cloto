@@ -60,11 +60,11 @@ operations.
 
     curl -d '{"auth": {"tenantName": $TENANT, "passwordCredentials":{"username": $USERNAME,
     "password": $PASSWORD}}}' -H "Content-type: application/json"
-    -H "Accept: application/xml"  http://130.206.80.100:35357/v2.0/tokens
+    -H "Accept: application/xml"  http://$KEYSTONE_HOST:$KEYSTONE_PORT/v2.0/tokens
 
 Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The IP address
-10.95.171.115 and the Port 35357 are the data of our internal
+$KEYSTONE_HOST and the Port $KEYSTONE_PORT are the data of our internal
 installation of IdM, if you planned to execute it you must changed it by
 the corresponding IP and Port of the FIWARE Keystone or IdM IP and Port
 addresses.
@@ -93,7 +93,7 @@ information about the window size and its meaning.
 ::
 
     curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
-    -X GET http://130.206.81.71:8000/v1.0/c907498615b7456a9513500fe24101e0
+    -X GET http://<RULE ENGINE HOST>:8000/v1.0/c907498615b7456a9513500fe24101e0
 
 This operation will return the information regarding the tenant details
 of the execution of the Policy Manager
@@ -106,11 +106,10 @@ of the execution of the Policy Manager
     < Content-Type: text/html; charset=utf-8
     {
         "owner": "Telefonica I+D", 
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/
-                                                    FIWARE.OpenSpecification.Details.Cloud.PolicyManager",
+        "doc": "http://docs.policymanager.apiary.io",
         "runningfrom": "14/04/09 07:45:22", 
         "version": 1.0, 
-        "windowsize": 5
+        "windowsize": 10
     }
 
 **3. Create a rule for a server**

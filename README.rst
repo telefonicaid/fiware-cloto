@@ -85,7 +85,7 @@ Requirements
 
 Operating systems:
 
-- CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the reference
+- CentOS (RedHat) and Ubuntu (Debian), being CentOS 7 the reference
   operating system.
 
 Software dependencies:
@@ -389,7 +389,7 @@ The response should be similar to:
         "doc": "http://docs.policymanager.apiary.io",
         "runningfrom": "16/02/03 16:16:27",
         "version": "2.3.0"
-        "windowsize": 2
+        "windowsize": 10
     }
 
 Please refer to the `Installation and administration guide <doc/admin_guide.rst>`_

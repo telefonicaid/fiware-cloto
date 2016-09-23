@@ -1,5 +1,5 @@
 mysql:
-   image: mysql:5.5
+   image: mysql:5.6
    container_name: mysql
    environment:
      MYSQL_DATABASE: cloto
@@ -30,7 +30,7 @@ fiwarecloto:
    - ADM_TENANT_ID
    - KEYSTONE_IP
    - OS_USER_DOMAIN_NAME
-fiware-cloto-aceptance:
+fiware-cloto-acceptance:
   image: fiware-cloto-acceptance
   links:
   - fiwarecloto

@@ -440,7 +440,7 @@ Both $TENANT (Project), $USERNAME and $PASSWORD must be values
 previously created in the OpenStack Keystone. The <idm.server> and <idm.port>
 are the data of our installation of IdM, if you planned to execute it
 you must changed it by the corresponding IP and Port of the FIWARE Keystone
-or IdM IP and Port addresses.
+or IdM IP and Port values.
 
 We obtained two data from the previous sentence:
 

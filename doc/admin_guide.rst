@@ -302,23 +302,23 @@ Options that user could define:
 ::
 
    [common]
-   brokerPort: 5000
-   clotoPort:  8000
-   redisPort:  6379
-   redisHost:  localhost
+   brokerPort: 5000       # Port listening fiware-facts
+   clotoPort:  8000       # Port listening fiware-cloto
+   redisPort:  6379       # Port listening redis-server
+   redisHost:  localhost  # Address of redis-server
    redisQueue: policymanager
-   rabbitMQ:   rabbit
-   cloto:      127.0.0.1
+   rabbitMQ:   localhost  # Address of RabbitMQ server
+   cloto:      127.0.0.1  # Address of fiware-cloto
    clotoVersion: v1.0
    name:       policymanager.facts
    maxTimeWindowsize: 10
 
    [mysql]
-   host:mysql
+   host: localhost        # address of mysql that fiware-cloto is using
    charset:    utf8
    db: cloto
-   user: mysql
-   password: mysql
+   user:                  # mysql user
+   password:              # mysql password
 
    [loggers]
    keys: root
@@ -334,7 +334,7 @@ Options that user could define:
    format: %(asctime)s %(levelname)s policymanager.facts %(message)s
 
    [logger_root]
-   level: INFO
+   level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
    handlers: console, file
 
    [handler_console]

@@ -1,11 +1,11 @@
 mysql:
-   image: mysql:5.5
+   image: mysql:5.6
    container_name: mysql
    environment:
      MYSQL_DATABASE: cloto
      MYSQL_USER: mysql
      MYSQL_PASSWORD: mysql
-     MYSQL_ROOT_PASSWORD: supersecret
+     MYSQL_ROOT_PASSWORD: my-secret-pw
    ports:
     - 3306:3306
 rabbit:

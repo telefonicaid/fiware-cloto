@@ -85,7 +85,7 @@ Requirements
 
 Operating systems:
 
-- CentOS (RedHat) and Ubuntu (Debian), being CentOS 6.3 the reference
+- CentOS (RedHat) and Ubuntu (Debian), being CentOS 7 the reference
   operating system.
 
 Software dependencies:

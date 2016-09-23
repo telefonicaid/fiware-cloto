@@ -30,7 +30,7 @@ After a few seconds you should have your fiware-cloto image created. Just run th
     fiware-cloto       latest              bd78d006c2ea        About a minute ago   480.8 MB
     ...
 
-fiware-cloto image needs somce dockers mysql and rabbit alredy deployed. Thus, to deploy the container we need to execute the command `docker run -p 8000:8000 -e PASSWORD=$PASSWORD -l rabbit -l mysql fiware-murano`.
+fiware-cloto image needs somce dockers mysql and rabbit alredy deployed. Thus, to deploy the container we need to execute the command `docker run -p 8000:8000 -e PASSWORD=$PASSWORD -l rabbit -l mysql fiware-cloto`.
 It will launch the fiware-cloto service listening on port 8000, which is linked to mysql and rabbit dockers.
 
 To check that the service is running correcly, just do

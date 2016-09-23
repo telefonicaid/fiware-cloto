@@ -301,28 +301,64 @@ called FACTS_SETTINGS_FILE.
 Options that user could define:
 ::
 
-    [common]
-     brokerPort: 5000       # Port listening fiware-facts
-     clotoPort:  8000       # Port listening fiware-cloto
-     redisPort:  6379       # Port listening redis-server
-     redisHost:  localhost  # Address of redis-server
-     rabbitMQ:   localhost  # Address of RabbitMQ server
-     cloto:      127.0.0.1  # Address of fiware-cloto
+   [common]
+   brokerPort: 5000
+   clotoPort:  8000
+   redisPort:  6379
+   redisHost:  localhost
+   redisQueue: policymanager
+   rabbitMQ:   rabbit
+   cloto:      127.0.0.1
+   clotoVersion: v1.0
+   name:       policymanager.facts
+   maxTimeWindowsize: 10
 
-    [mysql]
-     host: localhost        # address of mysql that fiware-cloto is using
-     user:                  # mysql user
-     password:              # mysql password
+   [mysql]
+   host:mysql
+   charset:    utf8
+   db: cloto
+   user: mysql
+   password: mysql
 
-    [logger_root]
-     level: INFO            # Logging level (DEBUG, INFO, WARNING, ERROR, CRITICAL)
+   [loggers]
+   keys: root
+
+   [handlers]
+   keys: console, file
+
+   [formatters]
+   keys: standard
+
+   [formatter_standard]
+   class: logging.Formatter
+   format: %(asctime)s %(levelname)s policymanager.facts %(message)s
+
+   [logger_root]
+   level: INFO
+   handlers: console, file
+
+   [handler_console]
+   level: DEBUG
+   class: StreamHandler
+   formatter: standard
+   args: (sys.stdout,)
+
+   [handler_file]
+   level: DEBUG
+   class: handlers.RotatingFileHandler
+   formatter: standard
+   logFilePath: /var/log/fiware-facts
+   logFileName: fiware-facts.log
+   logMaxFiles: 3
+   logMaxSize: 5*1024*1024  ; 5 MB
+   args: ('%(logFilePath)s/%(logFileName)s', 'a', %(logMaxSize)s, %(logMaxFiles)s)
 
 Finally, ensure that you create a folder for logs ``/var/log/fiware-facts/``
 (by default), with the right permissions to write in that folder.
 
 ::
 
-    mkdir -m /var/log/fiware-facts
+    mkdir -p /var/log/fiware-facts
 
 3. Starting the server
 
@@ -375,6 +411,7 @@ therefore a preliminary set of tests to ensure that obvious or basic
 malfunctioning is fixed before proceeding to unit tests, integration
 tests and user validation.
 
+
 End to End testing
 ------------------
 
@@ -397,14 +434,13 @@ curl sentence.
     curl -d '{"auth": {"tenantName": $TENANT,
     "passwordCredentials":{"username": $USERNAME, "password": $PASSWORD}}}'
     -H "Content-type: application/json" -H "Accept: application/xml"
-    http://130.206.80.100:35357/v2.0/tokens
+    http://<idm.serveer>:<idm.port)/v2.0/tokens
 
 Both $TENANT (Project), $USERNAME and $PASSWORD must be values
-previously created in the OpenStack Keystone. The IP address
-10.95.171.115 and the Port 35357 are the data of our internal
-installation of IdM, if you planned to execute it you must changed it by
-the corresponding IP and Port of the FIWARE Keystone or IdM IP and Port
-addresses.
+previously created in the OpenStack Keystone. The <idm.server> and <idm.port>
+are the data of our installation of IdM, if you planned to execute it
+you must changed it by the corresponding IP and Port of the FIWARE Keystone
+or IdM IP and Port addresses.
 
 We obtained two data from the previous sentence:
 
@@ -426,8 +462,8 @@ of the processes together with the queue size.
 
 ::
 
-    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
-    -X GET http://130.206.81.71:8000/v1.0/c907498615b7456a9513500fe24101e0
+    curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d' -X GET
+    http://<fiware.cloto.server>:<fiware.cloto.port>/v1.0/c907498615b7456a9513500fe24101e0
 
 This operation will return the information regarding the tenant details
 of the execution of the Policy Manager
@@ -440,11 +476,10 @@ of the execution of the Policy Manager
     < Content-Type: text/html; charset=utf-8
     {
         "owner": "Telefonica I+D", 
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/
-                                     FIWARE.OpenSpecification.Details.Cloud.PolicyManager",
+        "doc": "http://docs.policymanager.apiary.io",
         "runningfrom": "14/04/09 07:45:22", 
-        "version": 1.0, 
-        "windowsize": 5
+        "version": 2.7.0,
+        "windowsize": 10
     }
 
 For more details to use this GE, please refer to the User & Programmers Guide.
@@ -458,16 +493,14 @@ facts engine. If we execute the following command:
 
 ::
 
-    ps -ewf | grep 'redis\|Python' | grep -v grep
+    ps -ewf | grep 'redis\|python' | grep -v grep
 
 It should show something similar to the following:
 
 ::
 
-    UID   PID  PPID   C   STIME     TTY       TIME   CMD
-    501  5287   343   0  9:42PM ttys001    0:02.49   ./redis-server *:6379
-    501  5604   353   0  9:40AM ttys002    0:00.20 /Library/Frameworks/Python.framework/
-    Versions/2.7/Resources/Python.app/Contents/MacOS/Python facts.py
+   2485   599  0 10:09 ?        00:00:01 src/redis-server *:6379
+   2704   599  0 10:23 ?        00:00:00 /usr/bin/python /usr/bin/gunicorn facts.server:app -b 0.0.0.0:5000
 
 Where you can see the Redis server, and the run process to launch the
 Python program.
@@ -476,25 +509,17 @@ In case of the rule engine node, if we execute the following command:
 
 ::
 
-    ps -ewf | grep 'rabbitmq-server\|python' | grep -v grep
+    ps -ewf | grep 'rabbitmq-server\|python\|mysql' | grep -v grep
 
 It should show something similar to the following:
 
 ::
 
-    UID        PID  PPID  C    SZ   RSS PSR STIME TTY          TIME CMD
-    root      1584     1  0 15:31 ?        00:00:00 /bin/sh /etc/rc3.d/
-    S80rabbitmq-server start
-    root      1587  1584  0 15:31 ?        00:00:00 /bin/bash -c ulimit -S -c 0
-    >/dev/null 2>&1 ; /usr/sbin/rabbitmq-server
-    root      1589  1587  0 15:31 ?        00:00:00 /bin/sh /usr/sbin/rabbitmq-server
-    root      1603  1589  0 15:31 ?        00:00:00 su rabbitmq -s /bin/sh -c
-    /usr/lib/rabbitmq/bin/rabbitmq-server
-    root      2038  2011  0 15:32 ?        00:00:01 python cloto/environmentManager.py
-    root      2039  2011  1 15:32 ?        00:00:38 /usr/bin/python manage.py
-    runserver 172.30.1.119:8000
+    559   554  0 07:47 ?        00:00:48 /usr/bin/python /usr/bin/gunicorn fiware_cloto.cloto.wsgi -b 0.0.0.0
+    1     0  0 07:45 ?          00:00:00 /bin/sh -e /usr/lib/rabbitmq/bin/rabbitmq-server
+    1     0  0 07:45 ?          00:00:14 mysqld
 
-where we can see the rabbitmq process, the run process to launch the
+where we can see the rabbitmq and mysql process, the run process to launch the
 Python program and the clips program.
 
 Network interfaces Up & Open
@@ -507,6 +532,7 @@ execute the command:
 
 ::
 
+    yum install -y lsof (apt-get for ubuntu or debian)
     lsof -i | grep "$PID1\|$PID2" 
 
 Where $PID1 and $PID2 are the PIDs of Python and Redis server obtained
@@ -547,7 +573,7 @@ inside the code of the rule engine server:
 
 ::
 
-    $ mysql -u user -p
+    $ mysql -u user -p cloto
 
 Where user is the administration user defined for cloto database. The previous
 command should ask you for the password and after that show you:
@@ -647,7 +673,7 @@ simple GET operation:
 
 ::
 
-    root@fiware:~# curl http://$IP:$PORT/v1.0
+    root@fiware:~# curl http://<Fact engine HOST>:5000/v1.0
 
 The variable will be the IP direction in which we have installed the
 facts engine. This request should return the status of the server if it
@@ -656,6 +682,27 @@ is working properly:
 ::
 
     {"fiware-facts":"Up and running..."}
+
+
+
+The second step is check that rule engine server is working properly too:
+
+::
+
+    root@fiware:~# curl http://<Rule Engine HOST>:8000/info
+
+We obtained a json with this content:
+
+::
+
+   {
+       "owner": "Telefonica I+D",
+       "doc": "http://docs.policymanager.apiary.io",
+       "runningfrom": "01/01/2016 07:47:06",
+       "version": "2.7.0"
+   }
+
+
 
 In order to check the connectivity between the rule engine and the IdM
 GE, due to it must obtain a valid token and tenant for a user and
@@ -701,7 +748,7 @@ the following curl commands:
 ::
 
     curl -v -H 'X-Auth-Token: a9a861db6276414094bc1567f664084d'
-    -X GET "http://<Rule Engine HOST>:8000/v1.0/c8da25c7a373473f8e8945f5b0da8217"
+    -X GET "http://<Rule Engine HOST$IP>:8000/v1.0/c8da25c7a373473f8e8945f5b0da8217"
 
 The variable will be the IP direction in which we have installed the
 Rule engine API functionality. This request should return the valid info
@@ -711,8 +758,7 @@ for this tenant in the following json response structure:
 
     {
         "owner": "Telefonica I+D", 
-        "doc": "https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php
-                                    /FIWARE.OpenSpecification.Details.Cloud.PolicyManager",
+        "doc": "http://docs.policymanager.apiary.io",
         "runningfrom": "14/04/11 12:32:29", 
         "version": "1.0",
         "windowsize": 5

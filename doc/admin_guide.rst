@@ -475,9 +475,9 @@ of the execution of the Policy Manager
     < Server: WSGIServer/0.1 Python/2.6.6
     < Content-Type: text/html; charset=utf-8
     {
-        "owner": "Telefonica I+D", 
+        "owner": "Telefonica I+D",
         "doc": "http://docs.policymanager.apiary.io",
-        "runningfrom": "14/04/09 07:45:22", 
+        "runningfrom": "14/04/09 07:45:22",
         "version": 2.7.0,
         "windowsize": 10
     }
@@ -532,7 +532,7 @@ execute the command:
 ::
 
     yum install -y lsof (apt-get for ubuntu or debian)
-    lsof -i | grep "$PID1\|$PID2" 
+    lsof -i | grep "$PID1\|$PID2"
 
 Where $PID1 and $PID2 are the PIDs of Python and Redis server obtained
 at the ps command described before, in the previous case 5287
@@ -556,7 +556,7 @@ In case of rule engine, the result will we the following:
 ::
 
     COMMAND    PID USER    FD  TYPE             DEVICE SIZE/OFF NODE NAME
-    python    2039       root    3u  IPv4  13290      0t0  UDP *:12027 
+    python    2039       root    3u  IPv4  13290      0t0  UDP *:12027
     python    2039       root    4u  IPv4  13347      0t0  TCP policymanager.novalocal
     :irdmi (LISTEN)
     python    2044       root    3u  IPv6  13354      0t0  TCP localhost:38391->localhost
@@ -756,9 +756,9 @@ for this tenant in the following json response structure:
 ::
 
     {
-        "owner": "Telefonica I+D", 
+        "owner": "Telefonica I+D",
         "doc": "http://docs.policymanager.apiary.io",
-        "runningfrom": "14/04/11 12:32:29", 
+        "runningfrom": "14/04/11 12:32:29",
         "version": "1.0",
         "windowsize": 10
     }
@@ -798,13 +798,13 @@ The results were obtained with a top command execution over the following machin
       -  20GB
       -  20GB
    *  -  Operating System
-      -  CentOS 6.3
-      -  CentOS 6.3
+      -  CentOS 7
+      -  CentOS 7
 
 The results of requirements both RAM, CPU and I/O to HDD in case of
 Rule engine node is shown in the following table:
 
-.. list-table:: Resource Consumption (in JBoss node)
+.. list-table:: Resource Consumption
    :header-rows: 1
    :widths: 10 10 10
    :stub-columns: 1
@@ -813,19 +813,19 @@ Rule engine node is shown in the following table:
       -  Low Usage
       -  High Usage
    *  -  RAM
-      -  1,2GB ~ 70%
-      -  1,4GB ~ 83,5%
+      -  1.4%
+      -  ?.?%
    *  -  CPU
-      -  1,3% of a 2400MHz
-      -  95% of a 2400MHZ
+      -  0.7% of a 2400MHz
+      -  ?.?% of a 2400MHZ
    *  -  I/O HDD
-      -  6GB
-      -  6GB
+      -  xGB
+      -  xGB
 
 And the results of requirements both RAM, CPU and I/O to HDD in case
 of Tomcat node is shown in the following table:
 
-.. list-table:: Resource Consumption (in Tomcat node)
+.. list-table:: Resource Consumption
    :header-rows: 1
    :widths: 10 10 10
    :stub-columns: 1
@@ -834,14 +834,14 @@ of Tomcat node is shown in the following table:
       -  Low Usage
       -  High Usage
    *  -  RAM
-      -  1,2GB ~ 63%
-      -  1,5GB ~ 78%
+      -  1.4%
+      -  ?.?%
    *  -  CPU
-      -  0,8% of a 2400MHz
-      -  90% of a 2400MHZ
+      -  1.3% of a 2400MHz
+      -  x.x% of a 2400MHZ
    *  -  I/O HDD
-      -  6GB
-      -  6GB
+      -  ?GB
+      -  ?GB
 
 I/O flows
 ---------

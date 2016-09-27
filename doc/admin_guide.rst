@@ -475,9 +475,9 @@ of the execution of the Policy Manager
     < Server: WSGIServer/0.1 Python/2.6.6
     < Content-Type: text/html; charset=utf-8
     {
-        "owner": "Telefonica I+D", 
+        "owner": "Telefonica I+D",
         "doc": "http://docs.policymanager.apiary.io",
-        "runningfrom": "14/04/09 07:45:22", 
+        "runningfrom": "14/04/09 07:45:22",
         "version": 2.7.0,
         "windowsize": 10
     }
@@ -532,7 +532,7 @@ execute the command:
 ::
 
     yum install -y lsof (apt-get for ubuntu or debian)
-    lsof -i | grep "$PID1\|$PID2" 
+    lsof -i | grep "$PID1\|$PID2"
 
 Where $PID1 and $PID2 are the PIDs of Python and Redis server obtained
 at the ps command described before, in the previous case 5287
@@ -556,7 +556,7 @@ In case of rule engine, the result will we the following:
 ::
 
     COMMAND    PID USER    FD  TYPE             DEVICE SIZE/OFF NODE NAME
-    python    2039       root    3u  IPv4  13290      0t0  UDP *:12027 
+    python    2039       root    3u  IPv4  13290      0t0  UDP *:12027
     python    2039       root    4u  IPv4  13347      0t0  TCP policymanager.novalocal
     :irdmi (LISTEN)
     python    2044       root    3u  IPv6  13354      0t0  TCP localhost:38391->localhost
@@ -756,9 +756,9 @@ for this tenant in the following json response structure:
 ::
 
     {
-        "owner": "Telefonica I+D", 
+        "owner": "Telefonica I+D",
         "doc": "http://docs.policymanager.apiary.io",
-        "runningfrom": "14/04/11 12:32:29", 
+        "runningfrom": "14/04/11 12:32:29",
         "version": "1.0",
         "windowsize": 10
     }
@@ -768,14 +768,14 @@ Resource consumption
 
 State the amount of resources that are abnormally high or low. This
 applies to RAM, CPU and I/O. For this purpose we have differentiated
-between:
+severals scenarios.
 
--  Low usage, in which we check the resources that the JBoss or Tomcat
-   requires in order to load the IaaS SM.
--  High usage, in which we send 100 concurrent accesses to the Claudia
-   and OpenStack API.
-
-The results were obtained with a top command execution over the following machine configuration:
+The results were obtained with a top command execution over the following
+machine configuration:
+In one of the machines it has been deployed the Bosun Generic Enabler and all
+his dependencies (Redis, MySQL, RabbitMQ, Orion Context Broker, etc).
+In the other machine, an Oracle Linux Virtual Machine with Openstack.
+The load was injected from that machine too.
 
 .. list-table:: Machine Info
    :header-rows: 1
@@ -783,65 +783,78 @@ The results were obtained with a top command execution over the following machin
    :stub-columns: 1
 
    *  -  Machine
-      -  Rule Engine Node
-      -  Facts Engine Node
+      -  Bosun Generic Enabler
+      -  Openstack
    *  -  Type Machine
       -  Virtual Machine
       -  Virtual Machine
    *  -  CPU
-      -  1 core @ 2,4Ghz
-      -  Intel(R) Xeon(R) CPU X5650 Dual Core @ 2.67GHz
+      -  CPU Intel(R) Xeon(R) CPU E31230. 4 cores @ 3,2Ghz
+      -  CPU Intel(R) Xeon(R) CPU E31230. 4 cores @ 3,2Ghz
    *  -  RAM
-      -  2GB
-      -  2GB
+      -  4GB
+      -  4GB
    *  -  HDD
-      -  20GB
-      -  20GB
+      -  128GB
+      -  128GB
    *  -  Operating System
-      -  CentOS 6.3
-      -  CentOS 6.3
+      -  CentOS release 6.7 - 64 bits
+      -  CentOS release 6.7 - 64 bits
 
-The results of requirements both RAM, CPU and I/O to HDD in case of
+We have defined three different scenarios to check the resource consumption.
+These three scenarios consist in a stress scenario with a high load in a short
+period of time, configuring the “Security” parameter to “High” (token checking
+in each request), and the log file in debug mode.
+The second scenario is the same than the first one, but this time the “Security”
+parameter is configured to “Low”, and the log file to info mode.
+The third one is a stability scenario. The goal of this scenario is to check
+if the system is degraded with a moderate load for a long period of time (4-6 hours).
+
+The results of requirements both RAM, CPU and HTTP response (average per second) in case of
 Rule engine node is shown in the following table:
 
-.. list-table:: Resource Consumption (in JBoss node)
+.. list-table:: Resource Consumption
+   :header-rows: 1
+   :widths: 10 10 10 10
+   :stub-columns: 1
+
+   *  -  Characteristic
+      -  High Usage
+      -  Low Usage
+      -  Stable
+   *  -  RAM
+      -  700Mb used
+      -  400Mb used
+      -  260Mb used
+   *  -  CPU
+      -  7% used
+      -  7% used
+      -  7% used
+   *  -  HTTP response/sec
+      -  19.0
+      -  19.6
+      -  24.1
+
+And the results of requirements both RAM, CPU and HTTP response in case
+of Facts node is shown in the following table:
+
+.. list-table:: Resource Consumption
    :header-rows: 1
    :widths: 10 10 10
    :stub-columns: 1
 
    *  -  Characteristic
-      -  Low Usage
-      -  High Usage
+      -  High/Low Usage
+      -  Stable Usage
    *  -  RAM
-      -  1,2GB ~ 70%
-      -  1,4GB ~ 83,5%
+      -  280Mb
+      -  200Mb
    *  -  CPU
-      -  1,3% of a 2400MHz
-      -  95% of a 2400MHZ
-   *  -  I/O HDD
-      -  6GB
-      -  6GB
-
-And the results of requirements both RAM, CPU and I/O to HDD in case
-of Tomcat node is shown in the following table:
-
-.. list-table:: Resource Consumption (in Tomcat node)
-   :header-rows: 1
-   :widths: 10 10 10
-   :stub-columns: 1
-
-   *  -  Characteristic
-      -  Low Usage
-      -  High Usage
-   *  -  RAM
-      -  1,2GB ~ 63%
-      -  1,5GB ~ 78%
-   *  -  CPU
-      -  0,8% of a 2400MHz
-      -  90% of a 2400MHZ
-   *  -  I/O HDD
-      -  6GB
-      -  6GB
+      -  5% used
+      -  4.75% used
+   *  -  HTTP response/sec
+      -  20.4
+      -  27.4
 
 I/O flows
 ---------

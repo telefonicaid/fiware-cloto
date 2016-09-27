@@ -15,7 +15,6 @@ RUN mkdir /etc/fiware.d/
 RUN mkdir /var/log/fiware-cloto
 RUN pip install -r requirements.txt
 COPY fiware-cloto.cfg /etc/fiware.d/fiware-cloto.cfg
-COPY release.sh release.sh
 RUN cp utils/cloto_start /etc/fiware.d/
 RUN chmod a+x /etc/fiware.d/cloto_start
 RUN cp utils/fiware-cloto.conf /etc/supervisor/conf.d

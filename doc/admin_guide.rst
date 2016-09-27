@@ -768,12 +768,7 @@ Resource consumption
 
 State the amount of resources that are abnormally high or low. This
 applies to RAM, CPU and I/O. For this purpose we have differentiated
-between:
-
--  Low usage, in which we check the resources that the JBoss or Tomcat
-   requires in order to load the IaaS SM.
--  High usage, in which we send 100 concurrent accesses to the Claudia
-   and OpenStack API.
+severals scenarios.
 
 The results were obtained with a top command execution over the following machine configuration:
 
@@ -783,25 +778,32 @@ The results were obtained with a top command execution over the following machin
    :stub-columns: 1
 
    *  -  Machine
-      -  Rule Engine Node
-      -  Facts Engine Node
+      -  Bosun Generic Enabler
+      -  Openstack
    *  -  Type Machine
       -  Virtual Machine
       -  Virtual Machine
    *  -  CPU
-      -  1 core @ 2,4Ghz
-      -  Intel(R) Xeon(R) CPU X5650 Dual Core @ 2.67GHz
+      -  4 cores @ 3,2Ghz
+      -  CPU Intel(R) Xeon(R) CPU E31230
    *  -  RAM
-      -  2GB
-      -  2GB
+      -  4GB
+      -  4GB
    *  -  HDD
-      -  20GB
-      -  20GB
+      -  128GB
+      -  128GB
    *  -  Operating System
-      -  CentOS 7
-      -  CentOS 7
+      -  CentOS release 6.7 - 64 bits
+      -  CentOS release 6.7 - 64 bits
 
-The results of requirements both RAM, CPU and I/O to HDD in case of
+The three cases consists in a stress scenario with a high load in a short period of time,
+configuring the “Security” parameter to “High” (token checking in each request),
+and the log file in debug mode.
+The second scenario is the same than the first one, but this time the “Security”
+parameter is configured to “Low”, and the log file to info mode.
+The third one is a stability scenario.
+
+The results of requirements both RAM, CPU and HTTP response (average per second) in case of
 Rule engine node is shown in the following table:
 
 .. list-table:: Resource Consumption
@@ -810,20 +812,24 @@ Rule engine node is shown in the following table:
    :stub-columns: 1
 
    *  -  Characteristic
-      -  Low Usage
       -  High Usage
+      -  Low Usage
+      -  Stable
    *  -  RAM
-      -  1.4%
-      -  ?.?%
+      -  700Mb used
+      -  400Mb used
+      -  260Mb used
    *  -  CPU
-      -  0.7% of a 2400MHz
-      -  ?.?% of a 2400MHZ
-   *  -  I/O HDD
-      -  xGB
-      -  xGB
+      -  7% used
+      -  7% used
+      -  7% used
+   *  -  HTTP response/sec
+      -  19.0
+      -  19.6
+      -  24.1
 
-And the results of requirements both RAM, CPU and I/O to HDD in case
-of Tomcat node is shown in the following table:
+And the results of requirements both RAM, CPU and HTTP request in case
+of Facts node is shown in the following table:
 
 .. list-table:: Resource Consumption
    :header-rows: 1
@@ -831,17 +837,17 @@ of Tomcat node is shown in the following table:
    :stub-columns: 1
 
    *  -  Characteristic
-      -  Low Usage
-      -  High Usage
+      -  High/Low Usage
+      -  Stable Usage
    *  -  RAM
-      -  1.4%
-      -  ?.?%
+      -  280Mb
+      -  200Mb
    *  -  CPU
-      -  1.3% of a 2400MHz
-      -  x.x% of a 2400MHZ
-   *  -  I/O HDD
-      -  ?GB
-      -  ?GB
+      -  5% used
+      -  4.75% used
+   *  -  HTTP response/sec
+      -  20.4
+      -  27.4
 
 I/O flows
 ---------

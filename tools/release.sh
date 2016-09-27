@@ -79,35 +79,6 @@ CHANGELOG=$TMPFILE.chg
 
 RELEASE=$(echo "$PRODUCT" | sed -n '/"release"/ {s/.*:.*"\(.*\)".*/\1/; p; q}')
 
-get_changelog_entries() {
-  	local path="cloto"
-    local latest_tag=$(git tag -l | tail -1)
-    local branch_types="hardening\|feature\|bug\|hotfix"
-    local branch_regex=".*\($branch_types\)\/\([A-Z_-]*[0-9]*\).*"
-    local options entry hash diff
-    if [ -n "$(expr $CUR_BRANCH : '^\(hotfix/.*\)$')" ]; then
-        options="--reverse --format=format:'%s'"
-        eval git log $options master..HEAD > $CHANGELOG
-    else
-        options="--reverse --merges --grep=pull \
-        --format=format:'%P %H - %s: %b%n'"
-        eval git log $options $latest_tag..HEAD | while read entry; do
-            hash="$(echo $entry | cut -d' ' -f1,2)"
-            diff="$(git diff --name-only $hash | grep -v ^$path)"
-            [ -z "$diff" ] && echo ${entry#* - }
-        done \
-        | sed 's/'$branch_regex': \(.*\)/\3 (\1 #\2)/' \
-        | sed 's/\(.*\) (.* #)/\1/' \
-        | sed 's/^/- /' > $CHANGELOG
-    fi
-    if [ ! -s $CHANGELOG ]; then
-        printf "No changes at $path since last release\n" 1>&2
-        return 1
-    elif [ -n "$INTERACTIVE" ]; then
-        ${EDITOR:-vi} $CHANGELOG
-    fi
-}
-
 # Function to check current branch
 check_current_branch() {
     if [ -n "$(expr $CUR_BRANCH : '^\(release/.*\)$')" ]; then
@@ -129,33 +100,6 @@ get_changelog_branch() {
     fi
 }
 
-# Function to write changelog entries in MarkDown syntax (for GitHub releases)
-write_changelog_markdown() {
-	local markdown=$BASEDIR/CHANGELOG.md
-    local component=$(echo $PACKAGE | tr '-' '_')
-    local artifacts=$REPOURL
-	cat > $markdown <<-EOF
-            #### Changelog
-            $(cat $CHANGELOG)
-            #### Components
-            - $component version $VERSION ([download])
-            [download]:
-            $artifacts
-            "FIWARE Artifacts Repository"
-EOF
-    printf "%s successfully created.\n" ${markdown#$BASEDIR/}
-
-}
-
-# Function to update .deb package changelog
-update_deb_changelog() {
-  echo "dd"
-}
-
-# Function to update .rpm package changelog
-update_rpm_changelog() {
-  echo "dd"
-}
 
 # Function to change product release when needed
 bump_product_release() {
@@ -172,11 +116,7 @@ bump_product_release() {
 
 # Main
 check_current_branch \
-#get_changelog_entries \
 && get_changelog_branch \
-#&& write_changelog_markdown \
-&& update_deb_changelog \
-&& update_rpm_changelog \
 && bump_product_release
 
 

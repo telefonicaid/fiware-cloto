@@ -22,5 +22,5 @@ PROGDIR=$(readlink -f $(dirname $0))
 if [ "$CUR_BRANCH" != "develop" ]; then
         git checkout develop
 fi
-sed -i -e "/ENV GIT_REV_CLOTO/c\ENV GIT_REV_CLOTO develop" $PROGDIR/docker/Dockerfile
+sed -i -e "/ENV GIT_REV_CLOTO/c\ENV GIT_REV_CLOTO develop" $PROGDIR/../docker/Dockerfile
 

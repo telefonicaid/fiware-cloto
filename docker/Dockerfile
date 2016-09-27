@@ -1,5 +1,5 @@
 FROM ubuntu
-ENV GIT_REV develop
+ENV GIT_REV 10.2.3
 ENV CLOTO_SETTINGS_FILE /etc/fiware.d/fiware-cloto.cfg
 RUN apt-get update
 RUN apt-get -y install  python-dev \

@@ -72,12 +72,7 @@ shift $(expr $OPTIND - 1)
 # Common properties
 PROGDIR=$(readlink -f $(dirname $0))
 BASEDIR=$(readlink -f $PROGDIR/../..)
-TMPFILE=$(mktemp --tmpdir $PROG_XXXXXX)
 CUR_BRANCH=$(git rev-parse --abbrev-ref HEAD)
-# Package properties
-CHANGELOG=$TMPFILE.chg
-
-RELEASE=$(echo "$PRODUCT" | sed -n '/"release"/ {s/.*:.*"\(.*\)".*/\1/; p; q}')
 
 # Function to check current branch
 check_current_branch() {
@@ -106,7 +101,6 @@ bump_product_release() {
     [ -n "$NEW_RELEASE_NUMBER" ] || return 0
     cd $PROGDIR && bumpversion \
     --commit --no-tag --allow-dirty \
-    --current-version=$RELEASE \
     --new-version=$NEW_RELEASE_NUMBER \
     --message='New product release {new_version}' \
     --search='"release": "{current_version}"' \

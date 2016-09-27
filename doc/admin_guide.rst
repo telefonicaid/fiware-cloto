@@ -801,9 +801,10 @@ The load was injected from that machine too.
       -  CentOS release 6.7 - 64 bits
       -  CentOS release 6.7 - 64 bits
 
-The three cases consist in a stress scenario with a high load in a short period of time,
-configuring the “Security” parameter to “High” (token checking in each request),
-and the log file in debug mode.
+We have defined three different scenarios to check the resource consumption.
+These three scenarios consist in a stress scenario with a high load in a short
+period of time, configuring the “Security” parameter to “High” (token checking
+in each request), and the log file in debug mode.
 The second scenario is the same than the first one, but this time the “Security”
 parameter is configured to “Low”, and the log file to info mode.
 The third one is a stability scenario. The goal of this scenario is to check

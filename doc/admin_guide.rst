@@ -770,7 +770,12 @@ State the amount of resources that are abnormally high or low. This
 applies to RAM, CPU and I/O. For this purpose we have differentiated
 severals scenarios.
 
-The results were obtained with a top command execution over the following machine configuration:
+The results were obtained with a top command execution over the following
+machine configuration:
+In one of the machines it has been deployed the Bosun Generic Enabler and all
+his dependencies (Redis, MySQL, RabbitMQ, Orion Context Broker, etc).
+In the other machine, an Oracle Linux Virtual Machine with Openstack.
+The load was injected from that machine too.
 
 .. list-table:: Machine Info
    :header-rows: 1
@@ -784,8 +789,8 @@ The results were obtained with a top command execution over the following machin
       -  Virtual Machine
       -  Virtual Machine
    *  -  CPU
-      -  4 cores @ 3,2Ghz
-      -  CPU Intel(R) Xeon(R) CPU E31230
+      -  CPU Intel(R) Xeon(R) CPU E31230. 4 cores @ 3,2Ghz
+      -  CPU Intel(R) Xeon(R) CPU E31230. 4 cores @ 3,2Ghz
    *  -  RAM
       -  4GB
       -  4GB
@@ -796,12 +801,13 @@ The results were obtained with a top command execution over the following machin
       -  CentOS release 6.7 - 64 bits
       -  CentOS release 6.7 - 64 bits
 
-The three cases consists in a stress scenario with a high load in a short period of time,
+The three cases consist in a stress scenario with a high load in a short period of time,
 configuring the “Security” parameter to “High” (token checking in each request),
 and the log file in debug mode.
 The second scenario is the same than the first one, but this time the “Security”
 parameter is configured to “Low”, and the log file to info mode.
-The third one is a stability scenario.
+The third one is a stability scenario. The goal of this scenario is to check
+if the system is degraded with a moderate load for a long period of time (4-6 hours).
 
 The results of requirements both RAM, CPU and HTTP response (average per second) in case of
 Rule engine node is shown in the following table:
@@ -828,7 +834,7 @@ Rule engine node is shown in the following table:
       -  19.6
       -  24.1
 
-And the results of requirements both RAM, CPU and HTTP request in case
+And the results of requirements both RAM, CPU and HTTP response in case
 of Facts node is shown in the following table:
 
 .. list-table:: Resource Consumption

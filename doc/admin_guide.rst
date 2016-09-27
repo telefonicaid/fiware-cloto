@@ -808,7 +808,7 @@ Rule engine node is shown in the following table:
 
 .. list-table:: Resource Consumption
    :header-rows: 1
-   :widths: 10 10 10
+   :widths: 10 10 10 10
    :stub-columns: 1
 
    *  -  Characteristic

@@ -1,4 +1,5 @@
 FROM ubuntu
+ENV GIT_REV develop
 ENV CLOTO_SETTINGS_FILE /etc/fiware.d/fiware-cloto.cfg
 RUN apt-get update
 RUN apt-get -y install  python-dev \
@@ -9,6 +10,7 @@ RUN curl "https://bootstrap.pypa.io/get-pip.py" -o "get-pip.py"
 RUN python get-pip.py 
 RUN git clone https://github.com/telefonicaid/fiware-cloto /opt/fiware-cloto
 WORKDIR /opt/fiware-cloto
+RUN git checkout ${GIT_REV}
 RUN mkdir /etc/fiware.d/
 RUN mkdir /var/log/fiware-cloto
 RUN pip install -r requirements.txt

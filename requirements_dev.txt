@@ -11,3 +11,4 @@ coverage==4.0
 mockito==0.5.2
 mock==1.0.1
 coveralls==1.0
+bumpversion==0.5.3

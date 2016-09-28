@@ -36,7 +36,7 @@ master_doc = 'index'
 
 # General information about the project
 title = u'FIWARE-Bosun'
-subtitle = u'Cloto'
+subtitle = u''
 copyright = u'2016, Telefónica I+D'
 project = u':\n '.join([title, subtitle])
 version = ''

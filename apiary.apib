@@ -66,9 +66,9 @@ This specification is licensed under the
 
 This specification is intended for both software developers and Cloud Providers. 
 For the former, this document provides a full specification of how to interoperate 
-with Cloud Platforms that implements PMI API. For the latter, this specification 
+with Cloud Platforms that implement PMI API. For the latter, this specification 
 indicates the interface to be provided in order to create rules with conditions 
-and actions associated the facts received from cloud services. To use this information, 
+and actions associated to the facts received from cloud services. To use this information, 
 the reader should first have a general understanding of the [Policy Manager Generic Enabler](http://wiki.fiware.org/FIWARE.OpenSpecification.Cloud.PolicyManager)
 and also be familiar with:
 
@@ -95,11 +95,11 @@ and related artifacts used by the API.
 
 The PMI API defines:
 
-* A **rule** represents the policy or rule that will be used to infers new facts or 
+* A **rule** represents the policy or rule that will be used to infer new facts or 
 actions based on the facts notified by the Publish/Subscribe Context Broker GE. Usually, 
 rules are compound of conditions and actions
 * A **condition** is some type of conditional statement of the form: x > 85% [AND y > 64.5%]. 
-Several conditions can be connected using AND logical operator.
+Several conditions can be connected using the AND logical operator.
 * A **fact** represents the measurement of the cloud resources and will be used to 
 infer new facts or actions. It is the base of the reasoning process.
 * An **action** represents the triggered message inferred by the rule engine based on 
@@ -119,10 +119,10 @@ credentials to OpenStack Identity to get an authentication token.
 Credentials are usually a combination of your user name and password, and optionally, the 
 name or ID of the tenant from your FIWARE Lab account. Ask your cloud administrator for your 
 user name (OS_USERNAME), password (OS_PASSWORD), and tenant (OS_PROJECT_NAME) if you do not 
-remember it or sing up your own account in [FIWARE Lab account service](https://account.lab.fiware.org/sign_up/)
+remember them or sign up your own account in [FIWARE Lab account service](https://account.lab.fiware.org/sign_up/)
 so that you can generate authentication tokens.
 
-When you send PMI API requests, you include the token in the `X-Auth-Token` header. Please, 
+When you send PMI API requests, you have to include the token in the `X-Auth-Token` header. Please, 
 keep in mind that a token is valid for a limited time before it expires. A token can also 
 become invalid for other security reasons. The workflow that you have to follow is:
     
@@ -249,7 +249,7 @@ with instance ID 1492 could be represented by resource http://.../book/1492),
 but such an assumption should not be taken by API consumer to obtain the resource URL 
 from its instance ID.
 
-Last but not least, PMI API does not take care about this instance creation. PMI API 
+Last but not least, PMI API is not involved in the instance creation. PMI API 
 supposes that the instance, identified by its serverId, is created in the FIWARE Lab.
 
 ## Links and References
@@ -261,12 +261,12 @@ on their application to infrastructural resources.
 ## Rules
 
 Rules are described using JSON, and contain information about CPU and Memory usage, 
-in first instance. The rule is compound of three parts, name, conditions and actions. 
+in first instance. The rule is compound of three parts: name, conditions and actions. 
 In this case, the name will be "AlertCPU" and the defined condition expects all 
 server with cpu usage greater than 98.3 and memory load greater or equal to 95.
 
 Actions will create an HTTP POST notification to an url specified on every subscription 
-to this rule. In this case the notification will be that server should be scaled up 
+to this rule. In this case, the notification will be that the server should be scaled up 
 because CPU usage is greater than certain limit. This is the rule as is expected to:
 
 ```
@@ -295,8 +295,8 @@ Rule conditions represent a boolean condition to be evaluated (e.g. `x > 10`).
 A rule condition is simply a statement that is either true or false. We can have 
 two options:
 
-* Simple rule conditions, which only requires *one* statement.
-* Complex rule conditions, which requires *two* or more statements linked with a 
+* Simple rule conditions, which only require *one* statement.
+* Complex rule conditions, which require *two* or more statements linked with a 
 logical operator. The only allowed operator is *AND* in Policy Manger in release 5.4 
 
 A rule condition is represented by a JSON object with the following syntax:
@@ -305,7 +305,7 @@ A rule condition is represented by a JSON object with the following syntax:
 object's <metric> property. These metrics are only `cpu`, `mem`, `hdd`, `net`. 
 * The entity value representing the cloud service value for the entity metric 
 is specified by the object's `value` property, whose value is a floating number 
-representing the percentaje of utilization of this metric in the cloud service.
+representing the percentaje of use of this metric in the cloud service.
 * The logical operator used to check the entity value is specified by the 
 object's `operand` property. PMI API v1.0 allows values "greater", "less", 
 "greater equal", "less equal" for this property.
@@ -336,7 +336,7 @@ different properties:
 
 * If the object's `actionName` property has value `notify-email`, we have the email and 
 body which are represented by the object's `email` and `body` properties, whose values 
-are the string containing the email address to send the email and the message of this 
+are the string containing the email address to send the email and the body message of this 
 email. This is a possible example:
 
 ```
@@ -350,7 +350,7 @@ email. This is a possible example:
 * If the object's `actionName` property has value `notify-scale`, we have action operation. 
 The action operation is specified by the object's `operation` property, whole value is a 
 string containing the action's operation. PMI API v1.0 allows values "scaleUp", "scaleDown" 
-for this property. This messages is sent back to the url that is specified in the subscription 
+for this property. This message is sent back to the url that is specified in the subscription 
 process described bellow. This is a possible example:
 
 ```
@@ -366,11 +366,11 @@ behaviour described in the previous case.
 ## Error Responses
 
 Every HTTP request has a status code. 2xx codes signify the PMI API was a success. 
-However, sometimes is not the response that be obtained. All the errors message are 
+However, sometimes is not the response that be obtained. All the error messages are 
 sent in JSON format with the following attributes:
 
 * A `message`. A descriptive text of the error that was reported by the PMI API.
-* A `code`. A integer value to identity the error type.
+* A `code`. A integer value to identify the error type.
 * A `title`. The error type in text format.
 
 An example of an error message could be:
@@ -406,7 +406,7 @@ to perform the requested action.
 * `Not Found` (`404`). An operation failed because a referenced entity cannot be found by ID.
 
 * `Service Unavailable` (`503`). The Policy Manager is unable to perform the operation due to
-it is unavailable. One of the following errors accurred:
+it is unavailable. One of the following errors occurred:
 
     * Policy Manager service or some of its subcomponents (RabbitMQ, MySQL, Redis and/or Facts) 
     are down.

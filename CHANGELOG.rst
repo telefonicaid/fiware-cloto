@@ -1,6 +1,25 @@
 Changelog
 =========
 
+v2.8.0 (2016-09-29)
+-------------------
+
+Changes
+~~~~~~~
+
+- Update docker files.
+- Update documentation.
+- Update apiary.
+- Update gh-pages.
+- Update python requirements and setup process.
+- Add contribution policy.
+
+Fix
+~~~
+
+- Remove hardcode database name.
+
+
 v2.7.0 (2016-08-12)
 -------------------
 
@@ -17,10 +36,12 @@ Changes
 
 Fix
 ~~~
+
 - Fix problem in settings file
 
 v2.6.0 (2016-06-27)
 -------------------
+
 New
 ~~~
 

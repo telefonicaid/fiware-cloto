@@ -638,7 +638,7 @@ It should return with the following information:
     +----+----------------+---------+---------------------+--------+
 
 Where {file} is the path to the OpenSpecification file whose value is
-https://forge.fi-ware.org/plugins/mediawiki/wiki/fi-ware-private/index.php/FIWARE.OpenSpecification.Details.Cloud.PolicyManager
+http://docs.policymanager.apiary.io
 
 Diagnosis Procedures
 ====================

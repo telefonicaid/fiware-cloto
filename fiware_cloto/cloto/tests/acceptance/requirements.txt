@@ -1,5 +1,5 @@
 behave==1.2.5
-bottle==0.11.6
+bottle==0.12.20
 ujson==1.33
 lettuce==0.2.20
 testtools==0.9.34

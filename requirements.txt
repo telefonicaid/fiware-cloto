@@ -14,7 +14,7 @@ mysql-python==1.2.5
 oslo.config==1.13.0
 oslo.i18n==1.7.0
 oslo.serialization==1.6.0
-oslo.utils==1.7.0
+oslo.utils==4.10.1
 gunicorn==19.4.5
 pyyaml==3.11
 gevent==1.1.0
